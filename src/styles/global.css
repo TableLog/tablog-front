@@ -1,67 +1,52 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@theme {
 
-html {
-    font-size: 62.5%;
-    box-sizing: border-box;
-    line-height: 1.2;
-    scroll-behavior: smooth;
+  /* font family */
+  --font-pretendard: "Pretendard", sans-serif;
+
+  /* color */
+  --color-*: initial;
+  --color-primary01: #D66060;
+  --color-primary02: #E49898;
+  --color-primary03: #E9A9A9;
+  --color-primary04: #EDB7B7;
+  --color-primary05: #F2CFCF;
+  --color-white01: #FFFFFF;
+  --color-black01: #0E0E0E;
+  --color-black02: #0E0E0E;
+  --color-black03: #0E0E0E;
+  --color-grey01: #5D5D5D;
+  --color-grey02: #6D6D6D;
+  --color-grey03: #808080;
+  --color-grey04: #ACACAC;
+  --color-grey05: #BABABA;
+  --color-grey06: #C6C6C6;
+  --color-grey07: #E8E8E8;
+  --color-grey08: #F5F5F5;
+  --color-red01: #E73F3F;
+  --color-yellow01: #FFC60A;
+
+  /* font weight */
+  --font-weight-thin: 100;
+  --font-weight-extraLight: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semiBold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extraBold: 800;
+  --font-weight-black: 900; 
+
 }
 
-body {
-    @apply bg-black font-sans text-body-sm font-regular text-white;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    word-break: keep-all;
+@layer base {
+  * {
+    box-sizing: content-box;
+  }
+  button {
+    @apply cursor-pointer;
+  }
 }
 
-body::-webkit-scrollbar {
-    display: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-size: inherit;
-}
-
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    box-sizing: inherit;
-}
-
-a {
-    color: inherit;
-    font-size: inherit;
-    text-decoration: none;
-}
-
-ul,
-li {
-    list-style: none;
-}
-
-li:active,
-li:focus {
-    color: inherit;
-    opacity: 1;
-    background: transparent;
-}
-
-button {
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-    background: inherit;
-}
