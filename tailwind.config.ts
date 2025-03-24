@@ -1,0 +1,45 @@
+module.exports = {
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    // src 하위 파일 중 확장자가 .js,.jsx,.ts,.tsx인 파일을 대상으로 한다는 의미
+  ],
+  theme: {
+    extend: {},
+    colors: {
+      primary01: '#D66060',
+      primary02: '#E49898',
+      primary03: '#E9A9A9',
+      primary04: '#EDB7B7',
+      primary05: '#F2CFCF',
+      white01: '#FFFFFF',
+      black01: '#0E0E0E',
+      black02: '#0E0E0E',
+      black03: '#0E0E0E',
+      grey01: '#5D5D5D',
+      grey02: '#6D6D6D',
+      grey03: '#808080',
+      grey04: '#ACACAC',
+      grey05: '#BABABA',
+      grey06: '#C6C6C6',
+      grey07: '#E8E8E8',
+      grey08: '#F5F5F5',
+      red01: '#E73F3F',
+      yellow01: '#FFC60A',
+    },
+    fontFamily: {
+      sans: ['Pretendard', 'sans-serif'],
+    },
+    fontWeight: {
+      thin: '100',
+      extraLight: '200',
+      light: '300',
+      regular: '400',
+      medium: '500',
+      semiBold: '600',
+      bold: '700',
+      extraBold: '800',
+      black: '900',
+    },
+  },
+  plugins: [],
+};
