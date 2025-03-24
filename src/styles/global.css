@@ -44,6 +44,7 @@
 @layer base {
   * {
     box-sizing: content-box;
+    @apply font-pretendard;
   }
   button {
     @apply cursor-pointer;
