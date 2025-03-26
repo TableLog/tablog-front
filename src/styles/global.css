@@ -1,7 +1,8 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 @import 'tailwindcss';
-@plugin "daisyui";
 @import 'boxicons/css/boxicons.min.css';
+
+@plugin "daisyui";
 @theme {
   /* font family */
   --font-pretendard: 'Pretendard', sans-serif;
@@ -45,6 +46,7 @@
     box-sizing: content-box;
     @apply font-pretendard;
   }
+
   button {
     @apply cursor-pointer;
   }

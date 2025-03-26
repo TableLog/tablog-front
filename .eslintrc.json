@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
-  "plugins": ["prettier", "simple-import-sort", "react"],
+  "plugins": ["prettier", "simple-import-sort", "react", "storybook"],
   "rules": {
     "prettier/prettier": ["error"],
     "react/react-in-jsx-scope": "off",
