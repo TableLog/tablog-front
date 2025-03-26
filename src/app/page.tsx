@@ -1,11 +1,14 @@
 'use client';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { Text } from '@/components/atoms/text/Text';
 
 export default function Page() {
   return (
     <div>
-      <p>test</p>
+      <Text fontSize={20} color="primary01">
+        test
+      </Text>
 
       <BoxIcon
         onClick={() => console.log('testing icon click event')}

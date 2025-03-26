@@ -24,6 +24,7 @@ export interface IBoxIconProps {
 export function BoxIcon({ ...rest }: IBoxIconProps) {
   return (
     <i
+      role="icon"
       className={`bx bx-${rest.name} bx-rotate-${rest.rotate} bx-flip-${rest.flip} bx-pull-${rest.pull} bx-${rest.animation} bx-${rest.animation} bx-${rest.animation}-hover`}
       style={{ color: rest.color, fontSize: rest.size }}
     />

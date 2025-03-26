@@ -3,12 +3,34 @@ import { render, screen } from '@testing-library/react';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 
-test('renders box icon - 50px blue home smile icon', () => {
-  render(<BoxIcon name="home-smile" color="blue" size="50px" data-testid="boxicon" />);
-  const icon = screen.getByTestId('boxicon');
+describe('BoxIcon', () => {
+  test('renders box icon with correct name, color, and size', () => {
+    render(<BoxIcon name="home-smile" color="blue" size="50px" data-testid="boxicon" />);
 
-  expect(icon).toBeInTheDocument();
-  expect(icon).toHaveAttribute('name', 'home-smile');
-  expect(icon).toHaveAttribute('color', 'blue');
-  expect(icon).toHaveAttribute('size', '50px');
+    const icon = screen.getByRole('icon');
+
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass('bx', 'bx-home-smile');
+    expect(icon).toHaveStyle({
+      color: 'blue',
+      fontSize: '50px',
+    });
+  });
+
+  test('renders icon with animation and rotation', () => {
+    render(
+      <BoxIcon name="happy" animation="spin" rotate="90" flip="horizontal" data-testid="boxicon" />,
+    );
+
+    const icon = screen.getByRole('icon');
+
+    expect(icon).toHaveClass(
+      'bx',
+      'bx-happy',
+      'bx-rotate-90',
+      'bx-flip-horizontal',
+      'bx-spin',
+      'bx-spin-hover',
+    );
+  });
 });

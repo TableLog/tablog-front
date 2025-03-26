@@ -3,7 +3,7 @@
 @import 'boxicons/css/boxicons.min.css';
 
 @plugin "daisyui";
-@theme {
+@layer theme {
   /* font family */
   --font-pretendard: 'Pretendard', sans-serif;
 
