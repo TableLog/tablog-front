@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import Script from 'next/script';
 
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
@@ -18,8 +17,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <Script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></Script>
-
       <body>
         <Provider>{children}</Provider>
       </body>

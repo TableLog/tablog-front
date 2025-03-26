@@ -22,10 +22,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src",
     ".storybook",
     "src/**/*.stories.tsx",
-    "src/global.d.ts"
   ],
   "exclude": ["node_modules"]
 }
