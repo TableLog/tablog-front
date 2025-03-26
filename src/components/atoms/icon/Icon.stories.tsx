@@ -12,7 +12,7 @@ const meta = {
   tags: ['autodocs'],
   render: (args) => (
     <div className="bg-primary01">
-      <Icon {...args} className="text-white01" />
+      <Icon {...args} />
     </div>
   ),
 } satisfies Meta<typeof Icon>;
@@ -23,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const bell: Story = {
   args: {
     iconName: 'bx bx-bell',
+    className: 'text-white01',
     onClick: fn(),
   },
 };
@@ -30,6 +31,23 @@ export const bell: Story = {
 export const search: Story = {
   args: {
     iconName: 'bx bx-search-alt',
+    className: 'text-white01',
+    onClick: fn(),
+  },
+};
+
+export const bookmark: Story = {
+  args: {
+    iconName: 'bx bx-bookmark',
+    className: 'text-white01',
+    onClick: fn(),
+  },
+};
+
+export const bookmarkSolid: Story = {
+  args: {
+    iconName: 'bx bxs-bookmark',
+    className: 'text-white01',
     onClick: fn(),
   },
 };
