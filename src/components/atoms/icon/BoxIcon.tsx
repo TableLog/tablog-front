@@ -1,11 +1,16 @@
 import React from 'react';
+import clsx from 'clsx';
+
+import { COLOR_MAP } from '@/styles/style-map';
+
+type Color = keyof typeof COLOR_MAP;
 
 export interface IBoxIconProps {
   onClick?: () => void;
   name?: string;
   type?: 'solid' | 'regular' | 'logo';
-  color?: string;
-  size?: string;
+  color?: Color | string;
+  size?: number;
   animation?:
     | 'spin'
     | 'tada'
@@ -21,12 +26,39 @@ export interface IBoxIconProps {
   class?: string;
 }
 
-export function BoxIcon({ ...rest }: IBoxIconProps) {
+export function BoxIcon({
+  name,
+  type,
+  color,
+  size,
+  animation,
+  rotate,
+  flip,
+  pull,
+  class: customClass,
+  ...rest
+}: IBoxIconProps) {
+  const isThemeColor = color && COLOR_MAP[color as Color];
+  const colorClass = isThemeColor ? COLOR_MAP[color as Color] : undefined;
+
+  const iconClass = clsx(
+    'bx',
+    name && `bx-${name}`,
+    type && `bxs-${name}`, // optional: if you want to reflect type: 'solid' → bxs-*, 'regular' → bx-*, 'logo' → bxl-*
+    rotate && `bx-rotate-${rotate}`,
+    flip && `bx-flip-${flip}`,
+    pull && `bx-pull-${pull}`,
+    animation && [`bx-${animation}`, `bx-${animation}-hover`],
+    colorClass,
+    customClass,
+  );
+
   return (
     <i
       role="icon"
-      className={`bx bx-${rest.name} bx-rotate-${rest.rotate} bx-flip-${rest.flip} bx-pull-${rest.pull} bx-${rest.animation} bx-${rest.animation} bx-${rest.animation}-hover`}
-      style={{ color: rest.color, fontSize: rest.size }}
+      className={iconClass}
+      style={!isThemeColor ? { color, fontSize: size } : { fontSize: size }}
+      {...rest}
     />
   );
 }

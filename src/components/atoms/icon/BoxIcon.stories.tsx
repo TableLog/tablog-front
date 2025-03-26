@@ -35,7 +35,7 @@ export const Basic: { args: IBoxIconProps } = {
       console.log('testing icon click event');
     },
     name: 'home-smile',
-    color: 'blue',
-    size: '50px',
+    color: 'primary01',
+    size: 50,
   },
 };

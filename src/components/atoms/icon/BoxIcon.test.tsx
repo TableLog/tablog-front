@@ -5,15 +5,15 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 
 describe('BoxIcon', () => {
   test('renders box icon with correct name, color, and size', () => {
-    render(<BoxIcon name="home-smile" color="blue" size="50px" data-testid="boxicon" />);
+    render(<BoxIcon name="home-smile" color="primary01" size={50} data-testid="boxicon" />);
 
     const icon = screen.getByRole('icon');
 
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveClass('bx', 'bx-home-smile');
     expect(icon).toHaveStyle({
-      color: 'blue',
-      fontSize: '50px',
+      color: 'primary01',
+      fontSize: 50,
     });
   });
 

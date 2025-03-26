@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
+import { pretendard } from '../../public/fonts/pretendard';
+
 import '@/styles/global.css';
 
 export const metadata: Metadata = {
@@ -16,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${pretendard.variable}`}>
       <body>
         <Provider>{children}</Provider>
       </body>
