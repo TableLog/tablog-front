@@ -25,7 +25,7 @@ export function Text({
   const fontClass = FONT_SIZE_MAP[fontSize] || 'text-sm';
   const weightClass = FONT_WEIGHT_MAP[fontWeight] || 'font-normal';
   const colorClass = color ? COLOR_MAP[color] : undefined;
-  const lineHeightClass = 'leading-[1.5]'; // ← 여기 추가됨
+  const lineHeightClass = 'leading-[1.5]';
 
   return (
     <div

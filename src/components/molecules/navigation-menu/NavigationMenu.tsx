@@ -12,7 +12,7 @@ interface INavigationMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 const NavigationMenu = ({ isActive, menuName, iconName, ...rest }: INavigationMenuProps) => {
   return (
     <div
-      className="flex inline-flex cursor-pointer flex-col items-center justify-center gap-[4px]"
+      className="inline-flex cursor-pointer flex-col items-center justify-center gap-[4px]"
       {...rest}
     >
       <BoxIcon name={iconName} color={isActive ? 'primary01' : 'grey04'} size={24} />
