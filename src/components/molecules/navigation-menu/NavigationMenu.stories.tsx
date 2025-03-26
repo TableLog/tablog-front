@@ -6,14 +6,10 @@ const meta: Meta<typeof NavigationMenu> = {
   title: 'Molecules/NavigationMenu',
   component: NavigationMenu,
   tags: ['autodocs'],
-  argTypes: {
-    isActive: {
-      control: 'boolean',
-    },
-  },
   parameters: {
     layout: 'centered',
   },
+  render: (args) => <NavigationMenu {...args} />,
 };
 
 export default meta;

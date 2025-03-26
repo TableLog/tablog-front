@@ -1,10 +1,6 @@
 @import 'tailwindcss';
 @import 'boxicons/css/boxicons.min.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @plugin "daisyui";
 
 @theme {
