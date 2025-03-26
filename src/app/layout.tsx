@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import '@/styles/global.css';
+
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
+
+import '@/styles/global.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
