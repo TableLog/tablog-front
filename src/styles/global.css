@@ -1,67 +1,51 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import 'tailwindcss';
+@plugin "daisyui";
+@import 'boxicons/css/boxicons.min.css';
+@theme {
+  /* font family */
+  --font-pretendard: 'Pretendard', sans-serif;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+  /* color */
+  --color-*: initial;
+  --color-primary01: #d66060;
+  --color-primary02: #e49898;
+  --color-primary03: #e9a9a9;
+  --color-primary04: #edb7b7;
+  --color-primary05: #f2cfcf;
+  --color-white01: #ffffff;
+  --color-black01: #0e0e0e;
+  --color-black02: #0e0e0e;
+  --color-black03: #0e0e0e;
+  --color-grey01: #5d5d5d;
+  --color-grey02: #6d6d6d;
+  --color-grey03: #808080;
+  --color-grey04: #acacac;
+  --color-grey05: #bababa;
+  --color-grey06: #c6c6c6;
+  --color-grey07: #e8e8e8;
+  --color-grey08: #f5f5f5;
+  --color-red01: #e73f3f;
+  --color-yellow01: #ffc60a;
 
-html {
-    font-size: 62.5%;
-    box-sizing: border-box;
-    line-height: 1.2;
-    scroll-behavior: smooth;
+  /* font weight */
+  --font-weight-thin: 100;
+  --font-weight-extraLight: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semiBold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extraBold: 800;
+  --font-weight-black: 900;
 }
 
-body {
-    @apply bg-black font-sans text-body-sm font-regular text-white;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    word-break: keep-all;
-}
-
-body::-webkit-scrollbar {
-    display: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-size: inherit;
-}
-
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    box-sizing: inherit;
-}
-
-a {
-    color: inherit;
-    font-size: inherit;
-    text-decoration: none;
-}
-
-ul,
-li {
-    list-style: none;
-}
-
-li:active,
-li:focus {
-    color: inherit;
-    opacity: 1;
-    background: transparent;
-}
-
-button {
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-    background: inherit;
+@layer base {
+  * {
+    box-sizing: content-box;
+    @apply font-pretendard;
+  }
+  button {
+    @apply cursor-pointer;
+  }
 }
