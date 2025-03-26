@@ -5,7 +5,7 @@ import NavigationMenu from '@/components/molecules/navigation-menu/NavigationMen
 
 describe('NavigationMenu', () => {
   test('renders icon and text with active color when isActive is true', () => {
-    render(<NavigationMenu isActive={true} />);
+    render(<NavigationMenu isActive={true} menuName="홈" iconName="home-smile" />);
 
     const icon = screen.getByRole('icon');
     const text = screen.getByRole('text');
@@ -19,12 +19,12 @@ describe('NavigationMenu', () => {
   });
 
   test('renders icon and text with inactive color when isActive is false', () => {
-    render(<NavigationMenu isActive={false} />);
+    render(<NavigationMenu isActive={false} menuName="홈" iconName="home-smile" />);
 
     const icon = screen.getByRole('icon');
     const text = screen.getByRole('text');
 
-    expect(icon.className).toContain('text-black01');
-    expect(text.className).toContain('text-black01');
+    expect(icon.className).toContain('text-grey04');
+    expect(text.className).toContain('text-grey04');
   });
 });

@@ -22,11 +22,15 @@ type Story = StoryObj<typeof NavigationMenu>;
 export const Active: Story = {
   args: {
     isActive: true,
+    menuName: '홈',
+    iconName: 'home-smile',
   },
 };
 
 export const Inactive: Story = {
   args: {
     isActive: false,
+    menuName: '홈',
+    iconName: 'home-smile',
   },
 };

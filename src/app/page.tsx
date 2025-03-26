@@ -1,11 +1,11 @@
 'use client';
 
-import NavigationMenu from '@/components/molecules/navigation-menu/NavigationMenu';
+import Navigation from '@/components/organisms/navigation/Navigation';
 
 export default function Page() {
   return (
     <div>
-      <NavigationMenu isActive />
+      <Navigation />
     </div>
   );
 }

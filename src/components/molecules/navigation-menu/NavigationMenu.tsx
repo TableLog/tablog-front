@@ -3,22 +3,22 @@ import React from 'react';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { Text } from '@/components/atoms/text/Text';
 
-interface INavigationMenu {
+interface INavigationMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   isActive?: boolean;
+  menuName: string;
+  iconName: string;
 }
 
-const NavigationMenu = ({ isActive }: INavigationMenu) => {
+const NavigationMenu = ({ isActive, menuName, iconName, ...rest }: INavigationMenuProps) => {
   return (
-    <div className="flex inline-flex flex-col items-center justify-center">
-      <BoxIcon
-        onClick={() => console.log('testing icon click event')}
-        name="home-smile"
-        color={isActive ? 'primary01' : 'black01'}
-        size={24}
-      />
+    <div
+      className="flex inline-flex cursor-pointer flex-col items-center justify-center gap-[4px]"
+      {...rest}
+    >
+      <BoxIcon name={iconName} color={isActive ? 'primary01' : 'grey04'} size={24} />
 
-      <Text fontSize={14} color={isActive ? 'primary01' : 'black01'}>
-        홈
+      <Text fontSize={14} color={isActive ? 'primary01' : 'grey04'}>
+        {menuName}
       </Text>
     </div>
   );

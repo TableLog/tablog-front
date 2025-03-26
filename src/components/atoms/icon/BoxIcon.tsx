@@ -40,6 +40,7 @@ export function BoxIcon({
 }: IBoxIconProps) {
   const isThemeColor = color && COLOR_MAP[color as Color];
   const colorClass = isThemeColor ? COLOR_MAP[color as Color] : undefined;
+  const staticClass = `cursor-pointer`;
 
   const iconClass = clsx(
     'bx',
@@ -50,6 +51,7 @@ export function BoxIcon({
     pull && `bx-pull-${pull}`,
     animation && [`bx-${animation}`, `bx-${animation}-hover`],
     colorClass,
+    staticClass,
     customClass,
   );
 
