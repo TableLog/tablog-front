@@ -8,7 +8,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: 1,
+        retry: 0,
         refetchInterval: 60 * 1000 * 180, // 3 hrs
         staleTime: Infinity,
         gcTime: Infinity,

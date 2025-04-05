@@ -1,4 +1,5 @@
 export const FONT_SIZE_MAP: Record<number, string> = {
+  0: 'inherit',
   12: 'text-xs',
   14: 'text-sm',
   16: 'text-base',
@@ -26,7 +27,7 @@ export const FONT_WEIGHT_MAP = {
   black: 'font-black',
 } as const;
 
-export const COLOR_MAP = {
+export const TEXT_COLOR_MAP = {
   primary01: 'text-primary01',
   primary02: 'text-primary02',
   primary03: 'text-primary03',

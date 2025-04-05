@@ -1,9 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { COLOR_MAP } from '@/styles/style-map';
+import { TEXT_COLOR_MAP } from '@/styles/style-map';
 
-type Color = keyof typeof COLOR_MAP;
+type Color = keyof typeof TEXT_COLOR_MAP;
 
 export interface IBoxIconProps {
   onClick?: () => void;
@@ -38,8 +38,8 @@ export function BoxIcon({
   class: customClass,
   ...rest
 }: IBoxIconProps) {
-  const isThemeColor = color && COLOR_MAP[color as Color];
-  const colorClass = isThemeColor ? COLOR_MAP[color as Color] : undefined;
+  const isThemeColor = color && TEXT_COLOR_MAP[color as Color];
+  const colorClass = isThemeColor ? TEXT_COLOR_MAP[color as Color] : undefined;
   const staticClass = `cursor-pointer`;
 
   const iconClass = clsx(

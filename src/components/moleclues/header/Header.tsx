@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import Title from '@/components/atoms/title/Title';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import Title from '@/components/atoms/title/Title';
 
 const Header = () => {
   const [isSearching, setIsSearching] = useState(false);

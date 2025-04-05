@@ -3,6 +3,40 @@
 
 @plugin "daisyui";
 
+@plugin "daisyui/theme" {
+  name: 'tablog';
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* --color-base-100: #5d5d5d; */
+  --color-base-200: #6d6d6d;
+  --color-base-300: #808080;
+  --color-base-400: #acacac;
+  --color-base-500: #bababa;
+  --color-base-600: #c6c6c6;
+  --color-base-700: #e8e8e8;
+  --color-base-800: #f5f5f5;
+  --color-base-000: #ffffff;
+  --color-base-content: #0e0e0e;
+  --color-primary: #d66060;
+  --color-primary-content: #ffffff;
+  --color-secondary: #e49898;
+  --color-secondary-content: #ffffff;
+  --color-accent: #d66060;
+  --color-accent-content: #ffffff;
+  --color-neutral: #acacac;
+  --color-neutral-content: #ffffff;
+  --color-info: #c6c6c6;
+  --color-info-content: #ffffff;
+  --color-success: oklch(65% 0.25 140);
+  --color-success-content: #ffffff;
+  --color-warning: #ffc60a;
+  --color-warning-content: #0e0e0e;
+  --color-error: #e73f3f;
+  --color-error-content: #ffffff;
+}
+
 @theme {
   /* font family */
   --font-pretendard: 'Pretendard', sans-serif;
@@ -39,6 +73,9 @@
   --font-weight-bold: 700;
   --font-weight-extraBold: 800;
   --font-weight-black: 900;
+
+  /* box shadow */
+  --shadow-3xl: 0 35px 35px rgba(0, 0, 0, 0.25);
 }
 
 @layer base {

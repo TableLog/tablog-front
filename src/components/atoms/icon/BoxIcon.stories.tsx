@@ -2,8 +2,6 @@ import type { Meta } from '@storybook/react';
 
 import { BoxIcon, IBoxIconProps } from '@/components/atoms/icon/BoxIcon';
 
-import Button from '../button/Button';
-
 const meta = {
   title: 'atoms/Icon',
   component: BoxIcon,

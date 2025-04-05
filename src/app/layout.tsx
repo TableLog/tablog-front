@@ -4,8 +4,9 @@ import type { Metadata } from 'next';
 import Header from '@/components/moleclues/header/Header';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
-import '@/styles/global.css';
 import { pretendard } from '../../public/fonts/pretendard';
+
+import '@/styles/global.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

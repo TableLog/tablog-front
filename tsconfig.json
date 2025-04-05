@@ -29,7 +29,7 @@
     ".next/types/**/*.ts",
     "src",
     ".storybook",
-    "src/**/*.stories.tsx",
+    "src/**/*.stories.tsx"
   ],
   "exclude": ["node_modules"]
 }

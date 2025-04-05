@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { COLOR_MAP, FONT_SIZE_MAP, FONT_WEIGHT_MAP } from '@/styles/style-map';
+import { FONT_SIZE_MAP, FONT_WEIGHT_MAP, TEXT_COLOR_MAP } from '@/styles/style-map';
 
 type FontWeight = keyof typeof FONT_WEIGHT_MAP;
-type Color = keyof typeof COLOR_MAP;
+type Color = keyof typeof TEXT_COLOR_MAP;
 type Size = keyof typeof FONT_SIZE_MAP;
 
 export interface ITextProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,15 +16,15 @@ export interface ITextProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Text({
   children,
-  fontSize = 14,
+  fontSize = 0,
   fontWeight = 'regular',
   color,
   className,
   ...rest
 }: ITextProps) {
-  const fontClass = FONT_SIZE_MAP[fontSize] || 'text-sm';
+  const fontClass = FONT_SIZE_MAP[fontSize];
   const weightClass = FONT_WEIGHT_MAP[fontWeight] || 'font-normal';
-  const colorClass = color ? COLOR_MAP[color] : undefined;
+  const colorClass = color ? TEXT_COLOR_MAP[color] : undefined;
   const lineHeightClass = 'leading-[1.5]';
 
   return (

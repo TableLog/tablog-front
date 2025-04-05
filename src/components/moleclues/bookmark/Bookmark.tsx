@@ -1,4 +1,4 @@
-import Icon from '@/components/atoms/icon/Icon';
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 
 interface BookmarkProps {
   isMarked: boolean;
@@ -6,8 +6,8 @@ interface BookmarkProps {
 const Bookmark = ({ isMarked }: BookmarkProps) => {
   return (
     <div className="absolute top-[20px] right-[24px]">
-      {isMarked && <Icon iconName="bx bxs-bookmark" />}
-      {!isMarked && <Icon iconName="bx bx-bookmark" />}
+      {isMarked && <BoxIcon name="bx bxs-bookmark" />}
+      {!isMarked && <BoxIcon name="bx bx-bookmark" />}
     </div>
   );
 };
