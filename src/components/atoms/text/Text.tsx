@@ -1,7 +1,7 @@
 import React from 'react';
-import clsx from 'clsx';
 
 import { FONT_SIZE_MAP, FONT_WEIGHT_MAP, TEXT_COLOR_MAP } from '@/styles/style-map';
+import { cn } from '@/utils/cn';
 
 type FontWeight = keyof typeof FONT_WEIGHT_MAP;
 type Color = keyof typeof TEXT_COLOR_MAP;
@@ -30,7 +30,7 @@ export function Text({
   return (
     <div
       role="text"
-      className={clsx(fontClass, weightClass, colorClass, lineHeightClass, className)}
+      className={cn(fontClass, weightClass, colorClass, lineHeightClass, className)}
       {...rest}
     >
       {children}

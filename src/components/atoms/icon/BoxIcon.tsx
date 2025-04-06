@@ -1,7 +1,7 @@
 import React from 'react';
-import clsx from 'clsx';
 
 import { TEXT_COLOR_MAP } from '@/styles/style-map';
+import { cn } from '@/utils/cn';
 
 type Color = keyof typeof TEXT_COLOR_MAP;
 
@@ -42,7 +42,7 @@ export function BoxIcon({
   const colorClass = isThemeColor ? TEXT_COLOR_MAP[color as Color] : undefined;
   const staticClass = `cursor-pointer`;
 
-  const iconClass = clsx(
+  const iconClass = cn(
     'bx',
     name && `bx-${name}`,
     type && `bxs-${name}`, // optional: if you want to reflect type: 'solid' → bxs-*, 'regular' → bx-*, 'logo' → bxl-*

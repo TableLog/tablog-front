@@ -26,3 +26,11 @@ export function hanldeApiError(err: unknown): never {
 
   throw err;
 }
+
+export function HandleOpenModal(modalId: string) {
+  const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+
+  if (modal) {
+    modal.showModal();
+  }
+}
