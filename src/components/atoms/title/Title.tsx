@@ -4,7 +4,7 @@ import { cn } from '@/utils/cn';
 
 interface ITitleProps {
   onClick: () => void;
-  className: string;
+  className?: string;
 }
 
 const Title = ({ onClick: onClick, className }: ITitleProps) => {

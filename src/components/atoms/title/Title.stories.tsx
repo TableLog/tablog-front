@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 
 import Title from './Title';
 
@@ -9,11 +10,12 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  render: () => (
+  render: (args) => (
     <div className="bg-primary01">
-      <Title />
+      <Title {...args} />
     </div>
   ),
+  args: { onClick: fn() },
 } satisfies Meta<typeof Title>;
 
 export default meta;
