@@ -2,32 +2,35 @@
 
 import { useState } from 'react';
 
-import Title from '@/components/atoms/title/Title';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import Title from '@/components/atoms/title/Title';
 
 const Header = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [isNotichecking, setIsNotichecking] = useState(false);
 
-  const onClickSearch = () => {
+  const onSearch = () => {
     setIsSearching(true);
     setIsNotichecking(false);
   };
 
-  const onClickNotification = () => {
+  const onCheckNotification = () => {
     setIsNotichecking(true);
     setIsSearching(false);
   };
 
+  const onToMain = () => {
+    setIsNotichecking(false);
+    setIsSearching(false);
+  };
+
   return (
-    <div className="bg-primary01 flex w-[375px] justify-between px-[20px] pt-[23.5px] pb-[12.5px]">
-      <Title />
+    <div className="bg-primary01 flex h-[60px] w-[375px] items-center justify-between px-[20px]">
+      <Title onClick={onToMain} className="cursor-pointer" />
       <div className="flex gap-[10px]">
-        {!isSearching && (
-          <BoxIcon name="search-alt" color="white01" size={24} onClick={onClickSearch} />
-        )}
+        {!isSearching && <BoxIcon name="search-alt" color="white01" size={24} onClick={onSearch} />}
         {!isNotichecking && (
-          <BoxIcon name="bell" color="white01" size={24} onClick={onClickNotification} />
+          <BoxIcon name="bell" color="white01" size={24} onClick={onCheckNotification} />
         )}
       </div>
     </div>
