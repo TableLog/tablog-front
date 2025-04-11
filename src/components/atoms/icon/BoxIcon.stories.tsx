@@ -9,11 +9,7 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  render: (args) => (
-    <div className="bg-primary01">
-      <BoxIcon {...args} />
-    </div>
-  ),
+  render: (args) => <BoxIcon {...args} />,
 } satisfies Meta<typeof BoxIcon>;
 
 export default meta;

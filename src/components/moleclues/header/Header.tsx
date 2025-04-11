@@ -20,8 +20,9 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-primary01 flex w-[375px] justify-between px-[20px] pt-[23.5px] pb-[12.5px]">
+    <header className="bg-primary01 flex justify-between px-[20px] pt-[23.5px] pb-[12.5px]">
       <Title />
+
       <div className="flex gap-[10px]">
         {!isSearching && (
           <BoxIcon name="search-alt" color="white01" size={24} onClick={onClickSearch} />
@@ -30,7 +31,7 @@ const Header = () => {
           <BoxIcon name="bell" color="white01" size={24} onClick={onClickNotification} />
         )}
       </div>
-    </div>
+    </header>
   );
 };
 

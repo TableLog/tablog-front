@@ -19,7 +19,7 @@ const Navigation = () => {
   }, []);
 
   return (
-    <div className="align-center flex h-[80px] max-h-[80px] w-full max-w-[450px] justify-between px-[20px]">
+    <nav className="align-center border-grey07 fixed bottom-0 box-border flex h-[72px] max-h-[80px] w-full max-w-[100svw] justify-between border-t-1 px-[20px]">
       {MENU_ARR.map((menu, i) => {
         return (
           <NavigationMenu
@@ -31,7 +31,7 @@ const Navigation = () => {
           />
         );
       })}
-    </div>
+    </nav>
   );
 };
 

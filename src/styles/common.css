@@ -1,0 +1,3 @@
+.transition-all-3 {
+  @apply transition-all duration-300;
+}

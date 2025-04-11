@@ -2,11 +2,13 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 import Header from '@/components/moleclues/header/Header';
+import Navigation from '@/components/organisms/navigation/Navigation';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
 import { pretendard } from '../../public/fonts/pretendard';
 
 import '@/styles/global.css';
+import '@/styles/common.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,10 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body>
+      <body className="max-w-[100svw] overflow-x-hidden">
         <Provider>
           <Header />
-          {children}
+
+          <main className="bg-primary01 w-full">
+            <div className="bg-white01 min-h-[calc(100svh-60px)] w-full rounded-tl-[20px] rounded-tr-[20px] px-[20px] pt-[16px] pb-[88px]">
+              {children}
+            </div>
+          </main>
+
+          <Navigation />
         </Provider>
       </body>
     </html>

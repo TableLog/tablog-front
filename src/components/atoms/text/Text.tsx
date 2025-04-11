@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FONT_SIZE_MAP, FONT_WEIGHT_MAP, TEXT_COLOR_MAP } from '@/styles/style-map';
+import { FONT_SIZE_MAP, FONT_WEIGHT_MAP, TEXT_COLOR_MAP } from '@/constants/map/style-map';
 import { cn } from '@/utils/cn';
 
 type FontWeight = keyof typeof FONT_WEIGHT_MAP;

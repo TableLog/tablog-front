@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TEXT_COLOR_MAP } from '@/styles/style-map';
+import { TEXT_COLOR_MAP } from '@/constants/map/style-map';
 import { cn } from '@/utils/cn';
 
 type Color = keyof typeof TEXT_COLOR_MAP;

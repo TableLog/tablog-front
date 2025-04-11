@@ -80,11 +80,31 @@
 
 @layer base {
   * {
-    box-sizing: content-box;
+    box-sizing: border-box;
     @apply font-pretendard;
+  }
+
+  body {
+    max-width: 100svw;
   }
 
   button {
     @apply cursor-pointer;
+  }
+
+  input:focus::placeholder {
+    transition: all 0.3s;
+    opacity: 0;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
+
+  .input:focus {
+    outline: 0;
   }
 }
