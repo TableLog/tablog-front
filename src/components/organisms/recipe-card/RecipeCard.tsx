@@ -1,7 +1,8 @@
-import Bookmark from '../../moleclues/bookmark/Bookmark';
-import RecipeInfo from '../../moleclues/recipe-info/RecipeInfo';
+import { cn } from '@/utils/cn';
 
-interface RecipeCardProps {
+import RecipeInfo from '../../molecules/recipe-info/RecipeInfo';
+
+interface IRecipeCardProps {
   recipeName: string;
   price: number;
   time: number;
@@ -10,16 +11,35 @@ interface RecipeCardProps {
   comments: number;
   author: string;
   marked: boolean;
-  recipeImg: string;
+  recipeImg?: string;
+  latest?: boolean;
 }
 
-const RecipeCard = ({ recipe }: { recipe: RecipeCardProps }) => {
+const RecipeCard = ({ recipe }: { recipe: IRecipeCardProps }) => {
+  //동적 스타일링
+  let bgImg = '';
+
+  if (recipe.recipeImg) {
+    bgImg = `url(${recipe.recipeImg})`;
+  } else {
+    bgImg = 'bg-grey04';
+  }
+
   return (
     <div
-      className={`relative h-[200px] w-[335px] rounded-[20px] bg-[url(${recipe.recipeImg})] flex items-end bg-cover`}
+      style={{ backgroundImage: recipe.recipeImg && bgImg }}
+      className={cn(
+        recipe.recipeImg || bgImg,
+        'relative flex h-[256px] w-[335px] flex-col rounded-[20px] bg-cover',
+      )}
     >
-      <Bookmark isMarked={recipe.marked} />
-      <div className="mx-[28px] mb-[20px] w-full backdrop-blur-sm">
+      <div className="flex-1/2"></div>
+      <div
+        className={cn(
+          'box-border flex-1/2 rounded-b-[20px] px-[16px] py-[10px] backdrop-blur-sm',
+          recipe.latest && 'm-[10px] rounded-[20px]',
+        )}
+      >
         <RecipeInfo
           recipeName={recipe.recipeName}
           price={recipe.price}
