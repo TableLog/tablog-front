@@ -92,7 +92,14 @@
     @apply cursor-pointer;
   }
 
+  .input:focus,
+  input:focus {
+    /* input outline 없애기 */
+    outline: 0;
+  }
+
   input:focus::placeholder {
+    /* input focus 할 때 placeholder 자연스럽게 fade out */
     transition: all 0.3s;
     opacity: 0;
   }
@@ -101,10 +108,7 @@
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
+    /* 크롬 파란색 배경 삭제 */
     -webkit-box-shadow: 0 0 0 30px white inset !important;
-  }
-
-  .input:focus {
-    outline: 0;
   }
 }

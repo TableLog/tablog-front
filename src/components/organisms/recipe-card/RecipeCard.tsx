@@ -1,5 +1,5 @@
-import Bookmark from '../../moleclues/bookmark/Bookmark';
-import RecipeInfo from '../../moleclues/recipe-info/RecipeInfo';
+import Bookmark from '../../molecules/bookmark/Bookmark';
+import RecipeInfo from '../../molecules/recipe-info/RecipeInfo';
 
 interface RecipeCardProps {
   recipeName: string;

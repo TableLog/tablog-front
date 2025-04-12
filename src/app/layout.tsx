@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 
-import Header from '@/components/moleclues/header/Header';
+import Header from '@/components/molecules/header/Header';
 import Navigation from '@/components/organisms/navigation/Navigation';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
