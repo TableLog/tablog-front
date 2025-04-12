@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { RECIPE_FILTER_LIST } from '@/constants/list.constants';
+import { RECIPE_FILTER_OPTIONS } from '@/constants/options.constants';
 
 import MiniSelectBox from './MiniSelectBox';
 
@@ -23,6 +23,6 @@ type Story = StoryObj<typeof meta>;
 
 export const EmailInput: Story = {
   args: {
-    list: RECIPE_FILTER_LIST,
+    list: RECIPE_FILTER_OPTIONS,
   },
 };

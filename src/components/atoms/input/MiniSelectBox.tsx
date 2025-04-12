@@ -47,15 +47,15 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list }) => {
 
       <div className="flex flex-col">
         {list
-          .filter((item) => item.id !== selected.id)
-          .map((item) => (
+          .filter((option) => option.id !== selected.id)
+          .map((option) => (
             <div
-              key={item.id}
+              key={option.id}
               className="flex h-8 cursor-pointer items-center px-2 hover:bg-gray-100"
-              onClick={() => handleSelect(item)}
+              onClick={() => handleSelect(option)}
             >
               <Text fontSize={14} color="grey01" className="leading-none">
-                {item.title}
+                {option.title}
               </Text>
             </div>
           ))}

@@ -59,15 +59,15 @@ const SelectBox = ({ category, list, isError, errorMessage }: ISelectBoxProps) =
           'dropdown-content bg-white01 border-grey07 w-full rounded-br-[10px] rounded-bl-[10px] border border-t-transparent px-2.5 py-1',
         )}
       >
-        {list.map((item) => {
+        {list.map((option) => {
           return (
             <li
-              key={item.id}
+              key={option.id}
               className="cursor-pointer p-1"
-              onClick={() => handleClickSetValue(item.title)}
+              onClick={() => handleClickSetValue(option.title)}
             >
-              <Text fontSize={14} color={value === item.title ? 'primary01' : 'grey02'}>
-                {item.title}
+              <Text fontSize={14} color={value === option.title ? 'primary01' : 'grey02'}>
+                {option.title}
               </Text>
             </li>
           );

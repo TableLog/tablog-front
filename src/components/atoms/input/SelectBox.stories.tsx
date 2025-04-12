@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { UNIT_LIST } from '@/constants/list.constants';
+import { UNIT_OPTIONS } from '@/constants/options.constants';
 import { UNIT_VALIDATION } from '@/constants/validation.constants';
 
 import SelectBox from './SelectBox';
@@ -25,14 +25,14 @@ type Story = StoryObj<typeof meta>;
 export const BasicSelectBox: Story = {
   args: {
     category: 'unit',
-    list: UNIT_LIST,
+    list: UNIT_OPTIONS,
   },
 };
 
 export const SelectBoxWithError: Story = {
   args: {
     category: 'unit',
-    list: UNIT_LIST,
+    list: UNIT_OPTIONS,
     isError: true,
     errorMessage: UNIT_VALIDATION,
   },

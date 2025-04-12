@@ -2,10 +2,11 @@
 
 import AutoComplete from '@/components/atoms/input/AutoComplete';
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
+import Range from '@/components/atoms/input/Range';
 import SelectBox from '@/components/atoms/input/SelectBox';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
-import { RECIPE_FILTER_LIST, UNIT_LIST } from '@/constants/list.constants';
+import { RECIPE_FILTER_OPTIONS, UNIT_OPTIONS } from '@/constants/options.constants';
 import { REPORT_CONTENT_VALIDATION } from '@/constants/validation.constants';
 
 export default function Page() {
@@ -24,9 +25,13 @@ export default function Page() {
 
       <TextArea category="reportContent" errorMessage={REPORT_CONTENT_VALIDATION} />
 
-      <SelectBox category="unit" list={UNIT_LIST} />
+      <SelectBox category="unit" list={UNIT_OPTIONS} />
 
-      <MiniSelectBox list={RECIPE_FILTER_LIST} />
+      <MiniSelectBox list={RECIPE_FILTER_OPTIONS} />
+
+      <Range type="price" />
+
+      <Range type="time" />
     </div>
   );
 }
