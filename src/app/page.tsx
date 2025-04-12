@@ -1,8 +1,11 @@
 'use client';
 
 import AutoComplete from '@/components/atoms/input/AutoComplete';
+import SelectBox from '@/components/atoms/input/SelectBox';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
+import { UNIT_LIST } from '@/constants/list.constants';
+import { REPORT_CONTENT_VALIDATION, UNIT_VALIDATION } from '@/constants/validation.constants';
 
 export default function Page() {
   const dummyArr = [
@@ -15,9 +18,11 @@ export default function Page() {
     <>
       <TextInput type="text" category="name" />
 
-      <AutoComplete list={dummyArr} />
+      <AutoComplete list={dummyArr} category="search" />
 
-      <TextArea category="reportContent" errorMessage="ddd" />
+      <TextArea category="reportContent" errorMessage={REPORT_CONTENT_VALIDATION} />
+
+      <SelectBox category="unit" list={UNIT_LIST} isError errorMessage={UNIT_VALIDATION} />
     </>
   );
 }

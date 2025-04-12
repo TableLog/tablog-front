@@ -2,15 +2,17 @@
 
 import React, { useRef, useState } from 'react';
 
+import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
 
 import { BoxIcon } from '../icon/BoxIcon';
 
 interface IAutoCompleteProps {
   list: Array<{ id: number; title: string }>;
+  category: keyof typeof LABEL_MAP;
 }
 
-const AutoComplete = ({ list }: IAutoCompleteProps) => {
+const AutoComplete = ({ list, category }: IAutoCompleteProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [value, setValue] = useState('');
@@ -36,7 +38,7 @@ const AutoComplete = ({ list }: IAutoCompleteProps) => {
           ref={inputRef}
           type="text"
           value={value}
-          placeholder="요리명 혹은 작성자명을 입력해주세요."
+          placeholder={PLACEHOLDER_MAP[category]}
           className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}

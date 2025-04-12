@@ -26,5 +26,6 @@ export const EmailInput: Story = {
       { id: 2, title: '재료 2' },
       { id: 3, title: '재료 3' },
     ],
+    category: 'search',
   },
 };

@@ -9,7 +9,7 @@ import Button from '../button/Button';
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
-interface ITextProps {
+interface ITextInputProps {
   category: keyof typeof LABEL_MAP;
   errorMessage?: string;
   isError?: boolean;
@@ -28,7 +28,7 @@ const TextInput = ({
   buttonText,
   buttonEvent,
   ...rest
-}: ITextProps) => {
+}: ITextInputProps) => {
   const borderClass = isError ? 'border-red01' : 'border-grey07';
 
   const [showPassword, setShowPassword] = useState(false);

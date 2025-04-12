@@ -8,6 +8,8 @@ export const LABEL_MAP = {
   stepTitle: '순서 제목',
   quantity: '용량',
   reportContent: '신고 사유',
+  unit: '단위',
+  search: '',
 } as const;
 
 export const PLACEHOLDER_MAP = {
@@ -20,4 +22,6 @@ export const PLACEHOLDER_MAP = {
   stepTitle: '순서 제목을 입력해주세요.',
   quantity: '용량을 입력해주세요.',
   reportContent: '신고 사유를 입력해주세요. (최대 300글자)',
+  unit: '단위를 입력해주세요.',
+  search: '요리명 혹은 작성자명을 입력해주세요.',
 } as const;
