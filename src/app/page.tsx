@@ -1,24 +1,33 @@
 'use client';
 
+import { useState } from 'react';
+
 import AutoComplete from '@/components/atoms/input/AutoComplete';
+import { Checkbox } from '@/components/atoms/input/Checkbox';
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
 import Range from '@/components/atoms/input/Range';
 import SelectBox from '@/components/atoms/input/SelectBox';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
-import { RECIPE_FILTER_OPTIONS, UNIT_OPTIONS } from '@/constants/options.constants';
+import CheckAll from '@/components/molecules/input/CheckAll';
+import { RECIPE_FILTER_OPTIONS, TERMS_OPTIONS, UNIT_OPTIONS } from '@/constants/options.constants';
 import { REPORT_CONTENT_VALIDATION } from '@/constants/validation.constants';
 
 export default function Page() {
+  const [checkValue, setCheckValue] = useState(false);
+
   const dummyArr = [
     { id: 1, title: '재료 1' },
     { id: 2, title: '재료 2' },
     { id: 3, title: '재료 3' },
   ];
 
-  // 사용
   return (
     <div className="flex flex-col gap-8">
+      <Checkbox label="유료" value={checkValue} onChange={(e) => setCheckValue(e.target.checked)} />
+
+      <CheckAll options={TERMS_OPTIONS} />
+
       <TextInput type="text" category="name" />
 
       <AutoComplete list={dummyArr} category="search" />

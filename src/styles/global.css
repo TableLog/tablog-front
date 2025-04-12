@@ -84,7 +84,8 @@
     @apply font-pretendard;
   }
 
-  *:focus {
+  *:focus,
+  *:checked {
     @apply outline-none;
   }
 

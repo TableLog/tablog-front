@@ -43,7 +43,7 @@ export function BoxIcon({
   const staticClass = `cursor-pointer`;
 
   const iconClass = cn(
-    'bx',
+    'bx transition-all-3',
     name && `bx-${name}`,
     type && `bxs-${name}`, // optional: if you want to reflect type: 'solid' → bxs-*, 'regular' → bx-*, 'logo' → bxl-*
     rotate && `bx-rotate-${rotate}`,

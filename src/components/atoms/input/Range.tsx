@@ -19,8 +19,14 @@ const Range = ({ type }: IRange) => {
   };
 
   return (
-    <div>
+    <fieldset>
       <div className="w-full">
+        <legend className="fieldset-legend">
+          <Text fontSize={14} fontWeight="semiBold">
+            {isPrice ? '요리 가격(원)' : '요리 시간'}
+          </Text>
+        </legend>
+
         <input
           type="range"
           min={0}
@@ -51,7 +57,7 @@ const Range = ({ type }: IRange) => {
           })}
         </ul>
       </div>
-    </div>
+    </fieldset>
   );
 };
 
