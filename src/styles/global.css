@@ -84,6 +84,10 @@
     @apply font-pretendard;
   }
 
+  *:focus {
+    @apply outline-none;
+  }
+
   body {
     max-width: 100svw;
   }
@@ -92,13 +96,8 @@
     @apply cursor-pointer;
   }
 
-  .input:focus,
-  input:focus {
-    /* input outline 없애기 */
-    outline: 0;
-  }
-
-  input:focus::placeholder {
+  input:focus::placeholder,
+  textarea:focus::placeholder {
     /* input focus 할 때 placeholder 자연스럽게 fade out */
     transition: all 0.3s;
     opacity: 0;

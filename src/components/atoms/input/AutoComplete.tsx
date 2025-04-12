@@ -37,7 +37,7 @@ const AutoComplete = ({ list }: IAutoCompleteProps) => {
           type="text"
           value={value}
           placeholder="요리명 혹은 작성자명을 입력해주세요."
-          className="flex-1 border-none bg-transparent text-sm focus:outline-none"
+          className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
           onChange={(e) => setValue(e.target.value)}
@@ -49,7 +49,7 @@ const AutoComplete = ({ list }: IAutoCompleteProps) => {
       <ul
         tabIndex={0}
         className={cn(
-          'dropdown-content menu border-b-grey07 border-l-grey07 border-r-grey07 absolute top-[32px] w-full rounded-br-2xl rounded-bl-2xl border border-t-transparent bg-white px-4',
+          'dropdown-content menu border-grey07 bg-white01 absolute top-[32px] w-full rounded-br-2xl rounded-bl-2xl border px-4',
           !isOpen && 'hidden',
         )}
       >
@@ -65,7 +65,7 @@ const AutoComplete = ({ list }: IAutoCompleteProps) => {
                 key={item.id}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelect(item.title)}
-                className="py-1"
+                className="cursor-pointer py-1"
               >
                 {item.title}
               </li>

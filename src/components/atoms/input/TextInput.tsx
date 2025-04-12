@@ -56,19 +56,17 @@ const TextInput = ({
             'font-regular',
             'placeholder-grey02',
             'focus-within:placeholder-opacity-0',
+            'focus:border-b-black01',
             'focus-within:border-b-black01',
+            'focus-outline-none',
             'transition-all-3',
             'rounded-none',
             'border-t-0',
             'border-r-0',
             'border-b-1',
             'border-l-0',
-            '!border-grey07',
             'p-0',
             'shadow-none',
-            'focus-within:outline-none',
-            'focus-within:ring-0',
-            'focus-within:ring-offset-0',
           )}
         >
           <input

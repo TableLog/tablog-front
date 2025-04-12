@@ -1,6 +1,8 @@
 'use client';
 
 import AutoComplete from '@/components/atoms/input/AutoComplete';
+import TextArea from '@/components/atoms/input/TextArea';
+import TextInput from '@/components/atoms/input/TextInput';
 
 export default function Page() {
   const dummyArr = [
@@ -11,7 +13,11 @@ export default function Page() {
 
   return (
     <>
+      <TextInput type="text" category="name" />
+
       <AutoComplete list={dummyArr} />
+
+      <TextArea category="reportContent" errorMessage="ddd" />
     </>
   );
 }
