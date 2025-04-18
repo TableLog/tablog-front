@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 import Toast from '../toast/Toast';
 
@@ -95,10 +96,14 @@ const RecipeImageInput = () => {
                         ref={imgRef}
                         multiple
                       />
-                      <div className="flex h-full w-full flex-col items-center justify-center text-center text-sm text-gray-500">
-                        <Text>이미지 업로드</Text>
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-gray-500">
+                        <BoxIcon name="image-add" size={32} color="grey01" />
 
-                        <Text>(최대 3장)</Text>
+                        <div className="flex flex-col">
+                          <Text>이미지 업로드</Text>
+
+                          <Text>(최대 3장)</Text>
+                        </div>
                       </div>
                     </label>
                   </div>
