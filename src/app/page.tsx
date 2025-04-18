@@ -7,6 +7,7 @@ import AutoComplete from '@/components/atoms/input/AutoComplete';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
 import Range from '@/components/atoms/input/Range';
+import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import SelectBox from '@/components/atoms/input/SelectBox';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
@@ -27,6 +28,8 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-8">
+      <RecipeImageInput />
+
       <ToggleButton title="유료 레시피로 등록" value={toggleValue} setValue={setToggleValue} />
 
       <Checkbox label="유료" value={checkValue} onChange={(e) => setCheckValue(e.target.checked)} />

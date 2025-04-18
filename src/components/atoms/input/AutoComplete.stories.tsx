@@ -10,7 +10,7 @@ const meta = {
   },
   tags: ['autodocs'],
   render: (args) => (
-    <div className="w-[420px]">
+    <div className="h-[200px] w-[420px]">
       <AutoComplete {...args} />
     </div>
   ),

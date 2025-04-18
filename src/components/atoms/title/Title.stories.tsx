@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import Title from './Title';
 
 const meta = {
-  title: 'atoms/Title',
+  title: 'Atoms/Title',
   component: Title,
   parameters: {
     layout: 'centered',

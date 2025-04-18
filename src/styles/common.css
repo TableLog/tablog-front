@@ -9,3 +9,11 @@
 .focus-outline-none {
   @apply focus-within:ring-0 focus-within:ring-offset-0 focus-within:outline-none focus:outline-none;
 }
+
+.image-figure {
+  @apply relative overflow-hidden;
+}
+
+.image-cover {
+  @apply absolute inset-[0px] h-full w-full object-cover;
+}
