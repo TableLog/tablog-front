@@ -18,7 +18,7 @@ export function Text({
   children,
   fontSize = 0,
   fontWeight = 'regular',
-  color,
+  color = 'black01',
   className,
   ...rest
 }: ITextProps) {

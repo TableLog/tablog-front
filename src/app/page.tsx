@@ -12,6 +12,7 @@ import SelectBox from '@/components/atoms/input/SelectBox';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import CheckAll from '@/components/molecules/input/CheckAll';
+import StarRate from '@/components/molecules/star-rate/StarRate';
 import { RECIPE_FILTER_OPTIONS, TERMS_OPTIONS, UNIT_OPTIONS } from '@/constants/options.constants';
 import { REPORT_CONTENT_VALIDATION } from '@/constants/validation.constants';
 
@@ -28,6 +29,8 @@ export default function Page() {
 
   return (
     <div className="flex flex-col gap-8">
+      <StarRate />
+
       <RecipeImageInput />
 
       <ToggleButton title="유료 레시피로 등록" value={toggleValue} setValue={setToggleValue} />
