@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { isAxiosError } from 'axios';
 
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
@@ -33,4 +34,24 @@ export function HandleOpenModal(modalId: string) {
   if (modal) {
     modal.showModal();
   }
+}
+
+// 모달 등 해당 컨텐츠 밖 클릭시 닫기 이벤트
+export function useClickOutsideClose(
+  ref: React.RefObject<HTMLElement | null>,
+  closeEvent: () => void,
+) {
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        closeEvent();
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [closeEvent, ref]);
 }
