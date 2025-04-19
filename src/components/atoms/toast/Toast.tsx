@@ -31,8 +31,13 @@ const Toast = ({ type, message, clearErrorMessage }: IToastProps) => {
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 클린업
   }, [clearErrorMessage]);
 
-  const typeClass = `alert-${type}`;
   const opacityClass = visible ? 'opacity-100' : 'opacity-0';
+  const backgroundClass = {
+    success: 'bg-primary01 text-white01',
+    info: 'bg-grey07',
+    warning: 'bg-yellow01',
+    error: 'bg-red01 text-white01',
+  }[type];
 
   return (
     <div
@@ -41,7 +46,7 @@ const Toast = ({ type, message, clearErrorMessage }: IToastProps) => {
         'fixed top-1/2 left-1/2 z-50 w-[calc(100%-40px)] -translate-1/2 break-keep transition-opacity duration-1000',
       )}
     >
-      <div className={cn(typeClass, 'alert justify-center')}>
+      <div className={cn(backgroundClass, `alert justify-center border-0`)}>
         <Text fontSize={12} className="text-center">
           {message}
         </Text>
