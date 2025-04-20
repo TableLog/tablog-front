@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Bookmark from './Bookmark';
 
 const meta = {
-  title: 'molecules/bookmark',
+  title: 'molecules/Bookmark',
   component: Bookmark,
   parameters: {
     layout: 'centered',

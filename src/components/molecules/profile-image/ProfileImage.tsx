@@ -16,7 +16,7 @@ export default function ProfileImage({ url }: IProfileImage) {
       <div
         className={`h-full w-full content-center text-center ${url ? 'opacity-0' : 'opacity-100'} hover:opacity-100`}
       >
-        <BoxIcon name="image" class={cn('text-white01')} size={30} />
+        <BoxIcon name="image" color="white01" size={30} />
       </div>
     </div>
   );

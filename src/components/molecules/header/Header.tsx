@@ -4,28 +4,40 @@ import { useState } from 'react';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import Title from '@/components/atoms/title/Title';
+import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
+import Notification from '@/components/templates/notification/Notification';
+import Search from '@/components/templates/search/Search';
 
 const Header = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [isNotichecking, setIsNotichecking] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const getContent = () => {
+    if (isSearching) return <Search />;
+    if (isNotichecking) return <Notification />;
+    return <div />;
+  };
 
   const onSearch = () => {
     setIsSearching(true);
     setIsNotichecking(false);
+    setIsOpen(true);
   };
 
   const onCheckNotification = () => {
     setIsNotichecking(true);
     setIsSearching(false);
+    setIsOpen(true);
   };
 
   const onToMain = () => {
     setIsNotichecking(false);
     setIsSearching(false);
+    setIsOpen(false);
   };
 
   return (
-    <header className="bg-primary01 flex h-[60px] w-full items-center justify-between px-[20px]">
+    <div className="bg-primary01 flex h-[60px] w-[375px] items-center justify-between px-[20px] select-none">
       <Title onClick={onToMain} className="cursor-pointer" />
 
       <div className="flex gap-[10px]">
@@ -35,7 +47,10 @@ const Header = () => {
           <BoxIcon name="bell" color="white01" size={24} onClick={onCheckNotification} />
         )}
       </div>
-    </header>
+      <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} hasBackdrop={false}>
+        {getContent()}
+      </BottomSheet>
+    </div>
   );
 };
 
