@@ -15,14 +15,7 @@ interface IRecipeCardProps {
 }
 
 const RecipeCard = ({ recipe }: { recipe: IRecipeCardProps }) => {
-  //동적 스타일링
-  let bgImg = '';
-
-  if (recipe.recipeImg) {
-    bgImg = `url(${recipe.recipeImg})`;
-  } else {
-    bgImg = 'bg-grey04';
-  }
+  const bgImg = recipe.recipeImg ? `url(${recipe.recipeImg})` : 'bg-grey04';
 
   return (
     <div
