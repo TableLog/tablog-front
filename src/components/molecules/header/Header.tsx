@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import Title from '@/components/atoms/title/Title';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
-import Notification from '@/components/templates/notification/Notification';
-import Search from '@/components/templates/search/Search';
+import Notification from '@/components/pages/Notification';
+import Search from '@/components/pages/Search';
 
 const Header = () => {
   const [isSearching, setIsSearching] = useState(false);
