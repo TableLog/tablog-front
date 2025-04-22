@@ -1,65 +1,88 @@
-import { useCallback, useEffect } from 'react';
+// components/BottomSheet.tsx
+'use client';
+
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer';
 
-type Props = {
+import Backdrop from '@/components/atoms/backdrop/Backdrop';
+
+interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  showHandlebar?: boolean;
+  showBackdrop?: boolean;
+  initialHeight?: 'half' | 'header';
   children: React.ReactNode;
-  hasBackdrop?: boolean;
-  hasHandleBar?: boolean;
-};
+}
 
 export default function BottomSheet({
   isOpen,
   onClose,
+  showHandlebar = true,
+  showBackdrop = true,
+  initialHeight = 'half',
   children,
-  hasBackdrop = true,
-  hasHandleBar,
-}: Props) {
-  const handleEsc = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    },
-    [onClose],
-  );
+}: BottomSheetProps) {
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
-    document.addEventListener('keydown', handleEsc);
-    return () => document.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+    return () => {
+      setIsClosing(false);
+    };
+  }, [isOpen]);
 
-  return createPortal(
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          {hasBackdrop && (
-            <motion.div
-              className="bg-black01/40 fixed inset-0 z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={onClose}
-            />
-          )}
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) setIsClosing(true);
+  };
 
-          {/* BottomSheet */}
+  return isOpen
+    ? createPortal(
+        <AnimatePresence>
           <motion.div
-            className="bg-white01 fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl p-4"
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            className={clsx('fixed inset-0 z-50 flex items-end justify-center')}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={showBackdrop ? handleBackdropClick : undefined}
           >
-            {/* Handlebar */}
-            {hasHandleBar && <div className="bg-grey01 mx-auto mb-4 h-1.5 w-12 rounded-full" />}
+            {/* Backdrop */}
+            {showBackdrop && <Backdrop onClick={handleBackdropClick} />}
 
-            {children}
+            {/* Bottom Sheet */}
+            <motion.div
+              className={clsx(
+                'bg-white01 relative w-full rounded-t-2xl shadow-lg',
+                '',
+                initialHeight === 'half' ? 'h-1/3' : 'h-2/3',
+              )}
+              initial={{ y: '100%' }}
+              animate={{ y: isClosing ? '100%' : 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              drag={showHandlebar ? 'y' : false}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              onDragEnd={(e, info) => {
+                if (info.point.y > 100) {
+                  setIsClosing(true);
+                }
+              }}
+              onAnimationComplete={() => {
+                if (isClosing) onClose();
+              }}
+            >
+              {/* Handlebar */}
+              {showHandlebar && (
+                <div className="flex justify-center py-2">
+                  <div className="bg-grey01 h-1.5 w-12 rounded-full" />
+                </div>
+              )}
+              {children}
+            </motion.div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>,
-    document.body,
-  );
+        </AnimatePresence>,
+        document.body,
+      )
+    : null;
 }

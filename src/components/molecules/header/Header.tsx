@@ -47,7 +47,12 @@ const Header = () => {
           <BoxIcon name="bell" color="white01" size={24} onClick={onCheckNotification} />
         )}
       </div>
-      <BottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)} hasBackdrop={false}>
+      <BottomSheet
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        showBackdrop={false}
+        showHandlebar={false}
+      >
         {getContent()}
       </BottomSheet>
     </div>

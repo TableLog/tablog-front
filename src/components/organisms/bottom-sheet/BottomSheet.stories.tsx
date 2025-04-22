@@ -6,7 +6,7 @@ import BottomSheet from './BottomSheet';
 const meta: Meta<typeof BottomSheet> = {
   title: 'organisms/BottomSheet',
   component: BottomSheet,
-  // 👇 render에서 부모 상태를 직접 제어
+  tags: ['autodocs'],
   render: (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isOpen, setIsOpen] = useState(false);
@@ -14,9 +14,9 @@ const meta: Meta<typeof BottomSheet> = {
     return (
       <div>
         <button onClick={() => setIsOpen(true)}>Open BottomSheet</button>
-
         <BottomSheet {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div className="text-center">Hello from BottomSheet 👋</div>
+          <div></div>
         </BottomSheet>
       </div>
     );
@@ -26,7 +26,23 @@ const meta: Meta<typeof BottomSheet> = {
 export default meta;
 
 export const Default = {
+  args: {},
+};
+
+export const NoneBackdrop = {
   args: {
-    hasBackdrop: true,
+    showBackdrop: false,
+  },
+};
+
+export const NoneHandleBar = {
+  args: {
+    showHandlebar: false,
+  },
+};
+
+export const initialHeight = {
+  args: {
+    initialHeight: 'header',
   },
 };
