@@ -29,20 +29,14 @@ export const Default = {
   args: {},
 };
 
-export const NoneBackdrop = {
+export const NoBackdrop = {
   args: {
     showBackdrop: false,
   },
 };
 
-export const NoneHandleBar = {
+export const NoHandleBar = {
   args: {
     showHandlebar: false,
-  },
-};
-
-export const initialHeight = {
-  args: {
-    initialHeight: 'header',
   },
 };

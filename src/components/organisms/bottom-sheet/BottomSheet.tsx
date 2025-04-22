@@ -13,7 +13,6 @@ interface BottomSheetProps {
   onClose: () => void;
   showHandlebar?: boolean;
   showBackdrop?: boolean;
-  initialHeight?: 'half' | 'header';
   children: React.ReactNode;
 }
 
@@ -22,7 +21,6 @@ export default function BottomSheet({
   onClose,
   showHandlebar = true,
   showBackdrop = true,
-  initialHeight = 'half',
   children,
 }: BottomSheetProps) {
   const [isClosing, setIsClosing] = useState(false);
@@ -40,11 +38,11 @@ export default function BottomSheet({
   return isOpen
     ? createPortal(
         <AnimatePresence>
-          <motion.div
-            className={clsx('fixed inset-0 z-50 flex items-end justify-center')}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
+            className={clsx(
+              'fixed z-50 flex items-end justify-center',
+              showBackdrop ? 'inset-0' : 'top-[60px] right-0 bottom-0 left-0',
+            )}
             onClick={showBackdrop ? handleBackdropClick : undefined}
           >
             {/* Backdrop */}
@@ -53,15 +51,16 @@ export default function BottomSheet({
             {/* Bottom Sheet */}
             <motion.div
               className={clsx(
-                'bg-white01 relative w-full rounded-t-2xl shadow-lg',
-                '',
-                initialHeight === 'half' ? 'h-1/3' : 'h-2/3',
+                'bg-white01 pointer-events-auto relative w-full rounded-tl-[20px] rounded-tr-[20px] shadow-lg',
+                showBackdrop ? 'h-1/2' : 'h-full',
               )}
               initial={{ y: '100%' }}
               animate={{ y: isClosing ? '100%' : 0 }}
               exit={{ y: '100%' }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              drag={showHandlebar ? 'y' : false}
+              transition={
+                showHandlebar ? { type: 'spring', stiffness: 300, damping: 30 } : { duration: 0 }
+              }
+              drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
               onDragEnd={(e, info) => {
                 if (info.point.y > 100) {
@@ -72,15 +71,14 @@ export default function BottomSheet({
                 if (isClosing) onClose();
               }}
             >
-              {/* Handlebar */}
               {showHandlebar && (
                 <div className="flex justify-center py-2">
-                  <div className="bg-grey01 h-1.5 w-12 rounded-full" />
+                  <div className={clsx('bg-grey01 h-1.5 w-12 rounded-full')} />
                 </div>
               )}
               {children}
             </motion.div>
-          </motion.div>
+          </div>
         </AnimatePresence>,
         document.body,
       )
