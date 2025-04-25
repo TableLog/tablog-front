@@ -3,6 +3,13 @@
 @import 'swiper/css';
 @import 'swiper/css/pagination';
 @plugin 'daisyui';
+@font-face {
+  font-family: 'Gyeonggi_Title_Medium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Title_Medium.woff')
+    format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
 
 @plugin "daisyui/theme" {
   name: 'tablog';
@@ -41,6 +48,7 @@
 @theme {
   /* font family */
   --font-pretendard: 'Pretendard', sans-serif;
+  --font-gyeonggi: 'Gyeonggi_Title_Medium', sans-serif;
 
   /* color */
   --color-*: initial;
@@ -112,5 +120,18 @@
   input:-webkit-autofill:active {
     /* 크롬 파란색 배경 삭제 */
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
+}
+
+/* daisy UI 스타일 전역 설정 */
+@layer customDaisyUi {
+  .divider:not(.divider-horizontal)::before,
+  .divider:not(.divider-horizontal)::after {
+    height: 1px !important;
+  }
+
+  .divider::before,
+  .divider::after {
+    background-color: #e8e8e8;
   }
 }

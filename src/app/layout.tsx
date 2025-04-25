@@ -1,8 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
 
-import Header from '@/components/molecules/header/Header';
-import Navigation from '@/components/organisms/navigation/Navigation';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
 import { pretendard } from '../../public/fonts/pretendard';
@@ -21,18 +19,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.variable}`}>
+    <html lang="ko" className={`${pretendard.variable}`} suppressHydrationWarning={true}>
       <body className="max-w-[100svw] overflow-x-hidden">
         <Provider>
-          <Header />
-
-          <main className="bg-primary01 w-full">
-            <div className="bg-white01 min-h-[calc(100svh-60px)] w-full rounded-tl-[20px] rounded-tr-[20px] px-[20px] pt-[16px] pb-[88px]">
-              {children}
-            </div>
-          </main>
-
-          <Navigation />
+          <div>{children}</div>
         </Provider>
       </body>
     </html>

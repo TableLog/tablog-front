@@ -15,7 +15,7 @@ interface ICheckboxPros {
 const Checkbox = ({ label, value, onChange }: ICheckboxPros) => {
   return (
     <div>
-      <label className="fieldset-label">
+      <label className="fieldset-label inline-flex">
         <input
           checked={value}
           onChange={onChange}
