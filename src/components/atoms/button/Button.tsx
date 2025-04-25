@@ -2,14 +2,6 @@ import React from 'react';
 
 import { cn } from '@/utils/cn';
 
-interface IButtonProps {
-  onClick?: () => void;
-  size?: 'mini' | 'small' | 'medium' | 'large';
-  buttonColor?: 'primary' | 'grey04' | 'grey06' | 'white';
-  full?: boolean;
-  children: React.ReactNode;
-}
-
 const sizeClasses = {
   mini: 'h-6 text-14', // height: 24px
   small: 'h-[30px] text-14', // height: 30px
@@ -24,10 +16,19 @@ const colorClasses = {
   white: 'bg-[var(--color-base-000)] text-black',
 };
 
+interface IButtonProps {
+  onClick?: () => void;
+  size?: 'mini' | 'small' | 'medium' | 'large';
+  buttonColor?: 'primary' | 'grey04' | 'grey06' | 'white';
+  full?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  children: React.ReactNode;
+}
 export default function Button({
   size = 'large',
   buttonColor = 'primary',
   full,
+  type = 'button',
   children,
   ...rest
 }: IButtonProps) {
@@ -37,6 +38,7 @@ export default function Button({
     <button
       {...rest}
       role="button-component"
+      type={type}
       className={cn(
         'btn rounded-full border-none px-4 font-medium shadow-none',
         sizeClasses[size],

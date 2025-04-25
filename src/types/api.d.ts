@@ -6,3 +6,13 @@ export interface IApiErrorResponse {
 export interface IRecipeResponse {
   recipe_id: number;
 }
+
+export type RegisterFormValues = {
+  email: string;
+  password: string;
+};
+
+export type LoginFormValues = {
+  email: string;
+  password: string;
+};

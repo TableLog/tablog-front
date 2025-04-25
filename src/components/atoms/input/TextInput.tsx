@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
@@ -9,7 +10,7 @@ import Button from '../button/Button';
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
-interface ITextInputProps {
+interface ITextInputProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
   errorMessage?: string;
   isError?: boolean;
@@ -19,16 +20,18 @@ interface ITextInputProps {
   disabled?: boolean;
   buttonEvent?: () => void;
   value?: string | '';
+  register: UseFormRegister<T>;
 }
-const TextInput = ({
+const TextInput = <T extends FieldValues>({
   type = 'text',
   isError,
   category,
   errorMessage,
   buttonText,
   buttonEvent,
+  register,
   ...rest
-}: ITextInputProps) => {
+}: ITextInputProps<T>) => {
   const borderClass = isError ? 'border-red01' : 'border-grey07';
 
   const [showPassword, setShowPassword] = useState(false);
@@ -74,6 +77,7 @@ const TextInput = ({
             type={showPassword ? 'text' : type}
             className={cn(rest.disabled ? 'bg-grey08' : 'bg-transparent')}
             placeholder={PLACEHOLDER_MAP[category]}
+            {...register(category as Path<T>)}
             {...rest}
           />
 
@@ -89,7 +93,7 @@ const TextInput = ({
 
         {buttonText && (
           <Button size="small" onClick={buttonEvent}>
-            <Text>{buttonText}</Text>
+            <Text color="white01">{buttonText}</Text>
           </Button>
         )}
       </div>

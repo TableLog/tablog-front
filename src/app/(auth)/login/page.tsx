@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -8,9 +9,12 @@ import Button from '@/components/atoms/button/Button';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
+import { LoginFormValues } from '@/types/api';
 import { cn } from '@/utils/cn';
 
 const Login = () => {
+  const { register } = useForm<LoginFormValues>();
+
   const [rememberEmail, setRememberEmail] = useState(false);
 
   const snsLoginButtonList = [
@@ -29,9 +33,9 @@ const Login = () => {
       <div className="mb-[120px]">
         <form className="mt-[64px] mb-4">
           <section className="mb-5">
-            <TextInput type="email" category="email" />
+            <TextInput type="email" category="email" register={register} />
 
-            <TextInput type="password" category="password" />
+            <TextInput type="password" category="password" register={register} />
           </section>
 
           <div className="mb-3">
