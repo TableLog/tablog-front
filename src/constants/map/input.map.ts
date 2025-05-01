@@ -1,9 +1,9 @@
 export const LABEL_MAP = {
-  username: '이름',
+  userName: '이름',
   email: '이메일',
   birthday: '생년월일',
   password: '비밀번호',
-  passwordConfirm: '비밀번호 확인',
+  confirmPassword: '비밀번호 확인',
   nickname: '닉네임',
   recipeName: '요리명',
   stepTitle: '순서 제목',
@@ -14,11 +14,11 @@ export const LABEL_MAP = {
 } as const;
 
 export const PLACEHOLDER_MAP = {
-  username: '이름을 입력해주세요.',
+  userName: '이름을 입력해주세요.',
   email: '이메일을 입력해주세요.',
   birthday: '생년월일을 입력해주세요. (2000-01-01)',
   password: '비밀번호를 입력해주세요.',
-  passwordConfirm: '비밀번호를 한 번더 입력해주세요.',
+  confirmPassword: '비밀번호를 한 번더 입력해주세요.',
   nickname: '닉네임을 입력해주세요. (최대 10글자)',
   recipeName: '요리명을 입력해주세요.',
   stepTitle: '순서 제목을 입력해주세요.',

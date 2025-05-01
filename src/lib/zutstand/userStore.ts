@@ -2,15 +2,22 @@
 // store의 타입을 정의해준다.
 import { create } from 'zustand/react';
 
-interface Store {
+interface userIStore {
   isLoggedIn: boolean;
   setIsLoggedIn: (newStatus: boolean) => void;
 }
 
-// store를 create
-const useUserStore = create<Store>((set) => ({
+interface toastIStore {
+  isRegisterSuccess: boolean;
+  setIsRegisterSuccess: (newStatus: boolean) => void;
+}
+
+export const useUserStore = create<userIStore>((set) => ({
   isLoggedIn: false,
   setIsLoggedIn: (newStatus: boolean) => set(() => ({ isLoggedIn: newStatus })),
 }));
 
-export default useUserStore;
+export const useToastStore = create<toastIStore>((set) => ({
+  isRegisterSuccess: false,
+  setIsRegisterSuccess: (newStatus: boolean) => set(() => ({ isRegisterSuccess: newStatus })),
+}));

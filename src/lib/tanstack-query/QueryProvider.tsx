@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
@@ -9,7 +10,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
     defaultOptions: {
       queries: {
         retry: 0,
-        refetchInterval: 60 * 1000 * 180, // 3 hrs
+        refetchInterval: 360 * 1000 * 3, // 3 hrs
         staleTime: Infinity,
         gcTime: Infinity,
         placeholderData: keepPreviousData,

@@ -71,6 +71,7 @@
   --color-grey08: #f5f5f5;
   --color-red01: #e73f3f;
   --color-yellow01: #ffc60a;
+  --color-green01: #328e6e;
 
   /* font weight */
   --font-weight-thin: 100;
@@ -117,9 +118,10 @@
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
+  input:-webkit-autofill:active,
+  input:-webkit-autofill:not(:disabled) {
     /* 크롬 파란색 배경 삭제 */
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset;
   }
 }
 
@@ -134,4 +136,24 @@
   .divider::after {
     background-color: #e8e8e8;
   }
+
+  input:disabled,
+  .input:has(> input[disabled]),
+  .input:is(:disabled, [disabled]) {
+    -webkit-box-shadow: 0 0 0 30px #f5f5f5 inset;
+    background-color: #f5f5f5;
+    border-color: #e8e8e8;
+  }
+
+  .btn:is(:disabled, [disabled]) {
+    background-color: #acacac;
+  }
+}
+
+.custom-toast {
+  @apply text-grey01 mt-4 min-h-8 w-[calc(100%-40px)] items-start rounded-[10px] p-2.5 text-sm break-keep shadow-md;
+}
+
+.custom-toast .Toastify__toast-icon {
+  @apply mr-1.5;
 }

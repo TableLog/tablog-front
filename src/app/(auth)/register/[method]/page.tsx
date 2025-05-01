@@ -10,11 +10,10 @@ import RegisterForm from './@form/page';
 
 const Register = () => {
   const params = useParams();
+  const registerMethod = params.method as string;
 
   const [imageSrc, setImageSrc] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
-
-  const registerMethod = params.method as string;
 
   const pageTitle = useMemo(() => {
     if (registerMethod === 'email') {

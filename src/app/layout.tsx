@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 
+import Toast from '@/components/atoms/toast/Toast';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
 import { pretendard } from '../../public/fonts/pretendard';
@@ -19,9 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.variable}`} suppressHydrationWarning={true}>
-      <body className="max-w-[100svw] overflow-x-hidden">
+    <html lang="ko" className={`${pretendard.variable}`} suppressHydrationWarning>
+      <body className="max-w-[100svw] overflow-x-hidden" suppressHydrationWarning>
         <Provider>
+          <Toast />
+
           <div>{children}</div>
         </Provider>
       </body>

@@ -22,6 +22,7 @@ interface IButtonProps {
   buttonColor?: 'primary' | 'grey04' | 'grey06' | 'white';
   full?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
   children: React.ReactNode;
 }
 export default function Button({
@@ -33,6 +34,7 @@ export default function Button({
   ...rest
 }: IButtonProps) {
   const isFullWidth = full ? 'w-full' : '';
+  const disabledClass = rest.disabled ? 'bg-grey04 pointer-events-none' : '';
 
   return (
     <button
@@ -44,6 +46,7 @@ export default function Button({
         sizeClasses[size],
         colorClasses[buttonColor],
         isFullWidth,
+        disabledClass,
       )}
     >
       {children}

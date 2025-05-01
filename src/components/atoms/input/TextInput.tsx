@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
+import { TRegisterFormValues } from '@/types/api';
 import { cn } from '@/utils/cn';
+import { changeInputBirthFormat } from '@/utils/functions';
 
 import Button from '../button/Button';
 import { BoxIcon } from '../icon/BoxIcon';
@@ -20,24 +22,43 @@ interface ITextInputProps<T extends FieldValues> {
   disabled?: boolean;
   buttonEvent?: () => void;
   value?: string | '';
+  maxLength?: number;
+  errors: FieldErrors<typeof LABEL_MAP>;
+  inputMode?: 'text' | 'tel' | 'url' | 'email' | 'search' | 'numeric' | 'decimal';
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  setValue?: UseFormSetValue<TRegisterFormValues>;
   register: UseFormRegister<T>;
+  successMessage?: string;
 }
 const TextInput = <T extends FieldValues>({
   type = 'text',
-  isError,
   category,
-  errorMessage,
   buttonText,
   buttonEvent,
   register,
+  errors,
+  onChange,
+  setValue,
+  successMessage,
   ...rest
 }: ITextInputProps<T>) => {
-  const borderClass = isError ? 'border-red01' : 'border-grey07';
+  const borderClass = errors?.[category] ? 'border-red01' : 'border-grey07';
+  const disabledClass = rest.disabled ? 'bg-grey08 pointer-events-none' : 'bg-white01';
 
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (category === 'birthday') {
+      changeInputBirthFormat(e, setValue);
+    }
+
+    if (onChange) {
+      onChange(e);
+    }
   };
 
   return (
@@ -52,9 +73,9 @@ const TextInput = <T extends FieldValues>({
         <label
           className={cn(
             borderClass,
+            disabledClass,
             'input',
             'w-full',
-            'bg-white01',
             'h-[32px]',
             'font-regular',
             'placeholder-grey02',
@@ -73,12 +94,12 @@ const TextInput = <T extends FieldValues>({
           )}
         >
           <input
+            {...rest}
+            {...register(category as Path<T>)}
+            onChange={onChangeInput}
             autoComplete="new-password"
             type={showPassword ? 'text' : type}
-            className={cn(rest.disabled ? 'bg-grey08' : 'bg-transparent')}
             placeholder={PLACEHOLDER_MAP[category]}
-            {...register(category as Path<T>)}
-            {...rest}
           />
 
           {type === 'password' && (
@@ -92,15 +113,21 @@ const TextInput = <T extends FieldValues>({
         </label>
 
         {buttonText && (
-          <Button size="small" onClick={buttonEvent}>
+          <Button size="small" onClick={buttonEvent} type="button" disabled={rest.disabled}>
             <Text color="white01">{buttonText}</Text>
           </Button>
         )}
       </div>
 
-      {isError && (
+      {errors?.[category]?.message && (
         <div className="validator-hint mt-0">
-          <Text color="red01">{errorMessage}</Text>
+          <Text color="red01">{errors[category]?.message}</Text>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="validator-hint mt-0">
+          <Text color="grey03">{successMessage}</Text>
         </div>
       )}
     </fieldset>

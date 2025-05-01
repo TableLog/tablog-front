@@ -47,4 +47,5 @@ export const TEXT_COLOR_MAP = {
   grey08: 'text-grey08',
   red01: 'text-red01',
   yellow01: 'text-yellow01',
+  green01: 'text-green01',
 } as const;

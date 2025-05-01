@@ -2,57 +2,121 @@
 
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import axios from 'axios';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
-import { REGISTER_URL } from '@/constants/endpoint.constants';
-import { RegisterFormValues } from '@/types/api';
+import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
+import { useRegisterUser } from '@/hooks/auth.hooks';
+import { zodRegister } from '@/lib/zod/zodValidation';
+import { useToastStore } from '@/lib/zutstand/userStore';
+import { TRegisterFormValues } from '@/types/api';
 
 interface IRegisterForm {
   registerMethod: string;
   imageFile: File | null;
 }
 const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
-  const { register, handleSubmit } = useForm<RegisterFormValues>();
+  const router = useRouter();
+  const { setIsRegisterSuccess } = useToastStore();
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<TRegisterFormValues>({
+    resolver: zodResolver(zodRegister),
+    mode: 'onChange',
+    defaultValues: {
+      nickname: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      userName: '',
+      birthday: '',
+      imgUrl: '',
+      marketingOptIn: false,
+      checkNickname: false,
+      checkEmail: false,
+    },
+  });
+
+  const { mutate: registerUser } = useRegisterUser({
+    onSuccess: (res) => {
+      if (res.status === 201) {
+        setIsRegisterSuccess(true);
+        router.push('/login');
+      }
+    },
+  });
+
+  const onSubmit: SubmitHandler<TRegisterFormValues> = async (data) => {
     const formdata = new FormData();
 
-    formdata.append('controllerRequestDto', JSON.stringify(data));
+    formdata.append('controllerRequestDto', JSON.stringify({ ...data, provider: registerMethod }));
 
     if (imageFile) {
       formdata.append('multipartFile', imageFile);
     }
 
-    try {
-      await axios.post(`http://localhost:8080${REGISTER_URL}`, formdata, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    } catch (error) {
-      console.log(error, 'error');
-    }
+    registerUser(formdata);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-[56px] flex flex-col gap-2">
-        <TextInput type="text" category="nickname" buttonText="중복 확인" register={register} />
+        <CheckNicknameInput
+          register={register}
+          errors={errors}
+          watch={watch}
+          setError={setError}
+          clearErrors={clearErrors}
+          setValue={setValue}
+        />
 
-        <TextInput type="text" category="username" register={register} />
+        <TextInput
+          type="text"
+          category="userName"
+          register={register}
+          errors={errors}
+          setValue={setValue}
+        />
 
-        <TextInput type="text" category="birthday" register={register} />
+        <TextInput
+          type="text"
+          category="birthday"
+          register={register}
+          maxLength={10}
+          inputMode="numeric"
+          errors={errors}
+          setValue={setValue}
+        />
 
-        <TextInput type="email" category="email" buttonText="중복 확인" register={register} />
+        <CheckEmailInput
+          register={register}
+          errors={errors}
+          watch={watch}
+          setError={setError}
+          clearErrors={clearErrors}
+          setValue={setValue}
+        />
 
-        {registerMethod === 'email' && (
+        {registerMethod === 'local' && (
           <>
-            <TextInput type="password" category="password" register={register} />
+            <TextInput type="password" category="password" register={register} errors={errors} />
 
-            <TextInput type="password" category="passwordConfirm" register={register} />
+            <TextInput
+              type="password"
+              category="confirmPassword"
+              register={register}
+              errors={errors}
+            />
           </>
         )}
       </div>

@@ -33,7 +33,6 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
 
     reader.onloadend = () => {
       setImageSrc(reader.result as string);
-      // 여기서 File 객체도 넘겨야 하면 setImageFile(file) 같은 것도 같이 실행 가능
     };
   };
 

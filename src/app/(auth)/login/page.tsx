@@ -1,26 +1,51 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Button from '@/components/atoms/button/Button';
-import { Checkbox } from '@/components/atoms/input/Checkbox';
-import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
-import { LoginFormValues } from '@/types/api';
+import { SOCIAL_LOGIN_REDIRECT_URI } from '@/constants/common.constants';
+import { useToastStore } from '@/lib/zutstand/userStore';
 import { cn } from '@/utils/cn';
+import { showToast } from '@/utils/functions';
+
+import LoginForm from './@form/page';
 
 const Login = () => {
-  const { register } = useForm<LoginFormValues>();
-
-  const [rememberEmail, setRememberEmail] = useState(false);
+  const { isRegisterSuccess } = useToastStore();
 
   const snsLoginButtonList = [
-    { id: 1, name: 'Google Login', icon: '/icons/google-logo.svg', href: '/google' },
-    { id: 2, name: 'Kakao Login', icon: '/icons/kakao-logo.svg', href: '/kakao' },
+    {
+      id: 1,
+      type: 'google',
+      name: 'Google Login',
+      icon: '/icons/google-logo.svg',
+      href: `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${SOCIAL_LOGIN_REDIRECT_URI}/google&response_type=code&scope=openid email profile`,
+    },
+    {
+      id: 2,
+      type: 'kakao',
+      name: 'Kakao Login',
+      icon: '/icons/kakao-logo.svg',
+      href: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${SOCIAL_LOGIN_REDIRECT_URI}/kakao`,
+    },
   ];
+
+  useEffect(() => {
+    if (isRegisterSuccess) {
+      showToast({
+        message: (
+          <div>
+            <p>회원가입이 완료되었습니다.</p>
+
+            <p>로그인을 진행해주세요.</p>
+          </div>
+        ),
+        type: 'success',
+      });
+    }
+  }, [isRegisterSuccess]);
 
   return (
     <div className="pt-[88px]">
@@ -31,30 +56,12 @@ const Login = () => {
       </div>
 
       <div className="mb-[120px]">
-        <form className="mt-[64px] mb-4">
-          <section className="mb-5">
-            <TextInput type="email" category="email" register={register} />
-
-            <TextInput type="password" category="password" register={register} />
-          </section>
-
-          <div className="mb-3">
-            <Checkbox
-              label="이메일 기억하기"
-              value={rememberEmail}
-              onChange={(e) => setRememberEmail(e.target.checked)}
-            />
-          </div>
-
-          <Button full>
-            <Text color="white01">로그인</Text>
-          </Button>
-        </form>
+        <LoginForm />
 
         <div className="flex items-center justify-between text-xs">
           <Text>이메일/비밀번호 찾기</Text>
 
-          <Link href="/register/email">
+          <Link href="/register/local">
             <Text>이메일 회원가입</Text>
           </Link>
         </div>
@@ -79,7 +86,8 @@ const Login = () => {
                   kakaoClass,
                   'flex h-10 w-10 items-center justify-center rounded-full border',
                 )}
-                href={`/register/${button.href}`}
+                href={button.href}
+                passHref
               >
                 <Image src={button.icon} alt={button.name} width={20} height={20} />
               </Link>

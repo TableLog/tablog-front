@@ -1,31 +1,27 @@
 import { useEffect } from 'react';
-import { isAxiosError } from 'axios';
+import { UseFormSetValue } from 'react-hook-form';
+import { Slide, toast } from 'react-toastify';
+import axios from 'axios';
 
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
-import { IApiErrorResponse } from '@/types/api';
+import { APIErrorResponse, TRegisterFormValues } from '@/types/api';
 
-export function getErrorMessage(errorCode?: string): string {
-  if (errorCode) {
-    return ERROR_CODE_MESSAGE_MAP[errorCode] || '알 수 없는 오류가 발생했습니다.';
-  }
-
-  return '에러 코드가 존재하지 않습니다.';
-}
-
-export function hanldeApiError(err: unknown): never {
+export function hanldeApiError(error: unknown): never {
   console.info('running handle api error');
   // AxiosError type과 커스텀 에러 response type을 같이 사용
-  if (isAxiosError<IApiErrorResponse>(err)) {
-    const errorCode = err.response?.data?.code;
-    const message = getErrorMessage(errorCode);
+  if (axios.isAxiosError<APIErrorResponse>(error) && error.response) {
+    const { code } = error.response.data.message;
 
-    console.error(`${message}: ${err}`);
-  } else {
-    // AxiosError가 아닌 일반 오류 처리
-    console.error('알 수 없는 오류 발생:', err);
+    if (code) {
+      const errorMessage = ERROR_CODE_MESSAGE_MAP[code];
+
+      console.error(`공통 에러 메세지: ${errorMessage}`);
+    } else {
+      console.error('알 수 없는 오류가 발생했습니다.');
+    }
   }
 
-  throw err;
+  throw error;
 }
 
 export function HandleOpenModal(modalId: string) {
@@ -55,3 +51,33 @@ export function useClickOutsideClose(
     };
   }, [closeEvent, ref]);
 }
+
+// NOTE: 생년월일 포맷 자동으로 조정 ("YYYY-MM-DD")
+export function changeInputBirthFormat(
+  e: React.ChangeEvent<HTMLInputElement>,
+  setValue?: UseFormSetValue<TRegisterFormValues>,
+) {
+  if (setValue) {
+    e.target.value = e.target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, '$1-$2-$3')
+      .replace(/(-{1,2})$/g, '');
+
+    setValue('birthday', e.target.value);
+  }
+}
+
+interface ToastProps {
+  message: string | React.ReactNode;
+  type: 'success' | 'error' | 'warning' | 'info';
+}
+export const showToast = ({ message, type }: ToastProps) => {
+  toast[type](message, {
+    transition: Slide,
+    position: 'top-center',
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    role: type,
+  });
+};
