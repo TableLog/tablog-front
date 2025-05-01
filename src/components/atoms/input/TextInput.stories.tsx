@@ -1,51 +1,36 @@
-import type { Meta, StoryObj } from '@storybook/react';
+// TextInput.stories.tsx
+
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { Meta } from '@storybook/react';
 
 import TextInput from './TextInput';
 
-const meta = {
-  title: 'Atoms/TextInput',
+export default {
+  title: 'Atoms/TextInput', // 스토리북 내 컴포넌트 위치
   component: TextInput,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
-  render: (args) => (
-    <div className="w-[420px]">
-      <TextInput {...args} />
-    </div>
-  ),
-} satisfies Meta<typeof TextInput>;
+} as Meta;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export const EmailInput = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: '',
+    },
+  });
 
-export const EmailInput: Story = {
-  args: {
-    category: 'email',
-  },
-};
+  const onSubmit = (data: { email: string }) => {
+    console.log(data);
+  };
 
-export const PasswordInput: Story = {
-  args: {
-    type: 'password',
-    category: 'password',
-  },
-};
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[500px]">
+      <TextInput type="email" category="email" register={register} errors={errors} />
 
-export const ButtonInput: Story = {
-  args: {
-    type: 'email',
-    category: 'email',
-    buttonText: '중복 확인',
-    buttonEvent: () => console.log('ddd'),
-  },
-};
-
-export const DisabledInput: Story = {
-  args: {
-    type: 'email',
-    category: 'email',
-    value: 'email@email.com',
-    disabled: true,
-  },
+      <button type="submit">Submit</button>
+    </form>
+  );
 };

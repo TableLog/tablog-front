@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,8 @@ import { Text } from '@/components/atoms/text/Text';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
 import { useRegisterUser } from '@/hooks/auth.hooks';
 import { zodRegister } from '@/lib/zod/zodValidation';
-import { useToastStore } from '@/lib/zutstand/userStore';
+import { useToastStore } from '@/lib/zutstand/commonStore';
+import { useUserStore } from '@/lib/zutstand/userStore';
 import { TRegisterFormValues } from '@/types/api';
 
 interface IRegisterForm {
@@ -21,6 +22,7 @@ interface IRegisterForm {
 const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
   const router = useRouter();
   const { setIsRegisterSuccess } = useToastStore();
+  const { socialUserData } = useUserStore();
 
   const {
     register,
@@ -44,6 +46,7 @@ const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
       marketingOptIn: false,
       checkNickname: false,
       checkEmail: false,
+      provider: 'local',
     },
   });
 
@@ -67,6 +70,16 @@ const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
 
     registerUser(formdata);
   };
+
+  useEffect(() => {
+    if (socialUserData) {
+      setValue('nickname', socialUserData.nickname);
+      setValue('birthday', socialUserData.birthday);
+      setValue('imgUrl', socialUserData.imgUrl);
+      setValue('provider', socialUserData.provider);
+      setValue('userName', socialUserData.userName);
+    }
+  }, [setValue, socialUserData]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

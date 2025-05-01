@@ -9,9 +9,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  render: (args) => (
+  render: () => (
     <div className="w-[420px]">
-      <Toast {...args} />
+      <Toast />
     </div>
   ),
 } satisfies Meta<typeof Toast>;
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const ErrorToast: Story = {
   args: {
     type: 'error',
-    message: 'error 토스트 메세지입니다. 3초 뒤에 사라집니다.',
+    message: 'error 토스트 메세지입니다. 5초 뒤에 사라집니다.',
     clearErrorMessage: () => {},
   },
 };
@@ -30,7 +30,7 @@ export const ErrorToast: Story = {
 export const SuccessToast: Story = {
   args: {
     type: 'success',
-    message: 'success 토스트 메세지입니다. 3초 뒤에 사라집니다.',
+    message: 'success 토스트 메세지입니다. 5초 뒤에 사라집니다.',
     clearErrorMessage: () => {},
   },
 };
@@ -38,7 +38,7 @@ export const SuccessToast: Story = {
 export const InfoToast: Story = {
   args: {
     type: 'info',
-    message: 'info 토스트 메세지입니다. 3초 뒤에 사라집니다.',
+    message: 'info 토스트 메세지입니다. 5초 뒤에 사라집니다.',
     clearErrorMessage: () => {},
   },
 };
@@ -46,7 +46,7 @@ export const InfoToast: Story = {
 export const WarningToast: Story = {
   args: {
     type: 'warning',
-    message: 'warning 토스트 메세지입니다. 3초 뒤에 사라집니다.',
+    message: 'warning 토스트 메세지입니다. 5초 뒤에 사라집니다.',
     clearErrorMessage: () => {},
   },
 };

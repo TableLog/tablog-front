@@ -5,9 +5,11 @@ const SplashScreen = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const timer = setTimeout(() => {}, 3000);
+    const timer = setTimeout(() => {
+      router.push('/login');
+    }, 3000);
 
-    return () => clearTimeout(timer); // 컴포넌트 언마운트 시 클린업
+    return () => clearTimeout(timer);
   }, [router]);
 
   return (

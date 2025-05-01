@@ -16,6 +16,7 @@ export type TRegisterFormValues = {
   marketingOptIn: boolean;
   checkNickname: boolean;
   checkEmail: boolean;
+  provider: 'local' | 'kakao' | 'google';
 };
 
 export type TLoginFormValues = {

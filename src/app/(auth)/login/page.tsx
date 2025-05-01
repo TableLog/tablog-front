@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { Text } from '@/components/atoms/text/Text';
 import { SOCIAL_LOGIN_REDIRECT_URI } from '@/constants/common.constants';
-import { useToastStore } from '@/lib/zutstand/userStore';
+import { useToastStore } from '@/lib/zutstand/commonStore';
 import { cn } from '@/utils/cn';
 import { showToast } from '@/utils/functions';
 

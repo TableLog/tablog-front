@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Image from 'next/image';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import Toast from '@/components/atoms/toast/Toast';
+import { showToast } from '@/utils/functions';
 
 interface IProfileImage {
   imageSrc: string;
@@ -12,7 +12,6 @@ interface IProfileImage {
 
 export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IProfileImage) {
   const imgRef = useRef<HTMLInputElement>(null);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const onChangeImageFile = () => {
     const file = imgRef?.current?.files?.[0] || null; // 첫 번째 파일만 사용
@@ -24,7 +23,10 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
     const validImageExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
 
     if (!validImageExtensions.includes(file.type)) {
-      setErrorMessage('jpg, jpeg, png 파일만 업로드 가능합니다.');
+      showToast({
+        message: 'jpg, jpeg, png 파일만 업로드 가능합니다.',
+        type: 'error',
+      });
       return;
     }
 
@@ -38,10 +40,6 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
 
   return (
     <div>
-      {errorMessage && (
-        <Toast type="error" message={errorMessage} clearErrorMessage={() => setErrorMessage('')} />
-      )}
-
       <label className="inline">
         <input
           type="file"

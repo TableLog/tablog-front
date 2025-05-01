@@ -1,6 +1,6 @@
-import RecipeInfo from '@/components/molecules/recipe-info/RecipeInfo';
 import { ReactNode } from 'react';
 
+import RecipeInfo from '@/components/molecules/recipe-info/RecipeInfo';
 import { cn } from '@/utils/cn';
 
 interface IRecipeCardProps {

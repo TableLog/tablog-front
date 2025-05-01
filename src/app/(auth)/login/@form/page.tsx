@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { cookies } from 'next/headers';
 import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
@@ -40,15 +39,11 @@ const LoginForm = () => {
     onSuccess: async (res) => {
       if (rememberEmail) {
         localStorage.setItem(LOCAL_REMEMBER_EMAIL, watch('email'));
+      } else {
+        localStorage.removeItem(LOCAL_REMEMBER_EMAIL);
       }
-
-      (await cookies()).set('access-token', res.headers['access-token'], {
-        path: '/home',
-        domain: 'localhost',
-        maxAge: 300 * 5,
-        httpOnly: true,
-        secure: false,
-      });
+      console.log(res);
+      console.log(res.headers['access-token']);
 
       router.push('/home');
     },

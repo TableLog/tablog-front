@@ -5,9 +5,10 @@ import Image from 'next/image';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { showToast } from '@/utils/functions';
+
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
-import Toast from '../toast/Toast';
 
 interface IImageList {
   id: string;
@@ -19,7 +20,6 @@ const RecipeImageInput = () => {
   const imgRef = useRef<HTMLInputElement>(null);
 
   const [imageList, setImageList] = useState<IImageList[]>([]);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const onChangeImageFile = () => {
     if (imgRef?.current?.files) {
@@ -30,7 +30,7 @@ const RecipeImageInput = () => {
 
       files.forEach((file) => {
         if (!validImageExtensions.includes(file.type)) {
-          setErrorMessage('jpg, jpeg, png 파일만 업로드 가능합니다.');
+          showToast({ message: 'jpg, jpeg, png 파일만 업로드 가능합니다.', type: 'error' });
 
           return; // 유효하지 않은 파일이면 더 이상 진행하지 않음
         }
@@ -42,7 +42,10 @@ const RecipeImageInput = () => {
           if (reader.result) {
             setImageList((prev) => {
               if (prev.length >= 3) {
-                setErrorMessage('이미지는 최대 3개까지 업로드하실 수 있습니다.');
+                showToast({
+                  message: '이미지는 최대 3개까지 업로드하실 수 있습니다.',
+                  type: 'error',
+                });
 
                 return prev;
               } // 최대 3개까지 제한
@@ -68,10 +71,6 @@ const RecipeImageInput = () => {
 
   return (
     <div>
-      {errorMessage && (
-        <Toast type="error" message={errorMessage} clearErrorMessage={() => setErrorMessage('')} />
-      )}
-
       <div>
         <Swiper
           className="border-grey07 aspect-square overflow-hidden rounded-[10px] border"

@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import type { Meta } from '@storybook/react';
 
 import ProfileImage from './ProfileImage';
 
@@ -13,12 +14,16 @@ const meta = {
 } satisfies Meta<typeof ProfileImage>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const ProfileImageExample = () => {
+  const [imageSrc, setImageSrc] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-export const hasImg: Story = {
-  args: {
-    url: '/tea.png',
-  },
+  console.log(imageFile);
+
+  return (
+    <div className="flex items-center justify-center">
+      <ProfileImage imageSrc={imageSrc} setImageSrc={setImageSrc} setImageFile={setImageFile} />
+    </div>
+  );
 };
