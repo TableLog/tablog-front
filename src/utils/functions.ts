@@ -75,6 +75,7 @@ export const showToast = ({ message, type }: ToastProps) => {
   toast[type](message, {
     transition: Slide,
     position: 'top-center',
+    toastId: 'unique',
     autoClose: 5000,
     hideProgressBar: true,
     closeOnClick: true,

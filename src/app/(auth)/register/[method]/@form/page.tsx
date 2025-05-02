@@ -16,13 +16,16 @@ import { useUserStore } from '@/lib/zutstand/userStore';
 import { TRegisterFormValues } from '@/types/api';
 
 interface IRegisterForm {
-  registerMethod: string;
+  registerMethod: 'local' | 'kakao' | 'google';
   imageFile: File | null;
+  imageSrc: string;
+  setImageSrc: React.Dispatch<React.SetStateAction<string>>;
 }
-const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
+const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IRegisterForm) => {
   const router = useRouter();
+
   const { setIsRegisterSuccess } = useToastStore();
-  const { socialUserData } = useUserStore();
+  const { socialUserData, clearSocialUserData } = useUserStore();
 
   const {
     register,
@@ -53,16 +56,36 @@ const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
   const { mutate: registerUser } = useRegisterUser({
     onSuccess: (res) => {
       if (res.status === 201) {
+        console.log('res: ', res);
         setIsRegisterSuccess(true);
-        router.push('/login');
+        clearSocialUserData();
+        setImageSrc('');
+        if (registerMethod === 'local') {
+          router.push('/login');
+        } else {
+          router.push('/home');
+        }
       }
     },
   });
 
   const onSubmit: SubmitHandler<TRegisterFormValues> = async (data) => {
+    console.log(data, 'data');
+    console.log(imageSrc, 'imageSrc');
+
     const formdata = new FormData();
 
-    formdata.append('controllerRequestDto', JSON.stringify({ ...data, provider: registerMethod }));
+    if (data.provider !== 'local') {
+      formdata.append(
+        'controllerRequestDto',
+        JSON.stringify({ ...data, provider: registerMethod, imgUrl: imageSrc }),
+      );
+    } else {
+      formdata.append(
+        'controllerRequestDto',
+        JSON.stringify({ ...data, provider: registerMethod }),
+      );
+    }
 
     if (imageFile) {
       formdata.append('multipartFile', imageFile);
@@ -73,13 +96,26 @@ const RegisterForm = ({ registerMethod, imageFile }: IRegisterForm) => {
 
   useEffect(() => {
     if (socialUserData) {
+      console.log(socialUserData, 'socialUserData');
       setValue('nickname', socialUserData.nickname);
       setValue('birthday', socialUserData.birthday);
+      setValue('email', socialUserData.email);
       setValue('imgUrl', socialUserData.imgUrl);
       setValue('provider', socialUserData.provider);
       setValue('userName', socialUserData.userName);
+      setValue('provider', registerMethod);
+
+      if (socialUserData.imgUrl) {
+        setImageSrc(socialUserData.imgUrl);
+      }
     }
-  }, [setValue, socialUserData]);
+  }, [registerMethod, setImageSrc, setValue, socialUserData]);
+
+  useEffect(() => {
+    if (registerMethod !== 'local' && !socialUserData) {
+      router.push('/login');
+    }
+  }, [registerMethod, router, socialUserData]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

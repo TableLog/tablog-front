@@ -10,13 +10,22 @@ import RegisterForm from './@form/page';
 
 const Register = () => {
   const params = useParams();
-  const registerMethod = params.method as string;
+
+  const isRegisterMethod = (method: string | undefined): method is 'google' | 'kakao' | 'local' => {
+    return method === 'google' || method === 'kakao' || method === 'local';
+  };
+
+  const methodParam = typeof params.method === 'string' ? params.method : undefined;
+
+  const registerMethod: 'google' | 'kakao' | 'local' = isRegisterMethod(methodParam)
+    ? methodParam
+    : 'local';
 
   const [imageSrc, setImageSrc] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const pageTitle = useMemo(() => {
-    if (registerMethod === 'email') {
+    if (registerMethod === 'local') {
       return '이메일 회원가입';
     }
 
@@ -33,13 +42,18 @@ const Register = () => {
 
   return (
     <div>
-      <PageHeader back title={pageTitle} />
+      <PageHeader back title={pageTitle} backUrl="/login" />
 
       <div className="mt-8 mb-8 flex items-center justify-center">
         <ProfileImage imageSrc={imageSrc} setImageSrc={setImageSrc} setImageFile={setImageFile} />
       </div>
 
-      <RegisterForm registerMethod={registerMethod} imageFile={imageFile} />
+      <RegisterForm
+        registerMethod={registerMethod}
+        imageFile={imageFile}
+        imageSrc={imageSrc}
+        setImageSrc={setImageSrc}
+      />
     </div>
   );
 };

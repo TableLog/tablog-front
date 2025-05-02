@@ -16,11 +16,13 @@ interface userIStore {
   setIsLoggedIn: (newStatus: boolean) => void;
   socialUserData: ISocialUserData | null;
   setSocialUserData: (newStatus: ISocialUserData) => void;
+  clearSocialUserData: () => void;
 }
 
 export const useUserStore = create<userIStore>((set) => ({
   isLoggedIn: false,
   setIsLoggedIn: (newStatus: boolean) => set(() => ({ isLoggedIn: newStatus })),
   socialUserData: null,
-  setSocialUserData: (newData: ISocialUserData) => set(() => ({ socialUserData: newData })),
+  setSocialUserData: (newData: ISocialUserData | null) => set(() => ({ socialUserData: newData })),
+  clearSocialUserData: () => set(() => ({ socialUserData: null })),
 }));

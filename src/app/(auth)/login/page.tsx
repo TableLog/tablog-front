@@ -13,7 +13,7 @@ import { showToast } from '@/utils/functions';
 import LoginForm from './@form/page';
 
 const Login = () => {
-  const { isRegisterSuccess } = useToastStore();
+  const { isRegisterSuccess, setIsRegisterSuccess } = useToastStore();
 
   const snsLoginButtonList = [
     {
@@ -44,8 +44,10 @@ const Login = () => {
         ),
         type: 'success',
       });
+
+      setIsRegisterSuccess(false);
     }
-  }, [isRegisterSuccess]);
+  }, [isRegisterSuccess, setIsRegisterSuccess]);
 
   return (
     <div className="pt-[88px]">

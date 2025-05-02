@@ -3,10 +3,10 @@
 import React, { useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-import { useSocialLogin } from '@/hooks/auth.hooks';
+import { useSocialLogin, useSocialRegister } from '@/hooks/auth.hooks';
 import { useUserStore } from '@/lib/zutstand/userStore';
 
-const SocialLogin = () => {
+const SocialRegister = () => {
   const { setSocialUserData } = useUserStore();
   const params = useSearchParams();
   const { provider } = useParams();
@@ -14,12 +14,28 @@ const SocialLogin = () => {
 
   const code = params.get('code');
 
+  const { mutate: socialRegister } = useSocialRegister({
+    onSuccess: (res) => {
+      setSocialUserData(res.data);
+      console.log('res: ', res);
+      router.push('/register/kakao');
+    },
+  });
+
   const { mutate: socialLogin } = useSocialLogin({
     onSuccess: (res) => {
-      console.log(res.headers['Kakao-Access-Token'], '?');
       setSocialUserData(res.data);
-      console.log(res, 'data');
-      router.push('/register/kakao');
+      console.log('res: ', res);
+      router.push('/home');
+    },
+    onError: (res) => {
+      // 카카오 계정이 없을 때,
+      if (res.response.data.message === 'EU404001') {
+        if (code && provider) {
+          // socialLogin({ provider, code });
+          socialRegister({ provider, code });
+        }
+      }
     },
   });
 
@@ -32,4 +48,4 @@ const SocialLogin = () => {
   return <div></div>;
 };
 
-export default SocialLogin;
+export default SocialRegister;

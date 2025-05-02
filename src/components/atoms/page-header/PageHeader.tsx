@@ -4,17 +4,26 @@ import { useRouter } from 'next/navigation';
 import { BoxIcon } from '../icon/BoxIcon';
 
 interface IPageHeader {
+  backUrl?: string;
   back?: boolean;
   title: string;
   children?: React.ReactNode;
 }
-const PageHeader = ({ back, title, children }: IPageHeader) => {
+const PageHeader = ({ backUrl, back, title, children }: IPageHeader) => {
   const router = useRouter();
 
   return (
     <div className="relative flex items-center justify-between py-4">
       {back && (
-        <div onClick={() => router.back()}>
+        <div
+          onClick={() => {
+            if (backUrl) {
+              router.push(backUrl);
+            } else {
+              router.back();
+            }
+          }}
+        >
           <BoxIcon name="arrow-back" size={24} />
         </div>
       )}

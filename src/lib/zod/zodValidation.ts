@@ -16,7 +16,7 @@ import {
   PASSWORD_REQUIRED,
 } from '@/constants/validation.constants';
 
-export const EMAIL_REGEX = '^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$';
+export const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
 
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
 
@@ -26,17 +26,11 @@ const BIRTH_VALID_REGEX = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2]
 // NOTE: 회원가입
 export const zodRegister = z
   .object({
+    provider: z.string(),
     nickname: z.string().min(1, NICKNAME_REQUIRED).max(10, NICKNAME_FORMAT),
-    email: z.string().min(1, EMAIL_REQUIRED).email({ message: EMAIL_FORMAT }),
-    password: z.string().min(1, { message: PASSWORD_REQUIRED }).regex(PASSWORD_REGEX, {
-      message: PASSWORD_FORMAT,
-    }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: PASSWORD_CONFIRM_REQUIRED })
-      .regex(PASSWORD_REGEX, {
-        message: PASSWORD_FORMAT,
-      }),
+    email: z.string(),
+    password: z.string(),
+    confirmPassword: z.string(),
     userName: z.string().min(1, { message: NAME_REQUIRED }),
     birthday: z.optional(
       z
@@ -56,6 +50,44 @@ export const zodRegister = z
     }),
     marketingOptIn: z.boolean().optional(),
   })
+  .refine(
+    (data) => {
+      if (data.provider === 'local') {
+        return data.password === data.confirmPassword;
+      }
+      return true; // provider가 'local'이 아니면 검사하지 않음
+    },
+    {
+      message: PASSWORD_CONFIRM_INVALID,
+      path: ['confirmPassword'],
+    },
+  )
+  // provider가 'local'일 때만 password 유효성 검사
+  .refine(
+    (data) => {
+      if (data.provider === 'local') {
+        return !!data.password;
+      }
+      return true;
+    },
+    {
+      message: PASSWORD_REQUIRED,
+      path: ['password'],
+    },
+  )
+  // provider가 'local'일 때만 confirmPassword 유효성 검사
+  .refine(
+    (data) => {
+      if (data.provider === 'local') {
+        return !!data.confirmPassword;
+      }
+      return true;
+    },
+    {
+      message: PASSWORD_CONFIRM_REQUIRED,
+      path: ['confirmPassword'],
+    },
+  )
   .refine((data) => data.password === data.confirmPassword, {
     message: PASSWORD_CONFIRM_INVALID,
     path: ['confirmPassword'],

@@ -12,11 +12,13 @@ import TextInput from '@/components/atoms/input/TextInput';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import {
   EMAIL_CHECK_SUCCESS,
+  EMAIL_FORMAT,
   EMAIL_REQUIRED,
   NICKNAME_CHECK_SUCCESS,
   NICKNAME_REQUIRED,
 } from '@/constants/validation.constants';
 import { useCheckEmail, useCheckNickname } from '@/hooks/auth.hooks';
+import { EMAIL_REGEX } from '@/lib/zod/zodValidation';
 import { TRegisterFormValues } from '@/types/api';
 
 interface IDuplicateCheck {
@@ -61,6 +63,11 @@ export const CheckEmailInput = ({
     if (email === '') {
       setError('email', { message: EMAIL_REQUIRED });
       return;
+    }
+
+    if (!email.match(EMAIL_REGEX)) {
+      setError('email', { message: EMAIL_FORMAT });
+      return undefined;
     }
 
     checkEmail(email);

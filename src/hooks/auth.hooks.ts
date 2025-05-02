@@ -2,7 +2,14 @@
 
 import { useMutation } from '@tanstack/react-query';
 
-import { CheckEmail, CheckNickname, EmailLogin, RegisterUser, SocialLogin } from '@/apis/auth.api';
+import {
+  CheckEmail,
+  CheckNickname,
+  EmailLogin,
+  RegisterUser,
+  SocialLogin,
+  SocialRegister,
+} from '@/apis/auth.api';
 import { IMutationOptions } from '@/types/api';
 
 export function useEmailLogin(options?: IMutationOptions) {
@@ -17,6 +24,15 @@ export function useSocialLogin(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
       SocialLogin(provider, code),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useSocialRegister(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
+      SocialRegister(provider, code),
     onSuccess: options?.onSuccess,
     onError: (error) => {
       console.error('Social Login Error:', error);
