@@ -21,6 +21,10 @@ export const SocialLogin = async (provider: string | string[], code: string) => 
   try {
     return await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_URL}${SOCIAL_LOGIN_URL}?provider=${provider}&code=${code}`,
+      {},
+      {
+        withCredentials: true,
+      },
     );
   } catch (error) {
     throw error;

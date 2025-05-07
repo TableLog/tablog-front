@@ -60,6 +60,7 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
                 alt={`sample${imageSrc}`}
                 width={100}
                 height={100}
+                unoptimized
               />
             )}
           </div>
