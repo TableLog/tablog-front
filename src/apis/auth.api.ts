@@ -6,7 +6,6 @@ import {
   NICKNAME_CHECK_URL,
   REGISTER_URL,
   SOCIAL_LOGIN_URL,
-  SOCIAL_REGISTER_URL,
 } from '@/constants/endpoint.constants';
 import { TLoginFormValues } from '@/types/api';
 
@@ -22,16 +21,6 @@ export const SocialLogin = async (provider: string | string[], code: string) => 
   try {
     return await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_URL}${SOCIAL_LOGIN_URL}?provider=${provider}&code=${code}`,
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const SocialRegister = async (provider: string | string[], code: string) => {
-  try {
-    return await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}${SOCIAL_REGISTER_URL}?provider=${provider}&code=${code}`,
     );
   } catch (error) {
     throw error;

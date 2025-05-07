@@ -9,6 +9,7 @@ import Button from '@/components/atoms/button/Button';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
+import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { useRegisterUser } from '@/hooks/auth.hooks';
 import { zodRegister } from '@/lib/zod/zodValidation';
 import { useToastStore } from '@/lib/zutstand/commonStore';
@@ -56,10 +57,12 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
   const { mutate: registerUser } = useRegisterUser({
     onSuccess: (res) => {
       if (res.status === 201) {
-        console.log('res: ', res);
         setIsRegisterSuccess(true);
         clearSocialUserData();
         setImageSrc('');
+
+        console.log(registerMethod, 'registerMethod');
+
         if (registerMethod === 'local') {
           router.push('/login');
         } else {
@@ -67,12 +70,16 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
         }
       }
     },
+    onError: (err) => {
+      const errorMessage = ERROR_CODE_MESSAGE_MAP[err?.response?.data?.message];
+
+      if (err.response.data.message === 'EU400002') {
+        setError('userName', { message: errorMessage });
+      }
+    },
   });
 
   const onSubmit: SubmitHandler<TRegisterFormValues> = async (data) => {
-    console.log(data, 'data');
-    console.log(imageSrc, 'imageSrc');
-
     const formdata = new FormData();
 
     if (data.provider !== 'local') {

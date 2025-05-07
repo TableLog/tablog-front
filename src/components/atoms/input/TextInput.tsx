@@ -120,13 +120,13 @@ const TextInput = <T extends FieldValues>({
       </div>
 
       {errors?.[category]?.message && (
-        <div className="validator-hint mt-0">
+        <div className="validator-hint mt-0 whitespace-pre-line">
           <Text color="red01">{errors[category]?.message}</Text>
         </div>
       )}
 
       {successMessage && (
-        <div className="validator-hint mt-0">
+        <div className="validator-hint mt-0 whitespace-pre-line">
           <Text color="grey03">{successMessage}</Text>
         </div>
       )}

@@ -100,7 +100,7 @@ const Login = () => {
 
       <div className="text-center">
         <Text fontSize={14} color="black03" className="border-b-black03 inline border-b">
-          서비스 둘러보기
+          <Link href="/home">서비스 둘러보기</Link>
         </Text>
       </div>
     </div>

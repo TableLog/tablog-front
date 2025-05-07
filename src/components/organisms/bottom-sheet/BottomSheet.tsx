@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer';
 
 import Backdrop from '@/components/atoms/backdrop/Backdrop';
+import { Text } from '@/components/atoms/text/Text';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface BottomSheetProps {
   showHandlebar?: boolean;
   showBackdrop?: boolean;
   children: React.ReactNode;
+  title?: string;
 }
 
 export default function BottomSheet({
@@ -22,6 +24,7 @@ export default function BottomSheet({
   showHandlebar = true,
   showBackdrop = true,
   children,
+  title,
 }: BottomSheetProps) {
   const [isClosing, setIsClosing] = useState(false);
 
@@ -76,6 +79,13 @@ export default function BottomSheet({
                   <div className={clsx('bg-grey01 h-1.5 w-12 rounded-full')} />
                 </div>
               )}
+
+              {title && (
+                <Text fontSize={20} fontWeight="semiBold" className="text-center">
+                  {title}
+                </Text>
+              )}
+
               {children}
             </motion.div>
           </div>

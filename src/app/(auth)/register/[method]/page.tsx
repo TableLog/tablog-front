@@ -23,6 +23,7 @@ const Register = () => {
 
   const [imageSrc, setImageSrc] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
+  // const [openTerms, setOpenTerms] = useState(true);
 
   const pageTitle = useMemo(() => {
     if (registerMethod === 'local') {
@@ -54,6 +55,20 @@ const Register = () => {
         imageSrc={imageSrc}
         setImageSrc={setImageSrc}
       />
+
+      {/* <BottomSheet isOpen={openTerms} onClose={() => setOpenTerms(false)} title="약관 동의">
+        <div className="flex h-full w-full flex-col justify-between px-5 pt-9">
+          <div className="max-h-[50%] overflow-auto">
+            <CheckAll options={TERMS_OPTIONS} />
+          </div>
+
+          <div className="flex w-full items-center justify-between gap-3">
+            <Button buttonColor="grey06">닫기</Button>
+
+            <Button full>동의하고 회원가입</Button>
+          </div>
+        </div>
+      </BottomSheet> */}
     </div>
   );
 };
