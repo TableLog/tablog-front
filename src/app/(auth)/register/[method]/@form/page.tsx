@@ -61,8 +61,6 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
         clearSocialUserData();
         setImageSrc('');
 
-        console.log(registerMethod, 'registerMethod');
-
         if (registerMethod === 'local') {
           router.push('/login');
         } else {
@@ -73,6 +71,7 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
     onError: (err) => {
       const errorMessage = ERROR_CODE_MESSAGE_MAP[err?.response?.data?.message];
 
+      // 동일한 이름과 생년월일을 가진 유저가 있을 때
       if (err.response.data.message === 'EU400002') {
         setError('userName', { message: errorMessage });
       }
@@ -103,7 +102,6 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
 
   useEffect(() => {
     if (socialUserData) {
-      console.log(socialUserData, 'socialUserData');
       setValue('nickname', socialUserData.nickname);
       setValue('birthday', socialUserData.birthday);
       setValue('email', socialUserData.email);
@@ -117,12 +115,6 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
       }
     }
   }, [registerMethod, setImageSrc, setValue, socialUserData]);
-
-  useEffect(() => {
-    if (registerMethod !== 'local' && !socialUserData) {
-      router.push('/login');
-    }
-  }, [registerMethod, router, socialUserData]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -55,9 +55,10 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
 
             {imageSrc && (
               <Image
+                priority
                 src={imageSrc}
                 className="image-cover z-10 w-full brightness-70"
-                alt={`sample${imageSrc}`}
+                alt={imageSrc}
                 width={100}
                 height={100}
                 unoptimized

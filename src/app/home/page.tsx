@@ -1,11 +1,25 @@
+'use client';
+
 import React from 'react';
 
-const Home = async () => {
+import { useGetUserInfo, useLogout } from '@/hooks/auth.hooks';
+
+const Logout = () => {
+  const { mutate: logout } = useLogout();
+
+  return <button onClick={() => logout()}>로그아웃</button>;
+};
+
+const Home = () => {
+  const { data: userData } = useGetUserInfo();
+
+  console.log(userData, 'data');
+
   return (
     <div>
       <p>Home Page</p>
 
-      <div>로그아웃</div>
+      <Logout />
     </div>
   );
 };

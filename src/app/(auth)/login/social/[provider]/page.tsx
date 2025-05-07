@@ -18,7 +18,6 @@ const SocialRegister = () => {
     onSuccess: (res) => {
       if (res.status === 200) {
         if (res.data.id) {
-          console.log('res: ', res);
           router.push(`/home`);
         } else {
           setSocialUserData(res.data);

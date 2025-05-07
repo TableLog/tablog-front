@@ -36,14 +36,12 @@ const LoginForm = () => {
   });
 
   const { mutate: emailLogin } = useEmailLogin({
-    onSuccess: async (res) => {
+    onSuccess: async () => {
       if (rememberEmail) {
         localStorage.setItem(LOCAL_REMEMBER_EMAIL, watch('email'));
       } else {
         localStorage.removeItem(LOCAL_REMEMBER_EMAIL);
       }
-      console.log(res);
-      console.log(res.headers['access-token']);
 
       router.push('/home');
     },
