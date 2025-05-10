@@ -24,6 +24,7 @@ interface IButtonProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   children: React.ReactNode;
+  form?: string;
 }
 export default function Button({
   size = 'large',
@@ -33,7 +34,7 @@ export default function Button({
   children,
   ...rest
 }: IButtonProps) {
-  const isFullWidth = full ? 'w-full' : '';
+  const isFullWidth = full ? 'flex-1 w-full' : '';
   const disabledClass = rest.disabled ? 'bg-grey04 pointer-events-none' : '';
 
   return (
@@ -41,8 +42,9 @@ export default function Button({
       {...rest}
       role="button-component"
       type={type}
+      form={rest.form}
       className={cn(
-        'btn rounded-full border-none px-4 font-medium shadow-none',
+        'btn self-stretch rounded-full border-none px-4 font-medium shadow-none',
         sizeClasses[size],
         colorClasses[buttonColor],
         isFullWidth,

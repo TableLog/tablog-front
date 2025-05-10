@@ -1,20 +1,16 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { Text } from '@/components/atoms/text/Text';
 import { SOCIAL_LOGIN_REDIRECT_URI } from '@/constants/common.constants';
-import { useToastStore } from '@/lib/zutstand/commonStore';
 import { cn } from '@/utils/cn';
-import { showToast } from '@/utils/functions';
 
 import LoginForm from './@form/page';
 
 const Login = () => {
-  const { isRegisterSuccess, setIsRegisterSuccess } = useToastStore();
-
   const snsLoginButtonList = [
     {
       id: 1,
@@ -31,23 +27,6 @@ const Login = () => {
       href: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${SOCIAL_LOGIN_REDIRECT_URI}/kakao`,
     },
   ];
-
-  useEffect(() => {
-    if (isRegisterSuccess) {
-      showToast({
-        message: (
-          <div>
-            <p>회원가입이 완료되었습니다.</p>
-
-            <p>로그인을 진행해주세요.</p>
-          </div>
-        ),
-        type: 'success',
-      });
-
-      setIsRegisterSuccess(false);
-    }
-  }, [isRegisterSuccess, setIsRegisterSuccess]);
 
   return (
     <div className="pt-[88px]">

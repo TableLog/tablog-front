@@ -7,7 +7,7 @@ import { Meta } from '@storybook/react';
 import TextInput from './TextInput';
 
 export default {
-  title: 'Atoms/TextInput', // 스토리북 내 컴포넌트 위치
+  title: 'Atoms/TextInput',
   component: TextInput,
 } as Meta;
 

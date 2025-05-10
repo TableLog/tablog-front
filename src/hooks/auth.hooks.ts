@@ -35,7 +35,7 @@ export function useSocialLogin(options?: IMutationOptions) {
 }
 
 // 로그아웃
-export function useLogout(options?: IMutationOptions) {
+export function useLogout() {
   const router = useRouter();
 
   return useMutation({
@@ -45,7 +45,6 @@ export function useLogout(options?: IMutationOptions) {
         router.push('/login');
       }
     },
-    onError: options?.onError,
   });
 }
 

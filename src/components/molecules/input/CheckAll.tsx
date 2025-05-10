@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Checkbox, Checkboxes } from '@/components/atoms/input/Checkbox';
 
@@ -8,34 +8,58 @@ interface ICheckAll {
   name: string;
   content: string;
 }
-const CheckAll = ({ options }: { options: Array<ICheckAll> }) => {
-  const initialValue = options.reduce(
-    (acc, curr) => {
-      acc[curr.name] = false; // 각 name을 키로 하고 false를 값으로 설정
-      return acc;
-    },
-    {} as Record<string, boolean>,
-  );
 
-  const [values, setValues] = useState<Record<string, boolean>>(initialValue);
-  const [isCheckAll, setIsCheckAll] = useState(false);
+interface ICheckAllProps {
+  options: Array<ICheckAll>;
+  values: Record<string, boolean> | undefined;
+  setValues: React.Dispatch<React.SetStateAction<Record<string, boolean> | undefined>>;
+}
+const CheckAll = ({ values, setValues, options }: ICheckAllProps) => {
+  const initialValue = useMemo(() => {
+    return options.reduce(
+      (acc, curr) => {
+        acc[curr.name] = false; // 각 name을 키로 하고 false를 값으로 설정
 
-  const onChangeCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsCheckAll(e.target.checked);
-
-    const newValues = Object.keys(values).reduce(
-      (acc, key) => {
-        acc[key] = e.target.checked;
         return acc;
       },
       {} as Record<string, boolean>,
     );
+  }, [options]);
 
-    setValues(newValues);
+  useEffect(() => {
+    if (!values) {
+      setValues(initialValue);
+    }
+  }, [initialValue, setValues, values]);
+
+  const [isCheckAll, setIsCheckAll] = useState(
+    values && Object.values(values).every(Boolean) ? true : false,
+  );
+
+  const onChangeCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsCheckAll(e.target.checked);
+
+    if (values) {
+      const newValues = Object.keys(values).reduce(
+        (acc, key) => {
+          acc[key] = e.target.checked;
+          return acc;
+        },
+        {} as Record<string, boolean>,
+      );
+
+      setValues(newValues);
+    }
   };
 
   const onChangeCheckboxes = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-    setValues({ ...values, [name]: e.target.checked });
+    const updatedValues = { ...values, [name]: e.target.checked };
+
+    setValues(updatedValues);
+
+    const allChecked = Object.values(updatedValues).every(Boolean);
+
+    setIsCheckAll(allChecked);
   };
 
   return (
@@ -51,7 +75,7 @@ const CheckAll = ({ options }: { options: Array<ICheckAll> }) => {
               key={item.id}
               name={item.name}
               label={item.label}
-              value={values[item.name]}
+              value={values?.[item.name]}
               content={item.content}
               onChange={onChangeCheckboxes}
             />

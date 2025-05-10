@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -8,13 +8,17 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
+import CheckAll from '@/components/molecules/input/CheckAll';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
+import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
+import { TERMS_OPTIONS } from '@/constants/options.constants';
+import { TERM_REQUIRED } from '@/constants/validation.constants';
 import { useRegisterUser } from '@/hooks/auth.hooks';
-import { zodRegister } from '@/lib/zod/zodValidation';
-import { useToastStore } from '@/lib/zutstand/commonStore';
+import { zodEmailRegister, zodSocialRegister } from '@/lib/zod/zodValidation';
 import { useUserStore } from '@/lib/zutstand/userStore';
 import { TRegisterFormValues } from '@/types/api';
+import { showToast } from '@/utils/functions';
 
 interface IRegisterForm {
   registerMethod: 'local' | 'kakao' | 'google';
@@ -25,19 +29,24 @@ interface IRegisterForm {
 const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IRegisterForm) => {
   const router = useRouter();
 
-  const { setIsRegisterSuccess } = useToastStore();
   const { socialUserData, clearSocialUserData } = useUserStore();
+
+  const [openTerms, setOpenTerms] = useState(false);
+  const [termValues, setTermsValues] = useState<Record<string, boolean>>();
+  const [termRequired, setTermRequired] = useState(false);
 
   const {
     register,
+    unregister,
     handleSubmit,
     setValue,
     watch,
     setError,
     clearErrors,
+    trigger,
     formState: { errors },
   } = useForm<TRegisterFormValues>({
-    resolver: zodResolver(zodRegister),
+    resolver: zodResolver(registerMethod === 'local' ? zodEmailRegister : zodSocialRegister),
     mode: 'onChange',
     defaultValues: {
       nickname: '',
@@ -57,12 +66,22 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
   const { mutate: registerUser } = useRegisterUser({
     onSuccess: (res) => {
       if (res.status === 201) {
-        setIsRegisterSuccess(true);
-        clearSocialUserData();
-        setImageSrc('');
-
         if (registerMethod === 'local') {
           router.push('/login');
+
+          clearSocialUserData();
+          setImageSrc('');
+
+          showToast({
+            message: (
+              <div>
+                <p>회원가입이 완료되었습니다.</p>
+
+                <p>로그인을 진행해주세요.</p>
+              </div>
+            ),
+            type: 'success',
+          });
         } else {
           router.push('/home');
         }
@@ -70,6 +89,7 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
     },
     onError: (err) => {
       const errorMessage = ERROR_CODE_MESSAGE_MAP[err?.response?.data?.message];
+      setOpenTerms(false);
 
       // 동일한 이름과 생년월일을 가진 유저가 있을 때
       if (err.response.data.message === 'EU400002') {
@@ -78,18 +98,62 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
     },
   });
 
+  const handleValidateFormdata = async () => {
+    let allValid = false;
+
+    if (registerMethod === 'local') {
+      allValid = await trigger(
+        [
+          'nickname',
+          'userName',
+          'birthday',
+          'email',
+          'password',
+          'confirmPassword',
+          'checkNickname',
+          'checkEmail',
+        ],
+        { shouldFocus: true },
+      );
+    } else {
+      allValid = await trigger(
+        ['nickname', 'userName', 'birthday', 'email', 'checkNickname', 'checkEmail'],
+        { shouldFocus: true },
+      );
+    }
+
+    if (allValid) {
+      setOpenTerms(true);
+    }
+  };
+
   const onSubmit: SubmitHandler<TRegisterFormValues> = async (data) => {
+    if (!termValues?.useterm || !termValues?.privacy) {
+      setTermRequired(true);
+
+      return;
+    }
+
     const formdata = new FormData();
 
     if (data.provider !== 'local') {
       formdata.append(
         'controllerRequestDto',
-        JSON.stringify({ ...data, provider: registerMethod, imgUrl: imageSrc }),
+        JSON.stringify({
+          ...data,
+          provider: registerMethod,
+          imgUrl: imageSrc,
+          marketingOptIn: termValues?.marketing,
+        }),
       );
     } else {
       formdata.append(
         'controllerRequestDto',
-        JSON.stringify({ ...data, provider: registerMethod }),
+        JSON.stringify({
+          ...data,
+          provider: registerMethod,
+          marketingOptIn: termValues?.marketing,
+        }),
       );
     }
 
@@ -102,6 +166,9 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
 
   useEffect(() => {
     if (socialUserData) {
+      unregister('password');
+      unregister('confirmPassword');
+
       setValue('nickname', socialUserData.nickname);
       setValue('birthday', socialUserData.birthday);
       setValue('email', socialUserData.email);
@@ -114,10 +181,17 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
         setImageSrc(socialUserData.imgUrl);
       }
     }
-  }, [registerMethod, setImageSrc, setValue, socialUserData]);
+  }, [registerMethod, setImageSrc, setValue, socialUserData, unregister]);
+
+  useEffect(() => {
+    if (!openTerms) {
+      // 약관 동의 창이 닫혔을 때 약관 오류 리셋
+      setTermRequired(false);
+    }
+  }, [openTerms]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} id="register-form">
       <div className="mb-[56px] flex flex-col gap-2">
         <CheckNicknameInput
           register={register}
@@ -169,9 +243,42 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
         )}
       </div>
 
-      <Button type="submit" full>
+      <Button full onClick={handleValidateFormdata}>
         <Text color="white01">회원가입</Text>
       </Button>
+
+      <BottomSheet
+        isOpen={openTerms}
+        onClose={() => setOpenTerms(false)}
+        title="약관 동의"
+        buttons={
+          <div>
+            <div className="mb-2 min-h-6">
+              {termRequired && openTerms && (
+                <Text fontSize={14} color="red01" className="text-center">
+                  {TERM_REQUIRED}
+                </Text>
+              )}
+            </div>
+
+            <div className="flex w-full items-center justify-between gap-3">
+              <Button buttonColor="grey06" onClick={() => setOpenTerms(false)}>
+                닫기
+              </Button>
+
+              <Button full type="submit" form="register-form">
+                동의하고 회원가입
+              </Button>
+            </div>
+          </div>
+        }
+      >
+        <div className="relative flex w-full flex-col justify-between gap-18 px-5">
+          <div className="overflow-x-hidden overflow-y-auto">
+            <CheckAll options={TERMS_OPTIONS} values={termValues} setValues={setTermsValues} />
+          </div>
+        </div>
+      </BottomSheet>
     </form>
   );
 };

@@ -15,7 +15,6 @@ const Toast = () => {
   return (
     <ToastContainer
       toastClassName="custom-toast"
-      autoClose={5000}
       closeButton={CloseButton}
       icon={({ type }) => {
         // theme is not used in this example but you could

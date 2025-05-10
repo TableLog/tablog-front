@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { Text } from '@/components/atoms/text/Text';
 import { showToast } from '@/utils/functions';
 
 interface IProfileImage {
@@ -39,7 +40,7 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-2">
       <label className="inline">
         <input
           type="file"
@@ -67,6 +68,22 @@ export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IP
           </div>
         </div>
       </label>
+
+      <div className="min-h-6">
+        {imageSrc && (
+          <Text
+            fontSize={14}
+            color="red01"
+            className="text-center"
+            onClick={() => {
+              setImageSrc('');
+              setImageFile(null);
+            }}
+          >
+            이미지 삭제
+          </Text>
+        )}
+      </div>
     </div>
   );
 }

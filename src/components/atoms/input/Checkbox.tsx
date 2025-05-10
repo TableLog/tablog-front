@@ -35,7 +35,7 @@ interface ICheckboxesPros {
   label: string;
   name: string;
   content: string;
-  value: boolean;
+  value?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
 }
 const Checkboxes = ({ label, name, content, value, onChange }: ICheckboxesPros) => {
@@ -85,8 +85,13 @@ const Checkboxes = ({ label, name, content, value, onChange }: ICheckboxesPros) 
         </div>
       </div>
 
-      <div className={cn(contentHeightClass, 'bg-grey08 transition-all-3 mt-1.5 overflow-y-auto')}>
-        <div className={cn(contentHiddenClass, 'pt-3 pr-5 pb-3 pl-3')}>
+      <div
+        className={cn(
+          contentHeightClass,
+          'bg-grey08 transition-all-3 mt-1.5 overflow-x-hidden overflow-y-auto',
+        )}
+      >
+        <div className={cn(contentHiddenClass, 'pt-3 pr-5 pb-3 pl-5')}>
           <Text fontSize={12}>{content}</Text>
         </div>
       </div>

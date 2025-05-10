@@ -1,28 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react';
+// TextInput.stories.tsx
+
+import React, { useState } from 'react';
+import { Meta } from '@storybook/react';
 
 import { TERMS_OPTIONS } from '@/constants/options.constants';
 
 import CheckAll from './CheckAll';
 
-const meta = {
-  title: 'Molecules/CheckAll',
+export default {
+  title: 'Atoms/CheckAll',
   component: CheckAll,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
-  render: (args) => (
-    <div className="w-[420px]">
-      <CheckAll {...args} />
+} as Meta;
+
+export const CheckAllExample = () => {
+  const [values, setValues] = useState<Record<string, boolean>>();
+
+  return (
+    <div>
+      <CheckAll options={TERMS_OPTIONS} values={values} setValues={setValues} />
     </div>
-  ),
-} satisfies Meta<typeof CheckAll>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const CheckAllComponent: Story = {
-  args: {
-    options: TERMS_OPTIONS,
-  },
+  );
 };

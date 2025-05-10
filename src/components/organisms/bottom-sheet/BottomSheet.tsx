@@ -16,6 +16,7 @@ interface BottomSheetProps {
   showBackdrop?: boolean;
   children: React.ReactNode;
   title?: string;
+  buttons?: React.ReactNode;
 }
 
 export default function BottomSheet({
@@ -25,6 +26,7 @@ export default function BottomSheet({
   showBackdrop = true,
   children,
   title,
+  buttons,
 }: BottomSheetProps) {
   const [isClosing, setIsClosing] = useState(false);
 
@@ -54,8 +56,8 @@ export default function BottomSheet({
             {/* Bottom Sheet */}
             <motion.div
               className={clsx(
-                'bg-white01 pointer-events-auto relative w-full rounded-tl-[20px] rounded-tr-[20px] shadow-lg',
-                showBackdrop ? 'h-1/2' : 'h-full',
+                'bg-white01 pointer-events-auto relative flex h-fit w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] pb-6 shadow-lg',
+                showBackdrop ? 'max-h-[80%] min-h-1/2' : 'min-h-full',
               )}
               initial={{ y: '100%' }}
               animate={{ y: isClosing ? '100%' : 0 }}
@@ -65,28 +67,33 @@ export default function BottomSheet({
               }
               drag="y"
               dragConstraints={{ top: 0, bottom: 0 }}
-              onDragEnd={(e, info) => {
-                if (info.point.y > 100) {
-                  setIsClosing(true);
-                }
-              }}
+              // TODO: 내부의 컨텐츠에 스크롤할 일이 있으면 닫힘
+              // onDragEnd={(e, info) => {
+              //   if (info.point.y > 100) {
+              //     setIsClosing(true);
+              //   }
+              // }}
               onAnimationComplete={() => {
                 if (isClosing) onClose();
               }}
             >
-              {showHandlebar && (
-                <div className="flex justify-center py-2">
-                  <div className={clsx('bg-grey01 h-1.5 w-12 rounded-full')} />
-                </div>
-              )}
+              <div>
+                {showHandlebar && (
+                  <div className="flex justify-center pt-4 pb-3">
+                    <div className={clsx('bg-grey07 h-1.5 w-[150px] rounded-full')} />
+                  </div>
+                )}
 
-              {title && (
-                <Text fontSize={20} fontWeight="semiBold" className="text-center">
-                  {title}
-                </Text>
-              )}
+                {title && (
+                  <Text fontSize={20} fontWeight="semiBold" className="text-center">
+                    {title}
+                  </Text>
+                )}
+              </div>
 
-              {children}
+              <div className="flex-1 overflow-y-auto pt-9 pb-5">{children}</div>
+
+              {buttons && <div className="mt-5 px-5">{buttons}</div>}
             </motion.div>
           </div>
         </AnimatePresence>,

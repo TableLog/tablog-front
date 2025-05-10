@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImage from '@/components/molecules/profile-image/ProfileImage';
@@ -10,6 +10,7 @@ import RegisterForm from './@form/page';
 
 const Register = () => {
   const params = useParams();
+  const router = useRouter();
 
   const isRegisterMethod = (method: string | undefined): method is 'google' | 'kakao' | 'local' => {
     return method === 'google' || method === 'kakao' || method === 'local';
@@ -23,7 +24,6 @@ const Register = () => {
 
   const [imageSrc, setImageSrc] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
-  // const [openTerms, setOpenTerms] = useState(true);
 
   const pageTitle = useMemo(() => {
     if (registerMethod === 'local') {
@@ -41,6 +41,18 @@ const Register = () => {
     return '이메일 회원가입';
   }, [registerMethod]);
 
+  useEffect(() => {
+    if (registerMethod !== 'local') {
+      const navigationType = performance.getEntriesByType(
+        'navigation',
+      )[0] as PerformanceNavigationTiming;
+
+      if (navigationType?.type === 'reload') {
+        router.replace('/login');
+      }
+    }
+  }, [registerMethod, router]);
+
   return (
     <div>
       <PageHeader back title={pageTitle} backUrl="/login" />
@@ -55,20 +67,6 @@ const Register = () => {
         imageSrc={imageSrc}
         setImageSrc={setImageSrc}
       />
-
-      {/* <BottomSheet isOpen={openTerms} onClose={() => setOpenTerms(false)} title="약관 동의">
-        <div className="flex h-full w-full flex-col justify-between px-5 pt-9">
-          <div className="max-h-[50%] overflow-auto">
-            <CheckAll options={TERMS_OPTIONS} />
-          </div>
-
-          <div className="flex w-full items-center justify-between gap-3">
-            <Button buttonColor="grey06">닫기</Button>
-
-            <Button full>동의하고 회원가입</Button>
-          </div>
-        </div>
-      </BottomSheet> */}
     </div>
   );
 };

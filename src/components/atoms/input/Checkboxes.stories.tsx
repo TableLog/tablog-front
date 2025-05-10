@@ -19,7 +19,7 @@ interface ICheckboxesPros {
   label: string;
   name: string;
   content: string;
-  value: boolean;
+  value?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
 }
 export const CheckboxesWithState = (props: ICheckboxesPros) => {

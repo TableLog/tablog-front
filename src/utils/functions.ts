@@ -8,7 +8,7 @@ import { APIErrorResponse, TRegisterFormValues } from '@/types/api';
 
 export function hanldeApiError(error: unknown): never {
   console.info('running handle api error');
-  // AxiosError type과 커스텀 에러 response type을 같이 사용
+
   if (axios.isAxiosError<APIErrorResponse>(error) && error.response) {
     if (error.status === 403) {
       console.error('토큰을 확인해주세요');

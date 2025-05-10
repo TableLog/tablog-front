@@ -6,9 +6,9 @@ import {
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
+  NAME_FORMAT,
   NAME_REQUIRED,
   NICKNAME_CHECK_REQUIRED,
-  NICKNAME_FORMAT,
   NICKNAME_REQUIRED,
   PASSWORD_CONFIRM_INVALID,
   PASSWORD_CONFIRM_REQUIRED,
@@ -17,6 +17,8 @@ import {
 } from '@/constants/validation.constants';
 
 export const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+export const NICKNAME_REGEX = /^[a-zA-Z0-9가-힣]+$/i;
+export const USERNAME_REGEX = /^[가-힣]+$/i;
 
 const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
 
@@ -24,17 +26,24 @@ const BIRTH_FORMAT_REGEX = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD 형식의 정규
 const BIRTH_VALID_REGEX = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/; // YYYY-MM-DD 각 자리에 유효한 생년월일인지 확인
 
 // NOTE: 회원가입
-export const zodRegister = z
+export const zodEmailRegister = z
   .object({
     provider: z.string(),
-    nickname: z.string().min(1, NICKNAME_REQUIRED).max(10, NICKNAME_FORMAT),
-    email: z.string(),
-    password: z.string(),
-    confirmPassword: z.string(),
-    userName: z.string().min(1, { message: NAME_REQUIRED }),
+    nickname: z
+      .string({ message: NICKNAME_REQUIRED })
+      .min(2, NICKNAME_REQUIRED)
+      .max(10, NICKNAME_REQUIRED)
+      .regex(NICKNAME_REGEX, { message: NAME_FORMAT }),
+    email: z.string({ message: EMAIL_REQUIRED }),
+    password: z.string({ message: PASSWORD_REQUIRED }),
+    confirmPassword: z.string({ message: PASSWORD_CONFIRM_REQUIRED }),
+    userName: z
+      .string({ message: NAME_REQUIRED })
+      .min(1, { message: NAME_REQUIRED })
+      .regex(USERNAME_REGEX, { message: NAME_FORMAT }),
     birthday: z.optional(
       z
-        .string()
+        .string({ message: BIRTH_REQUIRED })
         .regex(BIRTH_FORMAT_REGEX, {
           message: BIRTH_REQUIRED,
         })
@@ -101,10 +110,56 @@ export const zodRegister = z
     path: ['email'],
   });
 
+export const zodSocialRegister = z
+  .object({
+    provider: z.string(),
+    nickname: z
+      .string({ message: NICKNAME_REQUIRED })
+      .min(2, NICKNAME_REQUIRED)
+      .max(10, NICKNAME_REQUIRED)
+      .regex(NICKNAME_REGEX, { message: NAME_FORMAT }),
+    email: z.string({ message: EMAIL_REQUIRED }),
+    userName: z
+      .string({ message: NAME_REQUIRED })
+      .min(1, { message: NAME_REQUIRED })
+      .regex(USERNAME_REGEX, { message: NAME_FORMAT }),
+    birthday: z.optional(
+      z
+        .string({ message: BIRTH_REQUIRED })
+        .regex(BIRTH_FORMAT_REGEX, {
+          message: BIRTH_REQUIRED,
+        })
+        .regex(BIRTH_VALID_REGEX, {
+          message: BIRTH_FORMAT,
+        }),
+    ),
+    checkEmail: z.boolean().refine((value) => value === true, {
+      message: EMAIL_CHECK_REQUIRED,
+    }),
+    checkNickname: z.boolean().refine((value) => value === true, {
+      message: NICKNAME_CHECK_REQUIRED,
+    }),
+    marketingOptIn: z.boolean().optional(),
+  })
+  .refine((data) => data.checkNickname === true, {
+    message: NICKNAME_CHECK_REQUIRED,
+    path: ['nickname'],
+  })
+  .refine((data) => data.checkEmail === true, {
+    message: EMAIL_CHECK_REQUIRED,
+    path: ['email'],
+  });
+
 // NOTE: 로그인
 export const zodLogin = z.object({
-  email: z.string().min(1, EMAIL_REQUIRED).email({ message: EMAIL_FORMAT }),
-  password: z.string().min(1, { message: PASSWORD_REQUIRED }).regex(PASSWORD_REGEX, {
-    message: PASSWORD_FORMAT,
-  }),
+  email: z
+    .string({ message: EMAIL_REQUIRED })
+    .min(1, EMAIL_REQUIRED)
+    .email({ message: EMAIL_FORMAT }),
+  password: z
+    .string({ message: PASSWORD_REQUIRED })
+    .min(1, { message: PASSWORD_REQUIRED })
+    .regex(PASSWORD_REGEX, {
+      message: PASSWORD_FORMAT,
+    }),
 });

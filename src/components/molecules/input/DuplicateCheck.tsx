@@ -15,10 +15,11 @@ import {
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
   NICKNAME_CHECK_SUCCESS,
+  NICKNAME_FORMAT,
   NICKNAME_REQUIRED,
 } from '@/constants/validation.constants';
 import { useCheckEmail, useCheckNickname } from '@/hooks/auth.hooks';
-import { EMAIL_REGEX } from '@/lib/zod/zodValidation';
+import { EMAIL_REGEX, NICKNAME_REGEX } from '@/lib/zod/zodValidation';
 import { TRegisterFormValues } from '@/types/api';
 
 interface IDuplicateCheck {
@@ -45,7 +46,7 @@ export const CheckEmailInput = ({
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsChecked(true);
-        clearErrors();
+        clearErrors('email');
         setValue('checkEmail', true);
         setSuccessMessage(true);
       }
@@ -77,6 +78,7 @@ export const CheckEmailInput = ({
     <TextInput
       type="email"
       category="email"
+      inputMode="email"
       buttonText="중복 확인"
       register={register}
       errors={errors}
@@ -102,7 +104,7 @@ export const CheckNicknameInput = ({
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsChecked(true);
-        clearErrors();
+        clearErrors('nickname');
         setValue('checkNickname', true);
         setSuccessMessage(true);
       }
@@ -120,6 +122,11 @@ export const CheckNicknameInput = ({
     if (nickname === '') {
       setError('nickname', { message: NICKNAME_REQUIRED });
       return;
+    }
+
+    if (!nickname.match(NICKNAME_REGEX)) {
+      setError('nickname', { message: NICKNAME_FORMAT });
+      return undefined;
     }
 
     checkNickname(nickname);

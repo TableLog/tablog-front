@@ -81,6 +81,7 @@ export const UserInfo = async () => {
     return await instance.get(USER_INFO_URL);
   } catch (error) {
     hanldeApiError(error);
+
     throw error;
   }
 };
