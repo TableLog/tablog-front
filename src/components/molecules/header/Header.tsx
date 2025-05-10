@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import Title from '@/components/atoms/title/Title';
@@ -9,9 +10,12 @@ import Notification from '@/components/pages/Notification';
 import Search from '@/components/pages/Search';
 
 const Header = () => {
+  const router = useRouter();
+
   const [isSearching, setIsSearching] = useState(false);
   const [isNotichecking, setIsNotichecking] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
   const getContent = () => {
     if (isSearching) return <Search />;
     if (isNotichecking) return <Notification />;
@@ -31,6 +35,7 @@ const Header = () => {
   };
 
   const onToMain = () => {
+    router.push('/home');
     setIsNotichecking(false);
     setIsSearching(false);
     setIsOpen(false);

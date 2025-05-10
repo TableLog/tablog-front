@@ -1,33 +1,32 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React from 'react';
+import { usePathname } from 'next/navigation';
 
 import NavigationMenu from '@/components/molecules/navigation-menu/NavigationMenu';
 
 const Navigation = () => {
-  const [isMenuOn, setIsMenuOn] = useState<number>(0);
+  const pathname = usePathname();
+
+  console.log(pathname, 'pathname');
 
   const MENU_ARR = [
-    { id: 1, name: '홈', iconName: 'home-smile' },
-    { id: 2, name: '레시피', iconName: 'book' },
-    { id: 3, name: '피드', iconName: 'message-square-dots' },
-    { id: 4, name: 'MY', iconName: 'user' },
+    { id: 1, name: '홈', iconName: 'home-smile', href: '/home' },
+    { id: 2, name: '레시피', iconName: 'book', href: '/recipe' },
+    { id: 3, name: '피드', iconName: 'message-square-dots', href: '/feed' },
+    { id: 4, name: 'MY', iconName: 'user', href: '/my' },
   ];
-
-  const handleMenuActiveChange = useCallback((i: number) => {
-    setIsMenuOn(i);
-  }, []);
 
   return (
     <nav className="align-center bg-white01 border-grey07 fixed bottom-0 box-border flex h-[72px] max-h-[80px] w-full max-w-[100svw] justify-between border-t-1 px-[20px]">
-      {MENU_ARR.map((menu, i) => {
+      {MENU_ARR.map((menu) => {
         return (
           <NavigationMenu
             key={menu.id}
-            onClick={() => handleMenuActiveChange(i)}
             menuName={menu.name}
             iconName={menu.iconName}
-            isActive={i === isMenuOn}
+            isActive={pathname.includes(menu.href)}
+            href={menu.href}
           />
         );
       })}

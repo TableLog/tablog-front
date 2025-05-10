@@ -12,6 +12,9 @@ import '@/styles/common.css';
 export const metadata: Metadata = {
   title: '식탁일기 | Tablog',
   description: '한 끼의 기록이 일상이 되다',
+  icons: {
+    icon: '/icons/favicon.ico',
+  },
 };
 
 export default function RootLayout({
