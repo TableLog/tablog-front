@@ -11,7 +11,7 @@ interface IProfileImage {
   setImageFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
-export default function ProfileImage({ imageSrc, setImageSrc, setImageFile }: IProfileImage) {
+export default function ProfileImageInput({ imageSrc, setImageSrc, setImageFile }: IProfileImage) {
   const imgRef = useRef<HTMLInputElement>(null);
 
   const onChangeImageFile = () => {

@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
-import ProfileImage from '@/components/molecules/profile-image-input/ProfileImageInput';
+import ProfileImageInput from '@/components/molecules/profile-image-input/ProfileImageInput';
 
 import RegisterForm from './@form/page';
 
@@ -54,11 +54,15 @@ const Register = () => {
   }, [registerMethod, router]);
 
   return (
-    <div>
+    <div className="py-4">
       <PageHeader back title={pageTitle} backUrl="/login" />
 
       <div className="mt-8 mb-8 flex items-center justify-center">
-        <ProfileImage imageSrc={imageSrc} setImageSrc={setImageSrc} setImageFile={setImageFile} />
+        <ProfileImageInput
+          imageSrc={imageSrc}
+          setImageSrc={setImageSrc}
+          setImageFile={setImageFile}
+        />
       </div>
 
       <RegisterForm

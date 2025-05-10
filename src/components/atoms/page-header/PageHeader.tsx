@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +15,7 @@ const PageHeader = ({ backUrl, back, title, children }: IPageHeader) => {
   const router = useRouter();
 
   return (
-    <div className="relative flex items-center justify-between py-4">
+    <div className="relative flex items-center justify-between pb-4">
       {back && (
         <div
           onClick={() => {

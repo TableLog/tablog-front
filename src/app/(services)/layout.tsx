@@ -18,7 +18,7 @@ export default async function AfterLoginLayout({
       <Header token={accessToken} />
 
       <main className="bg-primary01 w-full">
-        <div className="bg-white01 min-h-[calc(100svh-132px)] rounded-tl-[24px] rounded-tr-[24px]">
+        <div className="bg-white01 relative max-h-[calc(100svh-132px)] overflow-y-auto rounded-tl-[24px] rounded-tr-[24px]">
           {children}
         </div>
       </main>

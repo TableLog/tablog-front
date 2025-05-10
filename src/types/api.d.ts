@@ -5,6 +5,19 @@ export type APIErrorResponse = {
   name: string;
 };
 
+export type TUserData = {
+  id: number;
+  userName: string;
+  userRole: string;
+  birthday: string;
+  email: string;
+  marketingOptIn: boolean;
+  nickname: string;
+  pointBalance: boolean;
+  profileImgUrl: string;
+  provider: string;
+};
+
 export type TRegisterFormValues = {
   email: string;
   password: string;
@@ -24,6 +37,18 @@ export type TLoginFormValues = {
   password: string;
 };
 
+export type TUserInfoEditFormValues = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  nickname: string;
+  imgUrl?: string;
+  marketingOptIn: boolean;
+  checkNickname: boolean;
+  checkEmail: boolean;
+  provider: string;
+};
+
 export interface IApiErrorResponse {
   code: string;
   message: string;
@@ -36,3 +61,5 @@ export interface IMutationOptions {
   onSuccess?: (res) => void;
   onError?: (res) => void;
 }
+
+export type TTablogFormValues = TRegisterFormValues | TUserInfoEditFormValues;

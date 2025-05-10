@@ -7,12 +7,13 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { useGetUserInfo, useLogout } from '@/hooks/auth.hooks';
 import { cn } from '@/utils/cn';
 
 const MyPage = () => {
   const router = useRouter();
 
+  const { mutate: logout } = useLogout();
   const { data: userData } = useGetUserInfo();
 
   const userStaticsList = [
@@ -31,6 +32,15 @@ const MyPage = () => {
     { id: 6, title: '채팅 목록', href: '/my/chats' },
     { id: 7, title: '장보기 메모', href: '/my/shopping-list' },
     { id: 8, title: '관리자에게 문의하기', href: '/my/inquiry' },
+    {
+      id: 9,
+      title: '로그아웃',
+      href: '/login',
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        logout();
+      },
+    },
   ];
 
   return (
@@ -90,7 +100,14 @@ const MyPage = () => {
           <section className="flex flex-col">
             {MyMenuList.map((menu) => {
               return (
-                <Link key={menu.id} href={menu.href} className="py-2">
+                <Link
+                  key={menu.id}
+                  href={menu.href}
+                  className="py-2"
+                  onClick={(e) => {
+                    if (menu.onClick) menu.onClick(e);
+                  }}
+                >
                   {menu.title}
                 </Link>
               );
