@@ -8,8 +8,6 @@ import NavigationMenu from '@/components/molecules/navigation-menu/NavigationMen
 const Navigation = () => {
   const pathname = usePathname();
 
-  console.log(pathname, 'pathname');
-
   const MENU_ARR = [
     { id: 1, name: '홈', iconName: 'home-smile', href: '/home' },
     { id: 2, name: '레시피', iconName: 'book', href: '/recipe' },

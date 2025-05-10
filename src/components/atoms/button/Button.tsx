@@ -44,7 +44,7 @@ export default function Button({
       type={type}
       form={rest.form}
       className={cn(
-        'btn self-stretch rounded-full border-none px-4 font-medium shadow-none',
+        'btn rounded-full border-none px-4 font-medium shadow-none',
         sizeClasses[size],
         colorClasses[buttonColor],
         isFullWidth,

@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
-import ProfileImage from '@/components/molecules/profile-image/ProfileImage';
+import ProfileImage from '@/components/molecules/profile-image-input/ProfileImageInput';
 
 import RegisterForm from './@form/page';
 

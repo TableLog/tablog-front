@@ -4,11 +4,11 @@ import React from 'react';
 
 import Navigation from '@/components/organisms/navigation/Navigation';
 import SplashScreen from '@/components/organisms/splash-screen/SplashScreen';
-import { useUserStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zutstand/userStore';
 import { Header } from '@/stories/Header';
 
 const Page = ({ children }: { children: React.ReactNode }) => {
-  const { isLoggedIn } = useUserStore((state) => state);
+  const { isLoggedIn } = useLoginStore((state) => state);
 
   return (
     <div>

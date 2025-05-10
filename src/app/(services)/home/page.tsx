@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useGetUserInfo, useLogout } from '@/hooks/auth.hooks';
+import { useLogout } from '@/hooks/auth.hooks';
 
 const Logout = () => {
   const { mutate: logout } = useLogout();
@@ -11,10 +11,6 @@ const Logout = () => {
 };
 
 const Home = () => {
-  const { data: userData } = useGetUserInfo();
-
-  console.log(userData, 'data');
-
   return (
     <div>
       <p>Home Page</p>

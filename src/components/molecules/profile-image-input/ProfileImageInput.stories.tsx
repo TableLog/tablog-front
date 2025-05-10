@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta } from '@storybook/react';
 
-import ProfileImage from './ProfileImage';
+import ProfileImage from './ProfileImageInput';
 
 const meta = {
   title: 'molecules/ProfileImage',
