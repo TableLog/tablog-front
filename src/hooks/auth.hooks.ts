@@ -9,6 +9,7 @@ import {
   EmailLogin,
   Logout,
   RegisterUser,
+  SocialLink,
   SocialLogin,
   UserInfo,
   UserInfoUpdate,
@@ -46,11 +47,12 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: () => Logout(),
-    onSuccess: async (res) => {
+    onSuccess: (res) => {
       if (res.status === 200) {
-        await queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
-        setIsLoggedIn(false);
         router.push('/login');
+
+        queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
+        setIsLoggedIn(false);
       }
     },
   });
@@ -95,9 +97,20 @@ export function useGetUserInfo() {
   });
 }
 
+// 유저 정보 수정
 export function useUpdateUserInfo(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (formData: FormData) => UserInfoUpdate(formData),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+// 소셜 연동
+export function useSocialLink(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
+      SocialLink(provider, code),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });

@@ -23,10 +23,9 @@ import { showToast } from '@/utils/functions';
 interface IRegisterForm {
   registerMethod: 'local' | 'kakao' | 'google';
   imageFile: File | null;
-  imageSrc: string;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
 }
-const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IRegisterForm) => {
+const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm) => {
   const router = useRouter();
 
   const { socialUserData, clearSocialUserData } = useUserStore();
@@ -44,6 +43,7 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
     setError,
     clearErrors,
     trigger,
+    reset,
     formState: { errors },
   } = useForm<TRegisterFormValues>({
     resolver: zodResolver(registerMethod === 'local' ? zodEmailRegister : zodSocialRegister),
@@ -66,6 +66,8 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
   const { mutate: registerUser } = useRegisterUser({
     onSuccess: (res) => {
       if (res.status === 201) {
+        reset();
+
         if (registerMethod === 'local') {
           router.push('/login');
 
@@ -141,6 +143,7 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
         'controllerRequestDto',
         JSON.stringify({
           ...data,
+          imgUrl: imageFile === null && socialUserData?.imgUrl ? socialUserData?.imgUrl : '',
           provider: registerMethod,
           marketingOptIn: termValues?.marketing,
         }),

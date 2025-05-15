@@ -37,9 +37,7 @@ const LoginForm = () => {
   });
 
   const { mutate: emailLogin } = useEmailLogin({
-    onSuccess: async (data) => {
-      console.log(data, 'data');
-
+    onSuccess: async () => {
       if (rememberEmail) {
         localStorage.setItem(LOCAL_REMEMBER_EMAIL, watch('email'));
       } else {

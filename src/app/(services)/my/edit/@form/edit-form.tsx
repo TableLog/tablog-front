@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
 
+import { SocialButtons } from '@/app/(auth)/login/social/SocialButtons';
 import Button from '@/components/atoms/button/Button';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
 import TextInput from '@/components/atoms/input/TextInput';
@@ -183,6 +185,34 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
         <Button full type="submit">
           <Text color="white01">수정하기</Text>
         </Button>
+
+        <div className="my-12">
+          <div className="divider">
+            <Text fontSize={12} color="grey02">
+              {userData?.oAuthAccounts ? 'SNS 계정' : 'SNS 계정 연동하기'}
+            </Text>
+          </div>
+
+          {userData?.oAuthAccounts?.length > 0 ? (
+            <div>
+              {userData?.oAuthAccounts?.map((social) => {
+                return (
+                  <div key={social.email} className="flex items-center gap-2">
+                    {social?.provider === 'google' ? (
+                      <Image src="/icons/google-logo.svg" alt="구글" width={20} height={20} />
+                    ) : (
+                      <Image src="/icons/kakao-logo.svg" alt="카카오" width={20} height={20} />
+                    )}
+
+                    <Text fontSize={14}>{social.email}</Text>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <SocialButtons />
+          )}
+        </div>
       </form>
     </div>
   );

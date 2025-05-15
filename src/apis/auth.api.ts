@@ -6,6 +6,7 @@ import {
   LOGOUT_URL,
   NICKNAME_CHECK_URL,
   REGISTER_URL,
+  SOCIAL_LINK_URL,
   SOCIAL_LOGIN_URL,
   USER_INFO_URL,
 } from '@/constants/endpoint.constants';
@@ -23,13 +24,7 @@ export const EmailLogin = async (data: TLoginFormValues) => {
 
 export const SocialLogin = async (provider: string | string[], code: string) => {
   try {
-    return await axios.post(
-      `${SOCIAL_LOGIN_URL}?provider=${provider}&code=${code}`,
-      {},
-      {
-        withCredentials: true,
-      },
-    );
+    return await instance.post(`${SOCIAL_LOGIN_URL}?provider=${provider}&code=${code}`, {});
   } catch (error) {
     throw error;
   }
@@ -91,6 +86,14 @@ export const UserInfoUpdate = async (formData: FormData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const SocialLink = async (provider: string | string[], code: string) => {
+  try {
+    return await instance.post(`${SOCIAL_LINK_URL}?provider=${provider}&code=${code}`, {});
   } catch (error) {
     throw error;
   }

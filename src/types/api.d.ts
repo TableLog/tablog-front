@@ -16,6 +16,11 @@ export type TUserData = {
   pointBalance: boolean;
   profileImgUrl: string;
   provider: string;
+  oAuthAccounts: Array<{ provider: string; email: string }>;
+  recipeCount: number;
+  boardCount: number;
+  followerCount: number;
+  followingCount: number;
 };
 
 export type TRegisterFormValues = {
@@ -49,10 +54,6 @@ export type TUserInfoEditFormValues = {
   checkNickname: boolean;
   checkEmail: boolean;
   provider: string;
-  recipeCount: number;
-  boardCount: number;
-  followerCount: number;
-  followingCount: number;
 };
 
 export interface IApiErrorResponse {

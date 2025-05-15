@@ -6,7 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImageInput from '@/components/molecules/profile-image-input/ProfileImageInput';
 
-import RegisterForm from './@form/page';
+import RegisterForm from './@form/register-form';
 
 const Register = () => {
   const params = useParams();
@@ -42,6 +42,7 @@ const Register = () => {
   }, [registerMethod]);
 
   useEffect(() => {
+    // 소셜 회원가입 중 새로고침하면 login 페이지로 이동
     if (registerMethod !== 'local') {
       const navigationType = performance.getEntriesByType(
         'navigation',
@@ -68,7 +69,6 @@ const Register = () => {
       <RegisterForm
         registerMethod={registerMethod}
         imageFile={imageFile}
-        imageSrc={imageSrc}
         setImageSrc={setImageSrc}
       />
     </div>

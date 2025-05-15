@@ -3,10 +3,11 @@
 import React, { useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
-import { useSocialLogin } from '@/hooks/auth.hooks';
-import { useUserStore } from '@/lib/zutstand/userStore';
+import { useSocialLink, useSocialLogin } from '@/hooks/auth.hooks';
+import { useLoginStore, useUserStore } from '@/lib/zutstand/userStore';
 
 const SocialRegister = () => {
+  const { isLoggedIn } = useLoginStore();
   const params = useSearchParams();
   const { provider } = useParams();
   const router = useRouter();
@@ -26,11 +27,13 @@ const SocialRegister = () => {
         }
       }
     },
-    onError: (res) => {
-      // 카카오 계정이 없을 때,
-      if (res.response.data.message === 'EU404001') {
-        if (code && provider) {
-          // socialLogin({ provider, code });
+  });
+
+  const { mutate: socialLink } = useSocialLink({
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        if (res.data.id) {
+          router.push(`/my/edit`);
         }
       }
     },
@@ -38,9 +41,13 @@ const SocialRegister = () => {
 
   useEffect(() => {
     if (code && provider) {
-      socialLogin({ provider, code });
+      if (isLoggedIn) {
+        socialLink({ provider, code });
+      } else {
+        socialLogin({ provider, code });
+      }
     }
-  }, [socialLogin, code, provider]);
+  }, [socialLogin, code, provider, isLoggedIn, socialLink]);
 
   return <div></div>;
 };

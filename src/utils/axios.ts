@@ -13,8 +13,6 @@ instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     // NOTE: 토근 만료시 refresh 요청
-    console.log(error, 'error');
-
     if (error.response?.status === 401) {
       try {
         await axios.post(REFRESH_URL, {}, { withCredentials: true });
