@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import {
   FieldErrors,
+  FieldValues,
+  Path,
+  PathValue,
   UseFormClearErrors,
   UseFormRegister,
   UseFormSetError,
@@ -20,25 +23,26 @@ import {
 } from '@/constants/validation.constants';
 import { useCheckEmail, useCheckNickname } from '@/hooks/auth.hooks';
 import { EMAIL_REGEX, NICKNAME_REGEX } from '@/lib/zod/zodValidation';
-import { TRegisterFormValues } from '@/types/api';
 
-interface IDuplicateCheck {
-  register: UseFormRegister<TRegisterFormValues>;
-  errors: FieldErrors<TRegisterFormValues>;
-  watch: UseFormWatch<TRegisterFormValues>;
-  setError: UseFormSetError<TRegisterFormValues>;
-  clearErrors: UseFormClearErrors<TRegisterFormValues>;
-  setValue: UseFormSetValue<TRegisterFormValues>;
+interface IDuplicateCheck<T extends FieldValues> {
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
+  watch: UseFormWatch<T>;
+  setError: UseFormSetError<T>;
+  clearErrors: UseFormClearErrors<T>;
+  setValue: UseFormSetValue<T>;
+  disabled?: boolean;
 }
 
-export const CheckEmailInput = ({
+export const CheckEmailInput = <T extends FieldValues>({
   register,
   errors,
   watch,
   setError,
   clearErrors,
   setValue,
-}: IDuplicateCheck) => {
+  disabled,
+}: IDuplicateCheck<T>) => {
   const [isChecked, setIsChecked] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
 
@@ -46,28 +50,28 @@ export const CheckEmailInput = ({
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsChecked(true);
-        clearErrors('email');
-        setValue('checkEmail', true);
+        clearErrors('email' as Path<T>);
+        setValue('checkEmail' as Path<T>, true as PathValue<T, Path<T>>);
         setSuccessMessage(true);
       }
     },
     onError: (error) => {
       const errorMessage = ERROR_CODE_MESSAGE_MAP[error?.response?.data?.message];
 
-      setError('email', { message: errorMessage });
+      setError('email' as Path<T>, { message: errorMessage });
     },
   });
 
   const handleCheckEmail = () => {
-    const email = watch('email');
+    const email = watch('email' as Path<T>) as string;
 
-    if (email === '') {
-      setError('email', { message: EMAIL_REQUIRED });
+    if (typeof email !== 'string' || email === '') {
+      setError('email' as Path<T>, { message: EMAIL_REQUIRED });
       return;
     }
 
     if (!email.match(EMAIL_REGEX)) {
-      setError('email', { message: EMAIL_FORMAT });
+      setError('email' as Path<T>, { message: EMAIL_FORMAT });
       return undefined;
     }
 
@@ -83,20 +87,20 @@ export const CheckEmailInput = ({
       register={register}
       errors={errors}
       buttonEvent={handleCheckEmail}
-      disabled={isChecked}
+      disabled={disabled || isChecked}
       successMessage={successMessage ? EMAIL_CHECK_SUCCESS : undefined}
     />
   );
 };
 
-export const CheckNicknameInput = ({
+export const CheckNicknameInput = <T extends FieldValues>({
   register,
   errors,
   watch,
   setError,
   clearErrors,
   setValue,
-}: IDuplicateCheck) => {
+}: IDuplicateCheck<T>) => {
   const [isChecked, setIsChecked] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
 
@@ -104,28 +108,28 @@ export const CheckNicknameInput = ({
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsChecked(true);
-        clearErrors('nickname');
-        setValue('checkNickname', true);
+        clearErrors('nickname' as Path<T>);
+        setValue('checkNickname' as Path<T>, true as PathValue<T, Path<T>>);
         setSuccessMessage(true);
       }
     },
     onError: (error) => {
       const errorMessage = ERROR_CODE_MESSAGE_MAP[error?.response?.data?.message];
 
-      setError('nickname', { message: errorMessage });
+      setError('nickname' as Path<T>, { message: errorMessage });
     },
   });
 
   const handleCheckNickname = () => {
-    const nickname = watch('nickname');
+    const nickname = watch('nickname' as Path<T>) as string;
 
-    if (nickname === '') {
-      setError('nickname', { message: NICKNAME_REQUIRED });
+    if (typeof nickname !== 'string' || nickname === '') {
+      setError('nickname' as Path<T>, { message: NICKNAME_REQUIRED });
       return;
     }
 
     if (!nickname.match(NICKNAME_REGEX)) {
-      setError('nickname', { message: NICKNAME_FORMAT });
+      setError('nickname' as Path<T>, { message: NICKNAME_FORMAT });
       return undefined;
     }
 

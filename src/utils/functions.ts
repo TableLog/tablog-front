@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import { UseFormSetValue } from 'react-hook-form';
 import { Slide, toast } from 'react-toastify';
 import axios from 'axios';
 
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
-import { APIErrorResponse, TRegisterFormValues } from '@/types/api';
+import { APIErrorResponse } from '@/types/api';
 
 export function hanldeApiError(error: unknown): never {
   console.info('running handle api error');
@@ -57,18 +56,13 @@ export function useClickOutsideClose(
 }
 
 // NOTE: 생년월일 포맷 자동으로 조정 ("YYYY-MM-DD")
-export function changeInputBirthFormat(
-  e: React.ChangeEvent<HTMLInputElement>,
-  setValue?: UseFormSetValue<TRegisterFormValues>,
-) {
-  if (setValue) {
-    e.target.value = e.target.value
-      .replace(/[^0-9]/g, '')
-      .replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, '$1-$2-$3')
-      .replace(/(-{1,2})$/g, '');
+export function changeInputBirthFormat(e: React.ChangeEvent<HTMLInputElement>) {
+  e.target.value = e.target.value
+    .replace(/[^0-9]/g, '')
+    .replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, '$1-$2-$3')
+    .replace(/(-{1,2})$/g, '');
 
-    setValue('birthday', e.target.value);
-  }
+  return e.target.value;
 }
 
 interface ToastProps {

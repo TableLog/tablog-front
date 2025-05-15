@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import {
@@ -11,8 +11,10 @@ import {
   RegisterUser,
   SocialLogin,
   UserInfo,
+  UserInfoUpdate,
 } from '@/apis/auth.api';
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
+import { useLoginStore } from '@/lib/zutstand/userStore';
 import { IMutationOptions } from '@/types/api';
 
 // 로그인: 이메일
@@ -38,10 +40,16 @@ export function useSocialLogin(options?: IMutationOptions) {
 export function useLogout() {
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
+  const { setIsLoggedIn } = useLoginStore();
+
   return useMutation({
     mutationFn: () => Logout(),
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       if (res.status === 200) {
+        await queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
+        setIsLoggedIn(false);
         router.push('/login');
       }
     },
@@ -77,9 +85,20 @@ export function useCheckEmail(options?: IMutationOptions) {
 
 // 유저 정보
 export function useGetUserInfo() {
+  const { isLoggedIn } = useLoginStore();
+
   return useQuery({
     queryKey: [USER_INFO_QUERY_KEY],
     queryFn: () => UserInfo(),
+    enabled: isLoggedIn,
     select: (res) => res.data,
+  });
+}
+
+export function useUpdateUserInfo(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (formData: FormData) => UserInfoUpdate(formData),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
   });
 }

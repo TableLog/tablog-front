@@ -7,10 +7,11 @@ import { useSocialLogin } from '@/hooks/auth.hooks';
 import { useUserStore } from '@/lib/zutstand/userStore';
 
 const SocialRegister = () => {
-  const { setSocialUserData } = useUserStore();
   const params = useSearchParams();
   const { provider } = useParams();
   const router = useRouter();
+
+  const { setSocialUserData } = useUserStore();
 
   const code = params.get('code');
 

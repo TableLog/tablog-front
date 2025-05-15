@@ -1,10 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FieldErrors, FieldValues, Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import {
+  FieldErrors,
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormRegister,
+  UseFormSetValue,
+} from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
-import { TRegisterFormValues } from '@/types/api';
 import { cn } from '@/utils/cn';
 import { changeInputBirthFormat } from '@/utils/functions';
 
@@ -26,7 +32,7 @@ interface ITextInputProps<T extends FieldValues> {
   errors: FieldErrors<typeof LABEL_MAP>;
   inputMode?: 'text' | 'tel' | 'url' | 'email' | 'search' | 'numeric' | 'decimal';
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  setValue?: UseFormSetValue<TRegisterFormValues>;
+  setValue?: UseFormSetValue<T>;
   register: UseFormRegister<T>;
   successMessage?: string;
 }
@@ -53,7 +59,8 @@ const TextInput = <T extends FieldValues>({
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (category === 'birthday') {
-      changeInputBirthFormat(e, setValue);
+      const value = changeInputBirthFormat(e);
+      setValue?.('birthday' as Path<T>, value as PathValue<T, Path<T>>);
     }
 
     if (onChange) {

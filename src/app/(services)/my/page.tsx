@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -16,12 +16,19 @@ const MyPage = () => {
   const { mutate: logout } = useLogout();
   const { data: userData } = useGetUserInfo();
 
-  const userStaticsList = [
-    { id: 1, title: '레시피', value: 0 },
-    { id: 2, title: '일기', value: 0 },
-    { id: 3, title: '팔로워', value: 0, href: '/my/followers' },
-    { id: 4, title: '팔로잉', value: 0, href: '/my/followings' },
-  ];
+  const userStaticsList = useMemo(() => {
+    return [
+      { id: 1, title: '레시피', value: userData?.recipeCount },
+      { id: 2, title: '일기', value: userData?.boardCount },
+      { id: 3, title: '팔로워', value: userData?.followerCount, href: '/my/followers' },
+      { id: 4, title: '팔로잉', value: userData?.followingCount, href: '/my/followings' },
+    ];
+  }, [
+    userData?.boardCount,
+    userData?.followerCount,
+    userData?.followingCount,
+    userData?.recipeCount,
+  ]);
 
   const MyMenuList = [
     { id: 1, title: '찜한 목록', href: '/my/bookmark' },
@@ -49,7 +56,10 @@ const MyPage = () => {
         <div>
           <section className="mb-2.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <ProfileImage src={userData?.profileImgUrl} size={50} />
+              <ProfileImage
+                src={userData?.profileImgUrl || '/images/tablog-512x512.png'}
+                size={50}
+              />
 
               <Text fontSize={14}>{userData.nickname}</Text>
             </div>

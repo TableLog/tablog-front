@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -25,6 +25,7 @@ const LoginForm = () => {
     handleSubmit,
     setError,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<TLoginFormValues>({
     resolver: zodResolver(zodLogin),
@@ -36,7 +37,9 @@ const LoginForm = () => {
   });
 
   const { mutate: emailLogin } = useEmailLogin({
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      console.log(data, 'data');
+
       if (rememberEmail) {
         localStorage.setItem(LOCAL_REMEMBER_EMAIL, watch('email'));
       } else {
@@ -55,6 +58,13 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<TLoginFormValues> = async (data) => {
     emailLogin(data);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem(LOCAL_REMEMBER_EMAIL) !== null) {
+      setValue('email', localStorage.getItem(LOCAL_REMEMBER_EMAIL) || '');
+      setRememberEmail(true);
+    }
+  }, [setValue]);
 
   return (
     <div>

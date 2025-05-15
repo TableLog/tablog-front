@@ -56,7 +56,7 @@ const Header = ({ token }: { token?: string }) => {
   };
 
   return (
-    <div className="bg-primary01 flex h-[60px] w-[375px] items-center justify-between px-[20px] select-none">
+    <div className="bg-primary01 flex h-[60px] w-full items-center justify-between px-[20px] select-none">
       <Title onClick={onToMain} className="cursor-pointer" />
 
       <div className="flex gap-[10px]">

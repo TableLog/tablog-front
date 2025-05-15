@@ -23,7 +23,7 @@ const Navigation = () => {
             key={menu.id}
             menuName={menu.name}
             iconName={menu.iconName}
-            isActive={pathname.includes(menu.href)}
+            isActive={pathname?.includes(menu.href)}
             href={menu.href}
           />
         );

@@ -2,8 +2,7 @@
 
 import React from 'react';
 import { keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
@@ -20,7 +19,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <ReactQueryDevtools initialIsOpen={true} />
 
       {children}
     </QueryClientProvider>

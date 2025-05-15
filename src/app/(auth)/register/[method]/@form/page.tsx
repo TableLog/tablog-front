@@ -142,7 +142,6 @@ const RegisterForm = ({ registerMethod, imageFile, imageSrc, setImageSrc }: IReg
         JSON.stringify({
           ...data,
           provider: registerMethod,
-          imgUrl: imageSrc,
           marketingOptIn: termValues?.marketing,
         }),
       );

@@ -23,7 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.variable}`} suppressHydrationWarning>
+    <html
+      lang="ko"
+      data-theme="tablog" // daisyui custom theme - global.css
+      className={`${pretendard.variable}`}
+      suppressHydrationWarning
+    >
       <body className="max-w-[100svw] overflow-x-hidden" suppressHydrationWarning>
         <Provider>
           <Toast />

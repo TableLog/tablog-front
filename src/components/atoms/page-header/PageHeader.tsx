@@ -15,7 +15,7 @@ const PageHeader = ({ backUrl, back, title, children }: IPageHeader) => {
   const router = useRouter();
 
   return (
-    <div className="relative flex items-center justify-between pb-4">
+    <div className="sticky top-[16px] z-50 flex items-center justify-between pb-4">
       {back && (
         <div
           onClick={() => {

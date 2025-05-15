@@ -6,7 +6,7 @@ import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImageInput from '@/components/molecules/profile-image-input/ProfileImageInput';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
 
-import UserInfoEditForm from './@form/page';
+import UserInfoEditForm from './@form/edit-form';
 
 const EditPage = () => {
   const [imageSrc, setImageSrc] = useState('');
@@ -14,11 +14,10 @@ const EditPage = () => {
 
   const { data: userData } = useGetUserInfo();
 
-  console.log(userData, 'userData');
-
   useEffect(() => {
-    if (userData) {
+    if (userData && userData?.profileImgUrl) {
       setImageSrc(userData.profileImgUrl);
+      setImageFile(userData.profileImgUrl);
     }
   }, [userData]);
 
@@ -34,7 +33,7 @@ const EditPage = () => {
         />
       </div>
 
-      <UserInfoEditForm imageFile={imageFile} imageSrc={imageSrc} userData={userData} />
+      <UserInfoEditForm imageFile={imageFile} userData={userData} />
     </div>
   );
 };

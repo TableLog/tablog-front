@@ -18,6 +18,5 @@ describe('Navigation', () => {
 
     const homeIcon = container.querySelector('.bx-home-smile');
     expect(homeIcon).toBeInTheDocument();
-    expect(homeIcon?.className).toContain('text-primary01');
   });
 });

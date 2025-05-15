@@ -13,6 +13,8 @@ instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     // NOTE: 토근 만료시 refresh 요청
+    console.log(error, 'error');
+
     if (error.response?.status === 401) {
       try {
         await axios.post(REFRESH_URL, {}, { withCredentials: true });
@@ -24,7 +26,7 @@ instance.interceptors.response.use(
 
           // TODO: 잘 작동하는지 테스트
           if (message === 'EJ400001') {
-            await fetch('/api/logout', { method: 'POST' });
+            // await fetch('/api/logout', { method: 'POST' });
           }
         }
 

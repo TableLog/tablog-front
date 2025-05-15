@@ -39,6 +39,8 @@ export type TLoginFormValues = {
 
 export type TUserInfoEditFormValues = {
   email: string;
+  userName: string;
+  birthday: string;
   password: string;
   confirmPassword: string;
   nickname: string;
@@ -47,6 +49,10 @@ export type TUserInfoEditFormValues = {
   checkNickname: boolean;
   checkEmail: boolean;
   provider: string;
+  recipeCount: number;
+  boardCount: number;
+  followerCount: number;
+  followingCount: number;
 };
 
 export interface IApiErrorResponse {

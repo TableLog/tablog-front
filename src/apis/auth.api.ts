@@ -81,7 +81,17 @@ export const UserInfo = async () => {
     return await instance.get(USER_INFO_URL);
   } catch (error) {
     hanldeApiError(error);
+  }
+};
 
+export const UserInfoUpdate = async (formData: FormData) => {
+  try {
+    return await instance.put(USER_INFO_URL, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  } catch (error) {
     throw error;
   }
 };

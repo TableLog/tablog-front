@@ -33,7 +33,7 @@ export const zodEmailRegister = z
       .string({ message: NICKNAME_REQUIRED })
       .min(2, NICKNAME_REQUIRED)
       .max(10, NICKNAME_REQUIRED)
-      .regex(NICKNAME_REGEX, { message: NAME_FORMAT }),
+      .regex(NICKNAME_REGEX, { message: NICKNAME_REQUIRED }),
     email: z.string({ message: EMAIL_REQUIRED }),
     password: z.string({ message: PASSWORD_REQUIRED }),
     confirmPassword: z.string({ message: PASSWORD_CONFIRM_REQUIRED }),
@@ -71,7 +71,7 @@ export const zodEmailRegister = z
       path: ['confirmPassword'],
     },
   )
-  // provider가 'local'일 때만 password 유효성 검사
+  // TODO: provider가 'local'일 때만 password 유효성 검사
   .refine(
     (data) => {
       if (data.provider === 'local') {
@@ -118,7 +118,7 @@ export const zodSocialRegister = z
       .string({ message: NICKNAME_REQUIRED })
       .min(2, NICKNAME_REQUIRED)
       .max(10, NICKNAME_REQUIRED)
-      .regex(NICKNAME_REGEX, { message: NAME_FORMAT }),
+      .regex(NICKNAME_REGEX, { message: NICKNAME_REQUIRED }),
     email: z.string({ message: EMAIL_REQUIRED }),
     userName: z
       .string({ message: NAME_REQUIRED })
@@ -165,37 +165,91 @@ export const zodLogin = z.object({
     }),
 });
 
-// NOTE: 유저 정보 수정
-export const zodUserInfo = z
-  .object({
-    newEmail: z
-      .string({ message: EMAIL_REQUIRED })
-      .min(1, EMAIL_REQUIRED)
-      .email({ message: EMAIL_FORMAT }),
-    newPassword: z
-      .string({ message: PASSWORD_REQUIRED })
-      .min(1, { message: PASSWORD_REQUIRED })
-      .regex(PASSWORD_REGEX, {
-        message: PASSWORD_FORMAT,
-      }),
-    nickname: z
-      .string({ message: NICKNAME_REQUIRED })
-      .min(2, NICKNAME_REQUIRED)
-      .max(10, NICKNAME_REQUIRED)
-      .regex(NICKNAME_REGEX, { message: NAME_FORMAT }),
-    checkEmail: z.boolean().refine((value) => value === true, {
-      message: EMAIL_CHECK_REQUIRED,
-    }),
-    checkNickname: z.boolean().refine((value) => value === true, {
-      message: NICKNAME_CHECK_REQUIRED,
-    }),
-    marketingOptIn: z.boolean().optional(),
-  })
-  .refine((data) => data.checkNickname === true, {
-    message: NICKNAME_CHECK_REQUIRED,
-    path: ['nickname'],
-  })
-  .refine((data) => data.checkEmail === true, {
-    message: EMAIL_CHECK_REQUIRED,
-    path: ['email'],
-  });
+// NOTE: 이메일 회원 정보 수정
+export const zodEmailUserInfo = (originalEmail: string, originalNickname: string) =>
+  z
+    .object({
+      email: z
+        .string({ message: EMAIL_REQUIRED })
+        .min(1, EMAIL_REQUIRED)
+        .email({ message: EMAIL_FORMAT }),
+      password: z
+        .string({ message: PASSWORD_REQUIRED })
+        .optional()
+        .refine((val) => !val || PASSWORD_REGEX.test(val), {
+          message: PASSWORD_FORMAT,
+        }),
+      confirmPassword: z
+        .string({ message: PASSWORD_CONFIRM_REQUIRED })
+        .optional()
+        .refine((val) => !val || PASSWORD_REGEX.test(val), {
+          message: PASSWORD_FORMAT,
+        }),
+      nickname: z
+        .string({ message: NICKNAME_REQUIRED })
+        .min(2, NICKNAME_REQUIRED)
+        .max(10, NICKNAME_REQUIRED)
+        .regex(NICKNAME_REGEX, { message: NICKNAME_REQUIRED }),
+      checkEmail: z.boolean(),
+      checkNickname: z.boolean(),
+      marketingOptIn: z.boolean().optional(),
+    })
+    .refine(
+      (data) => {
+        if (data.email !== originalEmail) {
+          return data.checkEmail === true;
+        }
+        return true;
+      },
+      {
+        message: EMAIL_CHECK_REQUIRED,
+        path: ['email'],
+      },
+    )
+    .refine(
+      (data) => {
+        if (data.nickname !== originalNickname) {
+          return data.checkNickname === true;
+        }
+
+        return true;
+      },
+      {
+        message: NICKNAME_CHECK_REQUIRED,
+        path: ['nickname'],
+      },
+    )
+    .refine((data) => data.password === data.confirmPassword, {
+      message: PASSWORD_CONFIRM_INVALID,
+      path: ['confirmPassword'],
+    });
+
+// NOTE: 소셜 회원 정보 수정
+export const zodSocialUserInfo = (originalNickname: string) =>
+  z
+    .object({
+      email: z
+        .string({ message: EMAIL_REQUIRED })
+        .min(1, EMAIL_REQUIRED)
+        .email({ message: EMAIL_FORMAT }),
+      nickname: z
+        .string({ message: NICKNAME_REQUIRED })
+        .min(2, NICKNAME_REQUIRED)
+        .max(10, NICKNAME_REQUIRED)
+        .regex(NICKNAME_REGEX, { message: NICKNAME_REQUIRED }),
+      checkNickname: z.boolean(),
+      marketingOptIn: z.boolean().optional(),
+    })
+    .refine(
+      (data) => {
+        if (data.nickname !== originalNickname) {
+          return data.checkNickname === true;
+        }
+
+        return true;
+      },
+      {
+        message: NICKNAME_CHECK_REQUIRED,
+        path: ['nickname'],
+      },
+    );

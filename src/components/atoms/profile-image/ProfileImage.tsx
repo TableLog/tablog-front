@@ -12,7 +12,7 @@ const ProfileImage = ({ src, size }: IProfileImageProps) => {
 
   return (
     <figure className={cn(widthClass, 'image-figure aspect-square w-[50px] rounded-full')}>
-      <Image src={src} alt={src} width={size} height={size} className="image-cover" />
+      <Image src={src} alt={src} width={size} height={size} className="image-cover" priority />
     </figure>
   );
 };
