@@ -1,17 +1,12 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { useSocialLogin } from '@/hooks/auth.hooks';
-import { useLoginStore, useUserStore } from '@/lib/zutstand/userStore';
+import { useUserStore } from '@/lib/zutstand/userStore';
 
 const SocialRegister = () => {
-  const queryClient = useQueryClient();
-
-  const { isLoggedIn } = useLoginStore();
-
   const params = useSearchParams();
   const { provider } = useParams();
   const router = useRouter();
@@ -37,7 +32,7 @@ const SocialRegister = () => {
     if (code && provider) {
       socialLogin({ provider, code });
     }
-  }, [socialLogin, code, provider, isLoggedIn, queryClient]);
+  }, [socialLogin, code, provider]);
 
   return <div>소셜 로그인 진행중입니다...</div>;
 };

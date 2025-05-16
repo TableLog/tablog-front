@@ -6,12 +6,9 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
 import { useSocialLink } from '@/hooks/auth.hooks';
-import { useLoginStore } from '@/lib/zutstand/userStore';
 
 const SocialRegister = () => {
   const queryClient = useQueryClient();
-
-  const { isLoggedIn } = useLoginStore();
 
   const params = useSearchParams();
   const { provider } = useParams();
@@ -33,7 +30,7 @@ const SocialRegister = () => {
     if (code && provider) {
       socialLink({ provider, code });
     }
-  }, [code, provider, isLoggedIn, socialLink, queryClient]);
+  }, [code, provider, socialLink]);
 
   return <div>소셜 연동 진행중입니다...</div>;
 };
