@@ -13,8 +13,6 @@ const SocialRegister = () => {
 
   const { isLoggedIn } = useLoginStore();
 
-  console.log(isLoggedIn, 'isLoggedIn');
-
   const params = useSearchParams();
   const { provider } = useParams();
   const router = useRouter();
