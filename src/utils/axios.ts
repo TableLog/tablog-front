@@ -22,9 +22,11 @@ instance.interceptors.response.use(
         if (axios.isAxiosError<APIErrorResponse>(err) && err.response) {
           const message = err.response.data.message;
 
-          // TODO: 잘 작동하는지 테스트
-          if (message === 'EJ400001') {
-            // await fetch('/api/logout', { method: 'POST' });
+          if (message === 'EJ401002') {
+            // refresh token 만료시 쿠키 삭제 후 로그인 페이지로 이동
+            await fetch('/api/logout', { method: 'POST' });
+
+            window.location.href = '/login';
           }
         }
 

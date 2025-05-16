@@ -23,7 +23,7 @@ const EditPage = () => {
 
   return (
     <div>
-      <PageHeader title="내 정보 수정" back />
+      <PageHeader title="계정 관리" back backUrl="/my" />
 
       <div className="mt-4 mb-8 flex items-center justify-center">
         <ProfileImageInput

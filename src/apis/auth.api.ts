@@ -98,3 +98,11 @@ export const SocialLink = async (provider: string | string[], code: string) => {
     throw error;
   }
 };
+
+export const UnregisterUser = async () => {
+  try {
+    return await instance.delete(USER_INFO_URL);
+  } catch (error) {
+    throw error;
+  }
+};

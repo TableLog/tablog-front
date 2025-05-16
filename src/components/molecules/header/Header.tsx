@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -8,23 +8,9 @@ import Title from '@/components/atoms/title/Title';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import Notification from '@/components/pages/Notification';
 import Search from '@/components/pages/Search';
-import { useLoginStore } from '@/lib/zutstand/userStore';
 
-const Header = ({ token }: { token?: string }) => {
+const Header = () => {
   const router = useRouter();
-
-  const { isLoggedIn, setIsLoggedIn } = useLoginStore();
-
-  useEffect(() => {
-    // token이 있을 경우 로그인 여부
-    if (token && !isLoggedIn) {
-      setIsLoggedIn(true);
-    }
-
-    if (!token) {
-      setIsLoggedIn(false);
-    }
-  }, [token, setIsLoggedIn, isLoggedIn]);
 
   const [isSearching, setIsSearching] = useState(false);
   const [isNotichecking, setIsNotichecking] = useState(false);

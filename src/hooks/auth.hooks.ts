@@ -11,6 +11,7 @@ import {
   RegisterUser,
   SocialLink,
   SocialLogin,
+  UnregisterUser,
   UserInfo,
   UserInfoUpdate,
 } from '@/apis/auth.api';
@@ -49,10 +50,11 @@ export function useLogout() {
     mutationFn: () => Logout(),
     onSuccess: (res) => {
       if (res.status === 200) {
+        setIsLoggedIn(false);
+
         router.push('/login');
 
         queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
-        setIsLoggedIn(false);
       }
     },
   });
@@ -113,5 +115,27 @@ export function useSocialLink(options?: IMutationOptions) {
       SocialLink(provider, code),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
+  });
+}
+
+// 회원 탈퇴
+export function useUnregister() {
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
+
+  const { setIsLoggedIn } = useLoginStore();
+
+  return useMutation({
+    mutationFn: () => UnregisterUser(),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setIsLoggedIn(false);
+
+        router.push('/login');
+
+        queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
+      }
+    },
   });
 }

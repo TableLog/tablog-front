@@ -1,32 +1,22 @@
 'use client';
 
-import Header from '@/components/molecules/header/Header';
-import Navigation from '@/components/organisms/navigation/Navigation';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+
 import SplashScreen from '@/components/organisms/splash-screen/SplashScreen';
 import { useLoginStore } from '@/lib/zutstand/userStore';
 
-import HomePage from './(services)/home/page';
-
 const Page = () => {
   const { isLoggedIn } = useLoginStore((state) => state);
+  const router = useRouter();
 
-  return (
-    <div>
-      {isLoggedIn ? (
-        <>
-          <Header />
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace('/home');
+    }
+  }, [isLoggedIn, router]);
 
-          <main>
-            <HomePage />
-          </main>
-
-          <Navigation />
-        </>
-      ) : (
-        <SplashScreen />
-      )}
-    </div>
-  );
+  return <SplashScreen />;
 };
 
 export default Page;
