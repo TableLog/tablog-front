@@ -38,6 +38,16 @@ export function useSocialLogin(options?: IMutationOptions) {
   });
 }
 
+// 소셜 연동
+export function useSocialLink(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
+      SocialLink(provider, code),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
 // 로그아웃
 export function useLogout() {
   const router = useRouter();
@@ -103,16 +113,6 @@ export function useGetUserInfo() {
 export function useUpdateUserInfo(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (formData: FormData) => UserInfoUpdate(formData),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
-  });
-}
-
-// 소셜 연동
-export function useSocialLink(options?: IMutationOptions) {
-  return useMutation({
-    mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
-      SocialLink(provider, code),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });

@@ -30,6 +30,14 @@ export const SocialLogin = async (provider: string | string[], code: string) => 
   }
 };
 
+export const SocialLink = async (provider: string | string[], code: string) => {
+  try {
+    return await instance.post(`${SOCIAL_LINK_URL}?provider=${provider}&code=${code}`, {});
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const Logout = async () => {
   try {
     return await instance.post(LOGOUT_URL);
@@ -86,14 +94,6 @@ export const UserInfoUpdate = async (formData: FormData) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const SocialLink = async (provider: string | string[], code: string) => {
-  try {
-    return await instance.post(`${SOCIAL_LINK_URL}?provider=${provider}&code=${code}`, {});
   } catch (error) {
     throw error;
   }
