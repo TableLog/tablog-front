@@ -4,9 +4,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import {
+  ChangePassword,
   CheckEmail,
   CheckNickname,
   EmailLogin,
+  FindAccount,
   Logout,
   RegisterUser,
   SocialLink,
@@ -17,8 +19,10 @@ import {
 } from '@/apis/auth.api';
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
 import { useLoginStore } from '@/lib/zutstand/userStore';
-import { IMutationOptions } from '@/types/api';
+import { IMutationOptions, TChangePasswordFormData, TFindAccountFormValues } from '@/types/api';
+import { showErrorToast } from '@/utils/functions';
 
+// NOTE: 유저 정보 관련
 // 로그인: 이메일
 export function useEmailLogin(options?: IMutationOptions) {
   return useMutation({
@@ -35,6 +39,28 @@ export function useSocialLogin(options?: IMutationOptions) {
       SocialLogin(provider, code),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
+  });
+}
+
+// 계정 찾기
+export function useFindAccount(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (data: TFindAccountFormValues) => FindAccount(data),
+    onSuccess: options?.onSuccess,
+    onError: (err) => {
+      showErrorToast(err);
+    },
+  });
+}
+
+// 비밀번호 변경하기
+export function useChangePassword(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (data: TChangePasswordFormData) => ChangePassword(data),
+    onSuccess: options?.onSuccess,
+    onError: (err) => {
+      showErrorToast(err);
+    },
   });
 }
 

@@ -56,6 +56,21 @@ export type TUserInfoEditFormValues = {
   provider: string;
 };
 
+export type TFindAccountFormValues = {
+  userName: string;
+  birthday: string;
+};
+
+export type TChangePasswordFormValues = {
+  password: string;
+  confirmPassword: string;
+};
+
+export type TChangePasswordFormData = {
+  email: string;
+  newPassword: string;
+};
+
 export interface IApiErrorResponse {
   code: string;
   message: string;

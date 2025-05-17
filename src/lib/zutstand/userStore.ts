@@ -35,9 +35,13 @@ interface IUserStore {
   socialUserData: ISocialUserData | null;
   setSocialUserData: (newStatus: ISocialUserData) => void;
   clearSocialUserData: () => void;
+  foundEmail: string;
+  setFoundEmail: (newEmail: string) => void;
 }
 export const useUserStore = create<IUserStore>((set) => ({
   socialUserData: null,
   setSocialUserData: (newData: ISocialUserData | null) => set(() => ({ socialUserData: newData })),
   clearSocialUserData: () => set(() => ({ socialUserData: null })),
+  foundEmail: '',
+  setFoundEmail: (newEmail: string) => set(() => ({ foundEmail: newEmail })),
 }));

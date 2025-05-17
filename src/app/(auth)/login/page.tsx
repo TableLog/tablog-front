@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 
@@ -8,7 +6,7 @@ import { Text } from '@/components/atoms/text/Text';
 import LoginForm from './@form/login-form';
 import { SocialButtons } from './social/SocialButtons';
 
-const Login = () => {
+const LoginPage = () => {
   return (
     <div className="pt-[88px]">
       <div className="text-primary01 flex flex-col items-center justify-center gap-1">
@@ -21,7 +19,9 @@ const Login = () => {
         <LoginForm />
 
         <div className="flex items-center justify-between text-xs">
-          <Text>이메일/비밀번호 찾기</Text>
+          <Link href="/find-account">
+            <Text>이메일/비밀번호 찾기</Text>
+          </Link>
 
           <Link href="/register/local">
             <Text>이메일 회원가입</Text>
@@ -48,4 +48,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

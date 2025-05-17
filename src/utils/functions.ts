@@ -86,3 +86,11 @@ export function getErrorCode(err: APIErrorResponse) {
     return err.response.data.message;
   }
 }
+
+export const showErrorToast = (err: APIErrorResponse) => {
+  if (axios.isAxiosError<APIErrorResponse>(err) && err.response) {
+    const errorCode = getErrorCode(err);
+
+    showToast({ message: ERROR_CODE_MESSAGE_MAP[errorCode], type: 'error' });
+  }
+};

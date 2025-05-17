@@ -8,3 +8,5 @@ export const EMAIL_CHECK_URL = '/api/v1/users/check/email';
 export const LOGOUT_URL = '/api/v1/users/logout';
 export const REFRESH_URL = '/api/v1/users/refresh';
 export const USER_INFO_URL = '/api/v1/users';
+export const FIND_ACCOUNT = '/api/v1/users/email';
+export const CHANGE_PASSWORD = '/api/v1/users/password';
