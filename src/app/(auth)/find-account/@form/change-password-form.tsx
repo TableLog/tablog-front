@@ -56,8 +56,11 @@ const ChangePasswordForm = ({ accountInfo }: IChangePasswordFormProps) => {
   }, [accountInfo.provider]);
 
   const navigateToLoginPage = () => {
+    if (accountInfo.provider === 'local') {
+      setFoundEmail(accountInfo.email);
+    }
+
     router.push('/login');
-    setFoundEmail(accountInfo.email);
   };
 
   const {
