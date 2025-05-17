@@ -18,7 +18,7 @@ import { useRegisterUser } from '@/hooks/auth.hooks';
 import { zodEmailRegister, zodSocialRegister } from '@/lib/zod/zodValidation';
 import { useUserStore } from '@/lib/zutstand/userStore';
 import { TRegisterFormValues } from '@/types/api';
-import { showToast } from '@/utils/functions';
+import { getErrorCode, showToast } from '@/utils/functions';
 
 interface IRegisterForm {
   registerMethod: 'local' | 'kakao' | 'google';
@@ -90,12 +90,13 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
       }
     },
     onError: (err) => {
-      const errorMessage = ERROR_CODE_MESSAGE_MAP[err?.response?.data?.message];
       setOpenTerms(false);
 
-      // 동일한 이름과 생년월일을 가진 유저가 있을 때
-      if (err.response.data.message === 'EU400002') {
-        setError('userName', { message: errorMessage });
+      const errorCode = getErrorCode(err);
+
+      if (errorCode === 'EU400002') {
+        // 동일한 이름과 생년월일을 가진 유저가 있을 때
+        setError('userName', { message: ERROR_CODE_MESSAGE_MAP[errorCode] });
       }
     },
   });

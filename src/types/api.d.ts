@@ -1,7 +1,7 @@
 // NOTE: error type
 export type APIErrorResponse = {
   message: ServiceErrorCode;
-  status: HttpStatusCode;
+  status?: HttpStatusCode;
   name: string;
 };
 

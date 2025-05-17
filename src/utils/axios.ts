@@ -4,6 +4,8 @@ import axios from 'axios';
 import { REFRESH_URL } from '@/constants/endpoint.constants';
 import { APIErrorResponse } from '@/types/api';
 
+import { getErrorCode } from './functions';
+
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   withCredentials: true,
@@ -20,9 +22,9 @@ instance.interceptors.response.use(
         return instance.request(error.config);
       } catch (err) {
         if (axios.isAxiosError<APIErrorResponse>(err) && err.response) {
-          const message = err.response.data.message;
+          const errorCode = getErrorCode(err);
 
-          if (message === 'EJ401002') {
+          if (errorCode === 'EJ401001' || errorCode === 'EJ400001') {
             // refresh token 만료시 쿠키 삭제 후 로그인 페이지로 이동
             await fetch('/api/logout', { method: 'POST' });
 

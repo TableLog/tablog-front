@@ -74,9 +74,15 @@ export const showToast = ({ message, type }: ToastProps) => {
     transition: Slide,
     position: 'top-center',
     toastId: 'unique',
-    autoClose: 5000,
+    autoClose: 3000,
     hideProgressBar: true,
     closeOnClick: true,
     role: type,
   });
 };
+
+export function getErrorCode(err: APIErrorResponse) {
+  if (axios.isAxiosError<APIErrorResponse>(err) && err.response) {
+    return err.response.data.message;
+  }
+}

@@ -15,7 +15,7 @@ import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
 import { useUpdateUserInfo } from '@/hooks/auth.hooks';
 import { zodEmailUserInfo, zodSocialUserInfo } from '@/lib/zod/zodValidation';
 import { TUserData, TUserInfoEditFormValues } from '@/types/api';
-import { showToast } from '@/utils/functions';
+import { getErrorCode, showToast } from '@/utils/functions';
 
 import LogoutSignout from './logout-signout';
 import SocialLink from './social-link';
@@ -73,11 +73,11 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
       }
     },
     onError: (err) => {
-      const errorMessage = ERROR_CODE_MESSAGE_MAP[err?.response?.data?.message];
+      const errorCode = getErrorCode(err);
 
       // 현재 비밀번호로 변경 시도할 때
-      if (err.response.data.message === 'EU400005') {
-        setError('password', { message: errorMessage });
+      if (errorCode === 'EU400005') {
+        setError('password', { message: ERROR_CODE_MESSAGE_MAP[errorCode] });
       }
     },
   });
@@ -188,9 +188,9 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
           <Text color="white01">수정하기</Text>
         </Button>
 
-        <LogoutSignout userData={userData} />
+        <SocialLink userData={userData} />
 
-        <SocialLink />
+        <LogoutSignout />
       </form>
     </div>
   );
