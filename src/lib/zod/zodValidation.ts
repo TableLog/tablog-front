@@ -6,6 +6,7 @@ import {
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
+  LOG_CONTENT_REQUIRED,
   NAME_FORMAT,
   NAME_REQUIRED,
   NICKNAME_CHECK_REQUIRED,
@@ -254,6 +255,7 @@ export const zodSocialUserInfo = (originalNickname: string) =>
       },
     );
 
+// NOTE: 계정 찾기
 export const zodFindAccount = z.object({
   userName: z
     .string({ message: NAME_REQUIRED })
@@ -271,6 +273,7 @@ export const zodFindAccount = z.object({
   ),
 });
 
+// NOTE: 비밀번호 변경하기
 export const zodChangePassword = z
   .object({
     password: z
@@ -290,3 +293,8 @@ export const zodChangePassword = z
     message: PASSWORD_CONFIRM_INVALID,
     path: ['confirmPassword'],
   });
+
+// NOTE: 일기 작성
+export const zodAddLog = z.object({
+  content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
+});

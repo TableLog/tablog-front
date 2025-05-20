@@ -71,6 +71,10 @@ export type TChangePasswordFormData = {
   newPassword: string;
 };
 
+export type TAddLogFormData = {
+  content: string;
+};
+
 export interface IApiErrorResponse {
   code: string;
   message: string;

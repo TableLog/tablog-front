@@ -11,6 +11,7 @@ export const LABEL_MAP = {
   reportContent: '신고 사유',
   unit: '단위',
   search: '',
+  content: '일기',
 } as const;
 
 export const PLACEHOLDER_MAP = {
@@ -26,4 +27,6 @@ export const PLACEHOLDER_MAP = {
   reportContent: '신고 사유를 입력해주세요. (최대 300글자)',
   unit: '단위를 입력해주세요.',
   search: '요리명 혹은 작성자명을 입력해주세요.',
+  content:
+    'ex) 오늘의 세끼 식사중 제일 맛있었던 요리!\n기가막힌 레시피 발견!\n오늘 점심/저녁은 이걸 먹었어요!',
 } as const;

@@ -1,4 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
+import type { Meta } from '@storybook/react';
+
+import { IImageList } from '@/app/(services)/feed/add-log/@form/log-form';
 
 import RecipeImageInput from './RecipeImageInput';
 
@@ -9,16 +12,25 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  render: () => (
-    <div className="h-[500px] max-h-[500px] w-[500px] max-w-[500px]">
-      <RecipeImageInput />
-    </div>
-  ),
-  args: {},
+  render: () => <RecipeImageInputWithState />,
 } satisfies Meta<typeof RecipeImageInput>;
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+export const RecipeImageInputWithState = () => {
+  const [imageList, setImageList] = useState<IImageList[]>([]);
+  const [imageRequired, setImageRequired] = useState(false);
 
-export const Default: Story = {};
+  return (
+    <div className="h-100 w-100">
+      <RecipeImageInput
+        half
+        imageList={imageList}
+        setImageList={setImageList}
+        error={imageRequired}
+      />
+
+      <button onClick={() => setImageRequired((prev) => !prev)}>에러 토글</button>
+    </div>
+  );
+};

@@ -1,36 +1,36 @@
-import type { Meta, StoryObj } from '@storybook/react';
+// TextInput.stories.tsx
 
-import { REPORT_CONTENT_VALIDATION } from '@/constants/validation.constants';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { Meta } from '@storybook/react';
 
 import TextArea from './TextArea';
 
-const meta = {
+export default {
   title: 'Atoms/TextArea',
   component: TextArea,
-  parameters: {
-    layout: 'centered',
-  },
-  tags: ['autodocs'],
-  render: (args) => (
-    <div className="w-[420px]">
-      <TextArea {...args} />
-    </div>
-  ),
-} satisfies Meta<typeof TextArea>;
+} as Meta;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export const EmailInput = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      content: '',
+    },
+  });
 
-export const BasicTextArea: Story = {
-  args: {
-    category: 'reportContent',
-  },
-};
+  const onSubmit = (data: { content: string }) => {
+    console.log(data);
+  };
 
-export const TextAreaWithError: Story = {
-  args: {
-    category: 'reportContent',
-    errorMessage: REPORT_CONTENT_VALIDATION,
-    isError: true,
-  },
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-[500px]">
+      <TextArea category="email" register={register} errors={errors} maxLength={500} />
+
+      <button type="submit">Submit</button>
+    </form>
+  );
 };

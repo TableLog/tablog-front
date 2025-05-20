@@ -1,25 +1,25 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import Image from 'next/image';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { IImageList } from '@/app/(services)/feed/add-log/@form/log-form';
+import { cn } from '@/utils/cn';
 import { showToast } from '@/utils/functions';
 
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
-interface IImageList {
-  id: string;
-  src: string;
-  input?: boolean;
+interface IRecipeImageInputProps {
+  half?: boolean;
+  imageList: IImageList[];
+  setImageList: Dispatch<SetStateAction<IImageList[]>>;
+  error?: boolean;
 }
-
-const RecipeImageInput = () => {
+const RecipeImageInput = ({ half, imageList, setImageList, error }: IRecipeImageInputProps) => {
   const imgRef = useRef<HTMLInputElement>(null);
-
-  const [imageList, setImageList] = useState<IImageList[]>([]);
 
   const onChangeImageFile = () => {
     if (imgRef?.current?.files) {
@@ -52,7 +52,11 @@ const RecipeImageInput = () => {
 
               return [
                 ...prev,
-                { id: `${reader.result as string}${Math.random()}`, src: reader.result as string },
+                {
+                  id: `${reader.result as string}${Math.random()}`,
+                  src: reader.result as string,
+                  file,
+                },
               ];
             });
           }
@@ -69,86 +73,93 @@ const RecipeImageInput = () => {
   const renderImageList =
     imageList.length < 3 ? [...imageList, { id: '-1', src: '', input: true }] : imageList;
 
+  const aspectClass = half ? 'aspect-[3/2]' : 'aspect-square';
+  const borderClass = error ? 'border-red01' : 'border-grey07';
+
   return (
-    <div>
-      <div>
-        <Swiper
-          className="border-grey07 aspect-square overflow-hidden rounded-[10px] border"
-          slidesPerView={1}
-          modules={[Pagination]}
-          pagination={{
-            clickable: true,
-            el: '.custom-pagination',
-          }}
-        >
-          {renderImageList.map((image) => (
-            <SwiperSlide key={image.id}>
-              <div id={image.id} className="image-figure aspect-square w-full">
-                {image.input ? (
-                  <div>
-                    <label className="block aspect-square cursor-pointer">
-                      <input
-                        type="file"
-                        accept="image/jpeg, image/png, image/jpg"
-                        className="hidden"
-                        onChange={onChangeImageFile}
-                        ref={imgRef}
-                        multiple
-                      />
-                      <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-gray-500">
-                        <BoxIcon name="image-add" size={32} color="grey01" />
-
-                        <div className="flex flex-col">
-                          <Text>이미지 업로드</Text>
-
-                          <Text>(최대 3장)</Text>
-                        </div>
-                      </div>
-                    </label>
-                  </div>
-                ) : (
-                  <div>
-                    <button
-                      className="bg-white01 absolute top-3 right-3 z-10 rounded-full px-4 py-1 font-medium"
-                      onClick={() => onClickRemoveImageFile(image.id)}
-                    >
-                      <Text fontSize={14}>삭제</Text>
-                    </button>
-
-                    <Image
-                      src={image.src}
-                      className="image-cover w-full"
-                      alt={`sample${image.id}`}
-                      width={375}
-                      height={375}
+    <div className="min-h-64">
+      <Swiper
+        className={cn(aspectClass, borderClass, 'overflow-hidden rounded-[10px] border')}
+        slidesPerView={1}
+        modules={[Pagination]}
+        pagination={{
+          clickable: true,
+          el: '.custom-pagination',
+        }}
+      >
+        {renderImageList.map((image) => (
+          <SwiperSlide key={image.id}>
+            <div id={image.id} className={cn(aspectClass, 'image-figure w-full')}>
+              {image.input ? (
+                <div>
+                  <label className={cn(aspectClass, 'block cursor-pointer')}>
+                    <input
+                      type="file"
+                      accept="image/jpeg, image/png, image/jpg"
+                      className="hidden"
+                      onChange={onChangeImageFile}
+                      ref={imgRef}
+                      multiple
                     />
-                  </div>
-                )}
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-gray-500">
+                      <BoxIcon name="image-add" size={32} color="grey01" />
 
-        {/* 커스텀 페이지네이션 */}
-        <div className="custom-pagination mt-2 flex justify-center gap-1.5"></div>
+                      <div className="flex flex-col">
+                        <Text>이미지 업로드</Text>
 
-        <style jsx global>{`
-          .custom-pagination .swiper-pagination-bullet {
-            width: 10px;
-            height: 10px;
-            background-color: #acacac;
-            border-radius: 200px;
-            opacity: 1;
-            transition: width 0.3s;
-            margin: 0 !important;
-          }
+                        <Text>(최대 3장)</Text>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    className="bg-white01 absolute top-3 right-3 z-10 rounded-full px-4 py-1 font-medium"
+                    onClick={() => onClickRemoveImageFile(image.id)}
+                  >
+                    <Text fontSize={14}>삭제</Text>
+                  </button>
 
-          .custom-pagination .swiper-pagination-bullet-active {
-            width: 24px;
-            background-color: #0e0e0e;
-          }
-        `}</style>
-      </div>
+                  <Image
+                    src={image.src}
+                    className="image-cover w-full"
+                    alt={`sample${image.id}`}
+                    width={375}
+                    height={375}
+                  />
+                </div>
+              )}
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {error && (
+        <div className="validator-hint mt-1 whitespace-pre-line">
+          <Text color="red01">이미지를 업로드해주세요.</Text>
+        </div>
+      )}
+
+      {/* 커스텀 페이지네이션 */}
+      <div className="custom-pagination mt-2 flex justify-center gap-1.5"></div>
+
+      <style jsx global>{`
+        .custom-pagination .swiper-pagination-bullet {
+          width: 10px;
+          height: 10px;
+          background-color: #acacac;
+          border-radius: 200px;
+          opacity: 1;
+          transition: width 0.3s;
+          margin: 0 !important;
+        }
+
+        .custom-pagination .swiper-pagination-bullet-active {
+          width: 24px;
+          background-color: #0e0e0e;
+        }
+      `}</style>
     </div>
   );
 };

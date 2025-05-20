@@ -17,3 +17,4 @@ export const PASSWORD_FORMAT = '8~15글자로된 영문 + 숫자를 입력해주
 export const PASSWORD_CONFIRM_REQUIRED = '비밀번호를 한 번 더 입력해주세요.';
 export const PASSWORD_CONFIRM_INVALID = '비밀번호가 일치하지 않습니다.';
 export const TERM_REQUIRED = '필수 항목을 체크해주세요.';
+export const LOG_CONTENT_REQUIRED = '일기 내용을 작성해주세요.';

@@ -3,6 +3,8 @@ import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
 
+import FeedList from './FeedList';
+
 const FeedPage = () => {
   return (
     <div>
@@ -11,6 +13,8 @@ const FeedPage = () => {
           <Button size="mini">일기 작성</Button>
         </Link>
       </div>
+
+      <FeedList />
     </div>
   );
 };
