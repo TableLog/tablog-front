@@ -79,9 +79,6 @@ export interface IApiErrorResponse {
   code: string;
   message: string;
 }
-export interface IRecipeResponse {
-  recipe_id: number;
-}
 
 export interface IMutationOptions {
   onSuccess?: (res) => void;
@@ -89,3 +86,17 @@ export interface IMutationOptions {
 }
 
 export type TTablogFormValues = TRegisterFormValues | TUserInfoEditFormValues;
+
+// Response
+export interface ILogResponse {
+  id: number;
+  category: string;
+  comment_count: number;
+  content: string;
+  created_at: string;
+  image_url: string;
+  like_count: number;
+  profileImgUrl: string;
+  title: string;
+  user: string;
+}

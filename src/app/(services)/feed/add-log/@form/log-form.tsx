@@ -60,12 +60,11 @@ const LogForm = () => {
 
     const formdata = new FormData();
 
-    formdata.append('category', '게시판');
-
     formdata.append(
       'controllerRequestDto',
       JSON.stringify({
         ...data,
+        category: '게시판',
       }),
     );
 

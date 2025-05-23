@@ -14,7 +14,7 @@ const ProfileSection = () => {
   return (
     <section className="mb-2.5 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <ProfileImage src={userData?.profileImgUrl || '/images/tablog-512x512.png'} size={50} />
+        <ProfileImage src={userData?.profileImgUrl} size={50} />
 
         <Text fontSize={14}>{userData?.nickname}</Text>
       </div>
