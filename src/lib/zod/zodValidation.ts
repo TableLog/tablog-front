@@ -15,6 +15,7 @@ import {
   PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_FORMAT,
   PASSWORD_REQUIRED,
+  RECIPE_NAME_REQUIRED,
 } from '@/constants/validation.constants';
 
 export const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -297,4 +298,8 @@ export const zodChangePassword = z
 // NOTE: 일기 작성
 export const zodAddLog = z.object({
   content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
+});
+
+export const zodRecipeInfo = z.object({
+  recipeName: z.string({ message: RECIPE_NAME_REQUIRED }).max(50, RECIPE_NAME_REQUIRED),
 });

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Text } from '../text/Text';
 
 interface IToggleButtonProps {
-  title: string;
+  title: string | ReactNode;
   value: boolean;
   setValue: React.Dispatch<React.SetStateAction<boolean>>;
 }

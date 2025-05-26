@@ -13,12 +13,28 @@ import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
 interface IRecipeImageInputProps {
+  className?: string;
   half?: boolean;
   imageList: IImageList[];
   setImageList: Dispatch<SetStateAction<IImageList[]>>;
+  width?: number;
+  height?: number;
+  max?: number;
   error?: boolean;
+  label?: string;
 }
-const RecipeImageInput = ({ half, imageList, setImageList, error }: IRecipeImageInputProps) => {
+
+const RecipeImageInput = ({
+  className,
+  half,
+  imageList,
+  setImageList,
+  width = 375,
+  height = 375,
+  max = 3,
+  error,
+  label = '이미지 업로드',
+}: IRecipeImageInputProps) => {
   const imgRef = useRef<HTMLInputElement>(null);
 
   const onChangeImageFile = () => {
@@ -41,14 +57,14 @@ const RecipeImageInput = ({ half, imageList, setImageList, error }: IRecipeImage
         reader.onloadend = () => {
           if (reader.result) {
             setImageList((prev) => {
-              if (prev.length >= 3) {
+              if (prev.length >= max) {
                 showToast({
-                  message: '이미지는 최대 3개까지 업로드하실 수 있습니다.',
+                  message: `이미지는 최대 ${max}개까지 업로드하실 수 있습니다.`,
                   type: 'error',
                 });
 
                 return prev;
-              } // 최대 3개까지 제한
+              } // 최대 max개까지 제한
 
               return [
                 ...prev,
@@ -71,13 +87,13 @@ const RecipeImageInput = ({ half, imageList, setImageList, error }: IRecipeImage
 
   // 실제 렌더링될 이미지 목록에 업로드 input 포함 조건 처리
   const renderImageList =
-    imageList.length < 3 ? [...imageList, { id: '-1', src: '', input: true }] : imageList;
+    imageList.length < max ? [...imageList, { id: '-1', src: '', input: true }] : imageList;
 
   const aspectClass = half ? 'aspect-[3/2]' : 'aspect-square';
   const borderClass = error ? 'border-red01' : 'border-grey07';
 
   return (
-    <div className="min-h-64">
+    <div style={{ height }} className={cn('min-h-64', className)}>
       <Swiper
         className={cn(aspectClass, borderClass, 'overflow-hidden rounded-[10px] border')}
         slidesPerView={1}
@@ -105,9 +121,8 @@ const RecipeImageInput = ({ half, imageList, setImageList, error }: IRecipeImage
                       <BoxIcon name="image-add" size={32} color="grey01" />
 
                       <div className="flex flex-col">
-                        <Text>이미지 업로드</Text>
-
-                        <Text>(최대 3장)</Text>
+                        <Text>{label}</Text>
+                        {max > 1 && <Text>(최대 {max}장)</Text>}
                       </div>
                     </div>
                   </label>
@@ -125,8 +140,8 @@ const RecipeImageInput = ({ half, imageList, setImageList, error }: IRecipeImage
                     src={image.src}
                     className="image-cover w-full"
                     alt={`sample${image.id}`}
-                    width={375}
-                    height={375}
+                    width={width}
+                    height={height}
                   />
                 </div>
               )}

@@ -27,8 +27,8 @@ const Tooltip = ({ children }: ITooltip) => {
   const opacityClass = isOpen ? 'opacity-100' : 'opacity-0';
 
   return (
-    <div className="relative z-40 max-w-[200px]" ref={tooltipRef}>
-      <div className="h-6 w-full" onClick={onClickOpenTooltip}>
+    <div className="relative z-40 w-full max-w-[200px]" ref={tooltipRef}>
+      <div className="flex h-6 w-full items-center" onClick={onClickOpenTooltip}>
         <BoxIcon name="info-circle" size={18} />
       </div>
 

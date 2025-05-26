@@ -12,6 +12,7 @@ export const LABEL_MAP = {
   unit: '단위',
   search: '',
   content: '일기',
+  recipeDescription: '간단 설명',
 } as const;
 
 export const PLACEHOLDER_MAP = {
@@ -29,4 +30,5 @@ export const PLACEHOLDER_MAP = {
   search: '요리명 혹은 작성자명을 입력해주세요.',
   content:
     'ex) 오늘의 세끼 식사중 제일 맛있었던 요리!\n기가막힌 레시피 발견!\n오늘 점심/저녁은 이걸 먹었어요!',
+  recipeDescription: '요리에 대한 간단한 설명을 입력해주세요. (최대 300글자)',
 } as const;
