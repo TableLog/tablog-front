@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import { Text } from '@/components/atoms/text/Text';
 import { useSocialLogin } from '@/hooks/auth.hooks';
 import { useUserStore } from '@/lib/zutstand/userStore';
 
@@ -34,7 +36,13 @@ const SocialRegister = () => {
     }
   }, [socialLogin, code, provider]);
 
-  return <div>소셜 로그인 진행중입니다...</div>;
+  return (
+    <div className="absolute inset-0 flex h-screen w-screen flex-col items-center justify-center gap-4">
+      <Text fontSize={14}>소셜 로그인 진행중입니다</Text>
+
+      <LoadingSpinner />
+    </div>
+  );
 };
 
 export default SocialRegister;

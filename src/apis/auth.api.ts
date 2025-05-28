@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 import {
+  CHANGE_PASSWORD,
   EMAIL_CHECK_URL,
+  FIND_ACCOUNT,
   LOGIN_URL,
   LOGOUT_URL,
   NICKNAME_CHECK_URL,
@@ -10,7 +12,7 @@ import {
   SOCIAL_LOGIN_URL,
   USER_INFO_URL,
 } from '@/constants/endpoint.constants';
-import { TLoginFormValues } from '@/types/api';
+import { TChangePasswordFormData, TFindAccountFormValues, TLoginFormValues } from '@/types/api';
 import instance from '@/utils/axios';
 import { hanldeApiError } from '@/utils/functions';
 
@@ -25,6 +27,22 @@ export const EmailLogin = async (data: TLoginFormValues) => {
 export const SocialLogin = async (provider: string | string[], code: string) => {
   try {
     return await instance.post(`${SOCIAL_LOGIN_URL}?provider=${provider}&code=${code}`, {});
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const FindAccount = async (data: TFindAccountFormValues) => {
+  try {
+    return await axios.post(`${FIND_ACCOUNT}`, data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const ChangePassword = async (data: TChangePasswordFormData) => {
+  try {
+    return await axios.put(`${CHANGE_PASSWORD}`, data);
   } catch (error) {
     throw error;
   }

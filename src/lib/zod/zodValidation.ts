@@ -6,6 +6,7 @@ import {
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
+  LOG_CONTENT_REQUIRED,
   NAME_FORMAT,
   NAME_REQUIRED,
   NICKNAME_CHECK_REQUIRED,
@@ -253,3 +254,47 @@ export const zodSocialUserInfo = (originalNickname: string) =>
         path: ['nickname'],
       },
     );
+
+// NOTE: 계정 찾기
+export const zodFindAccount = z.object({
+  userName: z
+    .string({ message: NAME_REQUIRED })
+    .min(1, { message: NAME_REQUIRED })
+    .regex(USERNAME_REGEX, { message: NAME_FORMAT }),
+  birthday: z.optional(
+    z
+      .string({ message: BIRTH_REQUIRED })
+      .regex(BIRTH_FORMAT_REGEX, {
+        message: BIRTH_REQUIRED,
+      })
+      .regex(BIRTH_VALID_REGEX, {
+        message: BIRTH_FORMAT,
+      }),
+  ),
+});
+
+// NOTE: 비밀번호 변경하기
+export const zodChangePassword = z
+  .object({
+    password: z
+      .string({ message: PASSWORD_REQUIRED })
+      .optional()
+      .refine((val) => !val || PASSWORD_REGEX.test(val), {
+        message: PASSWORD_FORMAT,
+      }),
+    confirmPassword: z
+      .string({ message: PASSWORD_CONFIRM_REQUIRED })
+      .optional()
+      .refine((val) => !val || PASSWORD_REGEX.test(val), {
+        message: PASSWORD_FORMAT,
+      }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: PASSWORD_CONFIRM_INVALID,
+    path: ['confirmPassword'],
+  });
+
+// NOTE: 일기 작성
+export const zodAddLog = z.object({
+  content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
+});

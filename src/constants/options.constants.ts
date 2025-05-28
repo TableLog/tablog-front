@@ -67,3 +67,13 @@ export const TERMS_OPTIONS = [
           연한을 정하여 계속비로서 국회의 의결을 얻어야 한다.`,
   },
 ];
+
+export const FEED_MY_OPTIONS = [
+  { id: 1, title: '수정하기' },
+  { id: 2, title: '삭제하기', alert: true },
+];
+
+export const FEED_OPTIONS = [
+  { id: 1, title: '채팅하기' },
+  { id: 2, title: '신고하기', alert: true },
+];

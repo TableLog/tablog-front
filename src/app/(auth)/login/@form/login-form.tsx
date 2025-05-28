@@ -13,9 +13,12 @@ import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { LOCAL_REMEMBER_EMAIL } from '@/constants/storage-key.constants';
 import { useEmailLogin } from '@/hooks/auth.hooks';
 import { zodLogin } from '@/lib/zod/zodValidation';
+import { useUserStore } from '@/lib/zutstand/userStore';
 import { TLoginFormValues } from '@/types/api';
 
 const LoginForm = () => {
+  const { foundEmail } = useUserStore();
+
   const router = useRouter();
 
   const [rememberEmail, setRememberEmail] = useState(false);
@@ -62,7 +65,11 @@ const LoginForm = () => {
       setValue('email', localStorage.getItem(LOCAL_REMEMBER_EMAIL) || '');
       setRememberEmail(true);
     }
-  }, [setValue]);
+
+    if (foundEmail) {
+      setValue('email', foundEmail);
+    }
+  }, [setValue, foundEmail]);
 
   return (
     <div>
