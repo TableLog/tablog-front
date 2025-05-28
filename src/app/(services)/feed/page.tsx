@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
 
-import FeedList from './FeedList';
+import FeedList from './feed-list';
 
 const FeedPage = () => {
   return (

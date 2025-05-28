@@ -94,7 +94,7 @@ export interface ILogResponse {
   comment_count: number;
   content: string;
   created_at: string;
-  image_url: string;
+  image_urls: Array<string>;
   like_count: number;
   profileImgUrl: string;
   title: string;
