@@ -16,8 +16,16 @@ interface TRecipeInfoValues {
   recipeName: string;
 }
 
+interface IImageList {
+  id: string;
+  src: string;
+  file?: File;
+  input?: boolean;
+}
+
 const InfoForm = ({ id }: { id: string }) => {
   const [toggleValue, setToggleValue] = useState(false);
+  const [imageList, setImageList] = useState<IImageList[]>([]);
 
   const {
     register,
@@ -36,13 +44,17 @@ const InfoForm = ({ id }: { id: string }) => {
         <RecipeImageInput
           className="mb-4"
           max={1}
-          width={375}
-          height={256}
+          imageList={imageList}
+          setImageList={setImageList}
           label="썸네일 이미지 업로드"
         />
         <TextInput category="recipeName" register={register} errors={errors} />
-        <TextArea category="recipeDescription" />
-        {/* register={register} errors={errors} 가 없음 */}
+        <TextArea
+          category="recipeDescription"
+          register={register}
+          errors={errors}
+          maxLength={300}
+        />
       </div>
 
       <CategoryTag />

@@ -17,20 +17,15 @@ interface IRecipeImageInputProps {
   half?: boolean;
   imageList: IImageList[];
   setImageList: Dispatch<SetStateAction<IImageList[]>>;
-  width?: number;
-  height?: number;
-  max?: number;
   error?: boolean;
+  max?: number;
   label?: string;
 }
-
 const RecipeImageInput = ({
   className,
   half,
   imageList,
   setImageList,
-  width = 375,
-  height = 375,
   max = 3,
   error,
   label = '이미지 업로드',
@@ -64,7 +59,7 @@ const RecipeImageInput = ({
                 });
 
                 return prev;
-              } // 최대 max개까지 제한
+              } // 최대 3개까지 제한
 
               return [
                 ...prev,
@@ -93,7 +88,7 @@ const RecipeImageInput = ({
   const borderClass = error ? 'border-red01' : 'border-grey07';
 
   return (
-    <div style={{ height }} className={cn('min-h-64', className)}>
+    <div className={cn('min-h-64', className)}>
       <Swiper
         className={cn(aspectClass, borderClass, 'overflow-hidden rounded-[10px] border')}
         slidesPerView={1}
@@ -122,7 +117,8 @@ const RecipeImageInput = ({
 
                       <div className="flex flex-col">
                         <Text>{label}</Text>
-                        {max > 1 && <Text>(최대 {max}장)</Text>}
+
+                        <Text>(최대 {max}장)</Text>
                       </div>
                     </div>
                   </label>
@@ -140,8 +136,8 @@ const RecipeImageInput = ({
                     src={image.src}
                     className="image-cover w-full"
                     alt={`sample${image.id}`}
-                    width={width}
-                    height={height}
+                    width={375}
+                    height={375}
                   />
                 </div>
               )}

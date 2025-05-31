@@ -58,11 +58,7 @@ const IngredientForm = ({ id }: { id: string }) => {
   }
 
   return (
-    <form
-      id={id}
-      className="flex flex-col items-center gap-8"
-      onSubmit={handleSubmit(addIngredient)}
-    >
+    <div id={id} className="flex flex-col items-center gap-8">
       <Button onClick={openBottomSheet} size="large" full>
         재료 등록 +
       </Button>
@@ -96,7 +92,7 @@ const IngredientForm = ({ id }: { id: string }) => {
             <Button onClick={closeBottomSheet} size="large" full buttonColor="grey06">
               닫기
             </Button>
-            <Button type="submit" onClick={openBottomSheet} size="large" full>
+            <Button onClick={handleSubmit(addIngredient)} size="large" full>
               추가
             </Button>
           </form>
@@ -122,7 +118,7 @@ const IngredientForm = ({ id }: { id: string }) => {
           </div>
         </div>
       </BottomSheet>
-    </form>
+    </div>
   );
 };
 

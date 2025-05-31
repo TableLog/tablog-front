@@ -17,6 +17,8 @@ import {
   PASSWORD_REQUIRED,
   QUANTITY_REQUIRED,
   RECIPE_NAME_REQUIRED,
+  STEP_DESCRIPTION_REQUIRED,
+  STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
 
 export const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -311,4 +313,12 @@ export const zodIngredientInfo = z.object({
     .min(1, QUANTITY_REQUIRED)
     .max(50, RECIPE_NAME_REQUIRED),
   quantity: z.string({ message: QUANTITY_REQUIRED }).min(1, QUANTITY_REQUIRED),
+});
+
+export const zodRecipeStepsInfo = z.object({
+  title: z
+    .string({ message: STEP_TITLE_REQUIRED })
+    .min(1, STEP_TITLE_REQUIRED)
+    .max(500, STEP_TITLE_REQUIRED),
+  description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
 });
