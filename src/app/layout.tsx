@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import Script from 'next/script';
 
 import Toast from '@/components/atoms/toast/Toast';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
@@ -30,6 +31,14 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="max-w-[100svw] overflow-x-hidden" suppressHydrationWarning>
+        <Script
+          id="scroll-restoration"
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration = "manual"`,
+          }}
+          strategy="beforeInteractive"
+        />
+
         <Provider>
           <Toast />
 

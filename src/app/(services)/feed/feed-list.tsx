@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -8,8 +9,10 @@ import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import FeedSlider from '@/components/atoms/slider/FeedSlider';
 import { Text } from '@/components/atoms/text/Text';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
+import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
 import { useGetLogList } from '@/hooks/feed.hooks';
+import { useScrollPosition } from '@/hooks/function.hooks';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
 
@@ -93,7 +96,9 @@ export const FeedItem = ({
 };
 
 const FeedList = () => {
-  const { data: logList } = useGetLogList();
+  const { ref, inView } = useInView();
+
+  const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
   const { data: userData } = useGetUserInfo();
 
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
@@ -120,28 +125,47 @@ const FeedList = () => {
     }));
   };
 
+  useEffect(() => {
+    // 무한 스크롤
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  // 스크롤 위치 저장 (뒤로가기시 해당 위치로 이동)
+  useScrollPosition({
+    storageKey: `${FEED_LIST_QUERY_KEY}-scroll`,
+    shouldRestore: !isFetching,
+  });
+
   return (
     <div>
-      {logList?.pages?.map((page) =>
-        page.data.boards.map((log: ILogResponse) => {
-          const isExpanded = expandedItems[log.id];
-          const showMore = showMoreButton[log.id];
+      <div>
+        {logList?.pages?.map((page) =>
+          page.data.boards.map((log: ILogResponse) => {
+            const isExpanded = expandedItems[log.id];
+            const showMore = showMoreButton[log.id];
 
-          const isMyPost = userData && userData.nickname === log.user;
+            const isMyPost = userData && userData.nickname === log.user;
 
-          return (
-            <FeedItem
-              key={log.id}
-              log={log}
-              showMore={showMore}
-              isMyPost={isMyPost}
-              isExpanded={isExpanded}
-              toggleExpand={toggleExpand}
-              contentRefs={contentRefs}
-            />
-          );
-        }),
-      )}
+            return (
+              <FeedItem
+                key={log.id}
+                log={log}
+                showMore={showMore}
+                isMyPost={isMyPost}
+                isExpanded={isExpanded}
+                toggleExpand={toggleExpand}
+                contentRefs={contentRefs}
+              />
+            );
+          }),
+        )}
+      </div>
+
+      <div ref={ref as React.RefCallback<HTMLDivElement>} />
+
+      {!hasNextPage && <div className="divider"></div>}
     </div>
   );
 };
