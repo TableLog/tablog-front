@@ -5,7 +5,9 @@ import Button from '@/components/atoms/button/Button';
 
 import FeedList from './feed-list';
 
-const FeedPage = () => {
+const FeedPage = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 2000)); // 2초 대기
+
   return (
     <div>
       <div className="mb-4 flex justify-end">

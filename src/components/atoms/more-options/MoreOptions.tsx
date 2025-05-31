@@ -5,9 +5,10 @@ import { Text } from '../text/Text';
 
 interface IMoreOptionsProps {
   options: Array<{ id: number; title: string; alert?: boolean }>;
+  buttonEvent: (type: string) => void;
 }
 
-const MoreOptions = ({ options }: IMoreOptionsProps) => {
+const MoreOptions = ({ options, buttonEvent }: IMoreOptionsProps) => {
   return (
     <div>
       <div className="dropdown dropdown-end">
@@ -18,7 +19,14 @@ const MoreOptions = ({ options }: IMoreOptionsProps) => {
         <ul tabIndex={0} className="dropdown-content bg-base-100 menu rounded-box z-1 shadow-sm">
           {options.map((option) => {
             return (
-              <li key={option.id}>
+              <li
+                key={option.id}
+                onClick={() => {
+                  if (buttonEvent) {
+                    buttonEvent(option.title);
+                  }
+                }}
+              >
                 <Text color={option.alert ? 'red01' : 'black01'}>{option.title}</Text>
               </li>
             );

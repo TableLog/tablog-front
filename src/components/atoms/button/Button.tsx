@@ -40,7 +40,6 @@ export default function Button({
   return (
     <button
       {...rest}
-      role="button-component"
       type={type}
       form={rest.form}
       className={cn(

@@ -99,4 +99,5 @@ export interface ILogResponse {
   profileImgUrl: string;
   title: string;
   user: string;
+  createdAt: string;
 }

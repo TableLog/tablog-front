@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Slide, toast } from 'react-toastify';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { APIErrorResponse } from '@/types/api';
@@ -73,7 +74,7 @@ export const showToast = ({ message, type }: ToastProps) => {
   toast[type](message, {
     transition: Slide,
     position: 'top-center',
-    toastId: 'unique',
+    toastId: `toast-${Date.now()}`,
     autoClose: 3000,
     hideProgressBar: true,
     closeOnClick: true,
@@ -93,4 +94,10 @@ export const showErrorToast = (err: APIErrorResponse) => {
 
     showToast({ message: ERROR_CODE_MESSAGE_MAP[errorCode], type: 'error' });
   }
+};
+
+export const convertDateFormat = (date: string) => {
+  const day = dayjs(date);
+
+  return day.format('YYYY.MM.DD');
 };

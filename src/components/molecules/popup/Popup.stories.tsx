@@ -33,6 +33,7 @@ type Story = StoryObj<typeof Popup>;
 
 export const Body01: Story = {
   args: {
+    id: 'test_modal',
     children: (
       <>
         <p>입력하신 휴대폰 번호로 가입된 계정이 없습니다.</p>
@@ -41,11 +42,7 @@ export const Body01: Story = {
       </>
     ),
     title: '가입된 계정이 없습니다',
-    closeButtonComponent: (
-      <Button buttonColor="grey06" size="medium">
-        닫기
-      </Button>
-    ),
+    closeButtonName: '닫기',
     activeButtonComponent: (
       <Button buttonColor="primary" size="medium">
         로그인

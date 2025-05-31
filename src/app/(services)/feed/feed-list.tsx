@@ -1,20 +1,26 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 
+import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import FeedSlider from '@/components/atoms/slider/FeedSlider';
 import { Text } from '@/components/atoms/text/Text';
+import Popup from '@/components/molecules/popup/Popup';
+import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
-import { useGetLogList } from '@/hooks/feed.hooks';
+import { useDeleteLog, useGetLogList } from '@/hooks/feed.hooks';
 import { useScrollPosition } from '@/hooks/function.hooks';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
+import { convertDateFormat, HandleOpenModal, showToast } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
@@ -22,6 +28,7 @@ interface IFeedItemProps {
   isMyPost: boolean;
   isExpanded: boolean;
   toggleExpand: (id: number) => void;
+  setLogId: React.Dispatch<SetStateAction<number>>;
   contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
 }
 export const FeedItem = ({
@@ -31,23 +38,39 @@ export const FeedItem = ({
   isExpanded,
   toggleExpand,
   contentRefs,
+  setLogId,
 }: IFeedItemProps) => {
+  const deleteMyFeed = useCallback(
+    (type: string) => {
+      if (type === '삭제하기') {
+        HandleOpenModal(DELETE_FEED_MODAL);
+        setLogId(Number(log.id));
+      }
+    },
+    [log.id, setLogId],
+  );
+
   const clampClass = isExpanded ? '' : 'line-clamp-2';
 
   return (
-    <div key={log.id} className="mb-6">
+    <div className="mb-6">
       <div className="flex justify-between">
         <div className="mb-1.5 flex gap-1.5">
           <ProfileImage src={log?.profileImgUrl} size={42} />
 
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col justify-center">
             <Text fontSize={14}>{log.user}</Text>
 
-            <div>{log.created_at}</div>
+            <Text fontSize={14} color="grey04">
+              {convertDateFormat(log.createdAt)}
+            </Text>
           </div>
         </div>
 
-        <MoreOptions options={isMyPost ? FEED_MY_OPTIONS : FEED_OPTIONS} />
+        <MoreOptions
+          options={isMyPost ? FEED_MY_OPTIONS : FEED_OPTIONS}
+          buttonEvent={deleteMyFeed}
+        />
       </div>
 
       <FeedSlider imageList={log.image_urls} />
@@ -97,6 +120,20 @@ export const FeedItem = ({
 
 const FeedList = () => {
   const { ref, inView } = useInView();
+  const [logId, setLogId] = useState(-1);
+
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteLog } = useDeleteLog({
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        const modal = document.getElementById(DELETE_FEED_MODAL) as HTMLDialogElement;
+        modal.close();
+        showToast({ message: '일기를 삭제했습니다.', type: 'success' });
+        queryClient.invalidateQueries({ queryKey: [FEED_LIST_QUERY_KEY] });
+      }
+    },
+  });
 
   const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
   const { data: userData } = useGetUserInfo();
@@ -140,6 +177,30 @@ const FeedList = () => {
 
   return (
     <div>
+      <Popup
+        id={DELETE_FEED_MODAL}
+        title="일기 삭제"
+        activeButtonComponent={
+          <Button
+            buttonColor="primary"
+            size="medium"
+            onClick={() => {
+              if (logId) {
+                deleteLog(logId);
+              }
+            }}
+          >
+            삭제
+          </Button>
+        }
+      >
+        <>
+          <p>일기를 삭제하시겠습니까?</p>
+
+          <p>삭제하신 후 되돌리실 수 없습니다.</p>
+        </>
+      </Popup>
+
       <div>
         {logList?.pages?.map((page) =>
           page.data.boards.map((log: ILogResponse) => {
@@ -152,6 +213,7 @@ const FeedList = () => {
               <FeedItem
                 key={log.id}
                 log={log}
+                setLogId={setLogId}
                 showMore={showMore}
                 isMyPost={isMyPost}
                 isExpanded={isExpanded}
@@ -163,9 +225,13 @@ const FeedList = () => {
         )}
       </div>
 
-      <div ref={ref as React.RefCallback<HTMLDivElement>} />
+      {isFetching && (
+        <div className="flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
 
-      {!hasNextPage && <div className="divider"></div>}
+      <div ref={ref as React.RefCallback<HTMLDivElement>} />
     </div>
   );
 };

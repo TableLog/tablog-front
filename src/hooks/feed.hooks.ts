@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
-import { AddLog, GetLog, GetLogList } from '@/apis/feed.api';
+import { AddLog, DeleteLog, GetLog, GetLogList } from '@/apis/feed.api';
 import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { IMutationOptions } from '@/types/api';
 
@@ -27,5 +27,13 @@ export function useGetLog(id: number) {
     queryKey: [FEED_QUERY_KEY],
     queryFn: () => GetLog(id),
     select: (res) => res.data,
+  });
+}
+
+export function useDeleteLog(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (id: number) => DeleteLog(id),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
   });
 }

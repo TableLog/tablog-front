@@ -26,3 +26,11 @@ export const GetLog = async (id: number) => {
     throw error;
   }
 };
+
+export const DeleteLog = async (id: number) => {
+  try {
+    return await instance.delete(`${BOARD_URL}/${id}`);
+  } catch (error) {
+    throw error;
+  }
+};
