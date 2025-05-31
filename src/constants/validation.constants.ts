@@ -19,3 +19,4 @@ export const PASSWORD_CONFIRM_INVALID = '비밀번호가 일치하지 않습니�
 export const TERM_REQUIRED = '필수 항목을 체크해주세요.';
 export const LOG_CONTENT_REQUIRED = '일기 내용을 작성해주세요.';
 export const RECIPE_NAME_REQUIRED = '레시피 이름을 50자 이내로 입력해주세요.';
+export const QUANTITY_REQUIRED = '용량을 입력해주세요.';

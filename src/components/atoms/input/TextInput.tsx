@@ -22,7 +22,7 @@ interface ITextInputProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
   errorMessage?: string;
   isError?: boolean;
-  type?: 'text' | 'password' | 'email';
+  type?: 'text' | 'password' | 'email' | 'number';
   required?: boolean;
   buttonText?: string;
   disabled?: boolean;

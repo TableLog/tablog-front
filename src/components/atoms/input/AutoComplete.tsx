@@ -1,25 +1,31 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
 
 import { BoxIcon } from '../icon/BoxIcon';
 
-interface IAutoCompleteProps {
+interface IAutoCompleteProps<T extends FieldValues> {
   list: Array<{ id: number; title: string }>;
   category: keyof typeof LABEL_MAP;
+  register: UseFormRegister<T>;
 }
 
-const AutoComplete = ({ list, category }: IAutoCompleteProps) => {
+const AutoComplete = <T extends FieldValues>({
+  list,
+  category,
+  register,
+}: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSelect = (title: string) => {
-    setValue(title);
+    if (inputRef.current) inputRef.current.value = title;
     setIsOpen(false);
     inputRef.current?.blur(); // 선택 후 드롭다운 닫히게
   };
@@ -35,14 +41,18 @@ const AutoComplete = ({ list, category }: IAutoCompleteProps) => {
         )}
       >
         <input
-          ref={inputRef}
+          {...register(category as Path<T>, {
+            onBlur: () => setTimeout(() => setIsOpen(false), 100),
+            onChange: (e) => setValue(e.target.value),
+          })}
+          ref={(e) => {
+            register(category as Path<T>).ref(e);
+            inputRef.current = e;
+          }}
           type="text"
-          value={value}
           placeholder={PLACEHOLDER_MAP[category]}
           className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 100)}
-          onChange={(e) => setValue(e.target.value)}
         />
 
         <BoxIcon name="search" size={20} />

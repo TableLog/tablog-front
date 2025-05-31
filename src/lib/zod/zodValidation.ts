@@ -15,6 +15,7 @@ import {
   PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_FORMAT,
   PASSWORD_REQUIRED,
+  QUANTITY_REQUIRED,
   RECIPE_NAME_REQUIRED,
 } from '@/constants/validation.constants';
 
@@ -302,4 +303,12 @@ export const zodAddLog = z.object({
 
 export const zodRecipeInfo = z.object({
   recipeName: z.string({ message: RECIPE_NAME_REQUIRED }).max(50, RECIPE_NAME_REQUIRED),
+});
+
+export const zodIngredientInfo = z.object({
+  ingredientName: z
+    .string({ message: RECIPE_NAME_REQUIRED })
+    .min(1, QUANTITY_REQUIRED)
+    .max(50, RECIPE_NAME_REQUIRED),
+  quantity: z.string({ message: QUANTITY_REQUIRED }).min(1, QUANTITY_REQUIRED),
 });

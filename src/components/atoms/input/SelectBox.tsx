@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
@@ -12,13 +12,14 @@ interface ISelectBoxProps {
   isError?: boolean;
   list: Array<{ id: number; title: string }>;
   errorMessage?: string;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 }
-const SelectBox = ({ category, list, isError, errorMessage }: ISelectBoxProps) => {
+const SelectBox = ({ category, list, isError, errorMessage, value, setValue }: ISelectBoxProps) => {
   const inputRef = useRef<HTMLInputElement>(null); // Ref 추가
 
   const borderClass = isError ? 'border-red01' : 'border-grey07';
 
-  const [value, setValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClickSetValue = (value: string) => {
