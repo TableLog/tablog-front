@@ -24,7 +24,7 @@ export default async function AfterLoginLayout({
       <Header />
 
       <main className="bg-primary01 w-full">
-        <div className="bg-white01 scrollable-content relative max-h-[calc(100svh-132px)] overflow-y-auto rounded-tl-[24px] rounded-tr-[24px]">
+        <div className="white01 overflow-hidden rounded-tl-[24px] rounded-tr-[24px]">
           {children}
         </div>
       </main>

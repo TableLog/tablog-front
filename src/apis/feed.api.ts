@@ -34,3 +34,11 @@ export const DeleteLog = async (id: number) => {
     throw error;
   }
 };
+
+export const AddLogLike = async (id: number) => {
+  try {
+    return await instance.post(`${BOARD_URL}/${id}/likes`);
+  } catch (error) {
+    throw error;
+  }
+};

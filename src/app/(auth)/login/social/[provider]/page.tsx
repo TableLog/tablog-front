@@ -38,9 +38,9 @@ const SocialRegister = () => {
 
   return (
     <div className="absolute inset-0 flex h-screen w-screen flex-col items-center justify-center gap-4">
-      <Text fontSize={14}>소셜 로그인 진행중입니다</Text>
-
       <LoadingSpinner />
+
+      <Text fontSize={14}>소셜 로그인 진행중입니다</Text>
     </div>
   );
 };

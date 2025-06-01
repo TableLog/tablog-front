@@ -14,9 +14,9 @@ import { Text } from '@/components/atoms/text/Text';
 import Popup from '@/components/molecules/popup/Popup';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
-import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
-import { useDeleteLog, useGetLogList } from '@/hooks/feed.hooks';
+import { useAddLike, useDeleteLog, useGetLogList } from '@/hooks/feed.hooks';
 import { useScrollPosition } from '@/hooks/function.hooks';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
@@ -40,6 +40,16 @@ export const FeedItem = ({
   contentRefs,
   setLogId,
 }: IFeedItemProps) => {
+  const queryClient = useQueryClient();
+
+  const { mutate: addLike } = useAddLike({
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, log.id] });
+      }
+    },
+  });
+
   const deleteMyFeed = useCallback(
     (type: string) => {
       if (type === '삭제하기') {
@@ -77,7 +87,13 @@ export const FeedItem = ({
 
       <ul className="mb-2 flex items-center gap-4">
         <li className="flex items-center gap-0.5">
-          <BoxIcon name="heart" size={24} />
+          <BoxIcon
+            name="heart"
+            size={24}
+            onClick={() => {
+              addLike(log.id);
+            }}
+          />
 
           <Text fontSize={14}>{log.like_count || 0}</Text>
         </li>
@@ -95,7 +111,7 @@ export const FeedItem = ({
         </li>
       </ul>
 
-      <div>
+      <div className="max-h-[360px] overflow-y-auto">
         <div
           ref={(el) => {
             contentRefs.current[log.id] = el;

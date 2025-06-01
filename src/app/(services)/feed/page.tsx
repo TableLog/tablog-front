@@ -9,7 +9,7 @@ const FeedPage = async () => {
   await new Promise((resolve) => setTimeout(resolve, 2000)); // 2초 대기
 
   return (
-    <div>
+    <div className="pb-16">
       <div className="mb-4 flex justify-end">
         <Link href="/feed/add-log">
           <Button size="mini">일기 작성</Button>
