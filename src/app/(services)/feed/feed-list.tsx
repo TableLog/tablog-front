@@ -3,6 +3,7 @@ import React, { SetStateAction, useCallback, useEffect, useRef, useState } from 
 import { useInView } from 'react-intersection-observer';
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -14,7 +15,7 @@ import { Text } from '@/components/atoms/text/Text';
 import Popup from '@/components/molecules/popup/Popup';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
-import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
+import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
 import { useAddLike, useDeleteLog, useGetLogList } from '@/hooks/feed.hooks';
 import { useScrollPosition } from '@/hooks/function.hooks';
@@ -40,12 +41,29 @@ export const FeedItem = ({
   contentRefs,
   setLogId,
 }: IFeedItemProps) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const { mutate: addLike } = useAddLike({
     onSuccess: (res) => {
       if (res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, log.id] });
+        queryClient.setQueryData<IFeedListResponse>([FEED_LIST_QUERY_KEY], (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              data: {
+                ...page.data,
+                boards: page.data.boards.map((board) =>
+                  board.id === log.id
+                    ? { ...board, like_count: (board.like_count || 0) + 1 }
+                    : board,
+                ),
+              },
+            })),
+          };
+        });
       }
     },
   });
@@ -56,8 +74,12 @@ export const FeedItem = ({
         HandleOpenModal(DELETE_FEED_MODAL);
         setLogId(Number(log.id));
       }
+
+      if (type === '수정하기') {
+        router.push(`/feed/edit-log/${log.id}`);
+      }
     },
-    [log.id, setLogId],
+    [log.id, router, setLogId],
   );
 
   const clampClass = isExpanded ? '' : 'line-clamp-2';
@@ -133,6 +155,14 @@ export const FeedItem = ({
     </div>
   );
 };
+
+interface IFeedListResponse {
+  pages: Array<{
+    data: {
+      boards: ILogResponse[];
+    };
+  }>;
+}
 
 const FeedList = () => {
   const { ref, inView } = useInView();

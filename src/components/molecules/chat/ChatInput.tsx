@@ -3,12 +3,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { useAddComment } from '@/hooks/feed.hooks';
 import { cn } from '@/utils/cn';
 
-const ChatInput = () => {
+const ChatInput = ({ logId }: { logId: number }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [chatValue, setChatValue] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+
+  const { mutate: addComment } = useAddComment({
+    onSuccess: () => {
+      setChatValue('');
+    },
+  });
 
   const initialHeight = useRef<number>(typeof window !== 'undefined' ? window.innerHeight : 0);
 
@@ -51,7 +59,15 @@ const ChatInput = () => {
           }}
         />
 
-        <BoxIcon name="navigation" size={24} />
+        <BoxIcon
+          name="navigation"
+          size={24}
+          onClick={() => {
+            if (chatValue.trim() === '') return;
+
+            addComment({ id: logId, content: chatValue });
+          }}
+        />
       </div>
     </div>
   );
