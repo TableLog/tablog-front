@@ -10,7 +10,7 @@ import Popup from '@/components/molecules/popup/Popup';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
-import { useDeleteLog, useGetCommentList, useGetLog } from '@/hooks/feed.hooks';
+import { useDeleteLog, useGetLog } from '@/hooks/feed.hooks';
 import { showToast } from '@/utils/functions';
 
 import { FeedItem } from '../../../feed-list';
@@ -28,8 +28,6 @@ const FeedDetail = ({ id }: { id: number }) => {
 
   const { data: userData } = useGetUserInfo();
   const { data: logDetail } = useGetLog(Number(id));
-
-  const { data: commentList } = useGetCommentList(id);
 
   const { mutate: deleteLog } = useDeleteLog({
     onSuccess: (res) => {
@@ -52,8 +50,6 @@ const FeedDetail = ({ id }: { id: number }) => {
   useEffect(() => {
     setShowMoreButton(true);
   }, []);
-
-  console.log(commentList);
 
   return (
     logDetail && (
