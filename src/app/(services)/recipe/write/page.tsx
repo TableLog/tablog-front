@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { addRecipe } from '@/apis/recipe.api';
 import Tabs from '@/components/atoms/tabs/Tabs';
 import { zodRecipeForm } from '@/lib/zod/zodValidation';
 
@@ -33,20 +34,34 @@ const RecipeWritePage = () => {
       },
       recipeImage: undefined,
       recipeFoodCreateRequestDto: [],
-      rpDtos: { dtos: [] },
+      dtos: [],
     },
   });
   const { handleSubmit } = methods;
 
   function onSubmit(data: TRecipeFormValues) {
-    const {
-      rpDtos: { dtos },
-    } = data;
+    const { recipeImage, recipeCreateRequestDto, recipeFoodCreateRequestDto, dtos } = data;
 
-    console.log('submit', {
-      ...data,
-      rpDtos: { dtos: dtos.map((recipe, idx) => ({ ...recipe, sequence: idx })) },
+    const formdata = new FormData();
+
+    if (recipeImage)
+      [...recipeImage].forEach((file: File) => {
+        formdata.append(`recipeImage`, file);
+      });
+
+    formdata.append('recipeCreateRequestDto', JSON.stringify(recipeCreateRequestDto));
+    formdata.append('recipeFoodCreateRequestDto', JSON.stringify(recipeFoodCreateRequestDto));
+    dtos.forEach((step, idx) => {
+      formdata.append(`dtos[${idx}].sequence`, String(idx));
+      formdata.append(`dtos[${idx}].rpTitle`, step.rpTitle);
+      formdata.append(`dtos[${idx}].description`, step.description);
+      if (step.files)
+        [...step.files].forEach((file: File) => {
+          formdata.append(`dtos[${idx}].files`, file);
+        });
     });
+
+    addRecipe(formdata);
   }
 
   return (

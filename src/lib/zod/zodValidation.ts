@@ -339,7 +339,5 @@ export const zodRecipeForm = z.object({
   }),
   recipeImage: zodFileList,
   recipeFoodCreateRequestDto: z.array(zodIngredientInfo),
-  rpDtos: z.object({
-    dtos: z.array(zodRecipeStepInfo),
-  }),
+  dtos: z.array(zodRecipeStepInfo),
 });

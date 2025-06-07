@@ -28,6 +28,7 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
 
   useEffect(() => {
     handleAddStep();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {
@@ -39,8 +40,8 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
     fields: stepFields,
     append: appendStep,
     remove: removeStep,
-  } = useFieldArray<TRecipeFormValues, 'rpDtos.dtos'>({
-    name: 'rpDtos.dtos',
+  } = useFieldArray<TRecipeFormValues, 'dtos'>({
+    name: 'dtos',
   });
 
   function handleStepButtonClick(stepIdx: number) {
@@ -96,17 +97,17 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
                 setImageList={setImageList}
                 maxImage={3}
                 label="이미지 업로드"
-                {...register(`rpDtos.dtos.${idx}.files`)}
+                {...register(`dtos.${idx}.files`)}
               />
               <TextInput
                 category="stepTitle"
-                name={`rpDtos.dtos.${idx}.rpTitle`}
+                name={`dtos.${idx}.rpTitle`}
                 register={register}
                 errors={errors}
               />
               <TextArea
                 category="stepDescription"
-                name={`rpDtos.dtos.${idx}.description`}
+                name={`dtos.${idx}.description`}
                 register={register}
                 errors={errors}
                 maxLength={500}
