@@ -11,12 +11,14 @@ interface ITextAreaProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
   register: UseFormRegister<T>;
   maxLength: number;
+  name?: Path<T>;
 }
 const TextArea = <T extends FieldValues>({
   category,
   errors,
   maxLength,
   register,
+  name,
 }: ITextAreaProps<T>) => {
   const [currentLength, setCurrentLength] = useState(0);
 
@@ -36,7 +38,7 @@ const TextArea = <T extends FieldValues>({
         </legend>
 
         <textarea
-          {...register(category as Path<T>)}
+          {...register(name ?? (category as Path<T>))}
           maxLength={maxLength}
           onChange={(e) => setCurrentLength(e.target.value.length)}
           className={cn(

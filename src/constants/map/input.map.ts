@@ -7,11 +7,14 @@ export const LABEL_MAP = {
   nickname: '닉네임',
   recipeName: '요리명',
   stepTitle: '순서 제목',
-  quantity: '용량',
+  stepDescription: '요리 설명',
+  amount: '용량',
   reportContent: '신고 사유',
   unit: '단위',
   search: '',
   content: '일기',
+  recipeDescription: '간단 설명',
+  ingredientName: '재료명',
 } as const;
 
 export const PLACEHOLDER_MAP = {
@@ -19,14 +22,17 @@ export const PLACEHOLDER_MAP = {
   email: '이메일을 입력해주세요.',
   birthday: '생년월일을 입력해주세요. (2000-01-01)',
   password: '비밀번호를 입력해주세요.',
-  confirmPassword: '비밀번호를 한 번더 입력해주세요.',
+  confirmPassword: '비밀번호를 한 번 더 입력해주세요.',
   nickname: '닉네임을 입력해주세요. (최대 10글자)',
   recipeName: '요리명을 입력해주세요.',
-  stepTitle: '순서 제목을 입력해주세요.',
-  quantity: '용량을 입력해주세요.',
+  stepTitle: '순서 제목을 입력해주세요. (최대 50글자)',
+  stepDescription: '요리 과정에 대한 설명을 입력해주세요 (최대 500글자)',
+  amount: '용량을 입력해주세요.',
   reportContent: '신고 사유를 입력해주세요. (최대 300글자)',
   unit: '단위를 입력해주세요.',
   search: '요리명 혹은 작성자명을 입력해주세요.',
   content:
     'ex) 오늘의 세끼 식사중 제일 맛있었던 요리!\n기가막힌 레시피 발견!\n오늘 점심/저녁은 이걸 먹었어요!',
+  recipeDescription: '요리에 대한 간단한 설명을 입력해주세요. (최대 300글자)',
+  ingredientName: '재료 이름을 입력해주세요.',
 } as const;

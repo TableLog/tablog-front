@@ -34,7 +34,7 @@ export default function Button({
   children,
   ...rest
 }: IButtonProps) {
-  const isFullWidth = full ? 'flex-1 w-full' : '';
+  const isFullWidth = full ? 'flex-grow w-full' : '';
   const disabledClass = rest.disabled ? 'bg-grey04 pointer-events-none' : '';
 
   return (
