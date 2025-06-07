@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
-import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddLog, useEditLog, useGetLog } from '@/hooks/feed.hooks';
 import { zodAddLog } from '@/lib/zod/zodValidation';
 import { TAddLogFormData } from '@/types/api';
@@ -80,6 +80,7 @@ const LogForm = ({ id }: ILogFormProps) => {
       if (res.status === 200) {
         router.push('/feed');
         queryClient.invalidateQueries({ queryKey: [FEED_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, id] });
         showToast({ message: '일기 수정 완료!', type: 'success' });
       }
     },
@@ -98,6 +99,9 @@ const LogForm = ({ id }: ILogFormProps) => {
       'controllerRequestDto',
       JSON.stringify({
         ...data,
+        image_urls: imageList
+          .filter((image) => image.src.startsWith('https'))
+          .map((image) => image.src),
         category: '게시판',
       }),
     );
@@ -114,6 +118,8 @@ const LogForm = ({ id }: ILogFormProps) => {
       addLog(formData);
     }
   };
+
+  console.log(imageList, 'imageList');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex h-full flex-col justify-between">

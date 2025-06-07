@@ -4,15 +4,15 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 
 import NavigationMenu from '@/components/molecules/navigation-menu/NavigationMenu';
-import { NAVIGATION_HIDDEN_PATHS } from '@/constants/common.constants';
+import { NAVIGATION_REVEAL_PATHS } from '@/constants/common.constants';
+import { Z_INDEX } from '@/constants/z-index.constants';
 
 const Navigation = () => {
   const pathname = usePathname();
 
-  // 현재 pathname이 네비게이션을 숨길 경로 중 하나로 시작하면 숨김 처리
-  const shouldHide = NAVIGATION_HIDDEN_PATHS.some((path) => pathname.startsWith(path));
+  const shouldShow = NAVIGATION_REVEAL_PATHS.some((path) => pathname === path);
 
-  if (shouldHide) return null;
+  if (!shouldShow) return null;
 
   const MENU_ARR = [
     { id: 1, name: '홈', iconName: 'home-smile', href: '/home' },
@@ -22,7 +22,10 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="align-center bg-white01 border-grey07 fixed bottom-0 z-[999] box-border flex h-[72px] max-h-[80px] w-full max-w-[100svw] justify-between border-t-1 px-[20px]">
+    <nav
+      className={`align-center bg-white01 border-grey07 fixed bottom-0 box-border flex h-[72px] max-h-[80px] w-full max-w-[100svw] justify-between border-t-1 px-[20px]`}
+      style={{ zIndex: Z_INDEX.NAVIGATION }}
+    >
       {MENU_ARR.map((menu) => {
         return (
           <NavigationMenu

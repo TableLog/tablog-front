@@ -15,6 +15,8 @@ import { showToast } from '@/utils/functions';
 
 import { FeedItem } from '../../../feed-list';
 
+import FeedCommentList from './feed-comment-list';
+
 const FeedDetail = ({ id }: { id: number }) => {
   const [logId, setLogId] = useState(-1);
 
@@ -25,6 +27,8 @@ const FeedDetail = ({ id }: { id: number }) => {
 
   const [expandedItems, setExpandedItems] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
+
+  const [isReply, setIsReply] = useState(false);
 
   const { data: userData } = useGetUserInfo();
   const { data: logDetail } = useGetLog(Number(id));
@@ -79,7 +83,7 @@ const FeedDetail = ({ id }: { id: number }) => {
         </Popup>
 
         <div className="relative flex h-[calc(100svh-160px)] w-full flex-col">
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto pb-6">
             <FeedItem
               log={logDetail}
               showMore={showMoreButton}
@@ -89,9 +93,11 @@ const FeedDetail = ({ id }: { id: number }) => {
               toggleExpand={toggleExpand}
               contentRefs={contentRefs}
             />
+
+            <FeedCommentList id={id} setIsReply={setIsReply} />
           </div>
 
-          <ChatInput logId={id} />
+          <ChatInput logId={id} isReply={isReply} setIsReply={setIsReply} />
         </div>
       </>
     )

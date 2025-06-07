@@ -9,6 +9,7 @@ import {
   GetLog,
   GetLogCommentList,
   GetLogList,
+  RemoveLogLike,
 } from '@/apis/feed.api';
 import {
   FEED_COMMENT_LIST_QUERY_KEY,
@@ -47,6 +48,7 @@ export function useGetLog(id: number) {
   return useQuery({
     queryKey: [FEED_QUERY_KEY, id],
     queryFn: () => GetLog(id),
+    enabled: !!id,
     select: (res) => res.data,
   });
 }
@@ -67,6 +69,14 @@ export function useAddLike(options?: IMutationOptions) {
   });
 }
 
+export function useRemoveLike(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (id: number) => RemoveLogLike(id),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
 export function useGetCommentList(id: number) {
   return useInfiniteQuery({
     queryKey: [FEED_COMMENT_LIST_QUERY_KEY, id],
@@ -74,6 +84,9 @@ export function useGetCommentList(id: number) {
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 }
 

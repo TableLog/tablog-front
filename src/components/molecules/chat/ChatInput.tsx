@@ -1,20 +1,35 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { Text } from '@/components/atoms/text/Text';
+import { FEED_COMMENT_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddComment } from '@/hooks/feed.hooks';
 import { cn } from '@/utils/cn';
 
-const ChatInput = ({ logId }: { logId: number }) => {
+interface IChatInputProps {
+  logId: number;
+  isReply: boolean;
+  setIsReply: (isReply: boolean) => void;
+}
+
+const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
+  const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [chatValue, setChatValue] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   const { mutate: addComment } = useAddComment({
-    onSuccess: () => {
-      setChatValue('');
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        queryClient.invalidateQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
+        queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
+
+        setChatValue('');
+      }
     },
   });
 
@@ -48,16 +63,26 @@ const ChatInput = ({ logId }: { logId: number }) => {
   return (
     <div className={cn(positionClass, paddingClass, 'bg-white01 z-50 transition-all')}>
       <div className="flex items-center gap-3">
-        <input
-          ref={inputRef}
-          type="text"
-          className="border-grey07 flex-1 rounded-full border px-4 py-2"
-          placeholder="댓글 입력..."
-          value={chatValue}
-          onChange={(e) => {
-            setChatValue(e.target.value);
-          }}
-        />
+        <div className="border-grey07 flex flex-1 justify-between rounded-full border px-4 py-2">
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-full"
+            placeholder={isReply ? '답글 입력...' : '댓글 입력...'}
+            value={chatValue}
+            onChange={(e) => {
+              setChatValue(e.target.value);
+            }}
+          />
+
+          {isReply && (
+            <div className="flex items-center gap-1">
+              <Text fontSize={14} color="grey04" onClick={() => setIsReply(false)}>
+                취소
+              </Text>
+            </div>
+          )}
+        </div>
 
         <BoxIcon
           name="navigation"

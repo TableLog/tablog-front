@@ -5,7 +5,7 @@ import instance from '@/utils/axios';
 
 export const GetLogList = async (page: number) => {
   try {
-    return await axios.get(`${BOARD_URL}?page=${page}`);
+    return await axios.get(`${BOARD_URL}/desc?page=${page}`);
   } catch (error) {
     throw error;
   }
@@ -51,9 +51,17 @@ export const AddLogLike = async (id: number) => {
   }
 };
 
+export const RemoveLogLike = async (id: number) => {
+  try {
+    return await instance.delete(`${BOARD_URL}/${id}/likes`);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const GetLogCommentList = async (id: number, page: number) => {
   try {
-    return await axios.get(`${BOARD_URL}/${id}/board_comments?pageNumber=${page}`);
+    return await axios.get(`${BOARD_URL}/${id}/board_comments?page=${page}`);
   } catch (error) {
     throw error;
   }

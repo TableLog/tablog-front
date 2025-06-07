@@ -87,7 +87,6 @@ export interface IMutationOptions {
 
 export type TTablogFormValues = TRegisterFormValues | TUserInfoEditFormValues;
 
-// Response
 export interface ILogResponse {
   id: number;
   category: string;
@@ -100,4 +99,21 @@ export interface ILogResponse {
   title: string;
   user: string;
   createdAt: string;
+  isLike: boolean;
+  isMe: boolean;
+  user_id: number;
+}
+
+export interface ICommentResponse {
+  content: string;
+  profileImgUrl: string;
+  user: string;
+  createdAt: string;
+}
+
+export interface IFollowerListResponse {
+  isFollowed: boolean;
+  nickname: string;
+  profileImgUrl: string;
+  userId: number;
 }

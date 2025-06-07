@@ -14,3 +14,6 @@ export const CHANGE_PASSWORD = '/api/v1/users/password';
 
 // feed
 export const BOARD_URL = '/api/v1/boards';
+
+// users
+export const USER_URL = '/api/v1/users';
