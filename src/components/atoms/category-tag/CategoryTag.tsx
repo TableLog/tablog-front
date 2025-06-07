@@ -1,20 +1,40 @@
 'use client';
-import { ComponentProps, useState } from 'react';
+import { ComponentProps } from 'react';
+import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
 
 import { Text } from '@/components/atoms/text/Text';
 import { cn } from '@/utils/cn';
 
 type CategoryType = string;
 
-const CategoryTag = ({ className, ...props }: ComponentProps<'div'>) => {
+interface CategoryTagProps<T extends FieldValues> extends ComponentProps<'div'> {
+  control: Control<T>;
+  name: Path<T>;
+}
+
+const CategoryTag = <T extends FieldValues>({
+  className,
+  name,
+  control,
+  ...props
+}: CategoryTagProps<T>) => {
   const categories = ['밥요리', '면요리', '밑반찬', '국/찌개', '아침', '점심', '저녁', '간식/후식'];
-  const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>([]);
+
+  const {
+    field: { value: selectedCategories, onChange },
+  } = useController({
+    name,
+    control,
+  });
 
   function handleCategoryClick(category: CategoryType) {
-    const isIncludedCategory = selectedCategories.includes(category);
+    const isIncluded = selectedCategories.includes(category);
 
-    if (isIncludedCategory) setSelectedCategories((prev) => prev.filter((e) => e === category));
-    else setSelectedCategories((prev) => [...prev, category]);
+    const updated = isIncluded
+      ? selectedCategories.filter((c: PathValue<T, Path<T>>) => c !== category)
+      : [...selectedCategories, category];
+
+    onChange(updated);
   }
 
   return (
@@ -28,6 +48,7 @@ const CategoryTag = ({ className, ...props }: ComponentProps<'div'>) => {
           return (
             <button
               key={`category-${category}`}
+              type="button"
               className={cn(
                 'rounded-full px-2.5 py-1',
                 isIncludedCategory ? 'bg-primary02' : 'bg-grey07',

@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useFormContext } from 'react-hook-form';
 
 import ToggleButton from '@/components/atoms/button/ToggleButton';
 import CategoryTag from '@/components/atoms/category-tag/CategoryTag';
@@ -10,11 +9,6 @@ import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
-import { zodRecipeInfo } from '@/lib/zod/zodValidation';
-
-interface TRecipeInfoValues {
-  recipeName: string;
-}
 
 interface IImageList {
   id: string;
@@ -23,45 +17,49 @@ interface IImageList {
   input?: boolean;
 }
 
-const InfoForm = ({ id }: { id: string }) => {
-  const [toggleValue, setToggleValue] = useState(false);
-  const [imageList, setImageList] = useState<IImageList[]>([]);
+interface InfoFormProps {
+  id: string;
+}
 
+const InfoForm = ({ id }: InfoFormProps) => {
+  const [imageList, setImageList] = useState<IImageList[]>([]);
   const {
+    control,
     register,
     formState: { errors },
-  } = useForm<TRecipeInfoValues>({
-    resolver: zodResolver(zodRecipeInfo),
-    mode: 'onChange',
-    defaultValues: {
-      recipeName: '',
-    },
-  });
+  } = useFormContext();
 
   return (
     <div id={id} className="flex flex-col gap-8">
       <div>
         <RecipeImageInput
           className="mb-4"
-          max={1}
           imageList={imageList}
           setImageList={setImageList}
+          maxImage={1}
           label="썸네일 이미지 업로드"
+          {...register('recipeImage')}
         />
-        <TextInput category="recipeName" register={register} errors={errors} />
+        <TextInput
+          category="recipeName"
+          name="recipeCreateRequestDto.title"
+          register={register}
+          errors={errors}
+        />
         <TextArea
           category="recipeDescription"
+          name="recipeCreateRequestDto.intro"
           register={register}
           errors={errors}
           maxLength={300}
         />
       </div>
 
-      <CategoryTag />
+      <CategoryTag name="recipeCreateRequestDto.recipeCategoryList" control={control} />
 
-      <Range type="price" />
+      <Range type="price" name="recipeCreateRequestDto.price" control={control} />
 
-      <Range type="time" />
+      <Range type="time" name="recipeCreateRequestDto.cookingTime" control={control} />
 
       <ToggleButton
         title={
@@ -76,8 +74,7 @@ const InfoForm = ({ id }: { id: string }) => {
             </Tooltip>
           </div>
         }
-        value={toggleValue}
-        setValue={setToggleValue}
+        {...register('recipeCreateRequestDto.isPaid')}
       />
     </div>
   );

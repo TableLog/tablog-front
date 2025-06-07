@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 
@@ -14,29 +14,45 @@ import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { UNIT_OPTIONS } from '@/constants/options.constants';
 import { zodIngredientInfo } from '@/lib/zod/zodValidation';
 
-interface TIngredientValues {
-  ingredientName: string;
-  quantity: string;
-  unit: string;
+import { TRecipeFormValues } from './page';
+
+interface IngredientFormProps {
+  id: string;
 }
 
-const IngredientForm = ({ id }: { id: string }) => {
+const IngredientForm = ({ id }: IngredientFormProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [ingredients, setIngredients] = useState<(TIngredientValues & { id: string })[]>([]);
-  const [unit, setUnit] = useState<string>(UNIT_OPTIONS[0].title);
+
+  const foodList = [
+    { id: 1, title: '콩' },
+    { id: 2, title: '콩떡' },
+    { id: 3, title: '콩나물' },
+  ];
 
   const {
+    control,
+    register,
     reset,
     handleSubmit,
-    register,
     formState: { errors },
-  } = useForm<Omit<TIngredientValues, 'unit'>>({
+  } = useForm<TRecipeFormValues['recipeFoodCreateRequestDto'][number]>({
     resolver: zodResolver(zodIngredientInfo),
     mode: 'onChange',
     defaultValues: {
-      ingredientName: '',
-      quantity: '',
+      amount: 0,
+      foodId: 0,
+      recipeFoodUnit: UNIT_OPTIONS[0].title,
     },
+  });
+
+  const {} = useFormContext<TRecipeFormValues>();
+
+  const {
+    fields: ingredientFields,
+    append: appendIngredient,
+    remove: removeIngredient,
+  } = useFieldArray<TRecipeFormValues, 'recipeFoodCreateRequestDto'>({
+    name: 'recipeFoodCreateRequestDto',
   });
 
   function openBottomSheet() {
@@ -47,15 +63,15 @@ const IngredientForm = ({ id }: { id: string }) => {
     setIsOpen(false);
   }
 
-  function addIngredient(value: Omit<TIngredientValues, 'unit'>) {
-    setIngredients((prev) => [...prev, { id: crypto.randomUUID(), ...value, unit }]);
+  function addIngredient(data: TRecipeFormValues['recipeFoodCreateRequestDto'][number]) {
+    appendIngredient(data);
+    closeBottomSheet();
     reset();
-    setUnit(UNIT_OPTIONS[0].title);
   }
 
-  function deleteIngredient(ingredientId: string) {
-    setIngredients((prev) => prev.filter((ingredient) => ingredient.id !== ingredientId));
-  }
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <div id={id} className="flex flex-col items-center gap-8">
@@ -63,25 +79,27 @@ const IngredientForm = ({ id }: { id: string }) => {
         재료 등록 +
       </Button>
 
-      {ingredients.length === 0 ? (
+      {ingredientFields.length === 0 ? (
         <div>요리에 필요한 재료를 입력해주세요.</div>
       ) : (
-        ingredients.map((ingredient) => (
-          <div key={ingredient.id} className="flex w-full justify-between">
-            <Text>
-              {ingredient.ingredientName} | {ingredient.quantity}
-              {ingredient.unit}
-            </Text>
-            <button
-              type="button"
-              onClick={() => {
-                deleteIngredient(ingredient.id);
-              }}
-            >
-              <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
-            </button>
-          </div>
-        ))
+        <div className="flex w-full flex-col-reverse gap-8">
+          {ingredientFields.map((ingredient, idx) => (
+            <div key={ingredient.id} className="flex justify-between">
+              <Text>
+                {foodList.find(({ id }) => id === ingredient.foodId)?.title} | {ingredient.amount}{' '}
+                {ingredient.recipeFoodUnit}
+              </Text>
+              <button
+                type="button"
+                onClick={() => {
+                  removeIngredient(idx);
+                }}
+              >
+                <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
+              </button>
+            </div>
+          ))}
+        </div>
       )}
 
       <BottomSheet
@@ -99,18 +117,27 @@ const IngredientForm = ({ id }: { id: string }) => {
         }
       >
         <div className="flex flex-col gap-8 px-5">
-          <AutoComplete
-            list={[
-              { id: 1, title: '콩' },
-              { id: 2, title: '콩떡' },
-              { id: 3, title: '콩나물' },
-            ]}
-            category="ingredientName"
-            register={register}
-          />
-          <div className="grid grid-cols-2 gap-x-2.5 gap-y-1">
-            <TextInput type="number" category="quantity" register={register} errors={errors} />
-            <SelectBox category="unit" list={UNIT_OPTIONS} value={unit} setValue={setUnit} />
+          <div>
+            <AutoComplete
+              list={foodList}
+              category="ingredientName"
+              name="foodId"
+              control={control}
+            />
+            {errors?.foodId && (
+              <div className="validator-hint mt-0 ml-4 whitespace-pre-line">
+                <Text color="red01">{errors['foodId'].message}</Text>
+              </div>
+            )}
+          </div>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+            <TextInput type="number" category="amount" register={register} errors={errors} />
+            <SelectBox
+              category="unit"
+              name="recipeFoodUnit"
+              list={UNIT_OPTIONS}
+              control={control}
+            />
             <div className="col-span-2 flex gap-1">
               <BoxIcon name="info-circle" size={20} />
               <Text fontSize={12}>1인분 기준으로 입력해주세요.</Text>

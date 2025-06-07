@@ -12,15 +12,23 @@ interface TabInfo {
 interface TabsProps extends ComponentProps<'div'> {
   tabs: TabInfo[];
   children: JSX.Element[];
+  onTabChange?: ({
+    prevTabId,
+    newTabId,
+  }: {
+    prevTabId: TabInfo['id'];
+    newTabId: TabInfo['id'];
+  }) => void;
 }
 
-const Tabs = ({ tabs, children, className, ...props }: TabsProps) => {
+const Tabs = ({ tabs, children, className, onTabChange, ...props }: TabsProps) => {
   const [activeTab, setActiveTab] = useState<TabInfo['id']>(children[0].props.id);
   const activeRef = useRef<HTMLDivElement | null>(null);
   const buttonsRef = useRef<HTMLButtonElement[]>([]);
 
   function handleTabButtonClick(id: TabInfo['id'], idx: number) {
     setActiveTab(id);
+    onTabChange?.({ prevTabId: activeTab, newTabId: id });
 
     const selectedButton = buttonsRef.current[idx];
     if (activeRef.current) activeRef.current.style.left = `${selectedButton.offsetLeft}px`;
@@ -41,6 +49,7 @@ const Tabs = ({ tabs, children, className, ...props }: TabsProps) => {
         {tabs.map(({ id, label }, idx) => (
           <button
             key={`tab-button-${id}`}
+            type="button"
             ref={(ref) => {
               buttonsRef.current[idx] = ref!;
             }}
@@ -61,9 +70,11 @@ const Tabs = ({ tabs, children, className, ...props }: TabsProps) => {
       </div>
 
       {/* 탭 내용 */}
-      {children.map((child, idx) =>
-        child.props.id === activeTab ? <div key={`${idx}`}>{child}</div> : null,
-      )}
+      {children.map((child, idx) => (
+        <div key={`${idx}`} className={cn(child.props.id === activeTab ? '' : 'hidden')}>
+          {child}
+        </div>
+      ))}
     </div>
   );
 };

@@ -1,31 +1,46 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { useRef, useState } from 'react';
+import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
 
 import { BoxIcon } from '../icon/BoxIcon';
 
+interface ItemType {
+  id: number;
+  title: string;
+}
+
 interface IAutoCompleteProps<T extends FieldValues> {
-  list: Array<{ id: number; title: string }>;
+  list: Array<ItemType>;
   category: keyof typeof LABEL_MAP;
-  register: UseFormRegister<T>;
+  name?: Path<T>;
+  control: Control<T>;
 }
 
 const AutoComplete = <T extends FieldValues>({
   list,
   category,
-  register,
+  name,
+  control,
 }: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [value, setValue] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {
+    field: { onChange },
+  } = useController({
+    name: name ?? (category as Path<T>),
+    control,
+    defaultValue: list[0].id as PathValue<T, Path<T>>,
+  });
 
-  const handleSelect = (title: string) => {
-    if (inputRef.current) inputRef.current.value = title;
+  const handleSelect = (item: ItemType) => {
+    if (inputRef.current) inputRef.current.value = item.title;
+    onChange(item.id);
     setIsOpen(false);
     inputRef.current?.blur(); // 선택 후 드롭다운 닫히게
   };
@@ -41,18 +56,13 @@ const AutoComplete = <T extends FieldValues>({
         )}
       >
         <input
-          {...register(category as Path<T>, {
-            onBlur: () => setTimeout(() => setIsOpen(false), 100),
-            onChange: (e) => setValue(e.target.value),
-          })}
-          ref={(e) => {
-            register(category as Path<T>).ref(e);
-            inputRef.current = e;
-          }}
+          ref={inputRef}
           type="text"
           placeholder={PLACEHOLDER_MAP[category]}
           className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+          onChange={(e) => setValue(e.target.value)}
         />
 
         <BoxIcon name="search" size={20} />
@@ -76,7 +86,7 @@ const AutoComplete = <T extends FieldValues>({
               <li
                 key={item.id}
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => handleSelect(item.title)}
+                onClick={() => handleSelect(item)}
                 className="cursor-pointer py-1"
               >
                 {item.title}

@@ -1,21 +1,15 @@
 'use client';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import Image from 'next/image';
 
 import Button from '@/components/atoms/button/Button';
 import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
-import { zodIngredientInfo } from '@/lib/zod/zodValidation';
 import { cn } from '@/utils/cn';
 
-interface TSteps {
-  images: string[];
-  title: string;
-  description: string;
-}
+import { TRecipeFormValues } from './page';
 
 interface IImageList {
   id: string;
@@ -24,50 +18,60 @@ interface IImageList {
   input?: boolean;
 }
 
-const RecipeForm = ({ id }: { id: string }) => {
+interface RecipeFormProps {
+  id: string;
+}
+
+const RecipeForm = ({ id }: RecipeFormProps) => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [steps, setSteps] = useState<{ id: string }[]>([{ id: '-' }]);
   const [imageList, setImageList] = useState<IImageList[]>([]);
 
+  useEffect(() => {
+    handleAddStep();
+  }, []);
+
   const {
-    handleSubmit,
     register,
     formState: { errors },
-  } = useForm<Omit<TSteps, 'images'>>({
-    resolver: zodResolver(zodIngredientInfo),
-    mode: 'onChange',
-    defaultValues: {
-      title: 'asdf',
-      description: '',
-    },
+  } = useFormContext<TRecipeFormValues>();
+
+  const {
+    fields: stepFields,
+    append: appendStep,
+    remove: removeStep,
+  } = useFieldArray<TRecipeFormValues, 'rpDtos.dtos'>({
+    name: 'rpDtos.dtos',
   });
 
-  function handleStepButtonClick(stepIndex: number) {
-    const isActiveStep = stepIndex === activeStep;
-    setActiveStep(isActiveStep ? -1 : stepIndex);
+  function handleStepButtonClick(stepIdx: number) {
+    const isActiveStep = stepIdx === activeStep;
+    setActiveStep(isActiveStep ? -1 : stepIdx);
   }
 
-  function addStep(step: Omit<TSteps, 'images'>) {
-    console.log('??');
-    setSteps((prev) => [...prev, { id: crypto.randomUUID() }]);
-    setActiveStep(steps.length);
-    console.log(step, steps);
+  function handleAddStep() {
+    appendStep({ rpTitle: '', description: '', files: undefined });
+    setActiveStep(stepFields.length);
   }
 
-  function deleteStep(stepId: string) {
-    setSteps((prev) => prev.filter((step) => step.id !== stepId));
+  function handleDeleteStep(stepIdx: number) {
+    if (stepFields.length > 1) removeStep(stepIdx);
+    setActiveStep(stepFields.length - 2);
   }
 
   return (
     <div id={id} className="flex flex-col gap-8">
-      <Button size="large" full onClick={handleSubmit(addStep)}>
+      <Button size="large" full onClick={handleAddStep}>
         순서 추가 +
       </Button>
 
-      {steps.map(({ id }, idx) => (
+      {stepFields.map(({ id }, idx) => (
         <div key={id} className="flex flex-col gap-1.5">
           <div className="flex w-full items-center justify-between">
-            <button type="button" className="flex gap-2.5" onClick={() => handleStepButtonClick(0)}>
+            <button
+              type="button"
+              className="flex gap-2.5"
+              onClick={() => handleStepButtonClick(idx)}
+            >
               <span className="w-[50px]">단계 {idx + 1}</span>
               <Image
                 width={18}
@@ -78,7 +82,7 @@ const RecipeForm = ({ id }: { id: string }) => {
               />
             </button>
             {idx === activeStep && (
-              <button type="button" onClick={() => deleteStep(id)}>
+              <button type="button" onClick={() => handleDeleteStep(idx)}>
                 <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
               </button>
             )}
@@ -90,12 +94,19 @@ const RecipeForm = ({ id }: { id: string }) => {
                 className="mb-8"
                 imageList={imageList}
                 setImageList={setImageList}
-                max={3}
+                maxImage={3}
                 label="이미지 업로드"
+                {...register(`rpDtos.dtos.${idx}.files`)}
               />
-              <TextInput category="stepTitle" register={register} errors={errors} />
+              <TextInput
+                category="stepTitle"
+                name={`rpDtos.dtos.${idx}.rpTitle`}
+                register={register}
+                errors={errors}
+              />
               <TextArea
                 category="stepDescription"
+                name={`rpDtos.dtos.${idx}.description`}
                 register={register}
                 errors={errors}
                 maxLength={500}
@@ -105,7 +116,7 @@ const RecipeForm = ({ id }: { id: string }) => {
         </div>
       ))}
 
-      <Button size="large" full>
+      <Button type="submit" size="large" full>
         레시피 등록
       </Button>
     </div>

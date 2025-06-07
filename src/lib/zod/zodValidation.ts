@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
 import {
+  AMOUNT_REQUIRED,
   BIRTH_FORMAT,
   BIRTH_REQUIRED,
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
+  INGREDIENT_NAME_REQUIRED,
   LOG_CONTENT_REQUIRED,
   NAME_FORMAT,
   NAME_REQUIRED,
@@ -15,7 +17,7 @@ import {
   PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_FORMAT,
   PASSWORD_REQUIRED,
-  QUANTITY_REQUIRED,
+  RECIPE_DESCRIPTION_REQUIRED,
   RECIPE_NAME_REQUIRED,
   STEP_DESCRIPTION_REQUIRED,
   STEP_TITLE_REQUIRED,
@@ -29,6 +31,13 @@ const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
 
 const BIRTH_FORMAT_REGEX = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD 형식의 정규식
 const BIRTH_VALID_REGEX = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/; // YYYY-MM-DD 각 자리에 유효한 생년월일인지 확인
+
+const zodFileList = z
+  .unknown()
+  .transform((value) => {
+    return value as FileList;
+  })
+  .optional();
 
 // NOTE: 이메일 회원가입
 export const zodEmailRegister = z
@@ -303,22 +312,34 @@ export const zodAddLog = z.object({
   content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
 });
 
-export const zodRecipeInfo = z.object({
-  recipeName: z.string({ message: RECIPE_NAME_REQUIRED }).max(50, RECIPE_NAME_REQUIRED),
-});
-
-export const zodIngredientInfo = z.object({
-  ingredientName: z
-    .string({ message: RECIPE_NAME_REQUIRED })
-    .min(1, QUANTITY_REQUIRED)
-    .max(50, RECIPE_NAME_REQUIRED),
-  quantity: z.string({ message: QUANTITY_REQUIRED }).min(1, QUANTITY_REQUIRED),
-});
-
-export const zodRecipeStepsInfo = z.object({
-  title: z
+// NOTE: 레시피 등록
+const zodRecipeStepInfo = z.object({
+  rpTitle: z
     .string({ message: STEP_TITLE_REQUIRED })
     .min(1, STEP_TITLE_REQUIRED)
     .max(500, STEP_TITLE_REQUIRED),
   description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
+  files: zodFileList,
+});
+
+export const zodIngredientInfo = z.object({
+  amount: z.coerce.number().min(1, { message: AMOUNT_REQUIRED }),
+  recipeFoodUnit: z.string(),
+  foodId: z.number().min(1, { message: INGREDIENT_NAME_REQUIRED }),
+});
+
+export const zodRecipeForm = z.object({
+  recipeCreateRequestDto: z.object({
+    title: z.string().trim().nonempty({ message: RECIPE_NAME_REQUIRED }),
+    intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
+    recipeCategoryList: z.array(z.string()),
+    price: z.string(),
+    cookingTime: z.string(),
+    isPaid: z.boolean(),
+  }),
+  recipeImage: zodFileList,
+  recipeFoodCreateRequestDto: z.array(zodIngredientInfo),
+  rpDtos: z.object({
+    dtos: z.array(zodRecipeStepInfo),
+  }),
 });

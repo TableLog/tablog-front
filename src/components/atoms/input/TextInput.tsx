@@ -20,6 +20,7 @@ import { Text } from '../text/Text';
 
 interface ITextInputProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
+  name?: Path<T>;
   errorMessage?: string;
   isError?: boolean;
   type?: 'text' | 'password' | 'email' | 'number';
@@ -39,6 +40,7 @@ interface ITextInputProps<T extends FieldValues> {
 const TextInput = <T extends FieldValues>({
   type = 'text',
   category,
+  name,
   buttonText,
   buttonEvent,
   register,
@@ -101,8 +103,8 @@ const TextInput = <T extends FieldValues>({
           )}
         >
           <input
+            {...register(name ?? (category as Path<T>))}
             {...rest}
-            {...register(category as Path<T>)}
             onChange={onChangeInput}
             autoComplete="new-password"
             type={showPassword ? 'text' : type}
