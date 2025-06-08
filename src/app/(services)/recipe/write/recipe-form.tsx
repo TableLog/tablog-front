@@ -11,20 +11,12 @@ import { cn } from '@/utils/cn';
 
 import { TRecipeFormValues } from './page';
 
-interface IImageList {
-  id: string;
-  src: string;
-  file?: File;
-  input?: boolean;
-}
-
 interface RecipeFormProps {
   id: string;
 }
 
 const RecipeForm = ({ id }: RecipeFormProps) => {
   const [activeStep, setActiveStep] = useState<number>(0);
-  const [imageList, setImageList] = useState<IImageList[]>([]);
 
   useEffect(() => {
     handleAddStep();
@@ -33,6 +25,7 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
 
   const {
     register,
+    control,
     formState: { errors },
   } = useFormContext<TRecipeFormValues>();
 
@@ -50,7 +43,7 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
   }
 
   function handleAddStep() {
-    appendStep({ rpTitle: '', description: '', files: undefined });
+    appendStep({ rpTitle: '', description: '', files: [] });
     setActiveStep(stepFields.length);
   }
 
@@ -79,41 +72,40 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
                 height={18}
                 src="/icons/arrow.svg"
                 alt="토글 아이콘"
-                className={cn('duration-150', idx !== activeStep && '-rotate-180')}
+                className={cn('duration-150', idx === activeStep && '-rotate-180')}
               />
             </button>
-            {idx === activeStep && (
-              <button type="button" onClick={() => handleDeleteStep(idx)}>
-                <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
-              </button>
-            )}
+            <button
+              type="button"
+              className={cn(idx !== activeStep && 'hidden')}
+              onClick={() => handleDeleteStep(idx)}
+            >
+              <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
+            </button>
           </div>
 
-          {idx === activeStep && (
-            <div className="w-full">
-              <RecipeImageInput
-                className="mb-8"
-                imageList={imageList}
-                setImageList={setImageList}
-                maxImage={3}
-                label="이미지 업로드"
-                {...register(`dtos.${idx}.files`)}
-              />
-              <TextInput
-                category="stepTitle"
-                name={`dtos.${idx}.rpTitle`}
-                register={register}
-                errors={errors}
-              />
-              <TextArea
-                category="stepDescription"
-                name={`dtos.${idx}.description`}
-                register={register}
-                errors={errors}
-                maxLength={500}
-              />
-            </div>
-          )}
+          <div className={cn('w-full', idx !== activeStep && 'hidden')}>
+            <RecipeImageInput
+              className="mb-8"
+              maxImage={3}
+              label="이미지 업로드"
+              control={control}
+              name={`dtos.${idx}.files`}
+            />
+            <TextInput
+              category="stepTitle"
+              name={`dtos.${idx}.rpTitle`}
+              register={register}
+              errors={errors}
+            />
+            <TextArea
+              category="stepDescription"
+              name={`dtos.${idx}.description`}
+              register={register}
+              errors={errors}
+              maxLength={500}
+            />
+          </div>
         </div>
       ))}
 

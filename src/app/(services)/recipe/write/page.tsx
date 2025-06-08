@@ -32,7 +32,7 @@ const RecipeWritePage = () => {
         cookingTime: '0',
         isPaid: false,
       },
-      recipeImage: undefined,
+      recipeImage: [],
       recipeFoodCreateRequestDto: [],
       dtos: [],
     },
@@ -44,21 +44,14 @@ const RecipeWritePage = () => {
 
     const formdata = new FormData();
 
-    if (recipeImage)
-      [...recipeImage].forEach((file: File) => {
-        formdata.append(`recipeImage`, file);
-      });
-
+    if (recipeImage[0]) formdata.append(`recipeImage`, recipeImage[0]);
     formdata.append('recipeCreateRequestDto', JSON.stringify(recipeCreateRequestDto));
     formdata.append('recipeFoodCreateRequestDto', JSON.stringify(recipeFoodCreateRequestDto));
     dtos.forEach((step, idx) => {
       formdata.append(`dtos[${idx}].sequence`, String(idx));
       formdata.append(`dtos[${idx}].rpTitle`, step.rpTitle);
       formdata.append(`dtos[${idx}].description`, step.description);
-      if (step.files)
-        [...step.files].forEach((file: File) => {
-          formdata.append(`dtos[${idx}].files`, file);
-        });
+      step.files?.forEach((file: File) => formdata.append(`dtos[${idx}].files`, file));
     });
 
     addRecipe(formdata);

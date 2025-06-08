@@ -1,36 +1,60 @@
 'use client';
 
-import React, { ChangeEvent, ComponentProps, Dispatch, SetStateAction } from 'react';
+import { ChangeEvent, ComponentProps, useEffect, useState } from 'react';
+import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
 import Image from 'next/image';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { IImageList } from '@/app/(services)/feed/add-log/@form/log-form';
 import { cn } from '@/utils/cn';
 import { showToast } from '@/utils/functions';
 
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
-interface IRecipeImageInputProps extends ComponentProps<'input'> {
+interface IRecipeImageInputProps<T extends FieldValues> extends ComponentProps<'input'> {
   className?: string;
   half?: boolean;
-  imageList: IImageList[];
-  setImageList: Dispatch<SetStateAction<IImageList[]>>;
   error?: boolean;
   maxImage?: number;
   label?: string;
+  name: Path<T>;
+  control: Control<T>;
+  defaultImages?: IImageList['src'][];
 }
-const RecipeImageInput = ({
+
+interface IImageList {
+  id: string;
+  src: string;
+  file?: File;
+  input?: boolean;
+}
+
+const RecipeImageInput = <T extends FieldValues>({
   className,
   half,
-  imageList,
-  setImageList,
   maxImage = 3,
   error,
   label = '이미지 업로드',
+  name,
+  control,
+  defaultImages,
   ...props
-}: IRecipeImageInputProps) => {
+}: IRecipeImageInputProps<T>) => {
+  const [imageList, setImageList] = useState<IImageList[]>([]);
+
+  useEffect(() => {
+    setImageList(defaultImages?.map((src) => ({ id: `${Math.random()}`, src })) ?? []);
+  }, [defaultImages]);
+
+  const {
+    field: { value, onChange },
+  } = useController({
+    name,
+    control,
+    defaultValue: [] as PathValue<T, Path<T>>,
+  });
+
   const onChangeImageFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -38,14 +62,13 @@ const RecipeImageInput = ({
 
     // 유효한 이미지 확장자 체크 (jpg, jpeg, png)
     const validImageExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
-
-    files.forEach((file) => {
+    for (const file of files) {
       if (!validImageExtensions.includes(file.type)) {
         showToast({ message: 'jpg, jpeg, png 파일만 업로드 가능합니다.', type: 'error' });
         return; // 유효하지 않은 파일이면 더 이상 진행하지 않음
       }
 
-      if (imageList.length === maxImage) {
+      if (files.length > maxImage) {
         showToast({
           message: `이미지는 최대 ${maxImage}개까지 업로드하실 수 있습니다.`,
           type: 'error',
@@ -55,26 +78,26 @@ const RecipeImageInput = ({
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
-
       reader.onloadend = () => {
         if (reader.result) {
-          setImageList((prev) => {
-            return [
-              ...prev,
-              {
-                id: `${reader.result as string}${Math.random()}`,
-                src: reader.result as string,
-                file,
-              },
-            ];
-          });
+          setImageList((prev) => [
+            ...prev,
+            {
+              id: `${reader.result}${Math.random()}`,
+              src: reader.result as string,
+              file,
+            },
+          ]);
+          onChange([...value, file]);
         }
       };
-    });
+    }
   };
 
   const onClickRemoveImageFile = (id: string) => {
-    setImageList((prev) => prev.filter((el) => el.id !== id));
+    const newImage = imageList.filter((image) => image.id !== id);
+    setImageList(newImage);
+    onChange(newImage.map((image) => image.file ?? image.src));
   };
 
   // 실제 렌더링될 이미지 목록에 업로드 input 포함 조건 처리

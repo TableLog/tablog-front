@@ -32,13 +32,6 @@ const PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,15}$/;
 const BIRTH_FORMAT_REGEX = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD 형식의 정규식
 const BIRTH_VALID_REGEX = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/; // YYYY-MM-DD 각 자리에 유효한 생년월일인지 확인
 
-const zodFileList = z
-  .unknown()
-  .transform((value) => {
-    return value as FileList;
-  })
-  .optional();
-
 // NOTE: 이메일 회원가입
 export const zodEmailRegister = z
   .object({
@@ -310,6 +303,7 @@ export const zodChangePassword = z
 // NOTE: 일기 작성
 export const zodAddLog = z.object({
   content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
+  images: z.array(z.instanceof(File).or(z.string())),
 });
 
 // NOTE: 레시피 등록
@@ -319,7 +313,7 @@ const zodRecipeStepInfo = z.object({
     .min(1, STEP_TITLE_REQUIRED)
     .max(500, STEP_TITLE_REQUIRED),
   description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
-  files: zodFileList,
+  files: z.array(z.instanceof(File)),
 });
 
 export const zodIngredientInfo = z.object({
@@ -337,7 +331,7 @@ export const zodRecipeForm = z.object({
     cookingTime: z.string(),
     isPaid: z.boolean(),
   }),
-  recipeImage: zodFileList,
+  recipeImage: z.array(z.instanceof(File)),
   recipeFoodCreateRequestDto: z.array(zodIngredientInfo),
   dtos: z.array(zodRecipeStepInfo),
 });
