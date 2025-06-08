@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import type { Meta } from '@storybook/react';
 
-import { IImageList } from '@/app/(services)/feed/add-log/@form/log-form';
+import Button from '../button/Button';
 
 import RecipeImageInput from './RecipeImageInput';
 
@@ -12,25 +13,27 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  render: () => <RecipeImageInputWithState />,
+  render: () => <RecipeImageInputExample />,
 } satisfies Meta<typeof RecipeImageInput>;
 
 export default meta;
 
-export const RecipeImageInputWithState = () => {
-  const [imageList, setImageList] = useState<IImageList[]>([]);
+export const RecipeImageInputExample = () => {
   const [imageRequired, setImageRequired] = useState(false);
 
-  return (
-    <div className="h-100 w-100">
-      <RecipeImageInput
-        half
-        imageList={imageList}
-        setImageList={setImageList}
-        error={imageRequired}
-      />
+  const { control } = useForm<{ images: (File | string)[] }>({
+    mode: 'onChange',
+    defaultValues: {
+      images: [],
+    },
+  });
 
-      <button onClick={() => setImageRequired((prev) => !prev)}>에러 토글</button>
+  return (
+    <div className="flex h-100 w-100 flex-col gap-6">
+      <RecipeImageInput half error={imageRequired} control={control} name="images" />
+      <Button buttonColor="grey04" onClick={() => setImageRequired((prev) => !prev)}>
+        에러 토글 버튼
+      </Button>
     </div>
   );
 };
