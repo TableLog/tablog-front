@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
@@ -41,7 +41,7 @@ const IngredientForm = ({ id }: IngredientFormProps) => {
     defaultValues: {
       amount: 0,
       foodId: 0,
-      recipeFoodUnit: UNIT_OPTIONS[0].title,
+      recipeFoodUnit: UNIT_OPTIONS[0].name,
     },
   });
 
@@ -68,10 +68,6 @@ const IngredientForm = ({ id }: IngredientFormProps) => {
     closeBottomSheet();
     reset();
   }
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   return (
     <div id={id} className="flex flex-col items-center gap-8">

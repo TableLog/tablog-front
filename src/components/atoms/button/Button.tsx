@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -16,7 +16,7 @@ const colorClasses = {
   white: 'bg-[var(--color-base-000)] text-black',
 };
 
-interface IButtonProps {
+interface IButtonProps extends ComponentProps<'button'> {
   onClick?: () => void;
   size?: 'mini' | 'small' | 'medium' | 'large';
   buttonColor?: 'primary' | 'grey04' | 'grey06' | 'white';
@@ -32,6 +32,7 @@ export default function Button({
   full,
   type = 'button',
   children,
+  className,
   ...rest
 }: IButtonProps) {
   const isFullWidth = full ? 'flex-grow w-full' : '';
@@ -48,6 +49,7 @@ export default function Button({
         colorClasses[buttonColor],
         isFullWidth,
         disabledClass,
+        className,
       )}
     >
       {children}
