@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
-import Tabs from '@/components/atoms/tabs/Tabs';
+import Tab from '@/components/atoms/tab/Tab';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddRecipe } from '@/hooks/recipe.hooks';
 import { zodRecipeForm } from '@/lib/zod/zodValidation';
@@ -16,12 +16,6 @@ import IngredientForm from './ingredient-form';
 import RecipeForm from './recipe-form';
 
 export type TRecipeFormValues = z.infer<typeof zodRecipeForm>;
-
-const tabs = [
-  { id: 'info', label: '레시피 정보' },
-  { id: 'ingredients', label: '재료 등록' },
-  { id: 'recipe', label: '조리 방법' },
-];
 
 const RecipeWritePage = () => {
   const router = useRouter();
@@ -78,11 +72,19 @@ const RecipeWritePage = () => {
     <div className="mb-4">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Tabs tabs={tabs}>
-            <InfoForm id={tabs[0].id} />
-            <IngredientForm id={tabs[1].id} />
-            <RecipeForm id={tabs[2].id} />
-          </Tabs>
+          <Tab>
+            <Tab.Buttons className="mb-4" tabs={['레시피 정보', '재료 등록', '조리 방법']} />
+
+            <Tab.Panel index={0}>
+              <InfoForm />
+            </Tab.Panel>
+            <Tab.Panel index={1}>
+              <IngredientForm />
+            </Tab.Panel>
+            <Tab.Panel index={2}>
+              <RecipeForm />
+            </Tab.Panel>
+          </Tab>
         </form>
       </FormProvider>
     </div>

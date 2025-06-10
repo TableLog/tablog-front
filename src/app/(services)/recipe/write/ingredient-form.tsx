@@ -16,11 +16,7 @@ import { zodIngredientInfo } from '@/lib/zod/zodValidation';
 
 import { TRecipeFormValues } from './page';
 
-interface IngredientFormProps {
-  id: string;
-}
-
-const IngredientForm = ({ id }: IngredientFormProps) => {
+const IngredientForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const foodList = [
@@ -70,7 +66,7 @@ const IngredientForm = ({ id }: IngredientFormProps) => {
   }
 
   return (
-    <div id={id} className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-8">
       <Button onClick={openBottomSheet} size="large" full>
         재료 등록 +
       </Button>

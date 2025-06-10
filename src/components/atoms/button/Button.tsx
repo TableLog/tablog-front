@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/utils/cn';
 
@@ -16,7 +17,9 @@ const colorClasses = {
   white: 'bg-[var(--color-base-000)] text-black',
 };
 
-interface IButtonProps extends ComponentProps<'button'> {
+type ButtonProps = ComponentProps<'button'> | ComponentProps<typeof Link>;
+
+interface IButtonProps {
   onClick?: () => void;
   size?: 'mini' | 'small' | 'medium' | 'large';
   buttonColor?: 'primary' | 'grey04' | 'grey06' | 'white';
@@ -34,9 +37,26 @@ export default function Button({
   children,
   className,
   ...rest
-}: IButtonProps) {
+}: IButtonProps & ButtonProps) {
   const isFullWidth = full ? 'flex-grow w-full' : '';
   const disabledClass = rest.disabled ? 'bg-grey04 pointer-events-none' : '';
+
+  if ('href' in rest)
+    return (
+      <Link
+        {...rest}
+        className={cn(
+          'btn rounded-full border-none px-4 font-medium shadow-none',
+          sizeClasses[size],
+          colorClasses[buttonColor],
+          isFullWidth,
+          disabledClass,
+          className,
+        )}
+      >
+        {children}
+      </Link>
+    );
 
   return (
     <button

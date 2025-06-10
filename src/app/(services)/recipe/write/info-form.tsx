@@ -9,11 +9,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
 
-interface InfoFormProps {
-  id: string;
-}
-
-const InfoForm = ({ id }: InfoFormProps) => {
+const InfoForm = () => {
   const {
     control,
     register,
@@ -21,7 +17,7 @@ const InfoForm = ({ id }: InfoFormProps) => {
   } = useFormContext();
 
   return (
-    <div id={id} className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
       <div>
         <RecipeImageInput
           className="mb-4"

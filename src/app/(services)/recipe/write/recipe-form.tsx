@@ -11,11 +11,7 @@ import { cn } from '@/utils/cn';
 
 import { TRecipeFormValues } from './page';
 
-interface RecipeFormProps {
-  id: string;
-}
-
-const RecipeForm = ({ id }: RecipeFormProps) => {
+const RecipeForm = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
 
   useEffect(() => {
@@ -53,7 +49,7 @@ const RecipeForm = ({ id }: RecipeFormProps) => {
   }
 
   return (
-    <div id={id} className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
       <Button size="large" full onClick={handleAddStep}>
         순서 추가 +
       </Button>
