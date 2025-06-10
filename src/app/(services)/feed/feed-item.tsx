@@ -1,4 +1,7 @@
+'use client';
+
 import React, { SetStateAction, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -10,7 +13,7 @@ import { Text } from '@/components/atoms/text/Text';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { useAddLike, useRemoveLike } from '@/hooks/feed.hooks';
-import { AddLikeSuccess, RemoveLikeSuccess } from '@/services/feed.services';
+import { ToggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
 import { convertDateFormat, HandleOpenModal } from '@/utils/functions';
@@ -34,20 +37,28 @@ const FeedItem = ({
   setLogId,
 }: IFeedItemProps) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { mutate: addLike } = useAddLike({
     onSuccess: (res) => {
       if (res.status === 200) {
-        AddLikeSuccess(log);
+        try {
+          ToggleLikeSuccess(log, queryClient);
+        } catch (error) {
+          console.error('ToggleLikeSuccess error:', error);
+        }
       }
     },
   });
 
   const { mutate: removeLike } = useRemoveLike({
     onSuccess: (res) => {
-      console.log(res);
       if (res.status === 200) {
-        RemoveLikeSuccess(log);
+        try {
+          ToggleLikeSuccess(log, queryClient);
+        } catch (error) {
+          console.error('ToggleLikeSuccess error:', error);
+        }
       }
     },
   });
@@ -113,7 +124,9 @@ const FeedItem = ({
             />
           )}
 
-          <Text fontSize={14}>{log.like_count || 0}</Text>
+          <Text fontSize={14} className="min-w-[10px]">
+            {log.like_count || 0}
+          </Text>
         </li>
 
         <li>

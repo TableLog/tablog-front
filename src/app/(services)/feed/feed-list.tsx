@@ -1,43 +1,33 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useQueryClient } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
 
-import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import Popup from '@/components/molecules/popup/Popup';
-import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
+import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
 import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useDeleteLog, useGetLogList } from '@/hooks/feed.hooks';
+import { useGetLogList } from '@/hooks/feed.hooks';
 import { useScrollPosition } from '@/hooks/function.hooks';
+import { useFeedItemActions } from '@/hooks/useFeedItemActions';
 import { ILogResponse } from '@/types/api';
-import { showToast } from '@/utils/functions';
 
-import FeedItem from './feed-item';
+const FeedItem = dynamic(() => import('./feed-item'), {
+  ssr: false,
+});
 
 const FeedList = () => {
   const { ref, inView } = useInView();
-  const [logId, setLogId] = useState(-1);
-
-  const queryClient = useQueryClient();
-
   const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
 
-  const { mutate: deleteLog } = useDeleteLog({
-    onSuccess: (res) => {
-      if (res.status === 200) {
-        const modal = document.getElementById(DELETE_FEED_MODAL) as HTMLDialogElement;
-        modal.close();
-        showToast({ message: '일기를 삭제했습니다.', type: 'success' });
-        queryClient.invalidateQueries({ queryKey: [FEED_LIST_QUERY_KEY] });
-      }
-    },
-  });
-
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
-  const [showMoreButton, setShowMoreButton] = useState<Record<number, boolean>>({});
-
-  const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const {
+    setLogId,
+    expandedItems,
+    showMoreButton,
+    setShowMoreButton,
+    contentRefs,
+    toggleExpand,
+    handleDelete,
+  } = useFeedItemActions();
 
   useEffect(() => {
     // 더보기 버튼 표시 여부
@@ -45,19 +35,13 @@ const FeedList = () => {
 
     for (const key in contentRefs.current) {
       const el = contentRefs.current[key];
+
       if (el) {
         newState[+key] = el.scrollHeight > 40;
       }
     }
     setShowMoreButton(newState);
-  }, [logList]);
-
-  const toggleExpand = (id: number) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  }, [contentRefs, logList, setShowMoreButton]);
 
   useEffect(() => {
     // 무한 스크롤
@@ -74,29 +58,7 @@ const FeedList = () => {
 
   return (
     <div>
-      <Popup
-        id={DELETE_FEED_MODAL}
-        title="일기 삭제"
-        activeButtonComponent={
-          <Button
-            buttonColor="primary"
-            size="medium"
-            onClick={() => {
-              if (logId) {
-                deleteLog(logId);
-              }
-            }}
-          >
-            삭제
-          </Button>
-        }
-      >
-        <>
-          <p>일기를 삭제하시겠습니까?</p>
-
-          <p>삭제하신 후 되돌리실 수 없습니다.</p>
-        </>
-      </Popup>
+      <DeleteFeedModal onDelete={handleDelete} />
 
       <div>
         {logList?.pages?.map((page) =>
