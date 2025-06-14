@@ -331,7 +331,7 @@ export const zodRecipeForm = z.object({
     cookingTime: z.string(),
     isPaid: z.boolean(),
   }),
-  recipeImage: z.array(z.instanceof(File)),
+  recipeImage: z.array(z.instanceof(File)).length(1),
   recipeFoodCreateRequestDto: z.array(zodIngredientInfo),
   dtos: z.array(zodRecipeStepInfo),
 });
