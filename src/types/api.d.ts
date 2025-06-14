@@ -73,6 +73,7 @@ export type TChangePasswordFormData = {
 
 export type TAddLogFormData = {
   content: string;
+  images: (File | string)[];
 };
 
 export interface IApiErrorResponse {

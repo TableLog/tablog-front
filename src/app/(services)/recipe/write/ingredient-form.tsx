@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
@@ -16,11 +16,7 @@ import { zodIngredientInfo } from '@/lib/zod/zodValidation';
 
 import { TRecipeFormValues } from './page';
 
-interface IngredientFormProps {
-  id: string;
-}
-
-const IngredientForm = ({ id }: IngredientFormProps) => {
+const IngredientForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const foodList = [
@@ -41,7 +37,7 @@ const IngredientForm = ({ id }: IngredientFormProps) => {
     defaultValues: {
       amount: 0,
       foodId: 0,
-      recipeFoodUnit: UNIT_OPTIONS[0].title,
+      recipeFoodUnit: UNIT_OPTIONS[0].name,
     },
   });
 
@@ -69,12 +65,8 @@ const IngredientForm = ({ id }: IngredientFormProps) => {
     reset();
   }
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   return (
-    <div id={id} className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-8">
       <Button onClick={openBottomSheet} size="large" full>
         재료 등록 +
       </Button>

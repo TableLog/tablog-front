@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import ToggleButton from '@/components/atoms/button/ToggleButton';
@@ -10,19 +9,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
 
-interface IImageList {
-  id: string;
-  src: string;
-  file?: File;
-  input?: boolean;
-}
-
-interface InfoFormProps {
-  id: string;
-}
-
-const InfoForm = ({ id }: InfoFormProps) => {
-  const [imageList, setImageList] = useState<IImageList[]>([]);
+const InfoForm = () => {
   const {
     control,
     register,
@@ -30,15 +17,14 @@ const InfoForm = ({ id }: InfoFormProps) => {
   } = useFormContext();
 
   return (
-    <div id={id} className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8">
       <div>
         <RecipeImageInput
           className="mb-4"
-          imageList={imageList}
-          setImageList={setImageList}
           maxImage={1}
           label="썸네일 이미지 업로드"
-          {...register('recipeImage')}
+          control={control}
+          name="recipeImage"
         />
         <TextInput
           category="recipeName"

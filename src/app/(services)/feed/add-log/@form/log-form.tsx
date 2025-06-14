@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -15,27 +15,21 @@ import { zodAddLog } from '@/lib/zod/zodValidation';
 import { TAddLogFormData } from '@/types/api';
 import { showToast } from '@/utils/functions';
 
-export interface IImageList {
-  id: string;
-  src: string;
-  file?: File;
-  input?: boolean;
-}
-
 interface ILogFormProps {
   id?: number;
 }
+
 const LogForm = ({ id }: ILogFormProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const [imageList, setImageList] = useState<IImageList[]>([]);
   const [imageRequired, setImageRequired] = useState(false);
 
   const { data: logData } = useGetLog(Number(id || -1));
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     reset,
@@ -44,6 +38,7 @@ const LogForm = ({ id }: ILogFormProps) => {
     mode: 'onChange',
     defaultValues: {
       content: '',
+      images: [],
     },
   });
 
@@ -51,17 +46,8 @@ const LogForm = ({ id }: ILogFormProps) => {
     if (logData) {
       reset({
         content: logData.content,
+        images: logData.image_urls,
       });
-
-      // 기존 이미지 설정
-      if (logData.image_urls) {
-        setImageList(
-          logData.image_urls.map((url: string, index: number) => ({
-            id: String(index),
-            src: url,
-          })),
-        );
-      }
     }
   }, [logData, reset]);
 
@@ -87,9 +73,10 @@ const LogForm = ({ id }: ILogFormProps) => {
   });
 
   const onSubmit: SubmitHandler<TAddLogFormData> = async (data) => {
-    if (imageList?.length < 1) {
-      setImageRequired(true);
+    const { images, ...feedData } = data;
 
+    if (images?.length < 1) {
+      setImageRequired(true);
       return;
     }
 
@@ -98,39 +85,32 @@ const LogForm = ({ id }: ILogFormProps) => {
     formData.append(
       'controllerRequestDto',
       JSON.stringify({
-        ...data,
-        image_urls: imageList
-          .filter((image) => image.src.startsWith('https'))
-          .map((image) => image.src),
+        ...feedData,
+        image_urls: images.filter((image) => typeof image === 'string'), // https...
         category: '게시판',
       }),
     );
 
-    imageList.forEach((image) => {
-      if (image.file) {
-        formData.append('multipartFiles', image.file);
-      }
-    });
+    images
+      .filter((image) => image instanceof File)
+      .forEach((imageFile) => {
+        formData.append('multipartFiles', imageFile);
+      });
 
-    if (id) {
-      editLog({ id, formData });
-    } else {
-      addLog(formData);
-    }
+    if (id) editLog({ id, formData });
+    else addLog(formData);
   };
-
-  console.log(imageList, 'imageList');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex h-full flex-col justify-between">
       <div className="flex flex-col gap-4">
         <RecipeImageInput
           half
-          imageList={imageList}
-          setImageList={setImageList}
+          control={control}
+          name="images"
           error={imageRequired}
+          defaultImages={logData?.image_urls}
         />
-
         <TextArea category="content" register={register} errors={errors} maxLength={500} />
       </div>
 
