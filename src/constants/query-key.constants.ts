@@ -1,4 +1,6 @@
 export const RECIPE_LIST_QUERY_KEY = 'recipe-list';
+export const RECIPE_DETAIL_QUERY_KEY = 'recipe-detail';
+export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';
 export const USER_INFO_QUERY_KEY = 'user-info';
 export const FEED_LIST_QUERY_KEY = 'feed-list';
 export const FEED_QUERY_KEY = 'feed';

@@ -69,7 +69,7 @@ const RecipeWritePage = () => {
   }
 
   return (
-    <div className="mb-4">
+    <div className="relative mb-4 px-5 py-4">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Tab>

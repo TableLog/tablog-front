@@ -19,6 +19,7 @@ import { TRecipeFormValues } from './page';
 const IngredientForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  // ! 하드 코딩 되어있음
   const foodList = [
     { id: 1, title: '콩' },
     { id: 2, title: '콩떡' },

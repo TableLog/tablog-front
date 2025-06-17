@@ -1,3 +1,5 @@
+import { ECookTime, EPrice } from '@/constants/options.constants';
+
 // NOTE: error type
 export type APIErrorResponse = {
   message: ServiceErrorCode;
@@ -117,4 +119,69 @@ export interface IFollowerListResponse {
   nickname: string;
   profileImgUrl: string;
   userId: number;
+}
+
+// recipe
+interface IRecipe {
+  id: number;
+  title: string;
+  intro: string;
+  recipeCategoryList: ['밥요리', '아침'];
+  starCount: number;
+  star: number;
+  price: keyof typeof EPrice;
+  cookingTime: keyof typeof ECookTime;
+  totalCal: number;
+  isPaid: false;
+  recipePoint: number;
+  reviewCount: number;
+  imageUrl: string;
+  likeCount: number;
+  isSaved: boolean;
+  user: string;
+  isWriter: boolean;
+}
+
+export interface IGetRecipeParams {
+  isPaid: boolean;
+}
+
+export interface IRecipeList extends IRecipe {
+  memo: string | null;
+}
+
+export interface IUpdateRecipeParams {
+  recipeId: string;
+}
+
+export interface IDeleteRecipeParams {
+  recipeId: string;
+}
+
+export interface IRecipeDetailParams {
+  recipeId: string;
+}
+
+export interface IRecipeIngredientParams {
+  recipeId: string;
+}
+
+export interface IRecipeListResponse {
+  contents: IRecipeList[];
+  hasNext: boolean;
+}
+
+export interface IRecipeDetailResponse extends IRecipe {
+  hasPurchased: boolean;
+}
+
+export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imageUrl'> {
+  recipeFoods: {
+    id: number;
+    amount: number;
+    recipeFoodUnit: string;
+    foodId: number;
+    foodName: string;
+    cal: number;
+  }[];
 }
