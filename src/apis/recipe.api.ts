@@ -1,7 +1,8 @@
-import { RECIPE_URL } from '@/constants/endpoint.constants';
+import { RECIPE_URL, USER_URL } from '@/constants/endpoint.constants';
 import {
   IDeleteRecipeParams,
   IGetRecipeParams,
+  IGetSortedRecipeOption,
   IRecipeDetailParams,
   IRecipeDetailResponse,
   IRecipeIngredientParams,
@@ -22,8 +23,17 @@ export const addRecipe = async (formdata: FormData) => {
   }
 };
 
-export const getSortedRecipeList = async (params: IGetRecipeParams, sortOption = 'latest') => {
+export const getSortedRecipeList = async (
+  params: IGetRecipeParams,
+  option: IGetSortedRecipeOption,
+) => {
+  const { sortOption = 'latest', isMine = false } = option;
+
   try {
+    if (isMine)
+      return await instance.get<IRecipeListResponse>(`${USER_URL}/me/recipes/${sortOption}`, {
+        params,
+      });
     return await instance.get<IRecipeListResponse>(`${RECIPE_URL}/${sortOption}`, {
       params,
     });

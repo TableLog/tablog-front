@@ -7,8 +7,7 @@ import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
 import Tab from '@/components/atoms/tab/Tab';
 import { RECIPE_FILTER_OPTIONS } from '@/constants/options.constants';
 
-import AllRecipe from './all-recipe';
-import MyRecipe from './my-recipe';
+import RecipeList from './recipe-list';
 
 const RecipePage = () => {
   const [isOnlyPaid, setOnlyPaid] = useState<boolean>(false); // 유료 레시피만 보기
@@ -36,10 +35,10 @@ const RecipePage = () => {
         </div>
 
         <Tab.Panel index={0} className="flex flex-col gap-4">
-          <AllRecipe isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
+          <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
         </Tab.Panel>
-        <Tab.Panel index={1}>
-          <MyRecipe isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
+        <Tab.Panel index={1} className="flex flex-col gap-4">
+          <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} isMine />
         </Tab.Panel>
       </Tab>
     </div>

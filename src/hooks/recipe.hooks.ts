@@ -16,6 +16,7 @@ import {
 import {
   IDeleteRecipeParams,
   IGetRecipeParams,
+  IGetSortedRecipeOption,
   IMutationOptions,
   IRecipeDetailParams,
   IRecipeIngredientParams,
@@ -47,18 +48,11 @@ export function useDeleteRecipe(options?: IMutationOptions) {
   });
 }
 
-interface GetSortedRecipeOption {
-  sortOption: string;
-}
-
-export const useGetSortedRecipe = (
-  params: IGetRecipeParams,
-  { sortOption }: GetSortedRecipeOption,
-) => {
+export const useGetSortedRecipe = (params: IGetRecipeParams, option: IGetSortedRecipeOption) => {
   return useInfiniteQuery({
-    queryKey: [RECIPE_LIST_QUERY_KEY],
+    queryKey: [RECIPE_LIST_QUERY_KEY, { ...params, ...option }],
     queryFn: async ({ pageParam }) =>
-      await getSortedRecipeList({ ...params, pageNumber: pageParam }, sortOption),
+      await getSortedRecipeList({ ...params, pageNumber: pageParam }, option),
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,

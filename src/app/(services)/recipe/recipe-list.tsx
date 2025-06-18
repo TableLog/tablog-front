@@ -6,12 +6,13 @@ import { useGetSortedRecipe } from '@/hooks/recipe.hooks';
 
 import RecipeItem from './recipe-item';
 
-interface AllRecipeProps {
+interface RecipeListProps {
   isOnlyPaid: boolean;
   selectedSortOption: { id: number; title: string; name: string };
+  isMine?: boolean;
 }
 
-const AllRecipe = ({ isOnlyPaid, selectedSortOption }: AllRecipeProps) => {
+const RecipeList = ({ isOnlyPaid, selectedSortOption, isMine = false }: RecipeListProps) => {
   const { ref, inView } = useInView();
 
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetSortedRecipe(
@@ -19,7 +20,7 @@ const AllRecipe = ({ isOnlyPaid, selectedSortOption }: AllRecipeProps) => {
       isPaid: isOnlyPaid,
       pageNumber: 0,
     },
-    { sortOption: selectedSortOption.name },
+    { sortOption: selectedSortOption.name, isMine },
   );
 
   useEffect(() => {
@@ -49,4 +50,4 @@ const AllRecipe = ({ isOnlyPaid, selectedSortOption }: AllRecipeProps) => {
   );
 };
 
-export default AllRecipe;
+export default RecipeList;

@@ -151,6 +151,11 @@ export interface IGetRecipeParams {
   pageNumber: number;
 }
 
+export interface IGetSortedRecipeOption {
+  sortOption: string;
+  isMine?: boolean;
+}
+
 export interface IRecipeList extends IRecipe {
   memo: string | null;
 }
