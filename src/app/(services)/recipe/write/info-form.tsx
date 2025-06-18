@@ -48,6 +48,7 @@ const InfoForm = () => {
       <Range type="time" name="recipeCreateRequestDto.cookingTime" control={control} />
 
       <ToggleButton
+        className="pb-28"
         title={
           <div className="flex items-center gap-2">
             <span>유료 레시피로 등록</span>

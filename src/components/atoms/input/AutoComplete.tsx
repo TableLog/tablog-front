@@ -55,8 +55,6 @@ const AutoComplete = <T extends FieldValues>({
     ? list.filter((item) => item.title.includes(value))
     : list;
 
-  console.log(renderedList);
-
   return (
     <div className="dropdown w-full">
       <label
