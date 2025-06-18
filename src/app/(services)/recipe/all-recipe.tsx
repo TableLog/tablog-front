@@ -14,12 +14,7 @@ interface AllRecipeProps {
 const AllRecipe = ({ isOnlyPaid, selectedSortOption }: AllRecipeProps) => {
   const { ref, inView } = useInView();
 
-  const {
-    data: recipes,
-    hasNextPage,
-    fetchNextPage,
-    isFetching,
-  } = useGetSortedRecipe(
+  const { data, hasNextPage, fetchNextPage, isFetching } = useGetSortedRecipe(
     {
       isPaid: isOnlyPaid,
       pageNumber: 0,
@@ -33,17 +28,13 @@ const AllRecipe = ({ isOnlyPaid, selectedSortOption }: AllRecipeProps) => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  const recipeContents = recipes?.pages;
-
   return (
     <>
-      {recipeContents?.length === 0 ? (
+      {data?.recipes?.length === 0 ? (
         <div className="text-center">레시피가 존재하지 않습니다</div>
       ) : (
         <>
-          {recipes?.pages.map((page) =>
-            page.data.contents.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />),
-          )}
+          {data?.recipes?.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />)}
 
           {isFetching && (
             <div className="flex items-center justify-center">

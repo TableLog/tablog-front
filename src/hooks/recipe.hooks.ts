@@ -62,6 +62,7 @@ export const useGetSortedRecipe = (
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({ recipes: response.pages.flatMap((page) => page.data.contents) }),
   });
 };
 
