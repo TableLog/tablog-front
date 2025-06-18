@@ -22,14 +22,10 @@ export const addRecipe = async (formdata: FormData) => {
   }
 };
 
-export const getSortedRecipeList = async (
-  params: IGetRecipeParams,
-  sortOption = 'latest',
-  pageParam: number,
-) => {
+export const getSortedRecipeList = async (params: IGetRecipeParams, sortOption = 'latest') => {
   try {
     return await instance.get<IRecipeListResponse>(`${RECIPE_URL}/${sortOption}`, {
-      params: { ...params, pageNumber: pageParam },
+      params,
     });
   } catch (error) {
     throw error;

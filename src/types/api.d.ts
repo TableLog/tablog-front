@@ -7,6 +7,10 @@ export type APIErrorResponse = {
   name: string;
 };
 
+export interface PaginationData {
+  hasNext: boolean;
+}
+
 export type TUserData = {
   id: number;
   userName: string;
@@ -144,6 +148,7 @@ interface IRecipe {
 
 export interface IGetRecipeParams {
   isPaid: boolean;
+  pageNumber: number;
 }
 
 export interface IRecipeList extends IRecipe {
@@ -166,9 +171,8 @@ export interface IRecipeIngredientParams {
   recipeId: string;
 }
 
-export interface IRecipeListResponse {
+export interface IRecipeListResponse extends PaginationData {
   contents: IRecipeList[];
-  hasNext: boolean;
 }
 
 export interface IRecipeDetailResponse extends IRecipe {
@@ -184,4 +188,21 @@ export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imag
     foodName: string;
     cal: number;
   }[];
+}
+
+// food
+export interface ISearchFoodParams {
+  search: string;
+  page: number;
+}
+
+export interface ISearchFoodResponse extends PaginationData {
+  foods: IFood[];
+}
+
+interface IFood {
+  id: number;
+  foodName: string;
+  foodUnit: string;
+  cal: number;
 }

@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { useInView } from 'react-intersection-observer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 
@@ -9,22 +10,32 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import AutoComplete from '@/components/atoms/input/AutoComplete';
 import SelectBox from '@/components/atoms/input/SelectBox';
 import TextInput from '@/components/atoms/input/TextInput';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { UNIT_OPTIONS } from '@/constants/options.constants';
+import { useSearchFood } from '@/hooks/food.hooks';
 import { zodIngredientInfo } from '@/lib/zod/zodValidation';
 
 import { TRecipeFormValues } from './page';
 
 const IngredientForm = () => {
+  const { ref, inView } = useInView();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<string>('');
 
-  // ! 하드 코딩 되어있음
-  const foodList = [
-    { id: 1, title: '콩' },
-    { id: 2, title: '콩떡' },
-    { id: 3, title: '콩나물' },
-  ];
+  const { data, hasNextPage, fetchNextPage, isFetching } = useSearchFood({
+    search: keyword,
+    page: 0,
+  });
+
+  const foodList = data?.foods.map((food) => ({ id: food.id, title: food.foodName }));
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   const {
     control,
@@ -79,7 +90,7 @@ const IngredientForm = () => {
           {ingredientFields.map((ingredient, idx) => (
             <div key={ingredient.id} className="flex justify-between">
               <Text>
-                {foodList.find(({ id }) => id === ingredient.foodId)?.title} | {ingredient.amount}{' '}
+                {foodList?.find(({ id }) => id === ingredient.foodId)?.title} | {ingredient.amount}{' '}
                 {ingredient.recipeFoodUnit}
               </Text>
               <button
@@ -112,10 +123,25 @@ const IngredientForm = () => {
         <div className="flex flex-col gap-8 px-5">
           <div>
             <AutoComplete
-              list={foodList}
+              list={foodList ?? []}
               category="ingredientName"
               name="foodId"
               control={control}
+              lastListElement={
+                <>
+                  {isFetching && (
+                    <div className="flex items-center justify-center">
+                      <LoadingSpinner />
+                    </div>
+                  )}
+
+                  <div ref={ref} />
+                </>
+              }
+              isFilteredBySearch={false}
+              onSearch={(keyword) => {
+                setKeyword(keyword);
+              }}
             />
             {errors?.foodId && (
               <div className="validator-hint mt-0 ml-4 whitespace-pre-line">

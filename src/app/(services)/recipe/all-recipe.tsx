@@ -22,6 +22,7 @@ const AllRecipe = ({ isOnlyPaid, selectedSortOption }: AllRecipeProps) => {
   } = useGetSortedRecipe(
     {
       isPaid: isOnlyPaid,
+      pageNumber: 0,
     },
     { sortOption: selectedSortOption.name },
   );

@@ -57,8 +57,9 @@ export const useGetSortedRecipe = (
 ) => {
   return useInfiniteQuery({
     queryKey: [RECIPE_LIST_QUERY_KEY],
-    queryFn: async ({ pageParam }) => await getSortedRecipeList(params, sortOption, pageParam),
-    initialPageParam: 0,
+    queryFn: async ({ pageParam }) =>
+      await getSortedRecipeList({ ...params, pageNumber: pageParam }, sortOption),
+    initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
   });
