@@ -17,7 +17,7 @@ export enum ERecipeDetailSection {
 }
 
 const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id: recipeId } = use(params);
+  const recipeId = parseInt(use(params).id);
   const { data: recipeInfo } = useGetRecipeDetail({
     recipeId,
   });
@@ -37,7 +37,7 @@ const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
         />
       )}
       <div className="absolute bottom-8 flex w-full flex-col gap-8 px-5">
-        {mode === ERecipeDetailSection.INGREDIENT ? (
+        {recipe && mode === ERecipeDetailSection.INGREDIENT ? (
           <Description recipe={recipe} />
         ) : (
           <Ingredient recipeId={recipeId} />

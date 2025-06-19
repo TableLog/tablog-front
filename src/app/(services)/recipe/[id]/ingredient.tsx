@@ -4,7 +4,7 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { useGetRecipeIngredient } from '@/hooks/recipe.hooks';
 
 interface IngredientProps {
-  recipeId: string;
+  recipeId: number;
 }
 
 const Ingredient = ({ recipeId }: IngredientProps) => {

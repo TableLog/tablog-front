@@ -1,6 +1,20 @@
-export const RECIPE_LIST_QUERY_KEY = 'recipe-list';
-export const RECIPE_DETAIL_QUERY_KEY = 'recipe-detail';
-export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';
+import { IGetRecipeParams, IGetSortedRecipeOption } from '@/types/api';
+
+export const RECIPE_LIST_QUERY_KEY = ['recipe-list'];
+export const RECIPE_LIST_OPTIONS_QUERY_KEY = (
+  params: IGetRecipeParams,
+  option: IGetSortedRecipeOption & { isMine: boolean },
+) => [...RECIPE_LIST_QUERY_KEY, { ...params, ...option }];
+
+export const RECIPE_DETAIL_QUERY_KEY = (recipeId: number) => ['recipe-detail', { recipeId }];
+export const RECIPE_INGREDIENT_QUERY_KEY = (recipeId: number) => [
+  'recipe-ingredient',
+  { recipeId },
+];
+export const RECIPE_LIKE_QUERY_KEY = (recipeId: number) => [
+  ...RECIPE_DETAIL_QUERY_KEY(recipeId),
+  'like',
+];
 export const FOOD_LIST_QUERY_KEY = 'food-list';
 export const USER_INFO_QUERY_KEY = 'user-info';
 export const FEED_LIST_QUERY_KEY = 'feed-list';

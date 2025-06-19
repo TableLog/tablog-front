@@ -17,7 +17,7 @@ import { HandleOpenModal, showToast } from '@/utils/functions';
 import { ERecipeDetailSection } from './page';
 
 interface RecipeHeaderProps {
-  recipeId: string;
+  recipeId: number;
   isMyRecipe?: boolean;
 }
 

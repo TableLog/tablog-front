@@ -2,27 +2,36 @@ import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 import {
   addRecipe,
+  cancelLikeRecipe,
   deleteRecipe,
+  getMySortedRecipeList,
   getRecipeDetail,
   getRecipeIngredient,
+  getRecipeLike,
   getSortedRecipeList,
+  likeRecipe,
   updateRecipe,
 } from '@/apis/recipe.api';
 import {
   RECIPE_DETAIL_QUERY_KEY,
   RECIPE_INGREDIENT_QUERY_KEY,
-  RECIPE_LIST_QUERY_KEY,
+  RECIPE_LIKE_QUERY_KEY,
+  RECIPE_LIST_OPTIONS_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import {
+  ICancelLikeRecipeParams,
   IDeleteRecipeParams,
+  IGetRecipeLikeParams,
   IGetRecipeParams,
   IGetSortedRecipeOption,
+  ILikeRecipeParams,
   IMutationOptions,
   IRecipeDetailParams,
   IRecipeIngredientParams,
   IUpdateRecipeParams,
 } from '@/types/api';
 
+// 레시피 CRUD
 export function useAddRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (formData: FormData) => addRecipe(formData),
@@ -48,11 +57,17 @@ export function useDeleteRecipe(options?: IMutationOptions) {
   });
 }
 
-export const useGetSortedRecipe = (params: IGetRecipeParams, option: IGetSortedRecipeOption) => {
+export const useGetSortedRecipe = (
+  params: IGetRecipeParams,
+  option: IGetSortedRecipeOption & { isMine: boolean },
+) => {
+  const { isMine, ...sortOptions } = option;
   return useInfiniteQuery({
-    queryKey: [RECIPE_LIST_QUERY_KEY, { ...params, ...option }],
+    queryKey: RECIPE_LIST_OPTIONS_QUERY_KEY(params, option),
     queryFn: async ({ pageParam }) =>
-      await getSortedRecipeList({ ...params, pageNumber: pageParam }, option),
+      isMine
+        ? await getMySortedRecipeList({ ...params, pageNumber: pageParam }, sortOptions)
+        : await getSortedRecipeList({ ...params, pageNumber: pageParam }, sortOptions),
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -63,15 +78,41 @@ export const useGetSortedRecipe = (params: IGetRecipeParams, option: IGetSortedR
 export const useGetRecipeDetail = (params: IRecipeDetailParams) => {
   const { recipeId } = params;
   return useQuery({
-    queryKey: [RECIPE_DETAIL_QUERY_KEY, { recipeId }],
+    queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId),
     queryFn: () => getRecipeDetail(params),
   });
 };
 
+// 레시피 재료
 export const useGetRecipeIngredient = (params: IRecipeIngredientParams) => {
   const { recipeId } = params;
   return useQuery({
-    queryKey: [RECIPE_INGREDIENT_QUERY_KEY, { recipeId }],
+    queryKey: RECIPE_INGREDIENT_QUERY_KEY(recipeId),
     queryFn: () => getRecipeIngredient(params),
   });
 };
+
+// 레시피 좋아요
+export function useGetRecipeLike(params: IGetRecipeLikeParams) {
+  const { recipeId } = params;
+  return useQuery({
+    queryKey: RECIPE_LIKE_QUERY_KEY(recipeId),
+    queryFn: () => getRecipeLike(params),
+  });
+}
+
+export function useLikeRecipe(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ recipeId }: ILikeRecipeParams) => likeRecipe({ recipeId }),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useCancelLikeRecipe(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ recipeId }: ICancelLikeRecipeParams) => cancelLikeRecipe({ recipeId }),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}

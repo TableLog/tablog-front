@@ -1,8 +1,12 @@
 import { RECIPE_URL, USER_URL } from '@/constants/endpoint.constants';
 import {
+  ICancelLikeRecipeParams,
   IDeleteRecipeParams,
+  IGetRecipeLikeParams,
+  IGetRecipeLikeResponse,
   IGetRecipeParams,
   IGetSortedRecipeOption,
+  ILikeRecipeParams,
   IRecipeDetailParams,
   IRecipeDetailResponse,
   IRecipeIngredientParams,
@@ -27,14 +31,25 @@ export const getSortedRecipeList = async (
   params: IGetRecipeParams,
   option: IGetSortedRecipeOption,
 ) => {
-  const { sortOption = 'latest', isMine = false } = option;
+  const { sortOption = 'latest' } = option;
 
   try {
-    if (isMine)
-      return await instance.get<IRecipeListResponse>(`${USER_URL}/me/recipes/${sortOption}`, {
-        params,
-      });
     return await instance.get<IRecipeListResponse>(`${RECIPE_URL}/${sortOption}`, {
+      params,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getMySortedRecipeList = async (
+  params: IGetRecipeParams,
+  option: IGetSortedRecipeOption,
+) => {
+  const { sortOption = 'latest' } = option;
+
+  try {
+    return await instance.get<IRecipeListResponse>(`${USER_URL}/me/recipes/${sortOption}`, {
       params,
     });
   } catch (error) {
@@ -69,6 +84,30 @@ export const updateRecipe = async (formdata: FormData, { recipeId }: IDeleteReci
 export const deleteRecipe = async ({ recipeId }: IDeleteRecipeParams) => {
   try {
     return await instance.delete(`${RECIPE_URL}/${recipeId}`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeLike = async ({ recipeId }: IGetRecipeLikeParams) => {
+  try {
+    return await instance.get<IGetRecipeLikeResponse>(`${RECIPE_URL}/${recipeId}/likes/me`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const likeRecipe = async ({ recipeId }: ILikeRecipeParams) => {
+  try {
+    return await instance.post(`${RECIPE_URL}/${recipeId}/likes`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const cancelLikeRecipe = async ({ recipeId }: ICancelLikeRecipeParams) => {
+  try {
+    return await instance.delete(`${RECIPE_URL}/${recipeId}/likes`);
   } catch (error) {
     throw error;
   }

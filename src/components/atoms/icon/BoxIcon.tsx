@@ -26,6 +26,12 @@ export interface IBoxIconProps {
   class?: string;
 }
 
+const TYPE_MAP = {
+  solid: 'bxs',
+  regular: 'bx',
+  logo: 'bxl',
+};
+
 export function BoxIcon({
   name,
   type,
@@ -45,7 +51,7 @@ export function BoxIcon({
   const iconClass = cn(
     'bx transition-all-3',
     name && `bx-${name}`,
-    type && `bxs-${name}`, // optional: if you want to reflect type: 'solid' → bxs-*, 'regular' → bx-*, 'logo' → bxl-*
+    type && `${TYPE_MAP[type]}-${name}`, // optional: if you want to reflect type: 'solid' → bxs-*, 'regular' → bx-*, 'logo' → bxl-*
     rotate && `bx-rotate-${rotate}`,
     flip && `bx-flip-${flip}`,
     pull && `bx-pull-${pull}`,

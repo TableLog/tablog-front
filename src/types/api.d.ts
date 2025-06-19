@@ -153,7 +153,6 @@ export interface IGetRecipeParams {
 
 export interface IGetSortedRecipeOption {
   sortOption: string;
-  isMine?: boolean;
 }
 
 export interface IRecipeList extends IRecipe {
@@ -161,19 +160,19 @@ export interface IRecipeList extends IRecipe {
 }
 
 export interface IUpdateRecipeParams {
-  recipeId: string;
+  recipeId: number;
 }
 
 export interface IDeleteRecipeParams {
-  recipeId: string;
+  recipeId: number;
 }
 
 export interface IRecipeDetailParams {
-  recipeId: string;
+  recipeId: number;
 }
 
 export interface IRecipeIngredientParams {
-  recipeId: string;
+  recipeId: number;
 }
 
 export interface IRecipeListResponse extends PaginationData {
@@ -210,4 +209,19 @@ interface IFood {
   foodName: string;
   foodUnit: string;
   cal: number;
+}
+
+// like
+export interface IGetRecipeLikeParams {
+  recipeId: number;
+}
+
+export type IGetRecipeLikeResponse = boolean;
+
+export interface ILikeRecipeParams {
+  recipeId: number;
+}
+
+export interface ICancelLikeRecipeParams {
+  recipeId: number;
 }

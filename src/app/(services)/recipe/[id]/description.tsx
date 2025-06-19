@@ -1,15 +1,17 @@
 import Link from 'next/link';
 
+import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { ECookTime, EPrice } from '@/constants/options.constants';
 import { IRecipeDetailResponse } from '@/types/api';
 
 interface DescriptionProps {
-  recipe?: IRecipeDetailResponse;
+  recipe: IRecipeDetailResponse;
 }
 
 const Description = ({ recipe }: DescriptionProps) => {
   if (!recipe) return null;
+
   return (
     <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
       <p className="text-lg font-medium">{recipe?.title}</p>
@@ -36,9 +38,7 @@ const Description = ({ recipe }: DescriptionProps) => {
       </div>
       <div className="flex w-full justify-between">
         <div className="flex items-center gap-5">
-          <button className="flex items-center gap-1 text-sm">
-            <BoxIcon name="bxr bx-heart" size={24} /> {recipe.likeCount}
-          </button>
+          <RecipeLikeButton recipeId={recipe.id} likeCount={recipe.likeCount} />
           <button className="flex items-center">
             <BoxIcon name="bxr bx-bookmark" size={24} />
           </button>
