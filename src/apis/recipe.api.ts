@@ -1,12 +1,12 @@
 import { RECIPE_URL, USER_URL } from '@/constants/endpoint.constants';
 import {
+  IAddLikeRecipeParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
   IGetRecipeLikeResponse,
   IGetRecipeParams,
   IGetSortedRecipeOption,
-  ILikeRecipeParams,
   IRecipeDetailParams,
   IRecipeDetailResponse,
   IRecipeIngredientParams,
@@ -97,7 +97,7 @@ export const getRecipeLike = async ({ recipeId }: IGetRecipeLikeParams) => {
   }
 };
 
-export const likeRecipe = async ({ recipeId }: ILikeRecipeParams) => {
+export const addLikeRecipe = async ({ recipeId }: IAddLikeRecipeParams) => {
   try {
     return await instance.post(`${RECIPE_URL}/${recipeId}/likes`);
   } catch (error) {
@@ -108,6 +108,29 @@ export const likeRecipe = async ({ recipeId }: ILikeRecipeParams) => {
 export const cancelLikeRecipe = async ({ recipeId }: ICancelLikeRecipeParams) => {
   try {
     return await instance.delete(`${RECIPE_URL}/${recipeId}/likes`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addBookmarkRecipe = async ({ recipeId }: IAddLikeRecipeParams) => {
+  try {
+    return await instance.post(`${RECIPE_URL}/${recipeId}/saves`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const cancelBookmarkRecipe = async ({ recipeId }: ICancelLikeRecipeParams) => {
+  try {
+    return await instance.delete(`${RECIPE_URL}/${recipeId}/saves`);
+  } catch (error) {
+    throw error;
+  }
+};
+export const getRecipeBookmark = async ({ recipeId }: IGetRecipeLikeParams) => {
+  try {
+    return await instance.get<IGetRecipeLikeResponse>(`${RECIPE_URL}/${recipeId}/saves/me`);
   } catch (error) {
     throw error;
   }

@@ -15,6 +15,10 @@ export const RECIPE_LIKE_QUERY_KEY = (recipeId: number) => [
   ...RECIPE_DETAIL_QUERY_KEY(recipeId),
   'like',
 ];
+export const RECIPE_BOOKMARK_QUERY_KEY = (recipeId: number) => [
+  ...RECIPE_DETAIL_QUERY_KEY(recipeId),
+  'bookmark',
+];
 export const FOOD_LIST_QUERY_KEY = 'food-list';
 export const USER_INFO_QUERY_KEY = 'user-info';
 export const FEED_LIST_QUERY_KEY = 'feed-list';

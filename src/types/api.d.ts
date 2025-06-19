@@ -218,10 +218,25 @@ export interface IGetRecipeLikeParams {
 
 export type IGetRecipeLikeResponse = boolean;
 
-export interface ILikeRecipeParams {
+export interface IAddLikeRecipeParams {
   recipeId: number;
 }
 
 export interface ICancelLikeRecipeParams {
+  recipeId: number;
+}
+
+// bookmark
+export interface IGetRecipeBookmarkParams {
+  recipeId: number;
+}
+
+export type IGetRecipeBookmarkResponse = boolean;
+
+export interface IAddBookmarkRecipeParams {
+  recipeId: number;
+}
+
+export interface ICancelBookmarkRecipeParams {
   recipeId: number;
 }

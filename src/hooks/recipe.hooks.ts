@@ -1,30 +1,36 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 import {
+  addBookmarkRecipe,
+  addLikeRecipe,
   addRecipe,
+  cancelBookmarkRecipe,
   cancelLikeRecipe,
   deleteRecipe,
   getMySortedRecipeList,
+  getRecipeBookmark,
   getRecipeDetail,
   getRecipeIngredient,
   getRecipeLike,
   getSortedRecipeList,
-  likeRecipe,
   updateRecipe,
 } from '@/apis/recipe.api';
 import {
+  RECIPE_BOOKMARK_QUERY_KEY,
   RECIPE_DETAIL_QUERY_KEY,
   RECIPE_INGREDIENT_QUERY_KEY,
   RECIPE_LIKE_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import {
+  IAddBookmarkRecipeParams,
+  IAddLikeRecipeParams,
+  ICancelBookmarkRecipeParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
   IGetRecipeParams,
   IGetSortedRecipeOption,
-  ILikeRecipeParams,
   IMutationOptions,
   IRecipeDetailParams,
   IRecipeIngredientParams,
@@ -101,9 +107,9 @@ export function useGetRecipeLike(params: IGetRecipeLikeParams) {
   });
 }
 
-export function useLikeRecipe(options?: IMutationOptions) {
+export function useAddLikeRecipe(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: ({ recipeId }: ILikeRecipeParams) => likeRecipe({ recipeId }),
+    mutationFn: ({ recipeId }: IAddLikeRecipeParams) => addLikeRecipe({ recipeId }),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -112,6 +118,31 @@ export function useLikeRecipe(options?: IMutationOptions) {
 export function useCancelLikeRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: ICancelLikeRecipeParams) => cancelLikeRecipe({ recipeId }),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+// 레시피 북마크
+export function useGetRecipeBookmark(params: IGetRecipeLikeParams) {
+  const { recipeId } = params;
+  return useQuery({
+    queryKey: RECIPE_BOOKMARK_QUERY_KEY(recipeId),
+    queryFn: () => getRecipeBookmark(params),
+  });
+}
+
+export function useAddBookmarkRecipe(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ recipeId }: IAddBookmarkRecipeParams) => addBookmarkRecipe({ recipeId }),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useCancelBookmarkRecipe(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ recipeId }: ICancelBookmarkRecipeParams) => cancelBookmarkRecipe({ recipeId }),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });

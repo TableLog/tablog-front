@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import RecipeBookmarkButton from '@/components/atoms/button/RecipeBookmarkButton';
 import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { ECookTime, EPrice } from '@/constants/options.constants';
@@ -39,9 +40,7 @@ const Description = ({ recipe }: DescriptionProps) => {
       <div className="flex w-full justify-between">
         <div className="flex items-center gap-5">
           <RecipeLikeButton recipeId={recipe.id} likeCount={recipe.likeCount} />
-          <button className="flex items-center">
-            <BoxIcon name="bxr bx-bookmark" size={24} />
-          </button>
+          <RecipeBookmarkButton recipeId={recipe.id} />
         </div>
         <div className="flex items-center gap-5">
           <button className="flex items-center">
