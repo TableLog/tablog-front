@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import RecipeBookmarkButton from '@/components/atoms/button/RecipeBookmarkButton';
 import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
+import ShareButton from '@/components/atoms/button/ShareButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { ECookTime, EPrice } from '@/constants/options.constants';
 import { IRecipeDetailResponse } from '@/types/api';
@@ -43,9 +44,13 @@ const Description = ({ recipe }: DescriptionProps) => {
           <RecipeBookmarkButton recipeId={recipe.id} />
         </div>
         <div className="flex items-center gap-5">
-          <button className="flex items-center">
-            <BoxIcon name="bxr bx-send" size={24} />
-          </button>
+          <ShareButton
+            shareInfo={{
+              title: `[식탁일기] ${recipe.title}`,
+              text: recipe.intro,
+              url: `/recipe/${recipe.id}`,
+            }}
+          />
         </div>
       </div>
     </div>
