@@ -34,7 +34,7 @@ const TYPE_MAP = {
 
 export function BoxIcon({
   name,
-  type,
+  type = 'regular',
   color,
   size,
   animation,

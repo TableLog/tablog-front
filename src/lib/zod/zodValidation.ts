@@ -317,7 +317,7 @@ const zodRecipeStepInfo = z.object({
     .min(1, STEP_TITLE_REQUIRED)
     .max(500, STEP_TITLE_REQUIRED),
   description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
-  files: z.array(z.instanceof(File)),
+  files: z.array(z.instanceof(File)).max(3),
 });
 
 export const zodIngredientInfo = z.object({

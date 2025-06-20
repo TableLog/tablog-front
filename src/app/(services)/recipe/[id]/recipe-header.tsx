@@ -31,7 +31,7 @@ const RecipeHeader = ({ recipeId, isMyRecipe = false }: RecipeHeaderProps) => {
   const { mutate: deleteRecipe } = useDeleteRecipe({
     onSuccess: () => {
       router.push('/recipe');
-      queryClient.invalidateQueries({ queryKey: [RECIPE_LIST_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
       showToast({ message: '레시피 삭제 완료!', type: 'success' });
     },
   });

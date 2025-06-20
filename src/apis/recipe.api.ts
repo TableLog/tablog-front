@@ -12,6 +12,8 @@ import {
   IRecipeIngredientParams,
   IRecipeIngredientResponse,
   IRecipeListResponse,
+  IRecipeProcessParams,
+  IRecipeProcessResponse,
 } from '@/types/api';
 import instance from '@/utils/axios';
 
@@ -68,6 +70,16 @@ export const getRecipeDetail = async ({ recipeId }: IRecipeDetailParams) => {
 export const getRecipeIngredient = async ({ recipeId }: IRecipeIngredientParams) => {
   try {
     return await instance.get<IRecipeIngredientResponse>(`${RECIPE_URL}/${recipeId}/foods`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeProcess = async ({ recipeId, ...params }: IRecipeProcessParams) => {
+  try {
+    return await instance.get<IRecipeProcessResponse>(`${RECIPE_URL}/${recipeId}/recipe-process`, {
+      params,
+    });
   } catch (error) {
     throw error;
   }

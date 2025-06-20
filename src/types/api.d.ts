@@ -175,6 +175,11 @@ export interface IRecipeIngredientParams {
   recipeId: number;
 }
 
+export interface IRecipeProcessParams {
+  recipeId: number;
+  page: number;
+}
+
 export interface IRecipeListResponse extends PaginationData {
   contents: IRecipeList[];
 }
@@ -191,6 +196,16 @@ export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imag
     foodId: number;
     foodName: string;
     cal: number;
+  }[];
+}
+
+export interface IRecipeProcessResponse extends PaginationData {
+  recipeProcesses: {
+    id: number;
+    sequence: number;
+    rpTitle: string;
+    description: string;
+    recipeProcessImageUrls: string[];
   }[];
 }
 

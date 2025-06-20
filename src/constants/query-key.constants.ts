@@ -1,4 +1,4 @@
-import { IGetRecipeParams, IGetSortedRecipeOption } from '@/types/api';
+import { IGetRecipeParams, IGetSortedRecipeOption, IRecipeProcessParams } from '@/types/api';
 
 export const RECIPE_LIST_QUERY_KEY = ['recipe-list'];
 export const RECIPE_LIST_OPTIONS_QUERY_KEY = (
@@ -10,6 +10,10 @@ export const RECIPE_DETAIL_QUERY_KEY = (recipeId: number) => ['recipe-detail', {
 export const RECIPE_INGREDIENT_QUERY_KEY = (recipeId: number) => [
   'recipe-ingredient',
   { recipeId },
+];
+export const RECIPE_PROCESS_QUERY_KEY = (params: IRecipeProcessParams) => [
+  'recipe-process',
+  { ...params },
 ];
 export const RECIPE_LIKE_QUERY_KEY = (recipeId: number) => [
   ...RECIPE_DETAIL_QUERY_KEY(recipeId),

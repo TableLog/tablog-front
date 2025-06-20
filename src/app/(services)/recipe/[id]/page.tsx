@@ -42,7 +42,9 @@ const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
         ) : (
           <Ingredient recipeId={recipeId} />
         )}
-        <Button full>요리 시작</Button>
+        <Button full href={`/recipe/${recipeId}/stage?sequence=0`}>
+          요리 시작
+        </Button>
       </div>
     </div>
   );

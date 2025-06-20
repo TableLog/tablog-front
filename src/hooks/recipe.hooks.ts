@@ -12,6 +12,7 @@ import {
   getRecipeDetail,
   getRecipeIngredient,
   getRecipeLike,
+  getRecipeProcess,
   getSortedRecipeList,
   updateRecipe,
 } from '@/apis/recipe.api';
@@ -21,6 +22,7 @@ import {
   RECIPE_INGREDIENT_QUERY_KEY,
   RECIPE_LIKE_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
+  RECIPE_PROCESS_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import {
   IAddBookmarkRecipeParams,
@@ -34,6 +36,7 @@ import {
   IMutationOptions,
   IRecipeDetailParams,
   IRecipeIngredientParams,
+  IRecipeProcessParams,
   IUpdateRecipeParams,
 } from '@/types/api';
 
@@ -95,6 +98,20 @@ export const useGetRecipeIngredient = (params: IRecipeIngredientParams) => {
   return useQuery({
     queryKey: RECIPE_INGREDIENT_QUERY_KEY(recipeId),
     queryFn: () => getRecipeIngredient(params),
+  });
+};
+
+// 레시피 조리 과정
+export const useGetRecipeProcess = (params: IRecipeProcessParams) => {
+  return useInfiniteQuery({
+    queryKey: RECIPE_PROCESS_QUERY_KEY(params),
+    queryFn: () => getRecipeProcess(params),
+    initialPageParam: params.page,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({
+      recipes: response.pages.flatMap((page) => page.data.recipeProcesses),
+    }),
   });
 };
 
