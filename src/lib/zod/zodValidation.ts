@@ -17,8 +17,12 @@ import {
   PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_FORMAT,
   PASSWORD_REQUIRED,
+  RECIPE_CATEGORY_REQUIRED,
   RECIPE_DESCRIPTION_REQUIRED,
+  RECIPE_FOOD_REQUIRED,
+  RECIPE_IMAGE_REQUIRED,
   RECIPE_NAME_REQUIRED,
+  RECIPE_STEP_REQUIRED,
   STEP_DESCRIPTION_REQUIRED,
   STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
@@ -313,7 +317,7 @@ const zodRecipeStepInfo = z.object({
     .min(1, STEP_TITLE_REQUIRED)
     .max(500, STEP_TITLE_REQUIRED),
   description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
-  files: z.array(z.instanceof(File)),
+  files: z.array(z.instanceof(File)).max(3),
 });
 
 export const zodIngredientInfo = z.object({
@@ -326,12 +330,12 @@ export const zodRecipeForm = z.object({
   recipeCreateRequestDto: z.object({
     title: z.string().trim().nonempty({ message: RECIPE_NAME_REQUIRED }),
     intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
-    recipeCategoryList: z.array(z.string()),
+    recipeCategoryList: z.array(z.string()).min(1, RECIPE_CATEGORY_REQUIRED),
     price: z.string(),
     cookingTime: z.string(),
     isPaid: z.boolean(),
   }),
-  recipeImage: z.array(z.instanceof(File)),
-  recipeFoodCreateRequestDto: z.array(zodIngredientInfo),
-  dtos: z.array(zodRecipeStepInfo),
+  recipeImage: z.array(z.instanceof(File)).length(1, RECIPE_IMAGE_REQUIRED),
+  recipeFoodCreateRequestDto: z.array(zodIngredientInfo).min(1, RECIPE_FOOD_REQUIRED),
+  dtos: z.array(zodRecipeStepInfo).min(1, RECIPE_STEP_REQUIRED),
 });

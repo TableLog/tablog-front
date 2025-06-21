@@ -6,14 +6,15 @@ import { Text } from '../text/Text';
 interface IMoreOptionsProps {
   options: Array<{ id: number; title: string; alert?: boolean }>;
   buttonEvent: (type: string) => void;
+  iconColor?: string;
 }
 
-const MoreOptions = ({ options, buttonEvent }: IMoreOptionsProps) => {
+const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => {
   return (
     <div>
       <div className="dropdown dropdown-end">
         <button tabIndex={0}>
-          <BoxIcon name="dots-vertical-rounded" size={24} />
+          <BoxIcon name="dots-vertical-rounded" size={24} color={iconColor} />
         </button>
 
         <ul tabIndex={0} className="dropdown-content bg-base-100 menu rounded-box z-1 shadow-sm">

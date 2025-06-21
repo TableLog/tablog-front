@@ -17,5 +17,8 @@ export const BOARD_URL = '/api/v1/boards';
 // recipe
 export const RECIPE_URL = '/api/v1/recipes';
 
+// food
+export const FOOD_URL = '/api/v1/foods';
+
 // users
 export const USER_URL = '/api/v1/users';
