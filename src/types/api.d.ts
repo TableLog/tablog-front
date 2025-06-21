@@ -1,9 +1,15 @@
+import { ECookTime, EPrice } from '@/constants/options.constants';
+
 // NOTE: error type
 export type APIErrorResponse = {
   message: ServiceErrorCode;
   status?: HttpStatusCode;
   name: string;
 };
+
+export interface PaginationData {
+  hasNext: boolean;
+}
 
 export type TUserData = {
   id: number;
@@ -117,4 +123,135 @@ export interface IFollowerListResponse {
   nickname: string;
   profileImgUrl: string;
   userId: number;
+}
+
+// recipe
+interface IRecipe {
+  id: number;
+  title: string;
+  intro: string;
+  recipeCategoryList: ['밥요리', '아침'];
+  starCount: number;
+  star: number;
+  price: keyof typeof EPrice;
+  cookingTime: keyof typeof ECookTime;
+  totalCal: number;
+  isPaid: false;
+  recipePoint: number;
+  reviewCount: number;
+  imageUrl: string;
+  likeCount: number;
+  isSaved: boolean;
+  user: string;
+  isWriter: boolean;
+}
+
+export interface IGetRecipeParams {
+  isPaid: boolean;
+  pageNumber: number;
+}
+
+export interface IGetSortedRecipeOption {
+  sortOption: string;
+}
+
+export interface IRecipeList extends IRecipe {
+  memo: string | null;
+}
+
+export interface IUpdateRecipeParams {
+  recipeId: number;
+}
+
+export interface IDeleteRecipeParams {
+  recipeId: number;
+}
+
+export interface IRecipeDetailParams {
+  recipeId: number;
+}
+
+export interface IRecipeIngredientParams {
+  recipeId: number;
+}
+
+export interface IRecipeProcessParams {
+  recipeId: number;
+  page: number;
+}
+
+export interface IRecipeListResponse extends PaginationData {
+  contents: IRecipeList[];
+}
+
+export interface IRecipeDetailResponse extends IRecipe {
+  hasPurchased: boolean;
+}
+
+export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imageUrl'> {
+  recipeFoods: {
+    id: number;
+    amount: number;
+    recipeFoodUnit: string;
+    foodId: number;
+    foodName: string;
+    cal: number;
+  }[];
+}
+
+export interface IRecipeProcessResponse extends PaginationData {
+  recipeProcesses: {
+    id: number;
+    sequence: number;
+    rpTitle: string;
+    description: string;
+    recipeProcessImageUrls: string[];
+  }[];
+}
+
+// food
+export interface ISearchFoodParams {
+  search: string;
+  page: number;
+}
+
+export interface ISearchFoodResponse extends PaginationData {
+  foods: IFood[];
+}
+
+interface IFood {
+  id: number;
+  foodName: string;
+  foodUnit: string;
+  cal: number;
+}
+
+// like
+export interface IGetRecipeLikeParams {
+  recipeId: number;
+}
+
+export type IGetRecipeLikeResponse = boolean;
+
+export interface IAddLikeRecipeParams {
+  recipeId: number;
+}
+
+export interface ICancelLikeRecipeParams {
+  recipeId: number;
+}
+
+// bookmark
+export interface IGetRecipeBookmarkParams {
+  recipeId: number;
+}
+
+export type IGetRecipeBookmarkResponse = boolean;
+
+export interface IAddBookmarkRecipeParams {
+  recipeId: number;
+}
+
+export interface ICancelBookmarkRecipeParams {
+  recipeId: number;
 }

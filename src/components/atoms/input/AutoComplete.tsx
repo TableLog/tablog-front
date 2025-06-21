@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
@@ -18,6 +18,9 @@ interface IAutoCompleteProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
   name?: Path<T>;
   control: Control<T>;
+  lastListElement?: ReactNode;
+  isFilteredBySearch?: boolean;
+  onSearch?: (newKeyword: string) => void;
 }
 
 const AutoComplete = <T extends FieldValues>({
@@ -25,6 +28,9 @@ const AutoComplete = <T extends FieldValues>({
   category,
   name,
   control,
+  lastListElement,
+  isFilteredBySearch = true,
+  onSearch,
 }: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +41,7 @@ const AutoComplete = <T extends FieldValues>({
   } = useController({
     name: name ?? (category as Path<T>),
     control,
-    defaultValue: list[0].id as PathValue<T, Path<T>>,
+    defaultValue: list?.[0]?.id as PathValue<T, Path<T>>,
   });
 
   const handleSelect = (item: ItemType) => {
@@ -44,6 +50,10 @@ const AutoComplete = <T extends FieldValues>({
     setIsOpen(false);
     inputRef.current?.blur(); // 선택 후 드롭다운 닫히게
   };
+
+  const renderedList = isFilteredBySearch
+    ? list.filter((item) => item.title.includes(value))
+    : list;
 
   return (
     <div className="dropdown w-full">
@@ -62,7 +72,10 @@ const AutoComplete = <T extends FieldValues>({
           className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setValue(e.target.value);
+            onSearch?.(e.target.value);
+          }}
         />
 
         <BoxIcon name="search" size={20} />
@@ -75,14 +88,13 @@ const AutoComplete = <T extends FieldValues>({
           !isOpen && 'hidden',
         )}
       >
-        {list.filter((item) => item.title.includes(value)).length === 0 ? (
+        {renderedList.length === 0 ? (
           <li className="text-grey01 pointer-events-none cursor-default py-1">
             검색 결과가 없습니다
           </li>
         ) : (
-          list
-            .filter((item) => item.title.includes(value))
-            .map((item) => (
+          <>
+            {renderedList.map((item) => (
               <li
                 key={item.id}
                 onMouseDown={(e) => e.preventDefault()}
@@ -91,7 +103,9 @@ const AutoComplete = <T extends FieldValues>({
               >
                 {item.title}
               </li>
-            ))
+            ))}
+            {lastListElement}
+          </>
         )}
       </ul>
     </div>

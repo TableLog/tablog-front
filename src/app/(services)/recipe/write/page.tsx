@@ -25,7 +25,7 @@ const RecipeWritePage = () => {
     onSuccess: (res) => {
       if (res.status === 201) {
         router.push('/recipe');
-        queryClient.invalidateQueries({ queryKey: [RECIPE_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
         showToast({ message: '레시피 등록 완료!', type: 'success' });
       }
     },
@@ -69,7 +69,7 @@ const RecipeWritePage = () => {
   }
 
   return (
-    <div className="mb-4">
+    <div className="relative mb-4 px-5 py-4">
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Tab>

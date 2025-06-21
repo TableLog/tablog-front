@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 
 import { cn } from '@/utils/cn';
@@ -8,20 +9,22 @@ import { Text } from '../text/Text';
 interface Option {
   id: number;
   title: string;
+  name: string;
 }
 
 interface IMiniSelectProps {
   list: Array<Option>;
+  value: Option;
+  onChange: (newOption: Option) => void;
 }
 
-const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list }) => {
+const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<Option>(list[0]);
 
   const toggleIsOpen = () => setIsOpen((prev) => !prev);
 
   const handleSelect = (item: Option) => {
-    setSelected(item);
+    onChange(item);
     setIsOpen(false);
   };
 
@@ -39,7 +42,7 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list }) => {
         className="flex h-8 cursor-pointer items-center justify-between gap-2 px-2"
       >
         <Text fontSize={14} color="black01" className="leading-none">
-          {selected.title}
+          {value.title}
         </Text>
 
         <BoxIcon name="chevron-up" class={cn(rotateClass, 'transition-transform duration-300')} />
@@ -47,7 +50,7 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list }) => {
 
       <div className="flex flex-col">
         {list
-          .filter((option) => option.id !== selected.id)
+          .filter((option) => option.id !== value.id)
           .map((option) => (
             <div
               key={option.id}
