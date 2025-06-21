@@ -1,147 +1,94 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import React, { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import dynamic from 'next/dynamic';
 
-import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import MoreOptions from '@/components/atoms/more-options/MoreOptions';
-import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
-import FeedSlider from '@/components/atoms/slider/FeedSlider';
-import { Text } from '@/components/atoms/text/Text';
-import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
+import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetLogList } from '@/hooks/feed.hooks';
+import { useScrollPosition } from '@/hooks/function.hooks';
+import { useFeedItemActions } from '@/hooks/useFeedItemActions';
 import { ILogResponse } from '@/types/api';
-import { cn } from '@/utils/cn';
 
-interface IFeedItemProps {
-  log: ILogResponse;
-  showMore: boolean;
-  isMyPost: boolean;
-  isExpanded: boolean;
-  toggleExpand: (id: number) => void;
-  contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
-}
-export const FeedItem = ({
-  log,
-  showMore,
-  isMyPost,
-  isExpanded,
-  toggleExpand,
-  contentRefs,
-}: IFeedItemProps) => {
-  const clampClass = isExpanded ? '' : 'line-clamp-2';
-
-  return (
-    <div key={log.id} className="mb-6">
-      <div className="flex justify-between">
-        <div className="mb-1.5 flex gap-1.5">
-          <ProfileImage src={log?.profileImgUrl} size={42} />
-
-          <div className="flex flex-col gap-1.5">
-            <Text fontSize={14}>{log.user}</Text>
-
-            <div>{log.created_at}</div>
-          </div>
-        </div>
-
-        <MoreOptions options={isMyPost ? FEED_MY_OPTIONS : FEED_OPTIONS} />
-      </div>
-
-      <FeedSlider imageList={log.image_urls} />
-
-      <ul className="mb-2 flex items-center gap-4">
-        <li className="flex items-center gap-0.5">
-          <BoxIcon name="heart" size={24} />
-
-          <Text fontSize={14}>{log.like_count || 0}</Text>
-        </li>
-
-        <li>
-          <Link href={`/feed/comment/${log.id}`} className="flex items-center gap-0.5">
-            <BoxIcon name="chat" size={24} />
-
-            <Text fontSize={14}>{log.comment_count || 0}</Text>
-          </Link>
-        </li>
-
-        <li>
-          <BoxIcon name="share" size={24} flip="horizontal" />
-        </li>
-      </ul>
-
-      <div>
-        <div
-          ref={(el) => {
-            contentRefs.current[log.id] = el;
-          }}
-          className={cn(clampClass, 'text-sm whitespace-pre-line text-black transition-all')}
-        >
-          {log.content}
-        </div>
-
-        {showMore && (
-          <button
-            onClick={() => toggleExpand(log.id)}
-            className="text-grey02 mt-1 text-sm font-medium"
-          >
-            {isExpanded ? '접기' : '더보기'}
-          </button>
-        )}
-      </div>
-    </div>
-  );
-};
+const FeedItem = dynamic(() => import('./feed-item'), {
+  ssr: false,
+});
 
 const FeedList = () => {
-  const { data: logList } = useGetLogList();
-  const { data: userData } = useGetUserInfo();
+  const { ref, inView } = useInView();
+  const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
 
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
-  const [showMoreButton, setShowMoreButton] = useState<Record<number, boolean>>({});
-
-  const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const {
+    setLogId,
+    expandedItems,
+    showMoreButton,
+    setShowMoreButton,
+    contentRefs,
+    toggleExpand,
+    handleDelete,
+  } = useFeedItemActions();
 
   useEffect(() => {
+    // 더보기 버튼 표시 여부
     const newState: Record<number, boolean> = {};
 
     for (const key in contentRefs.current) {
       const el = contentRefs.current[key];
+
       if (el) {
         newState[+key] = el.scrollHeight > 40;
       }
     }
     setShowMoreButton(newState);
-  }, [logList]);
+  }, [contentRefs, logList, setShowMoreButton]);
 
-  const toggleExpand = (id: number) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
+  useEffect(() => {
+    // 무한 스크롤
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  // 스크롤 위치 저장 (뒤로가기시 해당 위치로 이동)
+  useScrollPosition({
+    storageKey: `${FEED_LIST_QUERY_KEY}-scroll`,
+    shouldRestore: !isFetching,
+  });
 
   return (
     <div>
-      {logList?.pages?.map((page) =>
-        page.data.boards.map((log: ILogResponse) => {
-          const isExpanded = expandedItems[log.id];
-          const showMore = showMoreButton[log.id];
+      <DeleteFeedModal onDelete={handleDelete} />
 
-          const isMyPost = userData && userData.nickname === log.user;
+      <div>
+        {logList?.pages?.map((page) =>
+          page.data.boards.map((log: ILogResponse) => {
+            const isExpanded = expandedItems[log.id];
+            const showMore = showMoreButton[log.id];
 
-          return (
-            <FeedItem
-              key={log.id}
-              log={log}
-              showMore={showMore}
-              isMyPost={isMyPost}
-              isExpanded={isExpanded}
-              toggleExpand={toggleExpand}
-              contentRefs={contentRefs}
-            />
-          );
-        }),
+            return (
+              <FeedItem
+                key={log.id}
+                log={log}
+                setLogId={setLogId}
+                showMore={showMore}
+                isMyPost={log.isMe}
+                isExpanded={isExpanded}
+                toggleExpand={toggleExpand}
+                contentRefs={contentRefs}
+              />
+            );
+          }),
+        )}
+      </div>
+
+      {isFetching && (
+        <div className="flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
       )}
+
+      <div ref={ref as React.RefCallback<HTMLDivElement>} />
     </div>
   );
 };

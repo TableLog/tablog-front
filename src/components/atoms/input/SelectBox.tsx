@@ -1,28 +1,50 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';
 
-interface ISelectBoxProps {
+interface ISelectBoxProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
-  isError?: boolean;
-  list: Array<{ id: number; title: string }>;
-  errorMessage?: string;
+  name?: Path<T>;
+  list: ListType[];
+  control: Control<T>;
 }
-const SelectBox = ({ category, list, isError, errorMessage }: ISelectBoxProps) => {
+
+interface ListType {
+  id: number;
+  title: string;
+  name: string;
+}
+
+const SelectBox = <T extends FieldValues>({
+  category,
+  name,
+  list,
+  control,
+}: ISelectBoxProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null); // Ref 추가
+  const [selectedOption, setSelectedOption] = useState(list[0]);
 
-  const borderClass = isError ? 'border-red01' : 'border-grey07';
-
-  const [value, setValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const {
+    field: { onChange },
+    fieldState: { error },
+  } = useController({
+    name: name ?? (category as Path<T>),
+    control,
+    defaultValue: list[0].name as PathValue<T, Path<T>>,
+  });
 
-  const handleClickSetValue = (value: string) => {
-    setValue(value);
+  const borderClass = error ? 'border-red01' : 'border-grey07';
+
+  const handleClickSetValue = (option: ListType) => {
+    setSelectedOption(option);
+    onChange(option.name);
     // 선택 후 blur 처리
     inputRef.current?.blur();
   };
@@ -43,12 +65,11 @@ const SelectBox = ({ category, list, isError, errorMessage }: ISelectBoxProps) =
           ref={inputRef}
           type="text"
           readOnly
-          value={value}
+          value={selectedOption.title}
           placeholder={PLACEHOLDER_MAP[category]}
           className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
-          onChange={(e) => setValue(e.target.value)}
         />
       </label>
 
@@ -64,9 +85,9 @@ const SelectBox = ({ category, list, isError, errorMessage }: ISelectBoxProps) =
             <li
               key={option.id}
               className="cursor-pointer p-1"
-              onClick={() => handleClickSetValue(option.title)}
+              onClick={() => handleClickSetValue(option)}
             >
-              <Text fontSize={14} color={value === option.title ? 'primary01' : 'grey02'}>
+              <Text fontSize={14} color={selectedOption.id === option.id ? 'primary01' : 'grey02'}>
                 {option.title}
               </Text>
             </li>
@@ -74,9 +95,9 @@ const SelectBox = ({ category, list, isError, errorMessage }: ISelectBoxProps) =
         })}
       </ul>
 
-      {isError && (
+      {error && (
         <div className="validator-hint mt-0">
-          <Text color="red01">{errorMessage}</Text>
+          <Text color="red01">{error.message}</Text>
         </div>
       )}
     </div>

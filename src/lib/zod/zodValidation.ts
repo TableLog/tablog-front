@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
 import {
+  AMOUNT_REQUIRED,
   BIRTH_FORMAT,
   BIRTH_REQUIRED,
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
+  INGREDIENT_NAME_REQUIRED,
   LOG_CONTENT_REQUIRED,
   NAME_FORMAT,
   NAME_REQUIRED,
@@ -15,6 +17,14 @@ import {
   PASSWORD_CONFIRM_REQUIRED,
   PASSWORD_FORMAT,
   PASSWORD_REQUIRED,
+  RECIPE_CATEGORY_REQUIRED,
+  RECIPE_DESCRIPTION_REQUIRED,
+  RECIPE_FOOD_REQUIRED,
+  RECIPE_IMAGE_REQUIRED,
+  RECIPE_NAME_REQUIRED,
+  RECIPE_STEP_REQUIRED,
+  STEP_DESCRIPTION_REQUIRED,
+  STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
 
 export const EMAIL_REGEX = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
@@ -297,4 +307,35 @@ export const zodChangePassword = z
 // NOTE: 일기 작성
 export const zodAddLog = z.object({
   content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
+  images: z.array(z.instanceof(File).or(z.string())),
+});
+
+// NOTE: 레시피 등록
+const zodRecipeStepInfo = z.object({
+  rpTitle: z
+    .string({ message: STEP_TITLE_REQUIRED })
+    .min(1, STEP_TITLE_REQUIRED)
+    .max(500, STEP_TITLE_REQUIRED),
+  description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
+  files: z.array(z.instanceof(File)).max(3),
+});
+
+export const zodIngredientInfo = z.object({
+  amount: z.coerce.number().min(1, { message: AMOUNT_REQUIRED }),
+  recipeFoodUnit: z.string(),
+  foodId: z.number().min(1, { message: INGREDIENT_NAME_REQUIRED }),
+});
+
+export const zodRecipeForm = z.object({
+  recipeCreateRequestDto: z.object({
+    title: z.string().trim().nonempty({ message: RECIPE_NAME_REQUIRED }),
+    intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
+    recipeCategoryList: z.array(z.string()).min(1, RECIPE_CATEGORY_REQUIRED),
+    price: z.string(),
+    cookingTime: z.string(),
+    isPaid: z.boolean(),
+  }),
+  recipeImage: z.array(z.instanceof(File)).length(1, RECIPE_IMAGE_REQUIRED),
+  recipeFoodCreateRequestDto: z.array(zodIngredientInfo).min(1, RECIPE_FOOD_REQUIRED),
+  dtos: z.array(zodRecipeStepInfo).min(1, RECIPE_STEP_REQUIRED),
 });

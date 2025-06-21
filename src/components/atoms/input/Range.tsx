@@ -1,21 +1,43 @@
+'use client';
 import React, { useState } from 'react';
+import { Control, FieldValues, Path, useController } from 'react-hook-form';
 
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
 import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';
 
-interface IRange {
+interface IRangeProps<T extends FieldValues> {
   type: 'price' | 'time';
+  control: Control<T>;
+  name: Path<T>;
 }
 
-const Range = ({ type }: IRange) => {
-  const isPrice = type === 'price';
+const OPTIONS = {
+  price: PRICE_OPTIONS,
+  time: COOK_TIME_OPTIONS,
+};
 
-  const [value, setValue] = useState('0');
+const LEGEND = {
+  price: '요리 가격(원)',
+  time: '요리 시간',
+};
+
+const Range = <T extends FieldValues>({ type, name, control }: IRangeProps<T>) => {
+  const isPrice = type === 'price';
+  const options = OPTIONS[type];
+  const [value, setValue] = useState(OPTIONS[type][0].value);
+
+  const {
+    field: { onChange },
+  } = useController({
+    name,
+    control,
+  });
 
   const handleClickSetValue = (value: string) => {
     setValue(value);
+    onChange(options.find((option) => option.value === value)?.name);
   };
 
   return (
@@ -23,7 +45,7 @@ const Range = ({ type }: IRange) => {
       <div className="w-full">
         <legend className="fieldset-legend">
           <Text fontSize={14} fontWeight="semiBold">
-            {isPrice ? '요리 가격(원)' : '요리 시간'}
+            {LEGEND[type]}
           </Text>
         </legend>
 
@@ -34,11 +56,11 @@ const Range = ({ type }: IRange) => {
           value={value}
           className="range range-primary range-xs w-full"
           step="1"
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => handleClickSetValue(e.target.value)}
         />
 
         <ul className="mt-2 ml-[-20px] flex w-[calc(100%+40px)] text-xs">
-          {(isPrice ? PRICE_OPTIONS : COOK_TIME_OPTIONS).map((option) => {
+          {options.map((option) => {
             return (
               <li
                 key={option.id}

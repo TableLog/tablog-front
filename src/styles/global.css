@@ -49,8 +49,9 @@
 
 @theme {
   /* font family */
-  --font-pretendard: 'Pretendard', sans-serif;
-  --font-gyeonggi: 'Gyeonggi_Title_Medium', sans-serif;
+  --font-pretendard: var(--font-pretendard), sans-serif;
+  --font-gyeonggi-title: var(--font-gyeonggi-title), sans-serif;
+  --font-gyeonggi-batang: var('--font-gyeonggi-batang'), sans-serif;
 
   /* color */
   --color-*: initial;

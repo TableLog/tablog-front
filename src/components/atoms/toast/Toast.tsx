@@ -14,6 +14,7 @@ const CloseButton = ({ closeToast }: CloseButtonProps) => (
 const Toast = () => {
   return (
     <ToastContainer
+      autoClose={3000}
       toastClassName="custom-toast"
       closeButton={CloseButton}
       icon={({ type }) => {

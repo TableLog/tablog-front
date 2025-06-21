@@ -1,5 +1,4 @@
 // auth
-export const RECIPE_URL = '/api/v1/recipe';
 export const REGISTER_URL = '/api/v1/users/signup';
 export const LOGIN_URL = '/api/v1/users/login';
 export const SOCIAL_LOGIN_URL = '/api/v1/users/social/login';
@@ -14,3 +13,12 @@ export const CHANGE_PASSWORD = '/api/v1/users/password';
 
 // feed
 export const BOARD_URL = '/api/v1/boards';
+
+// recipe
+export const RECIPE_URL = '/api/v1/recipes';
+
+// food
+export const FOOD_URL = '/api/v1/foods';
+
+// users
+export const USER_URL = '/api/v1/users';

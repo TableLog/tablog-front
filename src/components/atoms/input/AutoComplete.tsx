@@ -1,28 +1,59 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
+import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
 
 import { BoxIcon } from '../icon/BoxIcon';
 
-interface IAutoCompleteProps {
-  list: Array<{ id: number; title: string }>;
-  category: keyof typeof LABEL_MAP;
+interface ItemType {
+  id: number;
+  title: string;
 }
 
-const AutoComplete = ({ list, category }: IAutoCompleteProps) => {
+interface IAutoCompleteProps<T extends FieldValues> {
+  list: Array<ItemType>;
+  category: keyof typeof LABEL_MAP;
+  name?: Path<T>;
+  control: Control<T>;
+  lastListElement?: ReactNode;
+  isFilteredBySearch?: boolean;
+  onSearch?: (newKeyword: string) => void;
+}
+
+const AutoComplete = <T extends FieldValues>({
+  list,
+  category,
+  name,
+  control,
+  lastListElement,
+  isFilteredBySearch = true,
+  onSearch,
+}: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {
+    field: { onChange },
+  } = useController({
+    name: name ?? (category as Path<T>),
+    control,
+    defaultValue: list?.[0]?.id as PathValue<T, Path<T>>,
+  });
 
-  const handleSelect = (title: string) => {
-    setValue(title);
+  const handleSelect = (item: ItemType) => {
+    if (inputRef.current) inputRef.current.value = item.title;
+    onChange(item.id);
     setIsOpen(false);
     inputRef.current?.blur(); // 선택 후 드롭다운 닫히게
   };
+
+  const renderedList = isFilteredBySearch
+    ? list.filter((item) => item.title.includes(value))
+    : list;
 
   return (
     <div className="dropdown w-full">
@@ -37,12 +68,14 @@ const AutoComplete = ({ list, category }: IAutoCompleteProps) => {
         <input
           ref={inputRef}
           type="text"
-          value={value}
           placeholder={PLACEHOLDER_MAP[category]}
           className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => {
+            setValue(e.target.value);
+            onSearch?.(e.target.value);
+          }}
         />
 
         <BoxIcon name="search" size={20} />
@@ -55,23 +88,24 @@ const AutoComplete = ({ list, category }: IAutoCompleteProps) => {
           !isOpen && 'hidden',
         )}
       >
-        {list.filter((item) => item.title.includes(value)).length === 0 ? (
+        {renderedList.length === 0 ? (
           <li className="text-grey01 pointer-events-none cursor-default py-1">
             검색 결과가 없습니다
           </li>
         ) : (
-          list
-            .filter((item) => item.title.includes(value))
-            .map((item) => (
+          <>
+            {renderedList.map((item) => (
               <li
                 key={item.id}
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => handleSelect(item.title)}
+                onClick={() => handleSelect(item)}
                 className="cursor-pointer py-1"
               >
                 {item.title}
               </li>
-            ))
+            ))}
+            {lastListElement}
+          </>
         )}
       </ul>
     </div>

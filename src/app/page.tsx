@@ -7,8 +7,9 @@ import SplashScreen from '@/components/organisms/splash-screen/SplashScreen';
 import { useLoginStore } from '@/lib/zutstand/userStore';
 
 const Page = () => {
-  const { isLoggedIn } = useLoginStore((state) => state);
   const router = useRouter();
+
+  const { isLoggedIn } = useLoginStore((state) => state);
 
   useEffect(() => {
     if (isLoggedIn) {

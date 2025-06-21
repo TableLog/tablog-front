@@ -32,8 +32,6 @@ const FindAccountForm = ({ setStep, setAccountInfo }: IFindAccountForm) => {
 
   const { mutate: findAccount } = useFindAccount({
     onSuccess: (res) => {
-      console.log(res, 'v');
-
       if (res.status === 200) {
         setStep(1);
 

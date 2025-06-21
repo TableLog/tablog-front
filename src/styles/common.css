@@ -17,3 +17,18 @@
 .image-cover {
   @apply absolute inset-[0px] h-full w-full object-cover;
 }
+
+.custom-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: #acacac;
+  border-radius: 200px;
+  opacity: 1;
+  transition: width 0.3s;
+  margin: 0 !important;
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  width: 24px;
+  background-color: #0e0e0e;
+}

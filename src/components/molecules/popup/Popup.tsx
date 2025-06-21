@@ -1,15 +1,22 @@
 import React from 'react';
 
 interface IPopupProps {
+  id: string;
   title: string;
-  closeButtonComponent: React.ReactElement;
+  closeButtonName?: string;
   activeButtonComponent: React.ReactElement;
   children: React.ReactElement;
 }
-const Popup = ({ title, closeButtonComponent, activeButtonComponent, children }: IPopupProps) => {
+const Popup = ({
+  id,
+  title,
+  closeButtonName = '닫기',
+  activeButtonComponent,
+  children,
+}: IPopupProps) => {
   return (
     <>
-      <dialog id="my_modal_2" className="modal">
+      <dialog id={id} className="modal">
         <div className="modal-box max-w-[calc(100%-4rem)] rounded-[20px] pt-8 pb-6">
           <h3 className="text-center text-xl font-medium">{title}</h3>
 
@@ -17,8 +24,9 @@ const Popup = ({ title, closeButtonComponent, activeButtonComponent, children }:
 
           <div className="modal-action mt-3 flex justify-center">
             <form method="dialog" className="flex justify-center gap-3">
-              {/* if there is a button, it will close the modal */}
-              {closeButtonComponent}
+              <button className="btn bg-grey06 rounded-full border-none px-4 font-medium shadow-none">
+                {closeButtonName}
+              </button>
 
               {activeButtonComponent}
             </form>

@@ -16,13 +16,24 @@ const StaticsSection = () => {
     return [
       { id: 1, title: '레시피', value: userData?.recipeCount },
       { id: 2, title: '일기', value: userData?.boardCount },
-      { id: 3, title: '팔로워', value: userData?.followerCount, href: '/my/followers' },
-      { id: 4, title: '팔로잉', value: userData?.followingCount, href: '/my/followings' },
+      {
+        id: 3,
+        title: '팔로워',
+        value: userData?.followerCount,
+        href: `/profile/${userData?.id}/followers`,
+      },
+      {
+        id: 4,
+        title: '팔로잉',
+        value: userData?.followingCount,
+        href: `/profile/${userData?.id}/followings`,
+      },
     ];
   }, [
     userData?.boardCount,
     userData?.followerCount,
     userData?.followingCount,
+    userData?.id,
     userData?.recipeCount,
   ]);
 

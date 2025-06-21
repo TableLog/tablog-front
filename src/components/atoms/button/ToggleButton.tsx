@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { ComponentProps, ReactNode } from 'react';
+
+import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';
 
-interface IToggleButtonProps {
-  title: string;
-  value: boolean;
-  setValue: React.Dispatch<React.SetStateAction<boolean>>;
+interface IToggleButtonProps extends Omit<ComponentProps<'input'>, 'title'> {
+  title: string | ReactNode;
 }
-const ToggleButton = ({ title, value, setValue }: IToggleButtonProps) => {
-  const handleChangeToggle = () => {
-    setValue((prev: boolean) => !prev);
-  };
 
+const ToggleButton = ({ title, className, ...props }: IToggleButtonProps) => {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className={cn('flex flex-col gap-1.5', className)}>
       <legend>
         <Text fontSize={14} fontWeight="semiBold">
           {title}
@@ -22,9 +19,8 @@ const ToggleButton = ({ title, value, setValue }: IToggleButtonProps) => {
 
       <input
         type="checkbox"
-        checked={value}
-        onChange={handleChangeToggle}
         className="toggle toggle-primary border-grey04 before:bg-grey04 checked:border-primary"
+        {...props}
       />
     </div>
   );

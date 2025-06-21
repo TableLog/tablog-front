@@ -1,7 +1,21 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
-import { AddLog, GetLog, GetLogList } from '@/apis/feed.api';
-import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
+import {
+  AddLog,
+  AddLogComment,
+  AddLogLike,
+  DeleteLog,
+  EditLog,
+  GetLog,
+  GetLogCommentList,
+  GetLogList,
+  RemoveLogLike,
+} from '@/apis/feed.api';
+import {
+  FEED_COMMENT_LIST_QUERY_KEY,
+  FEED_LIST_QUERY_KEY,
+  FEED_QUERY_KEY,
+} from '@/constants/query-key.constants';
 import { IMutationOptions } from '@/types/api';
 
 export function useGetLogList() {
@@ -22,10 +36,64 @@ export function useAddLog(options?: IMutationOptions) {
   });
 }
 
+export function useEditLog(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ id, formData }: { id: number; formData: FormData }) => EditLog(id, formData),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
 export function useGetLog(id: number) {
   return useQuery({
-    queryKey: [FEED_QUERY_KEY],
+    queryKey: [FEED_QUERY_KEY, id],
     queryFn: () => GetLog(id),
+    enabled: !!id && id !== -1,
     select: (res) => res.data,
+  });
+}
+
+export function useDeleteLog(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (id: number) => DeleteLog(id),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useAddLike(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (id: number) => AddLogLike(id),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useRemoveLike(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (id: number) => RemoveLogLike(id),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useGetCommentList(id: number) {
+  return useInfiniteQuery({
+    queryKey: [FEED_COMMENT_LIST_QUERY_KEY, id],
+    queryFn: async ({ pageParam = 0 }) => await GetLogCommentList(id, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
+  });
+}
+
+export function useAddComment(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ id, content }: { id: number; content: string }) => AddLogComment(id, content),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
   });
 }
