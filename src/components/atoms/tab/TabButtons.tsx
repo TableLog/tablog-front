@@ -1,8 +1,6 @@
 'use client';
 import { ComponentProps, useRef } from 'react';
 
-import { cn } from '@/utils/cn';
-
 import { Text } from '../text/Text';
 
 import { useTabsContext } from './Tab.context';
@@ -24,7 +22,7 @@ const TabButtons = ({ className, tabs }: TabButtons) => {
 
   return (
     <div
-      className={cn('bg-primary05 relative flex h-10 w-full gap-2.5 rounded-full p-1', className)}
+      className={`bg-primary05 relative flex h-10 w-full gap-2.5 rounded-full p-1 ${className || ''}`}
     >
       <div
         ref={activeRef}
@@ -34,6 +32,7 @@ const TabButtons = ({ className, tabs }: TabButtons) => {
         }}
         className="bg-white01 absolute top-1/2 left-1 h-[calc(100%-0.5rem)] w-full -translate-y-1/2 rounded-full duration-200"
       ></div>
+
       {tabs.map((tabName, idx) => (
         <button
           key={`tab-button-${tabName}`}

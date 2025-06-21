@@ -58,3 +58,11 @@ export const GetFollowingList = async (id: number, page: number) => {
     throw error;
   }
 };
+
+export const GetRecipeListByUserId = async (userId: number, page: number) => {
+  try {
+    return await axios.get(`${USER_URL}/${userId}/recipes?pageNumber=${page}`);
+  } catch (error) {
+    throw error;
+  }
+};

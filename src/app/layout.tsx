@@ -5,7 +5,7 @@ import Script from 'next/script';
 import Toast from '@/components/atoms/toast/Toast';
 import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
-import { pretendard } from '../../public/fonts/pretendard';
+import { GyeonggiBatang, GyeonggiTitle, pretendard } from '../../public/fonts/local-fonts';
 
 import '@/styles/global.css';
 import '@/styles/common.css';
@@ -27,7 +27,7 @@ export default function RootLayout({
     <html
       lang="ko"
       data-theme="tablog" // daisyui custom theme - global.css
-      className={`${pretendard.variable}`}
+      className={`${pretendard.variable} ${GyeonggiBatang.variable} ${GyeonggiTitle.variable}`}
       suppressHydrationWarning
     >
       <body className="max-w-[100svw] overflow-x-hidden" suppressHydrationWarning>

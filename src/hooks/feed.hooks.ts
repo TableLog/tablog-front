@@ -48,7 +48,7 @@ export function useGetLog(id: number) {
   return useQuery({
     queryKey: [FEED_QUERY_KEY, id],
     queryFn: () => GetLog(id),
-    enabled: !!id,
+    enabled: !!id && id !== -1,
     select: (res) => res.data,
   });
 }

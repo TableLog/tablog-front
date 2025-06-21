@@ -7,6 +7,7 @@ import {
   GetFollowingCount,
   GetFollowingList,
   GetProfileInfo,
+  GetRecipeListByUserId,
   UnfolloUser,
 } from '@/apis/users.api';
 import {
@@ -15,6 +16,7 @@ import {
   FOLLOWING_COUNT_QUERY_KEY,
   FOLLOWING_LIST_QUERY_KEY,
   PROFILE_INFO_QUERY_KEY,
+  RECIPE_LIST_BY_USER_ID_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import { showErrorToast } from '@/utils/functions';
 
@@ -92,6 +94,16 @@ export function useGetFollowingList(id: number, isFollower: boolean) {
     queryFn: async ({ pageParam = 0 }) => await GetFollowingList(id, pageParam),
     initialPageParam: 0,
     enabled: !isFollower,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+  });
+}
+
+export function useGetRecipeListByUserId(userId: number) {
+  return useInfiniteQuery({
+    queryKey: [RECIPE_LIST_BY_USER_ID_QUERY_KEY, userId],
+    queryFn: async ({ pageParam = 0 }) => await GetRecipeListByUserId(userId, pageParam),
+    initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
   });

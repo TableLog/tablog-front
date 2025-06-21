@@ -4,6 +4,7 @@ import React, { use } from 'react';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 
+import PostLists from './post-lists';
 import ProfileInfoSection from './profile-info-section';
 
 const ProfilePage = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -15,6 +16,8 @@ const ProfilePage = ({ params }: { params: Promise<{ id: string }> }) => {
         <PageHeader title="프로필 상세" back />
 
         <ProfileInfoSection id={Number(id)} />
+
+        <PostLists />
       </div>
     </div>
   );
