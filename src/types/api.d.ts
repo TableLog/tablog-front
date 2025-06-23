@@ -1,4 +1,4 @@
-import { ECookTime, EPrice } from '@/constants/options.constants';
+import { ECookTime, EPrice } from './enum';
 
 // NOTE: error type
 export type APIErrorResponse = {
@@ -14,7 +14,7 @@ export interface PaginationData {
 export type TUserData = {
   id: number;
   userName: string;
-  userRole: string;
+  userRole: EUserRole;
   birthday: string;
   email: string;
   marketingOptIn: boolean;

@@ -1,5 +1,5 @@
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { ECookTime, EPrice } from '@/constants/options.constants';
+import { ECookTime, EPrice } from '@/types/enum';
 import { cn } from '@/utils/cn';
 
 interface RecipeInfoProps {

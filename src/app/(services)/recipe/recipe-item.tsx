@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import RecipeInfo from '@/components/molecules/recipe-info/RecipeInfo';
-import { ECookTime, EPrice } from '@/constants/options.constants';
 import { IRecipeList } from '@/types/api';
+import { ECookTime, EPrice } from '@/types/enum';
 
 interface RecipeListProps {
   recipe: IRecipeList;

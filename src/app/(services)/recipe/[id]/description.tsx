@@ -4,8 +4,8 @@ import RecipeBookmarkButton from '@/components/atoms/button/RecipeBookmarkButton
 import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
 import ShareButton from '@/components/atoms/button/ShareButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { ECookTime, EPrice } from '@/constants/options.constants';
 import { IRecipeDetailResponse } from '@/types/api';
+import { ECookTime, EPrice } from '@/types/enum';
 
 interface DescriptionProps {
   recipe: IRecipeDetailResponse;
