@@ -1,13 +1,16 @@
-import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { ComponentProps } from 'react';
 
-interface BookmarkProps {
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { cn } from '@/utils/cn';
+
+interface BookmarkProps extends ComponentProps<'div'> {
   isMarked: boolean;
+  size?: number;
 }
-const Bookmark = ({ isMarked }: BookmarkProps) => {
+const Bookmark = ({ className, isMarked, size = 24, ...props }: BookmarkProps) => {
   return (
-    <div className="absolute top-[20px] right-[24px]">
-      {isMarked && <BoxIcon name="bx bxs-bookmark" />}
-      {!isMarked && <BoxIcon name="bx bx-bookmark" />}
+    <div className={cn('flex items-center', className)} {...props}>
+      <BoxIcon color="white01" type={isMarked ? 'solid' : 'regular'} name="bookmark" size={size} />
     </div>
   );
 };

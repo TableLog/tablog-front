@@ -25,7 +25,11 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
               {ingredient.recipeFoodUnit} ({ingredient.cal})kcal
             </div>
             <button>
-              <BoxIcon class="bxr bx-cart" size={24} />
+              <BoxIcon
+                type={ingredient.isChecked ? 'solid' : 'regular'}
+                class="bxr bx-cart"
+                size={24}
+              />
             </button>
           </div>
         ))}

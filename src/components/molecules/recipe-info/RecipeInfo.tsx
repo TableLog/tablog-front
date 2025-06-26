@@ -1,15 +1,16 @@
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import { IRecipeList } from '@/types/api';
 import { ECookTime, EPrice } from '@/types/enum';
 import { cn } from '@/utils/cn';
 
 interface RecipeInfoProps {
-  recipeName: string;
+  recipeName: IRecipeList['title'];
   price: EPrice;
   time: ECookTime;
-  calorie: number;
-  star: number;
-  comments: number;
-  author: string;
+  calorie: IRecipeList['totalCal'];
+  star: IRecipeList['star'];
+  comments: IRecipeList['starCount'];
+  author: IRecipeList['user'];
   latest?: boolean;
 }
 

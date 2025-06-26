@@ -1,14 +1,13 @@
 import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
+import Bookmark from '@/components/molecules/bookmark/Bookmark';
+import { RECIPE_DETAIL_QUERY_KEY, RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useAddBookmarkRecipe,
   useCancelBookmarkRecipe,
   useGetRecipeBookmark,
 } from '@/hooks/recipe.hooks';
-
-import { BoxIcon } from '../icon/BoxIcon';
 
 interface RecipeBookmarkButtonProps {
   recipeId: number;
@@ -21,12 +20,14 @@ const RecipeBookmarkButton = ({ recipeId }: RecipeBookmarkButtonProps) => {
 
   const { mutate: addBookmarkRecipe } = useAddBookmarkRecipe({
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY, exact: false });
       queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
     },
   });
 
   const { mutate: cancelBookMarkRecipe } = useCancelBookmarkRecipe({
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY, exact: false });
       queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
     },
   });
@@ -42,7 +43,7 @@ const RecipeBookmarkButton = ({ recipeId }: RecipeBookmarkButtonProps) => {
 
   return (
     <button className="flex items-center" onClick={handleBookmarkButtonClick}>
-      <BoxIcon color="white01" type={isMarked ? 'solid' : 'regular'} name="bookmark" size={24} />
+      <Bookmark isMarked={isMarked} />
     </button>
   );
 };

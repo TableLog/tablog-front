@@ -196,6 +196,7 @@ export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imag
     foodId: number;
     foodName: string;
     cal: number;
+    isChecked: boolean;
   }[];
 }
 
