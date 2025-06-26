@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 import Tab from '@/components/atoms/tab/Tab';
+import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddRecipe } from '@/hooks/recipe.hooks';
 import { zodRecipeForm } from '@/lib/zod/zodValidation';
@@ -39,8 +40,8 @@ const RecipeWritePage = () => {
         title: '',
         intro: '',
         recipeCategoryList: [],
-        price: '0',
-        cookingTime: '0',
+        price: PRICE_OPTIONS[0].name,
+        cookingTime: COOK_TIME_OPTIONS[0].name,
         isPaid: false,
       },
       recipeImage: [],
