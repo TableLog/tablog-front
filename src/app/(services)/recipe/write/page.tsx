@@ -46,7 +46,7 @@ const RecipeWritePage = () => {
       },
       recipeImage: [],
       recipeFoodCreateRequestDto: [],
-      dtos: [],
+      dtos: [{ rpTitle: '', description: '', files: [] }],
     },
   });
   const { handleSubmit } = methods;

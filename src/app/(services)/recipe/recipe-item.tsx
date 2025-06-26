@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import Bookmark from '@/components/molecules/bookmark/Bookmark';
 import RecipeInfo from '@/components/molecules/recipe-info/RecipeInfo';
 import { RECIPE_DETAIL_QUERY_KEY, RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
@@ -50,11 +51,7 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
         >
           <Bookmark isMarked={recipe.isSaved} size={20} />
         </button>
-        {recipe.isPaid && (
-          <div className="bg-yellow01 flex h-[30px] w-[30px] items-center justify-center rounded-full">
-            $
-          </div>
-        )}
+        {recipe.isPaid && <BoxIcon name="dollar-circle" size={30} color="yellow01" type="solid" />}
       </div>
       <div className="absolute bottom-0 w-full">
         <RecipeInfo

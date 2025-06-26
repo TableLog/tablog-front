@@ -14,11 +14,6 @@ import { TRecipeFormValues } from './page';
 const RecipeForm = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
 
-  useEffect(() => {
-    handleAddStep();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const {
     register,
     control,
@@ -32,6 +27,10 @@ const RecipeForm = () => {
   } = useFieldArray<TRecipeFormValues, 'dtos'>({
     name: 'dtos',
   });
+
+  useEffect(() => {
+    console.log(stepFields);
+  }, [stepFields]);
 
   function handleStepButtonClick(stepIdx: number) {
     const isActiveStep = stepIdx === activeStep;
