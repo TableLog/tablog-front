@@ -1,39 +1,58 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { useGetRecipeIngredient } from '@/hooks/recipe.hooks';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import { useGetRecipeIngredientList } from '@/hooks/recipe.hooks';
 
 interface IngredientProps {
   recipeId: number;
 }
 
 const Ingredient = ({ recipeId }: IngredientProps) => {
-  const { data } = useGetRecipeIngredient({
+  const { ref, inView } = useInView();
+
+  const { data, hasNextPage, fetchNextPage, isFetching } = useGetRecipeIngredientList({
     recipeId,
+    pageNumber: 0,
   });
 
-  const recipeIngredient = data?.data;
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
-      <p className="text-lg font-medium">{recipeIngredient?.title}</p>
-      <div className="flex w-full flex-col gap-4">
-        {recipeIngredient?.recipeFoods.map((ingredient) => (
-          <div key={ingredient.id} className="flex justify-between">
-            <div>
-              {ingredient.foodName} | {ingredient.amount}
-              {ingredient.recipeFoodUnit} ({ingredient.cal})kcal
-            </div>
-            <button>
-              <BoxIcon
-                type={ingredient.isChecked ? 'solid' : 'regular'}
-                class="bxr bx-cart"
-                size={24}
-              />
-            </button>
+      {data?.recipe.recipeFoods.length === 0 ? (
+        <></>
+      ) : (
+        <>
+          <p className="text-lg font-medium">{data?.recipe.title}</p>
+          <div className="flex w-full flex-col gap-4">
+            {data?.recipe.recipeFoods.map((food) => (
+              <div key={food.id} className="flex justify-between">
+                <div>
+                  {food.foodName} | {food.amount}
+                  {food.recipeFoodUnit} ({food.cal})kcal
+                </div>
+                <button>
+                  <BoxIcon type={food.isChecked ? 'solid' : 'regular'} name="cart" size={24} />
+                </button>
+              </div>
+            ))}
+
+            {isFetching && (
+              <div className="flex items-center justify-center">
+                <LoadingSpinner />
+              </div>
+            )}
+
+            <div ref={ref} />
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };

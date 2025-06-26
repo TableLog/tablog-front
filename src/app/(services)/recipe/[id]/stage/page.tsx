@@ -5,22 +5,21 @@ import { useSearchParams } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import Carousel from '@/components/organisms/carousel/Carousel';
-import { useGetRecipeProcess } from '@/hooks/recipe.hooks';
+import { useGetRecipeProcessBySequence } from '@/hooks/recipe.hooks';
 
 const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);
   const searchParams = useSearchParams();
   const sequenceParam = searchParams.get('sequence');
   const sequence = sequenceParam ? parseInt(sequenceParam) : 0;
-  const { data, hasNextPage } = useGetRecipeProcess({
+  const { data: recipeProcess } = useGetRecipeProcessBySequence({
     recipeId,
-    page: 0,
+    sequence,
   });
-  // ! fetchPreviousPage, fetchNextPage
 
-  const currentProcess = data?.recipes[sequence];
+  if (!recipeProcess) return <></>;
 
-  if (!currentProcess) return <></>;
+  const currentProcess = recipeProcess.data;
 
   return (
     <div className="flex h-[calc(100vh-60px)] flex-col justify-between gap-8 px-5 py-4">

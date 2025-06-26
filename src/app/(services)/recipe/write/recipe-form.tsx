@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import Image from 'next/image';
 
@@ -27,10 +27,6 @@ const RecipeForm = () => {
   } = useFieldArray<TRecipeFormValues, 'dtos'>({
     name: 'dtos',
   });
-
-  useEffect(() => {
-    console.log(stepFields);
-  }, [stepFields]);
 
   function handleStepButtonClick(stepIdx: number) {
     const isActiveStep = stepIdx === activeStep;

@@ -173,11 +173,17 @@ export interface IRecipeDetailParams {
 
 export interface IRecipeIngredientParams {
   recipeId: number;
+  pageNumber: number;
 }
 
-export interface IRecipeProcessParams {
+export interface IRecipeProcessListParams {
   recipeId: number;
   page: number;
+}
+
+export interface IRecipeProcessBySequenceParams {
+  recipeId: number;
+  sequence: number;
 }
 
 export interface IRecipeListResponse extends PaginationData {
@@ -188,7 +194,9 @@ export interface IRecipeDetailResponse extends IRecipe {
   hasPurchased: boolean;
 }
 
-export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imageUrl'> {
+export interface IRecipeIngredientResponse
+  extends Pick<IRecipe, 'title' | 'imageUrl'>,
+    PaginationData {
   recipeFoods: {
     id: number;
     amount: number;
@@ -200,14 +208,16 @@ export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imag
   }[];
 }
 
-export interface IRecipeProcessResponse extends PaginationData {
-  recipeProcesses: {
-    id: number;
-    sequence: number;
-    rpTitle: string;
-    description: string;
-    recipeProcessImageUrls: string[];
-  }[];
+export interface IRecipeProcessesResponse extends PaginationData {
+  recipeProcesses: IRecipeProcessResponse[];
+}
+
+export interface IRecipeProcessResponse {
+  id: number;
+  sequence: number;
+  rpTitle: string;
+  description: string;
+  recipeProcessImageUrls: string[];
 }
 
 // food
