@@ -194,18 +194,19 @@ export interface IRecipeDetailResponse extends IRecipe {
   hasPurchased: boolean;
 }
 
+interface IRecipeFood {
+  id: number;
+  amount: number;
+  recipeFoodUnit: string;
+  foodId: number;
+  foodName: string;
+  cal: number;
+}
+
 export interface IRecipeIngredientResponse
   extends Pick<IRecipe, 'title' | 'imageUrl'>,
     PaginationData {
-  recipeFoods: {
-    id: number;
-    amount: number;
-    recipeFoodUnit: string;
-    foodId: number;
-    foodName: string;
-    cal: number;
-    isChecked: boolean;
-  }[];
+  recipeFoods: (IRecipeFood & { isChecked: boolean })[];
 }
 
 export interface IRecipeProcessesResponse extends PaginationData {
@@ -270,4 +271,15 @@ export interface IAddBookmarkRecipeParams {
 
 export interface ICancelBookmarkRecipeParams {
   recipeId: number;
+}
+
+// shopping
+export interface AddShoppingListPayload {
+  foodUnit: IRecipeFood['recipeFoodUnit'];
+  amount: IRecipeFood['amount'];
+  foodId: IRecipeFood['id'];
+}
+
+export interface RemoveShoppingListParams {
+  shoppingListId: number;
 }
