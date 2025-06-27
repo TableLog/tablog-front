@@ -210,14 +210,19 @@ export interface IRecipeIngredientResponse
 
 export interface IRecipeProcessesResponse extends PaginationData {
   recipeProcesses: IRecipeProcessResponse[];
+  totalCount: number;
 }
 
 export interface IRecipeProcessResponse {
-  id: number;
-  sequence: number;
-  rpTitle: string;
-  description: string;
-  recipeProcessImageUrls: string[];
+  recipeProcesses: {
+    id: number;
+    sequence: number;
+    rpTitle: string;
+    description: string;
+    recipeProcessImageUrls: string[];
+  };
+  hasPrev: boolean;
+  hasNext: boolean;
 }
 
 // food

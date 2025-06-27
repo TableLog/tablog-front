@@ -19,7 +19,7 @@ const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   if (!recipeProcess) return <></>;
 
-  const currentProcess = recipeProcess.data;
+  const currentProcess = recipeProcess.data.recipeProcesses;
 
   return (
     <div className="flex h-[calc(100vh-60px)] flex-col justify-between gap-8 px-5 py-4">
@@ -46,17 +46,17 @@ const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
             buttonColor="grey06"
             className="w-32"
             href={`/recipe/${recipeId}/stage?sequence=${sequence - 1}`}
-            disabled={sequence === 0}
+            disabled={!recipeProcess.data.hasPrev}
           >
             이전
           </Button>
-          {!hasNextPage && data.recipes.length === sequence + 1 ? (
-            <Button className="w-32" href={`/recipe/${recipeId}`}>
-              완료
-            </Button>
-          ) : (
+          {recipeProcess.data.hasNext ? (
             <Button className="w-32" href={`/recipe/${recipeId}/stage?sequence=${sequence + 1}`}>
               다음
+            </Button>
+          ) : (
+            <Button className="w-32" href={`/recipe/${recipeId}`}>
+              완료
             </Button>
           )}
         </div>
