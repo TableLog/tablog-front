@@ -1,35 +1,90 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { useGetRecipeIngredient } from '@/hooks/recipe.hooks';
+import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import { SERVING_OPTIONS } from '@/constants/options.constants';
+import { useGetRecipeIngredientList } from '@/hooks/recipe.hooks';
+import { useAddShoppingList, useRemoveShoppingList } from '@/hooks/shopping.hooks';
+import { AddShoppingListPayload } from '@/types/api';
 
 interface IngredientProps {
   recipeId: number;
 }
 
 const Ingredient = ({ recipeId }: IngredientProps) => {
-  const { data } = useGetRecipeIngredient({
+  const { ref, inView } = useInView();
+  const { data, hasNextPage, fetchNextPage, isFetching } = useGetRecipeIngredientList({
     recipeId,
+    pageNumber: 0,
   });
+  const { mutate: addShoppingList } = useAddShoppingList();
+  const { mutate: removeShoppingList } = useRemoveShoppingList({});
 
-  const recipeIngredient = data?.data;
+  const [selectedServingOption, setSelectedServingOption] = useState(SERVING_OPTIONS[0]);
+  const servingNumber = parseInt(selectedServingOption.name);
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  function handleCartButtonClick(data: AddShoppingListPayload, isChecked: boolean) {
+    // ! shoppingListId가 필요함
+    if (isChecked) removeShoppingList({ shoppingListId: -1 });
+    else addShoppingList(data);
+  }
 
   return (
     <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
-      <p className="text-lg font-medium">{recipeIngredient?.title}</p>
-      <div className="flex w-full flex-col gap-4">
-        {recipeIngredient?.recipeFoods.map((ingredient) => (
-          <div key={ingredient.id} className="flex justify-between">
-            <div>
-              {ingredient.foodName} | {ingredient.amount}
-              {ingredient.recipeFoodUnit} ({ingredient.cal})kcal
-            </div>
-            <button>
-              <BoxIcon class="bxr bx-cart" size={24} />
-            </button>
+      {data?.recipe.recipeFoods.length === 0 ? (
+        <></>
+      ) : (
+        <>
+          <p className="text-lg font-medium">{data?.recipe.title}</p>
+          <MiniSelectBox
+            className="self-end"
+            list={SERVING_OPTIONS}
+            value={selectedServingOption}
+            onChange={(newOption) => setSelectedServingOption(newOption)}
+          />
+          <div className="flex w-full flex-col gap-4">
+            {data?.recipe.recipeFoods.map((food) => (
+              <div key={food.id} className="flex justify-between">
+                <div>
+                  {food.foodName} | {food.amount * servingNumber}
+                  {food.recipeFoodUnit} ({food.cal * servingNumber})kcal
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleCartButtonClick(
+                      {
+                        foodId: food.id,
+                        amount: food.amount,
+                        foodUnit: food.recipeFoodUnit,
+                      },
+                      food.isChecked,
+                    )
+                  }
+                >
+                  <BoxIcon type={food.isChecked ? 'solid' : 'regular'} name="cart" size={24} />
+                </button>
+              </div>
+            ))}
+
+            {isFetching && (
+              <div className="flex items-center justify-center">
+                <LoadingSpinner />
+              </div>
+            )}
+
+            <div ref={ref} />
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };

@@ -22,3 +22,6 @@ export const FOOD_URL = '/api/v1/foods';
 
 // users
 export const USER_URL = '/api/v1/users';
+
+// shopping
+export const SHOPPING_URL = '/api/v1/shopping-list';

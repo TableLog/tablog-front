@@ -12,20 +12,22 @@ import {
   getRecipeByFilter,
   getRecipeByFood,
   getRecipeDetail,
-  getRecipeIngredient,
+  getRecipeIngredientList,
   getRecipeLike,
-  getRecipeProcess,
+  getRecipeProcessBySequence,
+  getRecipeProcessList,
   getSortedRecipeList,
   updateRecipe,
 } from '@/apis/recipe.api';
 import {
   RECIPE_BOOKMARK_QUERY_KEY,
   RECIPE_DETAIL_QUERY_KEY,
-  RECIPE_INGREDIENT_QUERY_KEY,
+  RECIPE_INGREDIENT_LIST_QUERY_KEY,
   RECIPE_LIKE_QUERY_KEY,
   RECIPE_LIST_BY_FILTER_QUERY_KEY,
   RECIPE_LIST_BY_FOOD_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
+  RECIPE_PROCESS_LIST_QUERY_KEY,
   RECIPE_PROCESS_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import {
@@ -41,7 +43,8 @@ import {
   IRecipeDetailParams,
   IRecipeFilterParams,
   IRecipeIngredientParams,
-  IRecipeProcessParams,
+  IRecipeProcessBySequenceParams,
+  IRecipeProcessListParams,
   IUpdateRecipeParams,
 } from '@/types/api';
 
@@ -98,25 +101,44 @@ export const useGetRecipeDetail = (params: IRecipeDetailParams) => {
 };
 
 // 레시피 재료
-export const useGetRecipeIngredient = (params: IRecipeIngredientParams) => {
-  const { recipeId } = params;
-  return useQuery({
-    queryKey: RECIPE_INGREDIENT_QUERY_KEY(recipeId),
-    queryFn: () => getRecipeIngredient(params),
+export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
+  return useInfiniteQuery({
+    queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY(params),
+    queryFn: () => getRecipeIngredientList(params),
+    initialPageParam: params.pageNumber,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({
+      recipe: {
+        title: response.pages[0].data.title,
+        hasNext: response.pages[0].data.hasNext,
+        imageUrl: response.pages[0].data.imageUrl,
+        recipeFoods: response.pages.flatMap((page) => page.data.recipeFoods),
+      },
+    }),
   });
 };
 
 // 레시피 조리 과정
-export const useGetRecipeProcess = (params: IRecipeProcessParams) => {
+export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_PROCESS_QUERY_KEY(params),
-    queryFn: () => getRecipeProcess(params),
+    queryKey: RECIPE_PROCESS_LIST_QUERY_KEY(params),
+    queryFn: () => getRecipeProcessList(params),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
     select: (response) => ({
-      recipes: response.pages.flatMap((page) => page.data.recipeProcesses),
+      data: response.pages.flatMap((page) =>
+        page.data.recipeProcesses.map((data) => data.recipeProcesses),
+      ),
     }),
+  });
+};
+
+export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequenceParams) => {
+  return useQuery({
+    queryKey: RECIPE_PROCESS_QUERY_KEY(params),
+    queryFn: () => getRecipeProcessBySequence(params),
   });
 };
 

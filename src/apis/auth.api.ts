@@ -12,7 +12,12 @@ import {
   SOCIAL_LOGIN_URL,
   USER_INFO_URL,
 } from '@/constants/endpoint.constants';
-import { TChangePasswordFormData, TFindAccountFormValues, TLoginFormValues } from '@/types/api';
+import {
+  TChangePasswordFormData,
+  TFindAccountFormValues,
+  TLoginFormValues,
+  TUserData,
+} from '@/types/api';
 import instance from '@/utils/axios';
 import { hanldeApiError } from '@/utils/functions';
 
@@ -99,7 +104,7 @@ export const CheckEmail = async (email: string) => {
 // 회원 정보
 export const UserInfo = async () => {
   try {
-    return await instance.get(USER_INFO_URL);
+    return await instance.get<TUserData>(USER_INFO_URL);
   } catch (error) {
     hanldeApiError(error);
   }

@@ -28,7 +28,12 @@ const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => 
                   }
                 }}
               >
-                <Text color={option.alert ? 'red01' : 'black01'}>{option.title}</Text>
+                <Text
+                  className="flex justify-center whitespace-nowrap"
+                  color={option.alert ? 'red01' : 'black01'}
+                >
+                  {option.title}
+                </Text>
               </li>
             );
           })}

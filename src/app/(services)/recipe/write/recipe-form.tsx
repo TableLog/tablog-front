@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import Image from 'next/image';
 
@@ -13,11 +13,6 @@ import { TRecipeFormValues } from './page';
 
 const RecipeForm = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
-
-  useEffect(() => {
-    handleAddStep();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const {
     register,

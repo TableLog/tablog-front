@@ -13,8 +13,6 @@ interface CarouselProps extends ComponentProps<'div'> {
 const Carousel = ({ className, imageList, half = false }: CarouselProps) => {
   const aspectClass = half ? 'aspect-[3/2]' : 'aspect-square';
 
-  console.log(imageList);
-
   return (
     <div className={cn('min-h-64', aspectClass, className)}>
       <Swiper

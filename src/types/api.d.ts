@@ -1,4 +1,4 @@
-import { ECookTime, EPrice } from '@/constants/options.constants';
+import { ECookTime, EPrice } from './enum';
 
 // NOTE: error type
 export type APIErrorResponse = {
@@ -14,7 +14,7 @@ export interface PaginationData {
 export type TUserData = {
   id: number;
   userName: string;
-  userRole: string;
+  userRole: EUserRole;
   birthday: string;
   email: string;
   marketingOptIn: boolean;
@@ -180,11 +180,17 @@ export interface IRecipeDetailParams {
 
 export interface IRecipeIngredientParams {
   recipeId: number;
+  pageNumber: number;
 }
 
-export interface IRecipeProcessParams {
+export interface IRecipeProcessListParams {
   recipeId: number;
   page: number;
+}
+
+export interface IRecipeProcessBySequenceParams {
+  recipeId: number;
+  sequence: number;
 }
 
 export interface IRecipeListResponse extends PaginationData {
@@ -195,25 +201,36 @@ export interface IRecipeDetailResponse extends IRecipe {
   hasPurchased: boolean;
 }
 
-export interface IRecipeIngredientResponse extends Pick<IRecipe, 'title' | 'imageUrl'> {
-  recipeFoods: {
-    id: number;
-    amount: number;
-    recipeFoodUnit: string;
-    foodId: number;
-    foodName: string;
-    cal: number;
-  }[];
+interface IRecipeFood {
+  id: number;
+  amount: number;
+  recipeFoodUnit: string;
+  foodId: number;
+  foodName: string;
+  cal: number;
 }
 
-export interface IRecipeProcessResponse extends PaginationData {
+export interface IRecipeIngredientResponse
+  extends Pick<IRecipe, 'title' | 'imageUrl'>,
+    PaginationData {
+  recipeFoods: (IRecipeFood & { isChecked: boolean })[];
+}
+
+export interface IRecipeProcessesResponse extends PaginationData {
+  recipeProcesses: IRecipeProcessResponse[];
+  totalCount: number;
+}
+
+export interface IRecipeProcessResponse {
   recipeProcesses: {
     id: number;
     sequence: number;
     rpTitle: string;
     description: string;
     recipeProcessImageUrls: string[];
-  }[];
+  };
+  hasPrev: boolean;
+  hasNext: boolean;
 }
 
 // food
@@ -261,4 +278,15 @@ export interface IAddBookmarkRecipeParams {
 
 export interface ICancelBookmarkRecipeParams {
   recipeId: number;
+}
+
+// shopping
+export interface AddShoppingListPayload {
+  foodUnit: IRecipeFood['recipeFoodUnit'];
+  amount: IRecipeFood['amount'];
+  foodId: IRecipeFood['id'];
+}
+
+export interface RemoveShoppingListParams {
+  shoppingListId: number;
 }

@@ -1,3 +1,5 @@
+import { ECookTime, EPrice, ERecipeOption } from '@/types/enum';
+
 export const UNIT_OPTIONS = [
   { id: 1, title: '킬로그램 (kg)', name: 'kg' },
   { id: 2, title: '그램 (g)', name: 'g' },
@@ -13,13 +15,12 @@ export const RECIPE_FILTER_OPTIONS = [
   { id: 2, title: '인기순', name: 'popular' },
 ];
 
-export enum EPrice {
-  p5000 = '5,000',
-  p10000 = '10,000',
-  p50000 = '50,000',
-  p100000 = '100,000',
-  p100000_plus = '100,000+',
-}
+export const SERVING_OPTIONS = [
+  { id: 1, title: '1인분', name: '1' },
+  { id: 2, title: '2인분', name: '2' },
+  { id: 3, title: '3인분', name: '3' },
+  { id: 4, title: '4인분', name: '4' },
+];
 
 export const RECIPE_CATEGORY_LIST = [
   { id: 1, title: '밥요리', icon: '🍚' },
@@ -45,13 +46,6 @@ export const PRICE_OPTIONS = [
   { id: 3, title: EPrice['p100000'], value: '3', name: 'p100000' },
   { id: 4, title: EPrice['p100000_plus'], value: '4', name: 'p100000_plus' },
 ];
-
-export enum ECookTime {
-  minute_10 = '10분',
-  minute_30 = '30분',
-  hour_1 = '1시간',
-  hour_1_plus = '1시간+',
-}
 
 export const COOK_TIME_OPTIONS = [
   { id: 0, title: ECookTime['minute_10'], value: '0', name: 'minute_10' },
@@ -101,14 +95,6 @@ export const TERMS_OPTIONS = [
           연한을 정하여 계속비로서 국회의 의결을 얻어야 한다.`,
   },
 ];
-
-export enum ERecipeOption {
-  PROFILE = '작성자 프로필 보기',
-  CHAT = '채팅하기',
-  REPORT = '신고하기',
-  EDIT = '수정하기',
-  DELETE = '삭제하기',
-}
 
 export const RECIPE_OPTIONS = [
   { id: 1, title: ERecipeOption.PROFILE },

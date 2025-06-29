@@ -4,25 +4,39 @@ import RecipeBookmarkButton from '@/components/atoms/button/RecipeBookmarkButton
 import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
 import ShareButton from '@/components/atoms/button/ShareButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { ECookTime, EPrice } from '@/constants/options.constants';
+import { useGetUserInfo } from '@/hooks/auth.hooks';
 import { IRecipeDetailResponse } from '@/types/api';
+import { ECookTime, EPrice, EUserRole } from '@/types/enum';
 
 interface DescriptionProps {
   recipe: IRecipeDetailResponse;
 }
 
 const Description = ({ recipe }: DescriptionProps) => {
+  const { data: userInfo } = useGetUserInfo();
+
   if (!recipe) return null;
 
   return (
     <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
-      <p className="text-lg font-medium">{recipe?.title}</p>
-      <p className="flex items-center text-sm">
-        <BoxIcon color="primary01" name="bx bxs-star" size={16} /> {recipe?.star}(
-        <Link href={`/recipe/${recipe.id}/review`} className="underline">
-          {recipe?.reviewCount}
-        </Link>
-        ) | {recipe?.user}
+      <div className="flex items-center gap-1">
+        {recipe.isPaid && <BoxIcon name="dollar-circle" size={20} color="yellow01" type="solid" />}
+        <p className="text-lg font-medium">{recipe?.title}</p>
+      </div>
+      <p className="flex items-center gap-0.5 text-sm">
+        <div className="flex items-center">
+          <BoxIcon color="primary01" name="star" type="solid" size={16} /> {recipe?.star}
+          <Link href={`/recipe/${recipe.id}/review`} className="underline">
+            ({recipe?.reviewCount})
+          </Link>
+        </div>
+        <span>|</span>
+        <div className="flex items-center gap-0.5">
+          <span>{recipe?.user}</span>
+          {userInfo?.userRole === EUserRole.EXPERT && (
+            <BoxIcon color="white01" name="badge-check" size={16} type="solid" />
+          )}
+        </div>
       </p>
       <p>{recipe?.intro}</p>
       <p className="text-sm">

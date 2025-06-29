@@ -8,6 +8,8 @@ import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
+import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { EUserRole } from '@/types/enum';
 
 const InfoForm = () => {
   const {
@@ -15,6 +17,8 @@ const InfoForm = () => {
     register,
     formState: { errors },
   } = useFormContext();
+
+  const { data: userInfo } = useGetUserInfo();
 
   return (
     <div className="flex flex-col gap-8">
@@ -61,6 +65,7 @@ const InfoForm = () => {
             </Tooltip>
           </div>
         }
+        disabled={userInfo?.userRole !== EUserRole.EXPERT}
         {...register('recipeCreateRequestDto.isPaid')}
       />
     </div>
