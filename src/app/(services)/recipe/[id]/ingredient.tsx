@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import { SERVING_OPTIONS } from '@/constants/options.constants';
 import { useGetRecipeIngredientList } from '@/hooks/recipe.hooks';
 import { useAddShoppingList, useRemoveShoppingList } from '@/hooks/shopping.hooks';
 import { AddShoppingListPayload } from '@/types/api';
@@ -13,14 +15,15 @@ interface IngredientProps {
 
 const Ingredient = ({ recipeId }: IngredientProps) => {
   const { ref, inView } = useInView();
-
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetRecipeIngredientList({
     recipeId,
     pageNumber: 0,
   });
-
   const { mutate: addShoppingList } = useAddShoppingList();
   const { mutate: removeShoppingList } = useRemoveShoppingList({});
+
+  const [selectedServingOption, setSelectedServingOption] = useState(SERVING_OPTIONS[0]);
+  const servingNumber = parseInt(selectedServingOption.name);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -41,12 +44,18 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
       ) : (
         <>
           <p className="text-lg font-medium">{data?.recipe.title}</p>
+          <MiniSelectBox
+            className="self-end"
+            list={SERVING_OPTIONS}
+            value={selectedServingOption}
+            onChange={(newOption) => setSelectedServingOption(newOption)}
+          />
           <div className="flex w-full flex-col gap-4">
             {data?.recipe.recipeFoods.map((food) => (
               <div key={food.id} className="flex justify-between">
                 <div>
-                  {food.foodName} | {food.amount}
-                  {food.recipeFoodUnit} ({food.cal})kcal
+                  {food.foodName} | {food.amount * servingNumber}
+                  {food.recipeFoodUnit} ({food.cal * servingNumber})kcal
                 </div>
                 <button
                   type="button"

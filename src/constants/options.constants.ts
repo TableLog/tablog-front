@@ -15,6 +15,13 @@ export const RECIPE_FILTER_OPTIONS = [
   { id: 2, title: '인기순', name: 'popular' },
 ];
 
+export const SERVING_OPTIONS = [
+  { id: 1, title: '1인분', name: '1' },
+  { id: 2, title: '2인분', name: '2' },
+  { id: 3, title: '3인분', name: '3' },
+  { id: 4, title: '4인분', name: '4' },
+];
+
 export const PRICE_OPTIONS = [
   { id: 0, title: EPrice['p5000'], value: '0', name: 'p5000' },
   { id: 1, title: EPrice['p10000'], value: '1', name: 'p10000' },

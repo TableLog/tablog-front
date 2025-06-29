@@ -13,12 +13,13 @@ interface Option {
 }
 
 interface IMiniSelectProps {
+  className?: string;
   list: Array<Option>;
   value: Option;
   onChange: (newOption: Option) => void;
 }
 
-const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list, value, onChange }) => {
+const MiniSelectBox: React.FC<IMiniSelectProps> = ({ className, list, value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleIsOpen = () => setIsOpen((prev) => !prev);
@@ -33,8 +34,9 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list, value, onChange }) =>
   return (
     <div
       className={cn(
-        'border-grey05 transition-all-3 w-fit overflow-hidden rounded-[10px] border bg-white text-sm leading-none',
+        'bg-white01 border-grey05 transition-all-3 w-fit overflow-hidden rounded-[10px] border text-sm leading-none',
         isOpen ? 'max-h-[160px]' : 'max-h-[34px]',
+        className,
       )}
     >
       <div
@@ -45,7 +47,11 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ list, value, onChange }) =>
           {value.title}
         </Text>
 
-        <BoxIcon name="chevron-up" class={cn(rotateClass, 'transition-transform duration-300')} />
+        <BoxIcon
+          name="chevron-up"
+          class={cn(rotateClass, 'transition-transform duration-300')}
+          color="grey05"
+        />
       </div>
 
       <div className="flex flex-col">
