@@ -123,7 +123,9 @@ export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
     select: (response) => ({
-      recipes: response.pages.flatMap((page) => page.data.recipeProcesses),
+      data: response.pages.flatMap((page) =>
+        page.data.recipeProcesses.map((data) => data.recipeProcesses),
+      ),
     }),
   });
 };

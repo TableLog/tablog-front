@@ -1,5 +1,6 @@
 'use client';
 import { use } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
@@ -38,9 +39,12 @@ const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
         <p className="flex-grow overflow-auto break-all">{currentProcess?.description}</p>
       </div>
       <div className="flex justify-between">
-        <button className="border-black01 flex h-10 w-10 items-center justify-center rounded-full border">
+        <Link
+          href={`/recipe/${recipeId}/stages`}
+          className="border-black01 flex h-10 w-10 items-center justify-center rounded-full border"
+        >
           <BoxIcon name="list-ul" type="solid" size={24} />
-        </button>
+        </Link>
         <div className="flex gap-1.5">
           <Button
             buttonColor="grey06"
