@@ -21,6 +21,23 @@ export enum EPrice {
   p100000_plus = '100,000+',
 }
 
+export const RECIPE_CATEGORY_LIST = [
+  { id: 1, title: '밥요리', icon: '🍚' },
+  { id: 2, title: '면요리', icon: '🍜' },
+  { id: 3, title: '밑반찬', icon: '🍳' },
+  { id: 4, title: '국/찌개', icon: '🥘' },
+  { id: 5, title: '아침', icon: '🥞' },
+  { id: 6, title: '점심', icon: '🌮' },
+  { id: 7, title: '저녁', icon: '🍲' },
+  { id: 8, title: '간식/후식', icon: '🍰' },
+];
+
+export const CALORIE_OPTIONS = [
+  { id: 0, title: '500kcal', value: '0', name: 'UNDER_500' },
+  { id: 1, title: '1000kcal', value: '1', name: 'RANGE_500_1000' },
+  { id: 2, title: '1000kcal+', value: '2', name: 'OVER_1000' },
+];
+
 export const PRICE_OPTIONS = [
   { id: 0, title: EPrice['p5000'], value: '0', name: 'p5000' },
   { id: 1, title: EPrice['p10000'], value: '1', name: 'p10000' },

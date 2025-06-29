@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -11,6 +12,15 @@ interface ILatestRecipeSliderProps {
 }
 
 const LatestRecipeSlider = ({ list }: ILatestRecipeSliderProps) => {
+  const router = useRouter();
+
+  const handleClickRecipe = useCallback(
+    (recipeId: number) => {
+      router.push(`/recipe/${recipeId}`);
+    },
+    [router],
+  );
+
   return (
     <div>
       <Swiper className="w-full" slidesPerView={'auto'} spaceBetween={12}>
@@ -19,6 +29,7 @@ const LatestRecipeSlider = ({ list }: ILatestRecipeSliderProps) => {
             <SwiperSlide
               key={item.id}
               className="relative aspect-square max-w-[280px] overflow-hidden rounded-[20px]"
+              onClick={() => handleClickRecipe(item.id)}
             >
               <Image
                 src={item.imageUrl || `/images/dummy-recipe-image${idx + 1}.jpg`}

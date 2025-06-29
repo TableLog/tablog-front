@@ -128,6 +128,16 @@
   }
 }
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
 /* daisy UI 스타일 전역 설정 */
 @layer customDaisyUi {
   .divider:not(.divider-horizontal)::before,

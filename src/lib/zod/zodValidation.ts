@@ -1,3 +1,5 @@
+'use client';
+
 import { z } from 'zod';
 
 import {
@@ -338,4 +340,8 @@ export const zodRecipeForm = z.object({
   recipeImage: z.array(z.instanceof(File)).length(1, RECIPE_IMAGE_REQUIRED),
   recipeFoodCreateRequestDto: z.array(zodIngredientInfo).min(1, RECIPE_FOOD_REQUIRED),
   dtos: z.array(zodRecipeStepInfo).min(1, RECIPE_STEP_REQUIRED),
+});
+
+export const zodSearchRecipeByFood = z.object({
+  keyword: z.string().min(1, { message: INGREDIENT_NAME_REQUIRED }),
 });

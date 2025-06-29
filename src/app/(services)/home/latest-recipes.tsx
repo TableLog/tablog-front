@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import LatestRecipeSlider from '@/components/atoms/slider/LatestRecipeSlider';
+import { Text } from '@/components/atoms/text/Text';
 import { useGetSortedRecipe } from '@/hooks/recipe.hooks';
 
 const LatestRecipes = () => {
@@ -25,7 +26,11 @@ const LatestRecipes = () => {
       </header>
 
       {isLoading ? (
-        <LoadingSpinner />
+        <div className="flex h-[280px] flex-col items-center justify-center gap-2">
+          <Text fontSize={14}>불러오는 중...</Text>
+
+          <LoadingSpinner />
+        </div>
       ) : (
         <div className="pl-5">
           <LatestRecipeSlider list={latestRecipeList?.recipes} />

@@ -9,6 +9,8 @@ import {
   deleteRecipe,
   getMySortedRecipeList,
   getRecipeBookmark,
+  getRecipeByFilter,
+  getRecipeByFood,
   getRecipeDetail,
   getRecipeIngredient,
   getRecipeLike,
@@ -21,6 +23,8 @@ import {
   RECIPE_DETAIL_QUERY_KEY,
   RECIPE_INGREDIENT_QUERY_KEY,
   RECIPE_LIKE_QUERY_KEY,
+  RECIPE_LIST_BY_FILTER_QUERY_KEY,
+  RECIPE_LIST_BY_FOOD_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
   RECIPE_PROCESS_QUERY_KEY,
 } from '@/constants/query-key.constants';
@@ -35,6 +39,7 @@ import {
   IGetSortedRecipeOption,
   IMutationOptions,
   IRecipeDetailParams,
+  IRecipeFilterParams,
   IRecipeIngredientParams,
   IRecipeProcessParams,
   IUpdateRecipeParams,
@@ -164,3 +169,31 @@ export function useCancelBookmarkRecipe(options?: IMutationOptions) {
     onError: options?.onError,
   });
 }
+
+// 레시피 필터
+export const useGetRecipeByFilter = (condition: Partial<IRecipeFilterParams> | null) => {
+  return useInfiniteQuery({
+    queryKey: [RECIPE_LIST_BY_FILTER_QUERY_KEY, condition],
+    queryFn: ({ pageParam = 0 }) => getRecipeByFilter({ condition, pageNumber: pageParam }),
+    initialPageParam: 0,
+    enabled: !!condition,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({
+      recipes: response.pages.flatMap((page) => page.data.contents),
+    }),
+  });
+};
+
+export const useGetRecipeByFood = (keyword: string) => {
+  return useInfiniteQuery({
+    queryKey: [RECIPE_LIST_BY_FOOD_QUERY_KEY, keyword],
+    queryFn: ({ pageParam = 0 }) => getRecipeByFood({ keyword, pageNumber: pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({
+      recipes: response.pages.flatMap((page) => page.data.contents),
+    }),
+  });
+};

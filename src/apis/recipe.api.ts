@@ -9,6 +9,7 @@ import {
   IGetSortedRecipeOption,
   IRecipeDetailParams,
   IRecipeDetailResponse,
+  IRecipeFilterParams,
   IRecipeIngredientParams,
   IRecipeIngredientResponse,
   IRecipeListResponse,
@@ -140,9 +141,57 @@ export const cancelBookmarkRecipe = async ({ recipeId }: ICancelLikeRecipeParams
     throw error;
   }
 };
+
 export const getRecipeBookmark = async ({ recipeId }: IGetRecipeLikeParams) => {
   try {
     return await instance.get<IGetRecipeLikeResponse>(`${RECIPE_URL}/${recipeId}/saves/me`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeByFilter = async ({
+  condition,
+  pageNumber,
+}: {
+  condition: Partial<IRecipeFilterParams> | null;
+  pageNumber: number;
+}) => {
+  try {
+    const params = new URLSearchParams();
+
+    if (condition) {
+      params.append('pageNumber', String(pageNumber));
+
+      Object.entries(condition).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((item) => params.append(key, item));
+        } else if (value) {
+          params.append(key, String(value));
+        }
+      });
+    }
+
+    return await instance.get(`${RECIPE_URL}/filter`, { params });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeByFood = async ({
+  keyword,
+  pageNumber,
+}: {
+  keyword: string;
+  pageNumber: number;
+}) => {
+  try {
+    return await instance.get(`${RECIPE_URL}/filter/food`, {
+      params: {
+        keyword,
+        pageNumber,
+      },
+    });
   } catch (error) {
     throw error;
   }

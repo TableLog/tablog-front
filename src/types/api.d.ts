@@ -125,6 +125,13 @@ export interface IFollowerListResponse {
   userId: number;
 }
 
+export interface IRecipeFilterParams {
+  recipeCategory: string[];
+  cookingTime: string;
+  cal: number;
+  recipePrice: string;
+}
+
 // recipe
 interface IRecipe {
   id: number;

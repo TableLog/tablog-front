@@ -2,40 +2,54 @@
 
 import React, { useCallback, useState } from 'react';
 
+import { RECIPE_CATEGORY_LIST } from '@/constants/options.constants';
+import { IRecipeFilterParams } from '@/types/api';
 import { cn } from '@/utils/cn';
 
-const RecipeCategory = () => {
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+const RecipeCategory = ({
+  setCondition,
+}: {
+  setCondition: (condition: Partial<IRecipeFilterParams> | null) => void;
+}) => {
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
-  const RECIPE_CATEGORY_LIST = [
-    { id: 1, title: '밥요리', icon: '🍚' },
-    { id: 2, title: '면요리', icon: '🍜' },
-    { id: 3, title: '밑반찬', icon: '🍳' },
-    { id: 4, title: '국/찌개', icon: '🥘' },
-    { id: 5, title: '아침', icon: '🥞' },
-    { id: 6, title: '점심', icon: '🌮' },
-    { id: 7, title: '저녁', icon: '🍲' },
-    { id: 8, title: '간식/후식', icon: '🍰' },
-  ];
+  const handleClickCategory = useCallback(
+    (id: number) => {
+      const newSelectedCategories = selectedCategories.includes(id)
+        ? selectedCategories.filter((catId) => catId !== id)
+        : [...selectedCategories, id];
 
-  const handleClickCategory = useCallback((id: number) => {
-    setSelectedCategory((prev) => (prev === null ? id : null));
-  }, []);
+      setSelectedCategories(newSelectedCategories);
+
+      const categoryTitles = newSelectedCategories.map((catId) =>
+        RECIPE_CATEGORY_LIST.find((cat) => cat.id === catId)!.title.replaceAll('/', 'or'),
+      );
+
+      if (categoryTitles?.length === 0) {
+        setCondition(null);
+      } else {
+        setCondition({
+          recipeCategory: categoryTitles,
+        });
+      }
+    },
+    [selectedCategories, setCondition],
+  );
 
   return (
-    <div className="grid grid-cols-4 place-items-center gap-4">
+    <div className="grid grid-cols-4 place-items-center gap-4 px-5">
       {RECIPE_CATEGORY_LIST.map((category) => {
-        const selectedClass =
-          selectedCategory === category.id
-            ? 'bg-primary01 text-white01'
-            : 'bg-transparent text-black01';
+        const isSelected = selectedCategories.includes(category.id);
+        const selectedClass = isSelected
+          ? 'bg-primary01 text-white01'
+          : 'bg-transparent text-black01';
 
         return (
           <div
             key={category.id}
             className={cn(
               selectedClass,
-              'transition-all-3 flex h-[84px] w-[54px] auto-cols-max flex-col items-center gap-1.5 rounded-full p-[5px]',
+              'transition-all-3 flex h-[84px] w-[54px] auto-cols-max flex-col items-center gap-1 rounded-full p-[5px]',
             )}
             onClick={() => handleClickCategory(category.id)}
           >

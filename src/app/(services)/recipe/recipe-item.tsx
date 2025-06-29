@@ -15,7 +15,12 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
       href={`/recipe/${recipe.id}`}
       className="relative aspect-[16/12] w-full overflow-hidden rounded-[20px]"
     >
-      <Image src={recipe.imageUrl} alt={`${recipe.title} 이미지`} fill className="object-cover" />
+      <Image
+        src={recipe.imageUrl || `/images/dummy-recipe-image1.jpg`}
+        alt={`${recipe.title} 이미지`}
+        fill
+        className="object-cover"
+      />
       <div className="absolute bottom-0 w-full">
         <RecipeInfo
           recipeName={recipe.title}
