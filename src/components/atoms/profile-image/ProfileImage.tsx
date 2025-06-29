@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 interface IProfileImageProps {
-  src: string;
+  src?: string;
   size: number;
 }
 const ProfileImage = ({ src, size }: IProfileImageProps) => {

@@ -8,7 +8,7 @@ import { showToast } from '@/utils/functions';
 interface IProfileImage {
   imageSrc: string;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
-  setImageFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setImageFile: React.Dispatch<React.SetStateAction<File | string | null>>;
 }
 
 export default function ProfileImageInput({ imageSrc, setImageSrc, setImageFile }: IProfileImage) {

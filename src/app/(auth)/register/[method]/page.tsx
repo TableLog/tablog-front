@@ -23,7 +23,7 @@ const Register = () => {
     : 'local';
 
   const [imageSrc, setImageSrc] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   const pageTitle = useMemo(() => {
     if (registerMethod === 'local') {

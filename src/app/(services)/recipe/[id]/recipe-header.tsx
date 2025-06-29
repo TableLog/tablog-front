@@ -9,13 +9,12 @@ import ToggleModeButton from '@/components/atoms/button/ToggleModeButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import Popup from '@/components/molecules/popup/Popup';
+import { ERecipeDetailSection } from '@/constants/common.constants';
 import { RECIPE_MY_OPTIONS, RECIPE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useDeleteRecipe } from '@/hooks/recipe.hooks';
 import { ERecipeOption } from '@/types/enum';
 import { HandleOpenModal, showToast } from '@/utils/functions';
-
-import { ERecipeDetailSection } from './page';
 
 interface RecipeHeaderProps {
   recipeId: number;

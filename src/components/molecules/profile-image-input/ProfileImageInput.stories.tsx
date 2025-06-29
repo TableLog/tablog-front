@@ -17,7 +17,7 @@ export default meta;
 
 export const ProfileImageExample = () => {
   const [imageSrc, setImageSrc] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   console.log(imageFile);
 

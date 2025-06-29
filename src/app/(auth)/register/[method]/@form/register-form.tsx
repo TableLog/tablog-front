@@ -22,7 +22,7 @@ import { getErrorCode, showToast } from '@/utils/functions';
 
 interface IRegisterForm {
   registerMethod: 'local' | 'kakao' | 'google';
-  imageFile: File | null;
+  imageFile: File | string | null;
   setImageSrc: React.Dispatch<React.SetStateAction<string>>;
 }
 const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm) => {

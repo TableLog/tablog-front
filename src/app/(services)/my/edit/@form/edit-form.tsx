@@ -21,7 +21,7 @@ import LogoutSignout from './logout-signout';
 import SocialLink from './social-link';
 
 interface IUserInfoEditForm {
-  imageFile: File | null;
+  imageFile: File | string | null;
   userData: TUserData;
 }
 const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {

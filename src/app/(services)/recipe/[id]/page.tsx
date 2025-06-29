@@ -5,16 +5,12 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
+import { ERecipeDetailSection } from '@/constants/common.constants';
 import { useGetRecipeDetail } from '@/hooks/recipe.hooks';
 
 import Description from './description';
 import Ingredient from './ingredient';
 import RecipeHeader from './recipe-header';
-
-export enum ERecipeDetailSection {
-  INGREDIENT = '재료 보기',
-  DESCRIPTION = '설명 보기',
-}
 
 const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);

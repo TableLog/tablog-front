@@ -309,7 +309,7 @@ export const zodChangePassword = z
 // NOTE: 일기 작성
 export const zodAddLog = z.object({
   content: z.string({ message: LOG_CONTENT_REQUIRED }).min(1, { message: LOG_CONTENT_REQUIRED }),
-  images: z.array(z.instanceof(File).or(z.string())),
+  images: z.array(typeof window !== 'undefined' ? z.instanceof(File).or(z.string()) : z.any()),
 });
 
 // NOTE: 레시피 등록
@@ -319,7 +319,7 @@ const zodRecipeStepInfo = z.object({
     .min(1, STEP_TITLE_REQUIRED)
     .max(500, STEP_TITLE_REQUIRED),
   description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
-  files: z.array(z.instanceof(File)).max(3),
+  files: z.array(typeof window !== 'undefined' ? z.instanceof(File) : z.any()).max(3),
 });
 
 export const zodIngredientInfo = z.object({
@@ -337,7 +337,9 @@ export const zodRecipeForm = z.object({
     cookingTime: z.string(),
     isPaid: z.boolean(),
   }),
-  recipeImage: z.array(z.instanceof(File)).length(1, RECIPE_IMAGE_REQUIRED),
+  recipeImage: z
+    .array(typeof window !== 'undefined' ? z.instanceof(File) : z.any())
+    .length(1, RECIPE_IMAGE_REQUIRED),
   recipeFoodCreateRequestDto: z.array(zodIngredientInfo).min(1, RECIPE_FOOD_REQUIRED),
   dtos: z.array(zodRecipeStepInfo).min(1, RECIPE_STEP_REQUIRED),
 });

@@ -24,5 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const EmailInput: Story = {
   args: {
     list: RECIPE_FILTER_OPTIONS,
+    value: RECIPE_FILTER_OPTIONS[0],
+    onChange: () => {},
   },
 };

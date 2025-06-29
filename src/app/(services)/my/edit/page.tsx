@@ -5,12 +5,13 @@ import React, { useEffect, useState } from 'react';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImageInput from '@/components/molecules/profile-image-input/ProfileImageInput';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { TUserData } from '@/types/api';
 
 import UserInfoEditForm from './@form/edit-form';
 
 const EditPage = () => {
   const [imageSrc, setImageSrc] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | string | null>(null);
 
   const { data: userData } = useGetUserInfo();
 
@@ -33,7 +34,7 @@ const EditPage = () => {
         />
       </div>
 
-      <UserInfoEditForm imageFile={imageFile} userData={userData} />
+      <UserInfoEditForm imageFile={imageFile} userData={userData || ({} as TUserData)} />
     </div>
   );
 };

@@ -49,7 +49,7 @@ const FeedDetail = ({ id }: { id: number }) => {
             <FeedItem
               log={logDetail}
               showMore={showMoreButton}
-              isMyPost={isMyPost}
+              isMyPost={isMyPost || false}
               setLogId={setLogId}
               isExpanded={expandedItems}
               toggleExpand={toggleExpand}

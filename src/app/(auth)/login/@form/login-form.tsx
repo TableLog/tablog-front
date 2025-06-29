@@ -41,10 +41,12 @@ const LoginForm = () => {
 
   const { mutate: emailLogin } = useEmailLogin({
     onSuccess: async () => {
-      if (rememberEmail) {
-        localStorage.setItem(LOCAL_REMEMBER_EMAIL, watch('email'));
-      } else {
-        localStorage.removeItem(LOCAL_REMEMBER_EMAIL);
+      if (typeof window !== 'undefined') {
+        if (rememberEmail) {
+          localStorage.setItem(LOCAL_REMEMBER_EMAIL, watch('email'));
+        } else {
+          localStorage.removeItem(LOCAL_REMEMBER_EMAIL);
+        }
       }
 
       router.push('/home');
@@ -61,9 +63,11 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem(LOCAL_REMEMBER_EMAIL) !== null) {
-      setValue('email', localStorage.getItem(LOCAL_REMEMBER_EMAIL) || '');
-      setRememberEmail(true);
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem(LOCAL_REMEMBER_EMAIL) !== null) {
+        setValue('email', localStorage.getItem(LOCAL_REMEMBER_EMAIL) || '');
+        setRememberEmail(true);
+      }
     }
 
     if (foundEmail) {
