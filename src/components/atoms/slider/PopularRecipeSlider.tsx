@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { ECookTime, EPrice } from '@/constants/options.constants';
 import { IRecipe } from '@/types/api';
+import { ECookTime, EPrice } from '@/types/enum';
 
 import { BoxIcon } from '../icon/BoxIcon';
 

@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { ECookTime, EPrice } from '@/constants/options.constants';
 import { IRecipe } from '@/types/api';
+import { ECookTime, EPrice } from '@/types/enum';
 
 interface ILatestRecipeSliderProps {
   list?: Array<IRecipe>;
