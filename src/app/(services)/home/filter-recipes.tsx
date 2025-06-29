@@ -49,6 +49,8 @@ const FilterRecipes = () => {
     setActiveTab(index);
   };
 
+  console.log(activeTab, 'activeTab');
+
   return (
     <div>
       <Tab handleTabChange={handleTabChange}>
