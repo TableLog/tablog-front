@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
+// 레시피 구매
 import {
   addBookmarkRecipe,
   addLikeRecipe,
@@ -17,6 +18,7 @@ import {
   getRecipeProcessBySequence,
   getRecipeProcessList,
   getSortedRecipeList,
+  payRecipe,
   updateRecipe,
 } from '@/apis/recipe.api';
 import {
@@ -46,6 +48,7 @@ import {
   IRecipeProcessBySequenceParams,
   IRecipeProcessListParams,
   IUpdateRecipeParams,
+  PayRecipeParams,
 } from '@/types/api';
 
 // 레시피 CRUD
@@ -219,3 +222,11 @@ export const useGetRecipeByFood = (keyword: string) => {
     }),
   });
 };
+
+export function usePayRecipe(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ recipeId }: PayRecipeParams) => payRecipe({ recipeId }),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}

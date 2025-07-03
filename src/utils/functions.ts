@@ -36,6 +36,12 @@ export function HandleOpenModal(modalId: string) {
   }
 }
 
+export function handleCloseModal(modalId: string) {
+  const modal = document.getElementById(modalId) as HTMLDialogElement | null;
+
+  if (modal) modal.close();
+}
+
 // 모달 등 해당 컨텐츠 밖 클릭시 닫기 이벤트
 export function useClickOutsideClose(
   ref: React.RefObject<HTMLElement | null>,

@@ -23,7 +23,7 @@ const Description = ({ recipe }: DescriptionProps) => {
         {recipe.isPaid && <BoxIcon name="dollar-circle" size={20} color="yellow01" type="solid" />}
         <p className="text-lg font-medium">{recipe?.title}</p>
       </div>
-      <p className="flex items-center gap-0.5 text-sm">
+      <div className="flex items-center gap-0.5 text-sm">
         <div className="flex items-center">
           <BoxIcon color="primary01" name="star" type="solid" size={16} /> {recipe?.star}
           <Link href={`/recipe/${recipe.id}/review`} className="underline">
@@ -37,7 +37,7 @@ const Description = ({ recipe }: DescriptionProps) => {
             <BoxIcon color="white01" name="badge-check" size={16} type="solid" />
           )}
         </div>
-      </p>
+      </div>
       <p>{recipe?.intro}</p>
       <p className="text-sm">
         {EPrice[recipe.price]}원 | {ECookTime[recipe.cookingTime]} | {recipe.totalCal}kcal

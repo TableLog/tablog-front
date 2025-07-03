@@ -17,6 +17,7 @@ import {
   IRecipeProcessesResponse,
   IRecipeProcessListParams,
   IRecipeProcessResponse,
+  PayRecipeParams,
 } from '@/types/api';
 import instance from '@/utils/axios';
 
@@ -216,6 +217,14 @@ export const getRecipeByFood = async ({
         pageNumber,
       },
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const payRecipe = async ({ recipeId }: PayRecipeParams) => {
+  try {
+    return await instance.post(`${RECIPE_URL}/${recipeId}/payments`);
   } catch (error) {
     throw error;
   }

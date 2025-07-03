@@ -25,6 +25,7 @@ import {
   RECIPE_IMAGE_REQUIRED,
   RECIPE_NAME_REQUIRED,
   RECIPE_STEP_REQUIRED,
+  REPORT_REASON_REQUIRED,
   STEP_DESCRIPTION_REQUIRED,
   STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
@@ -346,4 +347,9 @@ export const zodRecipeForm = z.object({
 
 export const zodSearchRecipeByFood = z.object({
   keyword: z.string().min(1, { message: INGREDIENT_NAME_REQUIRED }),
+});
+
+// NOTE: 레시피 상세 - 신고하기
+export const zodReportForm = z.object({
+  reason: z.string().min(1, { message: REPORT_REASON_REQUIRED }),
 });

@@ -290,3 +290,8 @@ export interface AddShoppingListPayload {
 export interface RemoveShoppingListParams {
   shoppingListId: number;
 }
+
+// payment
+export interface PayRecipeParams {
+  recipeId: number;
+}

@@ -110,17 +110,17 @@ const IngredientForm = () => {
         isOpen={isOpen}
         onClose={closeBottomSheet}
         buttons={
-          <form className="grid grid-cols-2 gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5">
             <Button onClick={closeBottomSheet} size="large" full buttonColor="grey06">
               닫기
             </Button>
-            <Button onClick={handleSubmit(addIngredient)} size="large" full>
+            <Button onClick={handleSubmit(addIngredient)} size="large" full form="ingredient-form">
               추가
             </Button>
-          </form>
+          </div>
         }
       >
-        <div className="flex flex-col gap-8 px-5">
+        <form className="flex flex-col gap-8 px-5" id="ingredient-form">
           <div>
             <AutoComplete
               list={foodList ?? []}
@@ -162,7 +162,7 @@ const IngredientForm = () => {
               <Text fontSize={12}>1인분 기준으로 입력해주세요.</Text>
             </div>
           </div>
-        </div>
+        </form>
       </BottomSheet>
     </div>
   );
