@@ -58,10 +58,10 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
   });
 
   function onSubmit(data: TReportFormValues) {
-    const { reason } = data;
+    const { reportReason } = data;
 
     // ! 신고하기 API 호출
-    console.log(`신고하기!! (사유: ${reason})`);
+    console.log(`신고하기!! (사유: ${reportReason})`);
   }
 
   const handleOptionClick = (type: string) => {
@@ -133,7 +133,7 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
         }
       >
         <form onSubmit={handleSubmit(onSubmit)} className="px-5" id="report-form">
-          <TextArea register={register} category="report" errors={errors} maxLength={300} />
+          <TextArea register={register} category="reportReason" errors={errors} maxLength={300} />
         </form>
       </BottomSheet>
     </div>

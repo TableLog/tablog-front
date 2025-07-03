@@ -351,5 +351,5 @@ export const zodSearchRecipeByFood = z.object({
 
 // NOTE: 레시피 상세 - 신고하기
 export const zodReportForm = z.object({
-  reason: z.string().min(1, { message: REPORT_REASON_REQUIRED }),
+  reportReason: z.string().min(1, { message: REPORT_REASON_REQUIRED }),
 });
