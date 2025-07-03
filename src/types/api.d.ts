@@ -295,3 +295,24 @@ export interface RemoveShoppingListParams {
 export interface PayRecipeParams {
   recipeId: number;
 }
+
+// review
+export interface IGetRecipeReviewsParams {
+  recipeId: number;
+  pageNumber: number;
+}
+
+export interface IGetRecipeReviewsResponse extends PaginationData {
+  contents: IReview[];
+}
+
+export interface IReview {
+  id: number;
+  content: string;
+  star: number;
+  recipeId: number;
+  user: string;
+  modifiedAt: Date;
+  prrId: number; // 상위 댓글이면 prrId는 0, 하위 댓글은 댓글 id
+  isReviewer: boolean;
+}

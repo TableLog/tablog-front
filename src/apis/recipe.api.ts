@@ -6,6 +6,8 @@ import {
   IGetRecipeLikeParams,
   IGetRecipeLikeResponse,
   IGetRecipeParams,
+  IGetRecipeReviewsParams,
+  IGetRecipeReviewsResponse,
   IGetSortedRecipeOption,
   IRecipeDetailParams,
   IRecipeDetailResponse,
@@ -225,6 +227,19 @@ export const getRecipeByFood = async ({
 export const payRecipe = async ({ recipeId }: PayRecipeParams) => {
   try {
     return await instance.post(`${RECIPE_URL}/${recipeId}/payments`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeReviews = async ({ recipeId, ...params }: IGetRecipeReviewsParams) => {
+  try {
+    return await instance.get<IGetRecipeReviewsResponse>(
+      `${RECIPE_URL}/${recipeId}/recipe-reviews`,
+      {
+        params,
+      },
+    );
   } catch (error) {
     throw error;
   }

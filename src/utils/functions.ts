@@ -102,7 +102,7 @@ export const showErrorToast = (err: APIErrorResponse) => {
   }
 };
 
-export const convertDateFormat = (date: string) => {
+export const convertDateFormat = (date: string | Date) => {
   const day = dayjs(date);
 
   return day.format('YYYY.MM.DD');

@@ -17,6 +17,7 @@ import {
   getRecipeLike,
   getRecipeProcessBySequence,
   getRecipeProcessList,
+  getRecipeReviews,
   getSortedRecipeList,
   payRecipe,
   updateRecipe,
@@ -31,6 +32,7 @@ import {
   RECIPE_LIST_OPTIONS_QUERY_KEY,
   RECIPE_PROCESS_LIST_QUERY_KEY,
   RECIPE_PROCESS_QUERY_KEY,
+  RECIPE_REVIEW_LIST_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import {
   IAddBookmarkRecipeParams,
@@ -40,6 +42,7 @@ import {
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
   IGetRecipeParams,
+  IGetRecipeReviewsParams,
   IGetSortedRecipeOption,
   IMutationOptions,
   IRecipeDetailParams,
@@ -230,3 +233,15 @@ export function usePayRecipe(options?: IMutationOptions) {
     onError: options?.onError,
   });
 }
+
+// 레시피 리뷰
+export const useGetReviews = (params: IGetRecipeReviewsParams) => {
+  return useInfiniteQuery({
+    queryKey: RECIPE_REVIEW_LIST_QUERY_KEY(params),
+    queryFn: () => getRecipeReviews(params),
+    initialPageParam: params.pageNumber,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({ reviews: response.pages.flatMap((page) => page.data.contents) }),
+  });
+};

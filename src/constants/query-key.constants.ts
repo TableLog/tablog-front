@@ -1,5 +1,6 @@
 import {
   IGetRecipeParams,
+  IGetRecipeReviewsParams,
   IGetSortedRecipeOption,
   IRecipeIngredientParams,
   IRecipeProcessBySequenceParams,
@@ -32,6 +33,11 @@ export const RECIPE_LIKE_QUERY_KEY = (recipeId: number) => [
 export const RECIPE_BOOKMARK_QUERY_KEY = (recipeId: number) => [
   ...RECIPE_DETAIL_QUERY_KEY(recipeId),
   'bookmark',
+];
+export const RECIPE_REVIEW_LIST_QUERY_KEY = ({ recipeId, ...params }: IGetRecipeReviewsParams) => [
+  'recipe-review',
+  recipeId,
+  { ...params },
 ];
 export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';
 export const FOOD_LIST_QUERY_KEY = 'food-list';
