@@ -14,18 +14,18 @@ export const RECIPE_LIST_OPTIONS_QUERY_KEY = (
 ) => [...RECIPE_LIST_QUERY_KEY, { ...params, ...option }];
 
 export const RECIPE_DETAIL_QUERY_KEY = (recipeId: number) => ['recipe-detail', { recipeId }];
-export const RECIPE_INGREDIENT_LIST_QUERY_KEY = (params: IRecipeIngredientParams) => [
-  RECIPE_INGREDIENT_QUERY_KEY,
-  { ...params },
-];
-export const RECIPE_PROCESS_LIST_QUERY_KEY = (params: IRecipeProcessListParams) => [
+export const RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS = ({
+  recipeId,
+  ...params
+}: IRecipeIngredientParams) => [RECIPE_INGREDIENT_QUERY_KEY, recipeId, { ...params }];
+export const RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS = (params: IRecipeProcessListParams) => [
   'recipe-process',
   { ...params },
 ];
-export const RECIPE_PROCESS_QUERY_KEY = (params: IRecipeProcessBySequenceParams) => [
-  'recipe-process',
-  { ...params },
-];
+export const RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS = ({
+  recipeId,
+  ...params
+}: IRecipeProcessBySequenceParams) => ['recipe-process', recipeId, { ...params }];
 export const RECIPE_LIKE_QUERY_KEY = (recipeId: number) => [
   ...RECIPE_DETAIL_QUERY_KEY(recipeId),
   'like',
@@ -34,11 +34,15 @@ export const RECIPE_BOOKMARK_QUERY_KEY = (recipeId: number) => [
   ...RECIPE_DETAIL_QUERY_KEY(recipeId),
   'bookmark',
 ];
-export const RECIPE_REVIEW_LIST_QUERY_KEY = ({ recipeId, ...params }: IGetRecipeReviewsParams) => [
+export const RECIPE_REVIEW_LIST_QUERY_KEY = (recipeId: IGetRecipeReviewsParams['recipeId']) => [
   'recipe-review',
   recipeId,
-  { ...params },
 ];
+export const RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS = ({
+  recipeId,
+  ...params
+}: IGetRecipeReviewsParams) => ['recipe-review', recipeId, { ...params }];
+
 export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';
 export const FOOD_LIST_QUERY_KEY = 'food-list';
 export const USER_INFO_QUERY_KEY = 'user-info';

@@ -26,7 +26,7 @@ import { HandleOpenModal, showToast } from '@/utils/functions';
 
 interface RecipeHeaderProps {
   recipeId: number;
-  authorId: number;
+  authorId?: number;
   isMyRecipe?: boolean;
 }
 

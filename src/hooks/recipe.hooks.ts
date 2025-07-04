@@ -5,6 +5,7 @@ import {
   addBookmarkRecipe,
   addLikeRecipe,
   addRecipe,
+  addRecipeReview,
   cancelBookmarkRecipe,
   cancelLikeRecipe,
   deleteRecipe,
@@ -25,18 +26,19 @@ import {
 import {
   RECIPE_BOOKMARK_QUERY_KEY,
   RECIPE_DETAIL_QUERY_KEY,
-  RECIPE_INGREDIENT_LIST_QUERY_KEY,
+  RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS,
   RECIPE_LIKE_QUERY_KEY,
   RECIPE_LIST_BY_FILTER_QUERY_KEY,
   RECIPE_LIST_BY_FOOD_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
-  RECIPE_PROCESS_LIST_QUERY_KEY,
-  RECIPE_PROCESS_QUERY_KEY,
-  RECIPE_REVIEW_LIST_QUERY_KEY,
+  RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS,
+  RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS,
+  RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS,
 } from '@/constants/query-key.constants';
 import {
   IAddBookmarkRecipeParams,
   IAddLikeRecipeParams,
+  IAddRecipeReviewsParams,
   ICancelBookmarkRecipeParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
@@ -109,7 +111,7 @@ export const useGetRecipeDetail = (params: IRecipeDetailParams) => {
 // 레시피 재료
 export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY(params),
+    queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeIngredientList(params),
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -128,7 +130,7 @@ export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
 // 레시피 조리 과정
 export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_PROCESS_LIST_QUERY_KEY(params),
+    queryKey: RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessList(params),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -143,7 +145,7 @@ export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
 
 export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequenceParams) => {
   return useQuery({
-    queryKey: RECIPE_PROCESS_QUERY_KEY(params),
+    queryKey: RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessBySequence(params),
   });
 };
@@ -237,7 +239,7 @@ export function usePayRecipe(options?: IMutationOptions) {
 // 레시피 리뷰
 export const useGetReviews = (params: IGetRecipeReviewsParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_REVIEW_LIST_QUERY_KEY(params),
+    queryKey: RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeReviews(params),
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -245,3 +247,11 @@ export const useGetReviews = (params: IGetRecipeReviewsParams) => {
     select: (response) => ({ reviews: response.pages.flatMap((page) => page.data.contents) }),
   });
 };
+
+export function useAddReview(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IAddRecipeReviewsParams) => addRecipeReview(params),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}

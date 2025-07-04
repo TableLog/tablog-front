@@ -316,3 +316,5 @@ export interface IReview {
   prrId: number; // 상위 댓글이면 prrId는 0, 하위 댓글은 댓글 id
   isReviewer: boolean;
 }
+
+export type IAddRecipeReviewsParams = Pick<IReview, 'recipeId' | 'content' | 'star' | 'prrId'>;

@@ -26,6 +26,7 @@ import {
   RECIPE_NAME_REQUIRED,
   RECIPE_STEP_REQUIRED,
   REPORT_REASON_REQUIRED,
+  REVIEW_CONTENT_REQUIRED,
   STEP_DESCRIPTION_REQUIRED,
   STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
@@ -351,5 +352,17 @@ export const zodSearchRecipeByFood = z.object({
 
 // NOTE: 레시피 상세 - 신고하기
 export const zodReportForm = z.object({
-  reportReason: z.string().min(1, { message: REPORT_REASON_REQUIRED }),
+  reportReason: z
+    .string()
+    .min(1, { message: REPORT_REASON_REQUIRED })
+    .max(300, { message: REPORT_REASON_REQUIRED }),
+});
+
+// NOTE: 레시피 리뷰
+export const zodReviewForm = z.object({
+  content: z
+    .string()
+    .min(1, { message: REVIEW_CONTENT_REQUIRED })
+    .max(300, { message: REVIEW_CONTENT_REQUIRED }),
+  star: z.number(),
 });

@@ -1,6 +1,7 @@
 'use client';
 import { use, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
@@ -24,16 +25,27 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  const REVIEW_WRITE_PAGE_PATH = `/recipe/${recipeId}/review/write`;
+
   return (
     <div className="relative px-5 py-4">
       <PageHeader className="mb-4" title="리뷰" back backUrl={`/recipe/${recipeId}`}>
-        <Button href={`/recipe/${recipeId}/review/write`} size="small">
+        <Button href={REVIEW_WRITE_PAGE_PATH} size="small">
           리뷰 작성
         </Button>
       </PageHeader>
 
       <div className="flex flex-col gap-3">
-        {data?.reviews.map((review) => <Review key={review.id} review={review} />)}
+        {data?.reviews.length === 0 ? (
+          <div className="flex flex-col items-center gap-2">
+            <p>작성된 리뷰가 없습니다</p>
+            <Link href={REVIEW_WRITE_PAGE_PATH} className="text-grey01 text-sm underline">
+              첫 리뷰 작성하러 가기
+            </Link>
+          </div>
+        ) : (
+          data?.reviews.map((review) => <Review key={review.id} review={review} />)
+        )}
 
         {isFetching && (
           <div className="flex items-center justify-center">

@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
+import { Control, FieldValues, Path, useController } from 'react-hook-form';
 
 import { Text } from '@/components/atoms/text/Text';
 import { cn } from '@/utils/cn';
 
-const StarRate = () => {
+interface StarRateProps<T extends FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
+}
+
+const StarRate = <T extends FieldValues>({ control, name }: StarRateProps<T>) => {
   // 상태 변수로 선택된 별점 값을 저장
   const [rating, setRating] = useState<number>(0);
+
+  const {
+    field: { onChange },
+  } = useController({
+    name,
+    control,
+  });
 
   // 별점을 선택했을 때 호출되는 함수
   const onChangeRating = (event: React.ChangeEvent<HTMLInputElement>) => {
     // 선택된 별점 값을 업데이트
     setRating(Number(event.target.value));
+    onChange(Number(event.target.value));
   };
 
   const startList = [
