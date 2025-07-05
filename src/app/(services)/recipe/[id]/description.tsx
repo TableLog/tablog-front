@@ -25,7 +25,7 @@ const Description = ({ recipe }: DescriptionProps) => {
       </div>
       <div className="flex items-center gap-0.5 text-sm">
         <div className="flex items-center">
-          <BoxIcon color="primary01" name="star" type="solid" size={16} /> {recipe?.star}
+          <BoxIcon color="primary01" name="star" type="solid" size={16} /> {recipe?.star.toFixed(1)}
           <Link href={`/recipe/${recipe.id}/review`} className="underline">
             ({recipe?.reviewCount})
           </Link>
