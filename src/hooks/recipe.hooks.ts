@@ -6,6 +6,7 @@ import {
   addLikeRecipe,
   addRecipe,
   addRecipeReview,
+  addRecipeReviewReply,
   cancelBookmarkRecipe,
   cancelLikeRecipe,
   deleteRecipe,
@@ -38,7 +39,8 @@ import {
 import {
   IAddBookmarkRecipeParams,
   IAddLikeRecipeParams,
-  IAddRecipeReviewsParams,
+  IAddRecipeReviewParams,
+  IAddRecipeReviewReplyParams,
   ICancelBookmarkRecipeParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
@@ -250,7 +252,15 @@ export const useGetReviews = (params: IGetRecipeReviewsParams) => {
 
 export function useAddReview(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (params: IAddRecipeReviewsParams) => addRecipeReview(params),
+    mutationFn: (params: IAddRecipeReviewParams) => addRecipeReview(params),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useAddReviewReply(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IAddRecipeReviewReplyParams) => addRecipeReviewReply(params),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });

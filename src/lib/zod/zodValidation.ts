@@ -366,3 +366,10 @@ export const zodReviewForm = z.object({
     .max(300, { message: REVIEW_CONTENT_REQUIRED }),
   star: z.number(),
 });
+
+export const zodReviewReplyForm = z.object({
+  content: z
+    .string()
+    .min(1, { message: REVIEW_CONTENT_REQUIRED })
+    .max(300, { message: REVIEW_CONTENT_REQUIRED }),
+});

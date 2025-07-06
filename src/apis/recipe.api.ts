@@ -1,7 +1,8 @@
 import { RECIPE_URL, USER_URL } from '@/constants/endpoint.constants';
 import {
   IAddLikeRecipeParams,
-  IAddRecipeReviewsParams,
+  IAddRecipeReviewParams,
+  IAddRecipeReviewReplyParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
@@ -246,10 +247,21 @@ export const getRecipeReviews = async ({ recipeId, ...params }: IGetRecipeReview
   }
 };
 
-export const addRecipeReview = async ({ recipeId, ...data }: IAddRecipeReviewsParams) => {
+export const addRecipeReview = async ({ recipeId, ...data }: IAddRecipeReviewParams) => {
   try {
     return await instance.post<IGetRecipeReviewsResponse>(
       `${RECIPE_URL}/${recipeId}/recipe-reviews`,
+      data,
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addRecipeReviewReply = async ({ recipeId, ...data }: IAddRecipeReviewReplyParams) => {
+  try {
+    return await instance.post<IGetRecipeReviewsResponse>(
+      `${RECIPE_URL}/${recipeId}/recipe-reply`,
       data,
     );
   } catch (error) {

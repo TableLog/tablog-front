@@ -17,6 +17,7 @@ export const LABEL_MAP = {
   ingredientName: '재료명',
   reportReason: '신고 사유',
   review: '리뷰',
+  reviewReply: '답글',
 } as const;
 
 export const PLACEHOLDER_MAP = {
@@ -38,5 +39,6 @@ export const PLACEHOLDER_MAP = {
   recipeDescription: '요리에 대한 간단한 설명을 입력해주세요. (최대 300글자)',
   ingredientName: '재료 이름을 입력해주세요.',
   reportReason: '신고 사유를 입력해주세요. (최대 300글자)',
-  review: '리뷰를 입력해주세요 (최대 300글자)',
+  review: '리뷰를 입력해주세요. (최대 300글자)',
+  reviewReply: '댓글에 답글을 남겨주세요. (최대 300글자)',
 } as const;

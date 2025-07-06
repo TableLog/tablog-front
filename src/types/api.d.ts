@@ -317,4 +317,5 @@ export interface IReview {
   isReviewer: boolean;
 }
 
-export type IAddRecipeReviewsParams = Pick<IReview, 'recipeId' | 'content' | 'star' | 'prrId'>;
+export type IAddRecipeReviewParams = Pick<IReview, 'recipeId' | 'content' | 'star' | 'prrId'>;
+export type IAddRecipeReviewReplyParams = Pick<IReview, 'recipeId' | 'content' | 'prrId'>;
