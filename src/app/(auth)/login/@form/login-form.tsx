@@ -77,14 +77,14 @@ const LoginForm = () => {
 
   return (
     <div>
-      <form className="mt-[64px] mb-4" onSubmit={handleSubmit(onSubmit)}>
+      <form className="mb-4 mt-[64px]" onSubmit={handleSubmit(onSubmit)}>
         <section className="mb-5">
           <TextInput type="email" category="email" register={register} errors={errors} />
 
           <TextInput type="password" category="password" register={register} errors={errors} />
         </section>
 
-        <div className="mb-3">
+        <div className="mb-3 flex">
           <Checkbox
             label="이메일 기억하기"
             value={rememberEmail}

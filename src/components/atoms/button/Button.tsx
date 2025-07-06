@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { cn } from '@/utils/cn';
 
 const sizeClasses = {
-  mini: 'h-6 text-14', // height: 24px
-  small: 'h-[30px] text-14', // height: 30px
-  medium: 'h-9 text-base', // height: 36px
-  large: 'h-10 text-base', // height: 40px
+  mini: 'h-6 text-14 max-h-6', // height: 24px
+  small: 'h-[30px] text-14 max-h-[30px]', // height: 30px
+  medium: 'h-9 text-base max-h-9', // height: 36px
+  large: 'h-10 text-base max-h-10', // height: 40px
 };
 
 const colorClasses = {
@@ -46,7 +46,7 @@ export default function Button({
       <Link
         {...rest}
         className={cn(
-          'btn rounded-full border-none px-4 font-medium shadow-none',
+          'btn min-h-0 rounded-full border-none px-4 font-medium shadow-none',
           sizeClasses[size],
           colorClasses[buttonColor],
           isFullWidth,
@@ -64,7 +64,7 @@ export default function Button({
       type={type}
       form={rest.form}
       className={cn(
-        'btn rounded-full border-none px-4 font-medium shadow-none',
+        'btn min-h-0 rounded-full border-none px-4 font-medium shadow-none',
         sizeClasses[size],
         colorClasses[buttonColor],
         isFullWidth,

@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      data-theme="tablog" // daisyui custom theme - global.css
+      data-theme="tablog"
       className={`${pretendard.variable} ${GyeonggiBatang.variable} ${GyeonggiTitle.variable}`}
       suppressHydrationWarning
     >

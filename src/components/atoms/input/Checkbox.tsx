@@ -15,12 +15,12 @@ interface ICheckboxPros {
 const Checkbox = ({ label, value, onChange }: ICheckboxPros) => {
   return (
     <div className="flex">
-      <label className="fieldset-label inline-flex">
+      <label className="fieldset-label inline-flex gap-1">
         <input
           checked={value}
           onChange={onChange}
           type="checkbox"
-          className="checkbox checkbox-primary checkbox-sm rounded-[4px]"
+          className="checkbox-primary checkbox checkbox-sm rounded-[4px]"
         />
 
         <Text fontSize={14} color="black01">
@@ -88,10 +88,10 @@ const Checkboxes = ({ label, name, content, value, onChange }: ICheckboxesPros) 
       <div
         className={cn(
           contentHeightClass,
-          'bg-grey08 transition-all-3 mt-1.5 overflow-x-hidden overflow-y-auto',
+          'transition-all-3 mt-1.5 overflow-y-auto overflow-x-hidden bg-grey08',
         )}
       >
-        <div className={cn(contentHiddenClass, 'pt-3 pr-5 pb-3 pl-5')}>
+        <div className={cn(contentHiddenClass, 'pb-3 pl-5 pr-5 pt-3')}>
           <Text fontSize={12}>{content}</Text>
         </div>
       </div>

@@ -9,7 +9,7 @@ import { SocialButtons } from './social/SocialButtons';
 const LoginPage = () => {
   return (
     <div className="pt-[88px]">
-      <div className="text-primary01 flex flex-col items-center justify-center gap-1">
+      <div className="flex flex-col items-center justify-center gap-1 text-primary01">
         <p className="font-extraLight leading-none">한 끼의 기록이 일상이 되다</p>
 
         <p className="font-gyeonggi text-[32px] leading-none">식탁일기</p>
@@ -40,7 +40,7 @@ const LoginPage = () => {
       </div>
 
       <div className="text-center">
-        <Text fontSize={14} color="black03" className="border-b-black03 inline border-b">
+        <Text fontSize={14} color="black03" className="inline border-b border-b-black03">
           <Link href="/home">서비스 둘러보기</Link>
         </Text>
       </div>

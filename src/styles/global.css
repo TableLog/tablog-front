@@ -1,94 +1,16 @@
-@import 'tailwindcss';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 @import 'boxicons/css/boxicons.min.css';
 @import 'swiper/css';
 @import 'swiper/css/pagination';
-@plugin 'daisyui';
+
 @font-face {
   font-family: 'Gyeonggi_Title_Medium';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Title_Medium.woff')
     format('woff');
   font-weight: 500;
   font-style: normal;
-}
-
-@plugin "daisyui/theme" {
-  name: 'tablog';
-  default: false;
-  prefersdark: false;
-  color-scheme: 'light';
-
-  --color-base-100: #ffffff;
-  --color-base-200: #6d6d6d;
-  --color-base-300: #808080;
-  --color-base-400: #acacac;
-  --color-base-500: #bababa;
-  --color-base-600: #c6c6c6;
-  --color-base-700: #e8e8e8;
-  --color-base-800: #f5f5f5;
-  --color-base-000: #ffffff;
-  --color-base-content: #0e0e0e;
-  --color-primary: #d66060;
-  --color-primary-content: #ffffff;
-  --color-secondary: #e49898;
-  --color-secondary-content: #ffffff;
-  --color-accent: #d66060;
-  --color-accent-content: #ffffff;
-  --color-neutral: #acacac;
-  --color-neutral-content: #ffffff;
-  --color-info: #c6c6c6;
-  --color-info-content: #ffffff;
-  --color-success: oklch(65% 0.25 140);
-  --color-success-content: #ffffff;
-  --color-warning: #ffc60a;
-  --color-warning-content: #0e0e0e;
-  --color-error: #e73f3f;
-  --color-error-content: #ffffff;
-  -btn-color: #d66060;
-  --depth: 1;
-}
-
-@theme {
-  /* font family */
-  --font-pretendard: var(--font-pretendard), sans-serif;
-  --font-gyeonggi-title: var(--font-gyeonggi-title), sans-serif;
-  --font-gyeonggi-batang: var('--font-gyeonggi-batang'), sans-serif;
-
-  /* color */
-  --color-*: initial;
-  --color-primary01: #d66060;
-  --color-primary02: #e49898;
-  --color-primary03: #e9a9a9;
-  --color-primary04: #edb7b7;
-  --color-primary05: #f2cfcf;
-  --color-white01: #ffffff;
-  --color-black01: #0e0e0e;
-  --color-black02: #0e0e0e;
-  --color-black03: #0e0e0e;
-  --color-grey01: #5d5d5d;
-  --color-grey02: #6d6d6d;
-  --color-grey03: #808080;
-  --color-grey04: #acacac;
-  --color-grey05: #bababa;
-  --color-grey06: #c6c6c6;
-  --color-grey07: #e8e8e8;
-  --color-grey08: #f5f5f5;
-  --color-red01: #e73f3f;
-  --color-yellow01: #ffc60a;
-  --color-green01: #328e6e;
-
-  /* font weight */
-  --font-weight-thin: 100;
-  --font-weight-extraLight: 200;
-  --font-weight-light: 300;
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semiBold: 600;
-  --font-weight-bold: 700;
-  --font-weight-extraBold: 800;
-  --font-weight-black: 900;
-
-  /* box shadow */
-  --shadow-3xl: 0 35px 35px rgba(0, 0, 0, 0.25);
 }
 
 @layer base {
@@ -139,7 +61,7 @@
 }
 
 /* daisy UI 스타일 전역 설정 */
-@layer customDaisyUi {
+@layer components {
   .divider:not(.divider-horizontal)::before,
   .divider:not(.divider-horizontal)::after {
     height: 1px !important;
@@ -170,7 +92,7 @@
 }
 
 .custom-toast {
-  @apply text-grey01 mt-4 min-h-8 w-[calc(100%-40px)] items-start rounded-[10px] p-2.5 text-sm break-keep shadow-md;
+  @apply mt-4 min-h-8 w-[calc(100%-40px)] items-start break-keep rounded-[10px] p-2.5 text-sm text-grey01 shadow-md;
 }
 
 .custom-toast .Toastify__toast-icon {
