@@ -18,7 +18,7 @@ const RecipePage = () => {
   }
 
   return (
-    <div className="relative px-5 pt-4 pb-18">
+    <div className="pb-18 relative px-5 pt-4">
       <Tab>
         <div className="mb-4 grid grid-cols-[1fr_106px] gap-4">
           <Tab.Buttons tabs={['전체 레시피', '내 레시피']} />

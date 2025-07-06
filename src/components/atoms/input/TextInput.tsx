@@ -100,11 +100,15 @@ const TextInput = <T extends FieldValues>({
             'border-l-0',
             'p-0',
             'shadow-none',
+            'flex',
+            'justify-between',
+            'items-center',
           )}
         >
           <input
             {...register(name ?? (category as Path<T>))}
             {...rest}
+            className="w-full"
             onChange={onChangeInput}
             autoComplete="new-password"
             type={showPassword ? 'text' : type}
