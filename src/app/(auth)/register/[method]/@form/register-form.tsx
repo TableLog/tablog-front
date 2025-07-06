@@ -276,8 +276,8 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
           </div>
         }
       >
-        <div className="relative flex w-full flex-col justify-between gap-18 px-5">
-          <div className="overflow-x-hidden overflow-y-auto">
+        <div className="gap-18 relative flex w-full flex-col justify-between px-5">
+          <div className="overflow-y-auto overflow-x-hidden">
             <CheckAll options={TERMS_OPTIONS} values={termValues} setValues={setTermsValues} />
           </div>
         </div>

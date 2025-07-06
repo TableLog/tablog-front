@@ -18,7 +18,7 @@ const Description = ({ recipe }: DescriptionProps) => {
   if (!recipe) return null;
 
   return (
-    <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
+    <div className="flex flex-col items-center gap-4 rounded-[20px] bg-white01/20 px-4 py-6 text-white01 backdrop-blur-2xl">
       <div className="flex items-center gap-1">
         {recipe.isPaid && <BoxIcon name="dollar-circle" size={20} color="yellow01" type="solid" />}
         <p className="text-lg font-medium">{recipe?.title}</p>
@@ -46,7 +46,7 @@ const Description = ({ recipe }: DescriptionProps) => {
         {recipe.recipeCategoryList.map((category, idx) => (
           <span
             key={`category-${idx}`}
-            className="bg-white01/80 text-black01 rounded-full px-2.5 py-1 text-sm"
+            className="rounded-full bg-white01/80 px-2.5 py-1 text-sm text-black01"
           >
             {category}
           </span>

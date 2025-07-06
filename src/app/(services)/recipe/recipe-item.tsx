@@ -44,9 +44,9 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
       className="relative aspect-[16/12] w-full overflow-hidden rounded-[20px]"
     >
       <Image src={recipe.imageUrl} alt={`${recipe.title} 이미지`} fill className="object-cover" />
-      <div className="absolute top-5 right-4 flex flex-col gap-1">
+      <div className="absolute right-4 top-5 flex flex-col gap-1">
         <button
-          className="bg-white01/20 flex h-[30px] w-[30px] items-center justify-center rounded-full"
+          className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
           onClick={handleBookmarkButtonClick}
         >
           <Bookmark isMarked={recipe.isSaved} size={20} />
