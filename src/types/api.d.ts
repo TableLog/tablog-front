@@ -199,6 +199,8 @@ export interface IRecipeListResponse extends PaginationData {
 
 export interface IRecipeDetailResponse extends IRecipe {
   hasPurchased: boolean;
+  isExpertWriter: boolean;
+  writerId: number;
 }
 
 interface IRecipeFood {

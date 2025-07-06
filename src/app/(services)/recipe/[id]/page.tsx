@@ -53,8 +53,7 @@ const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div className="relative h-[calc(100vh-60px)] w-full">
-      {/* // ! authorId 대응 개발 필요 */}
-      <RecipeHeader recipeId={recipeId} authorId={recipe?.user} isMyRecipe={recipe?.isWriter} />
+      <RecipeHeader recipeId={recipeId} authorId={recipe?.writerId} isMyRecipe={recipe?.isWriter} />
       {recipe && (
         <Image
           src={recipe.imageUrl}
