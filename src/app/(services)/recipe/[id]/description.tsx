@@ -4,17 +4,14 @@ import RecipeBookmarkButton from '@/components/atoms/button/RecipeBookmarkButton
 import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
 import ShareButton from '@/components/atoms/button/ShareButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
 import { IRecipeDetailResponse } from '@/types/api';
-import { ECookTime, EPrice, EUserRole } from '@/types/enum';
+import { ECookTime, EPrice } from '@/types/enum';
 
 interface DescriptionProps {
   recipe: IRecipeDetailResponse;
 }
 
 const Description = ({ recipe }: DescriptionProps) => {
-  const { data: userInfo } = useGetUserInfo();
-
   if (!recipe) return null;
 
   return (
@@ -33,7 +30,7 @@ const Description = ({ recipe }: DescriptionProps) => {
         <span>|</span>
         <div className="flex items-center gap-0.5">
           <span>{recipe?.user}</span>
-          {userInfo?.userRole === EUserRole.EXPERT && (
+          {recipe.isExpertWriter && (
             <BoxIcon color="white01" name="badge-check" size={16} type="solid" />
           )}
         </div>
