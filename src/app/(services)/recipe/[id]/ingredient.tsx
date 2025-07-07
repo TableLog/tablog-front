@@ -47,7 +47,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
   }
 
   return (
-    <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
+    <div className="flex flex-col items-center gap-4 rounded-[20px] bg-white01/20 px-4 py-6 text-white01 backdrop-blur-2xl">
       {data?.recipe.recipeFoods.length === 0 ? (
         <></>
       ) : (

@@ -5,6 +5,7 @@ import {
   addBookmarkRecipe,
   addLikeRecipe,
   addRecipe,
+  addRecipeMemo,
   addRecipeReview,
   addRecipeReviewReply,
   cancelBookmarkRecipe,
@@ -17,12 +18,14 @@ import {
   getRecipeDetail,
   getRecipeIngredientList,
   getRecipeLike,
+  getRecipeMemo,
   getRecipeProcessBySequence,
   getRecipeProcessList,
   getRecipeReviews,
   getSortedRecipeList,
   payRecipe,
   updateRecipe,
+  updateRecipeMemo,
 } from '@/apis/recipe.api';
 import {
   RECIPE_BOOKMARK_QUERY_KEY,
@@ -32,6 +35,7 @@ import {
   RECIPE_LIST_BY_FILTER_QUERY_KEY,
   RECIPE_LIST_BY_FOOD_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
+  RECIPE_MEMO_QUERY_KEY,
   RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS,
   RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS,
   RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS,
@@ -45,9 +49,11 @@ import {
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
+  IGetRecipeMemoParams,
   IGetRecipeParams,
   IGetRecipeReviewsParams,
   IGetSortedRecipeOption,
+  IMutateRecipeMemoParams,
   IMutationOptions,
   IRecipeDetailParams,
   IRecipeFilterParams,
@@ -62,8 +68,7 @@ import {
 export function useAddRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (formData: FormData) => addRecipe(formData),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -71,16 +76,14 @@ export function useUpdateRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId, ...formData }: IUpdateRecipeParams & FormData) =>
       updateRecipe(formData, { recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useDeleteRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: IDeleteRecipeParams) => deleteRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -164,16 +167,14 @@ export function useGetRecipeLike(params: IGetRecipeLikeParams) {
 export function useAddLikeRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: IAddLikeRecipeParams) => addLikeRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useCancelLikeRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: ICancelLikeRecipeParams) => cancelLikeRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -189,16 +190,14 @@ export function useGetRecipeBookmark(params: IGetRecipeLikeParams) {
 export function useAddBookmarkRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: IAddBookmarkRecipeParams) => addBookmarkRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useCancelBookmarkRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: ICancelBookmarkRecipeParams) => cancelBookmarkRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -233,8 +232,7 @@ export const useGetRecipeByFood = (keyword: string) => {
 export function usePayRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: PayRecipeParams) => payRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -253,8 +251,7 @@ export const useGetReviews = (params: IGetRecipeReviewsParams) => {
 export function useAddReview(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (params: IAddRecipeReviewParams) => addRecipeReview(params),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -262,5 +259,27 @@ export function useAddReviewReply(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (params: IAddRecipeReviewReplyParams) => addRecipeReviewReply(params),
     ...options,
+  });
+}
+
+// 레시피 메모
+export function useAddRecipeMemo(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IMutateRecipeMemoParams) => addRecipeMemo(params),
+    ...options,
+  });
+}
+
+export function useUpdateRecipeMemo(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IMutateRecipeMemoParams) => updateRecipeMemo(params),
+    ...options,
+  });
+}
+
+export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams) {
+  return useQuery({
+    queryKey: RECIPE_MEMO_QUERY_KEY(recipeId),
+    queryFn: () => getRecipeMemo({ recipeId }),
   });
 }

@@ -27,6 +27,7 @@ import {
   RECIPE_STEP_REQUIRED,
   REPORT_REASON_REQUIRED,
   REVIEW_CONTENT_REQUIRED,
+  REVIEW_MEMO_REQUIRED,
   STEP_DESCRIPTION_REQUIRED,
   STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
@@ -372,4 +373,12 @@ export const zodReviewReplyForm = z.object({
     .string()
     .min(1, { message: REVIEW_CONTENT_REQUIRED })
     .max(300, { message: REVIEW_CONTENT_REQUIRED }),
+});
+
+// NOTE: 레시피 메모
+export const zodMemoForm = z.object({
+  memo: z
+    .string()
+    .min(1, { message: REVIEW_MEMO_REQUIRED })
+    .max(500, { message: REVIEW_MEMO_REQUIRED }),
 });

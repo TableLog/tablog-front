@@ -101,7 +101,7 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
         <Link href="/recipe">
           <BoxIcon name="arrow-back" size={24} color="white" />
         </Link>
-        <div className="text-white01 absolute left-1/2 -translate-x-1/2">
+        <div className="absolute left-1/2 -translate-x-1/2 text-white01">
           <ToggleModeButton
             options={[ERecipeDetailSection.INGREDIENT, ERecipeDetailSection.DESCRIPTION]}
             onChange={(newOption: string) => {

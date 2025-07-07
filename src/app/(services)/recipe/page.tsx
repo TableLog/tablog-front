@@ -25,7 +25,7 @@ const RecipePage = () => {
           <Button href="/recipe/write">레시피 등록</Button>
         </div>
 
-        <div className="mb-5 flex justify-between">
+        <div className="mb-5 flex items-center justify-between">
           <MiniSelectBox
             list={RECIPE_FILTER_OPTIONS}
             value={selectedSortOption}
@@ -37,6 +37,7 @@ const RecipePage = () => {
         <Tab.Panel index={0} className="flex flex-col gap-4">
           <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
         </Tab.Panel>
+
         <Tab.Panel index={1} className="flex flex-col gap-4">
           <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} isMine />
         </Tab.Panel>

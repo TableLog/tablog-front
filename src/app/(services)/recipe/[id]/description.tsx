@@ -7,6 +7,8 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { IRecipeDetailResponse } from '@/types/api';
 import { ECookTime, EPrice } from '@/types/enum';
 
+import MemoButton from './memo-button';
+
 interface DescriptionProps {
   recipe: IRecipeDetailResponse;
 }
@@ -18,7 +20,7 @@ const Description = ({ recipe }: DescriptionProps) => {
     <div className="flex flex-col items-center gap-4 rounded-[20px] bg-white01/20 px-4 py-6 text-white01 backdrop-blur-2xl">
       <div className="flex items-center gap-1">
         {recipe.isPaid && <BoxIcon name="dollar-circle" size={20} color="yellow01" type="solid" />}
-        <p className="text-lg font-medium">{recipe?.title}</p>
+        <p className="font-gyeonggi-batang text-lg">{recipe?.title}</p>
       </div>
       <div className="flex items-center gap-0.5 text-sm">
         <div className="flex items-center">
@@ -55,6 +57,7 @@ const Description = ({ recipe }: DescriptionProps) => {
           <RecipeBookmarkButton recipeId={recipe.id} />
         </div>
         <div className="flex items-center gap-5">
+          <MemoButton recipeId={recipe.id} />
           <ShareButton
             shareInfo={{
               title: `[식탁일기] ${recipe.title}`,

@@ -41,7 +41,7 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
           <div className="flex flex-col items-center gap-2">
             <p>작성된 리뷰가 없습니다</p>
             {/* // ! 작성자일 때 없애기 */}
-            <Link href={REVIEW_WRITE_PAGE_PATH} className="text-grey01 text-sm underline">
+            <Link href={REVIEW_WRITE_PAGE_PATH} className="text-sm text-grey01 underline">
               첫 리뷰 작성하러 가기
             </Link>
           </div>

@@ -30,3 +30,4 @@ export const STEP_TITLE_REQUIRED = '순서 제목을 50자 이내로 입력해�
 export const STEP_DESCRIPTION_REQUIRED = '순서 과정에 대한 설명을 500자 이내로 입력해주세요.';
 export const REPORT_REASON_REQUIRED = '신규 사유를 300자 이내로 입력해주세요.';
 export const REVIEW_CONTENT_REQUIRED = '리뷰를 300자 이내로 입력해주세요.';
+export const REVIEW_MEMO_REQUIRED = '개인 메모를 500자 이내로 읿력해주세요.';

@@ -7,10 +7,13 @@ import {
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
   IGetRecipeLikeResponse,
+  IGetRecipeMemoParams,
   IGetRecipeParams,
   IGetRecipeReviewsParams,
   IGetRecipeReviewsResponse,
   IGetSortedRecipeOption,
+  IMemoResponse,
+  IMutateRecipeMemoParams,
   IRecipeDetailParams,
   IRecipeDetailResponse,
   IRecipeFilterParams,
@@ -264,6 +267,30 @@ export const addRecipeReviewReply = async ({ recipeId, ...data }: IAddRecipeRevi
       `${RECIPE_URL}/${recipeId}/recipe-reply`,
       data,
     );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addRecipeMemo = async ({ recipeId, ...data }: IMutateRecipeMemoParams) => {
+  try {
+    return await instance.post(`${RECIPE_URL}/${recipeId}/memos`, data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateRecipeMemo = async ({ recipeId, ...data }: IMutateRecipeMemoParams) => {
+  try {
+    return await instance.put(`${RECIPE_URL}/${recipeId}/memos`, data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeMemo = async ({ recipeId }: IGetRecipeMemoParams) => {
+  try {
+    return await instance.get<IMemoResponse>(`${RECIPE_URL}/${recipeId}/memos`);
   } catch (error) {
     throw error;
   }

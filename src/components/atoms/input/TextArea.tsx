@@ -12,6 +12,7 @@ interface ITextAreaProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   maxLength: number;
   name?: Path<T>;
+  defaultValue?: string;
 }
 const TextArea = <T extends FieldValues>({
   category,
@@ -19,6 +20,7 @@ const TextArea = <T extends FieldValues>({
   maxLength,
   register,
   name,
+  defaultValue,
 }: ITextAreaProps<T>) => {
   const [currentLength, setCurrentLength] = useState(0);
 
@@ -43,10 +45,11 @@ const TextArea = <T extends FieldValues>({
           onChange={(e) => setCurrentLength(e.target.value.length)}
           className={cn(
             borderClass,
-            'placeholder-grey02 transition-all-3 textarea focus-outline-none focus:border-black01 h-40 w-full resize-none rounded-[10px]',
+            'transition-all-3 focus-outline-none textarea h-40 w-full resize-none whitespace-pre-wrap rounded-[10px] leading-snug placeholder-grey02 focus:border-black01',
           )}
           placeholder={PLACEHOLDER_MAP[category]}
-        ></textarea>
+          defaultValue={defaultValue}
+        />
 
         {errors?.[category]?.message && (
           <div className="validator-hint mt-0 whitespace-pre-line">

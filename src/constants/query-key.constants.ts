@@ -42,6 +42,7 @@ export const RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS = ({
   recipeId,
   ...params
 }: IGetRecipeReviewsParams) => ['recipe-review', recipeId, { ...params }];
+export const RECIPE_MEMO_QUERY_KEY = (recipeId: number) => ['recipe-memo', recipeId];
 
 export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';
 export const FOOD_LIST_QUERY_KEY = 'food-list';

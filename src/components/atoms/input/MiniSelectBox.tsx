@@ -29,7 +29,7 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ className, list, value, onC
     setIsOpen(false);
   };
 
-  const rotateClass = isOpen ? 'rotate-180' : '';
+  const rotateClass = isOpen ? '' : 'rotate-180';
 
   return (
     <div
