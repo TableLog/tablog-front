@@ -20,8 +20,9 @@ import { DELETE_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_MY_OPTIONS, RECIPE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useDeleteRecipe } from '@/hooks/recipe.hooks';
+import { useReport } from '@/hooks/report.hooks';
 import { zodReportForm } from '@/lib/zod/zodValidation';
-import { ERecipeOption } from '@/types/enum';
+import { ERecipeOption, EReportType } from '@/types/enum';
 import { HandleOpenModal, showToast } from '@/utils/functions';
 
 interface RecipeHeaderProps {
@@ -57,11 +58,21 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
     },
   });
 
-  function onSubmit(data: TReportFormValues) {
-    const { reportReason } = data;
+  const { mutate: reportRecipe } = useReport({
+    onSuccess: () => {
+      router.push('/recipe');
+      showToast({ message: '레시피 신고 완료!', type: 'success' });
+    },
+  });
 
-    // ! 신고하기 API 호출
-    console.log(`신고하기!! (사유: ${reportReason})`);
+  function onSubmit(data: TReportFormValues) {
+    if (!authorId) return;
+    reportRecipe({
+      reportedUserId: authorId,
+      reportType: EReportType.RECIPE,
+      targetId: recipeId,
+      ...data,
+    });
   }
 
   function handleOptionClick(type: string) {
@@ -122,7 +133,12 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
           }
         >
           <form onSubmit={handleSubmit(onSubmit)} className="px-5" id="report-form">
-            <TextArea register={register} category="reportReason" errors={errors} maxLength={300} />
+            <TextArea
+              register={register}
+              category="reportContent"
+              errors={errors}
+              maxLength={300}
+            />
           </form>
         </BottomSheet>
       </div>

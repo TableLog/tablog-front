@@ -15,7 +15,7 @@ export const LABEL_MAP = {
   content: '일기',
   recipeDescription: '간단 설명',
   ingredientName: '재료명',
-  reportReason: '신고 사유',
+  reportContent: '신고 사유',
   review: '리뷰',
   reviewReply: '답글',
 } as const;
@@ -38,7 +38,7 @@ export const PLACEHOLDER_MAP = {
     'ex) 오늘의 세끼 식사중 제일 맛있었던 요리!\n기가막힌 레시피 발견!\n오늘 점심/저녁은 이걸 먹었어요!',
   recipeDescription: '요리에 대한 간단한 설명을 입력해주세요. (최대 300글자)',
   ingredientName: '재료 이름을 입력해주세요.',
-  reportReason: '신고 사유를 입력해주세요. (최대 300글자)',
+  reportContent: '신고 사유를 입력해주세요. (최대 300글자)',
   review: '리뷰를 입력해주세요. (최대 300글자)',
   reviewReply: '댓글에 답글을 남겨주세요. (최대 300글자)',
 } as const;

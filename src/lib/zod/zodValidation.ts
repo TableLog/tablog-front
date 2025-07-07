@@ -352,7 +352,7 @@ export const zodSearchRecipeByFood = z.object({
 
 // NOTE: 레시피 상세 - 신고하기
 export const zodReportForm = z.object({
-  reportReason: z
+  reportContent: z
     .string()
     .min(1, { message: REPORT_REASON_REQUIRED })
     .max(300, { message: REPORT_REASON_REQUIRED }),

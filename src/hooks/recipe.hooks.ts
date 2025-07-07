@@ -261,7 +261,6 @@ export function useAddReview(options?: IMutationOptions) {
 export function useAddReviewReply(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (params: IAddRecipeReviewReplyParams) => addRecipeReviewReply(params),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }

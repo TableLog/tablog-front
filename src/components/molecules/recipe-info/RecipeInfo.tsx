@@ -39,7 +39,8 @@ const RecipeInfo = ({
             {price}원 | {time} | {calorie}kcal
           </p>
           <p className="text-xs">
-            <BoxIcon color="primary01" name="bx bxs-star" size={14} /> {star}({comments}) | {author}
+            <BoxIcon color="primary01" name="bx bxs-star" size={14} /> {star.toFixed(1)}({comments})
+            | {author}
           </p>
         </div>
       </div>
