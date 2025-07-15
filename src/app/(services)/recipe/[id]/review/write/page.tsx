@@ -13,6 +13,7 @@ import StarRate from '@/components/molecules/star-rate/StarRate';
 import { RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddReview } from '@/hooks/recipe.hooks';
 import { zodReviewForm } from '@/lib/zod/zodValidation';
+import { showToast } from '@/utils/functions';
 
 const RecipeReviewWritePage = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);
@@ -28,6 +29,9 @@ const RecipeReviewWritePage = ({ params }: { params: Promise<{ id: string }> }) 
   } = useForm<TReviewFormValues>({
     resolver: zodResolver(zodReviewForm),
     mode: 'onChange',
+    defaultValues: {
+      star: 5,
+    },
   });
 
   const { mutate: addReview } = useAddReview({
@@ -36,6 +40,7 @@ const RecipeReviewWritePage = ({ params }: { params: Promise<{ id: string }> }) 
         queryKey: RECIPE_REVIEW_LIST_QUERY_KEY(recipeId),
       });
       router.push(`/recipe/${recipeId}/review`);
+      showToast({ message: '리뷰 등록에 성공했어요', type: 'success' });
     },
   });
 

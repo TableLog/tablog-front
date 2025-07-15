@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
@@ -19,9 +20,11 @@ import { convertDateFormat } from '@/utils/functions';
 
 interface ReviewProps {
   review: IReview;
+  isReply?: boolean;
+  isWriter?: boolean;
 }
 
-const Review = ({ review }: ReviewProps) => {
+const Review = ({ review, isReply, isWriter }: ReviewProps) => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
   const [activePrrId, setActivePrrId] = useState<IReview['id']>(-1);
   const queryClient = useQueryClient();
@@ -33,6 +36,7 @@ const Review = ({ review }: ReviewProps) => {
         queryKey: RECIPE_REVIEW_LIST_QUERY_KEY(review.recipeId),
       });
       router.push(`/recipe/${review.recipeId}/review`);
+      setBottomSheetOpen(false);
     },
   });
 
@@ -50,20 +54,30 @@ const Review = ({ review }: ReviewProps) => {
     addReviewReply({ recipeId: review.recipeId, prrId: activePrrId, ...data });
   }
 
-  const isReply = review.prrId !== 0;
+  const hasReply = !!review.reply;
 
   return (
     <>
-      <div className={cn('flex gap-4', isReply && 'ml-auto w-11/12')}>
-        {/* // ! 프로필 사진 */}
-        <div className="h-[50px] w-[50px]">
-          <div className="bg-grey07 h-full w-full rounded-full"></div>
+      <div className={cn('flex gap-4', isReply && 'ml-auto w-[calc(100%-28px)]')}>
+        <div className="relative h-[50px] w-[50px] overflow-hidden rounded-full">
+          {review.profileImgUrl ? (
+            <Image src={review.profileImgUrl} alt={`${review.user} 프로필`} fill />
+          ) : (
+            <div className="h-full w-full bg-grey08"></div>
+          )}
         </div>
         <div key={review.id} className="flex flex-1 flex-col gap-1.5">
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between">
               <div className="flex gap-2">
-                <div>{review.user}</div>
+                <div className="flex items-center gap-2">
+                  <div className="font-medium">{review.user}</div>
+                  {isReply && (
+                    <div className="flex items-center rounded-sm bg-primary01/10 px-1.5 py-0.5 text-xs text-primary01">
+                      작성자
+                    </div>
+                  )}
+                </div>
                 {!isReply && (
                   <div className="flex items-center gap-1">
                     <BoxIcon name="star" type="solid" color="yellow01" />
@@ -75,12 +89,13 @@ const Review = ({ review }: ReviewProps) => {
                 {convertDateFormat(review.modifiedAt)}
               </Text>
             </div>
-            <div className="line-clamp-3">{review.content}</div>
+            <div className={cn('line-clamp-3', isReply && 'rounded-md bg-grey08 px-4 py-2.5')}>
+              {review.content}
+            </div>
           </div>
-          {/* // ! 작성자일 떄만 */}
-          {!isReply && (
+          {isWriter && !isReply && !hasReply && (
             <button
-              className="text-grey03 self-start pt-1 text-sm font-medium"
+              className="self-start pt-1 text-sm font-medium text-grey03"
               onClick={() => {
                 setBottomSheetOpen(true);
                 setActivePrrId(review.id);

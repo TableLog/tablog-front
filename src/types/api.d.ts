@@ -306,6 +306,7 @@ export interface IGetRecipeReviewsParams {
 
 export interface IGetRecipeReviewsResponse extends PaginationData {
   contents: IReview[];
+  isWriter: boolean;
 }
 
 export interface IReview {
@@ -317,6 +318,8 @@ export interface IReview {
   modifiedAt: Date;
   prrId: number; // 상위 댓글이면 prrId는 0, 하위 댓글은 댓글 id
   isReviewer: boolean;
+  profileImgUrl: string;
+  reply: IReview;
 }
 
 export type IAddRecipeReviewParams = Pick<IReview, 'recipeId' | 'content' | 'star' | 'prrId'>;

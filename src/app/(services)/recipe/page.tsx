@@ -47,11 +47,11 @@ const RecipePage = () => {
             <Checkbox label="유료 레시피만 보기" value={isOnlyPaid} onChange={togglePaidCheckbox} />
           </div>
 
-          <Tab.Panel index={0} className="flex flex-col gap-4">
+          <Tab.Panel index={0} className="mb-[72px] flex flex-col gap-4">
             <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
           </Tab.Panel>
 
-          <Tab.Panel index={1} className="flex flex-col gap-4">
+          <Tab.Panel index={1} className="mb-[72px] flex flex-col gap-4">
             <RecipeList
               isOnlyPaid={isOnlyPaid}
               selectedSortOption={selectedSortOption}

@@ -240,11 +240,14 @@ export function usePayRecipe(options?: IMutationOptions) {
 export const useGetReviews = (params: IGetRecipeReviewsParams) => {
   return useInfiniteQuery({
     queryKey: RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS(params),
-    queryFn: () => getRecipeReviews(params),
+    queryFn: ({ pageParam = 0 }) => getRecipeReviews({ ...params, pageNumber: pageParam }),
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
-    select: (response) => ({ reviews: response.pages.flatMap((page) => page.data.contents) }),
+    select: (response) => ({
+      reviews: response.pages.flatMap((page) => page.data.contents),
+      isWriter: response.pages[0].data.isWriter,
+    }),
   });
 };
 

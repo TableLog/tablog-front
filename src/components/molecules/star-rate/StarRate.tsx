@@ -11,7 +11,7 @@ interface StarRateProps<T extends FieldValues> {
 
 const StarRate = <T extends FieldValues>({ control, name }: StarRateProps<T>) => {
   // 상태 변수로 선택된 별점 값을 저장
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number>(5);
 
   const {
     field: { onChange },
@@ -43,7 +43,7 @@ const StarRate = <T extends FieldValues>({ control, name }: StarRateProps<T>) =>
 
   return (
     <div className="flex items-center gap-4">
-      <div className="rating rating-lg rating-half">
+      <div className="rating rating-half rating-lg">
         {startList.map((star) => {
           const hiddenClass = star.hidden ? 'rating-hidden' : 'mask mask-star-2 bg-yellow01';
           const halfClass = star.left ? 'mask-half-1' : 'mask-half-2';

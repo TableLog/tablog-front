@@ -30,23 +30,30 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div className="relative px-5 py-4">
       <PageHeader className="mb-4" title="리뷰" back backUrl={`/recipe/${recipeId}`}>
-        {/* // ! 작성자일 때 없애기 */}
-        <Button href={REVIEW_WRITE_PAGE_PATH} size="small">
-          리뷰 작성
-        </Button>
+        {!data?.isWriter && (
+          <Button href={REVIEW_WRITE_PAGE_PATH} size="small">
+            리뷰 작성
+          </Button>
+        )}
       </PageHeader>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         {data?.reviews.length === 0 ? (
           <div className="flex flex-col items-center gap-2">
             <p>작성된 리뷰가 없습니다</p>
-            {/* // ! 작성자일 때 없애기 */}
-            <Link href={REVIEW_WRITE_PAGE_PATH} className="text-sm text-grey01 underline">
-              첫 리뷰 작성하러 가기
-            </Link>
+            {!data.isWriter && (
+              <Link href={REVIEW_WRITE_PAGE_PATH} className="text-sm text-grey01 underline">
+                첫 리뷰 작성하러 가기
+              </Link>
+            )}
           </div>
         ) : (
-          data?.reviews.map((review) => <Review key={review.id} review={review} />)
+          data?.reviews.map((review) => (
+            <div key={review.id} className="flex flex-col gap-6">
+              <Review review={review} isWriter={data.isWriter} />
+              {review.reply && <Review review={review.reply} isReply isWriter={data.isWriter} />}
+            </div>
+          ))
         )}
 
         {isFetching && (
