@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { z } from 'zod';
 
 import Button from '@/components/atoms/button/Button';
@@ -19,13 +20,13 @@ interface MemoButtonProps {
 const MemoButton = ({ recipeId }: MemoButtonProps) => {
   const queryClient = useQueryClient();
   const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
-  const { data: recipeMemo, isPending, isError } = useGetRecipeMemo({ recipeId });
+  const { data: recipeMemo, isPending, isError, error } = useGetRecipeMemo({ recipeId });
   const { mutate: addMemo } = useAddRecipeMemo({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RECIPE_MEMO_QUERY_KEY(recipeId) });
       setBottomSheetOpen(false);
     },
-    onError: () => showToast({ message: '레시피 메모 수정 중 오류가 발생했어요', type: 'error' }),
+    onError: () => showToast({ message: '레시피 메모 등록 중 오류가 발생했어요', type: 'error' }),
   });
   const { mutate: updateMemo } = useUpdateRecipeMemo({
     onSuccess: () => {
@@ -48,9 +49,9 @@ const MemoButton = ({ recipeId }: MemoButtonProps) => {
     },
   });
 
-  if (isPending || isError) return <></>;
+  const isMemoEmpty = isAxiosError(error) && error.status === 404;
 
-  const memoExist = !!recipeMemo.data;
+  if (isPending || (isError && !isMemoEmpty)) return <></>;
 
   function handleButtonClick() {
     setBottomSheetOpen(true);
@@ -59,14 +60,14 @@ const MemoButton = ({ recipeId }: MemoButtonProps) => {
   function onSubmit(data: TMemoFormValues) {
     const isMemoUpdated = recipeMemo?.data.memo !== data.memo;
     if (!isMemoUpdated) return setBottomSheetOpen(false);
-    if (memoExist) updateMemo({ recipeId, ...data });
-    else addMemo({ recipeId, ...data });
+    if (isMemoEmpty) addMemo({ recipeId, ...data });
+    else updateMemo({ recipeId, ...data });
   }
 
   return (
     <>
       <button className="flex items-center" onClick={handleButtonClick}>
-        <BoxIcon name="note" size={24} type={memoExist ? 'solid' : 'regular'} />
+        <BoxIcon name="note" size={24} type={isMemoEmpty ? 'regular' : 'solid'} />
       </button>
 
       <BottomSheet
@@ -90,7 +91,7 @@ const MemoButton = ({ recipeId }: MemoButtonProps) => {
             category="memo"
             errors={errors}
             maxLength={300}
-            defaultValue={recipeMemo.data.memo}
+            defaultValue={isMemoEmpty ? '' : recipeMemo?.data.memo}
           />
         </form>
       </BottomSheet>
