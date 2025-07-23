@@ -144,7 +144,7 @@ const IngredientForm = () => {
               }}
             />
             {errors?.foodId && (
-              <div className="validator-hint mt-0 ml-4 whitespace-pre-line">
+              <div className="validator-hint ml-4 mt-0 whitespace-pre-line">
                 <Text color="red01">{errors['foodId'].message}</Text>
               </div>
             )}

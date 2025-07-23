@@ -9,14 +9,14 @@ import Tab from '@/components/atoms/tab/Tab';
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddRecipe } from '@/hooks/recipe.hooks';
-import { zodRecipeForm } from '@/lib/zod/zodValidation';
+import { zodAddRecipeForm } from '@/lib/zod/zodValidation';
 import { showToast } from '@/utils/functions';
 
 import InfoForm from './info-form';
 import IngredientForm from './ingredient-form';
 import RecipeForm from './recipe-form';
 
-export type TRecipeFormValues = z.infer<typeof zodRecipeForm>;
+export type TRecipeFormValues = z.infer<typeof zodAddRecipeForm>;
 
 const RecipeWritePage = () => {
   const router = useRouter();
@@ -33,7 +33,7 @@ const RecipeWritePage = () => {
   });
 
   const methods = useForm<TRecipeFormValues>({
-    resolver: zodResolver(zodRecipeForm),
+    resolver: zodResolver(zodAddRecipeForm),
     mode: 'onChange',
     defaultValues: {
       recipeCreateRequestDto: {

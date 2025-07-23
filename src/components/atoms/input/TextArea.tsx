@@ -34,7 +34,7 @@ const TextArea = <T extends FieldValues>({
             {LABEL_MAP[category]}
           </Text>
 
-          <Text fontWeight="regular">
+          <Text fontWeight="regular" fontSize={12}>
             {currentLength} / {maxLength}
           </Text>
         </legend>

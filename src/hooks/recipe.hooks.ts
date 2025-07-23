@@ -74,7 +74,7 @@ export function useAddRecipe(options?: IMutationOptions) {
 
 export function useUpdateRecipe(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: ({ recipeId, ...formData }: IUpdateRecipeParams & FormData) =>
+    mutationFn: ({ recipeId, formData }: IUpdateRecipeParams & { formData: FormData }) =>
       updateRecipe(formData, { recipeId }),
     ...options,
   });
@@ -105,16 +105,20 @@ export const useGetSortedRecipe = (
   });
 };
 
-export const useGetRecipeDetail = (params: IRecipeDetailParams) => {
+export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: { enabled: boolean }) => {
   const { recipeId } = params;
   return useQuery({
     queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId),
     queryFn: () => getRecipeDetail(params),
+    ...options,
   });
 };
 
 // 레시피 재료
-export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
+export const useGetRecipeIngredientList = (
+  params: IRecipeIngredientParams,
+  options?: { enabled: boolean },
+) => {
   return useInfiniteQuery({
     queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeIngredientList(params),
@@ -129,6 +133,7 @@ export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
         recipeFoods: response.pages.flatMap((page) => page.data.recipeFoods),
       },
     }),
+    ...options,
   });
 };
 

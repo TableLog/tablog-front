@@ -87,7 +87,7 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
         setBottomSheetOpen(true);
         break;
       case ERecipeOption.EDIT:
-        // ! 수정하기
+        router.push(`/recipe/${recipeId}/edit`);
         break;
       case ERecipeOption.DELETE:
         HandleOpenModal(DELETE_RECIPE_MODAL);

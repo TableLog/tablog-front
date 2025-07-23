@@ -316,6 +316,15 @@ export const zodAddLog = z.object({
 });
 
 // NOTE: 레시피 등록
+const zodRecipeInfoForm = z.object({
+  title: z.string().trim().nonempty({ message: RECIPE_NAME_REQUIRED }),
+  intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
+  recipeCategoryList: z.array(z.string()).min(1, RECIPE_CATEGORY_REQUIRED),
+  price: z.string(),
+  cookingTime: z.string(),
+  isPaid: z.boolean(),
+});
+
 const zodRecipeStepInfo = z.object({
   rpTitle: z
     .string({ message: STEP_TITLE_REQUIRED })
@@ -331,20 +340,20 @@ export const zodIngredientInfo = z.object({
   foodId: z.number().min(1, { message: INGREDIENT_NAME_REQUIRED }),
 });
 
-export const zodRecipeForm = z.object({
-  recipeCreateRequestDto: z.object({
-    title: z.string().trim().nonempty({ message: RECIPE_NAME_REQUIRED }),
-    intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
-    recipeCategoryList: z.array(z.string()).min(1, RECIPE_CATEGORY_REQUIRED),
-    price: z.string(),
-    cookingTime: z.string(),
-    isPaid: z.boolean(),
-  }),
+export const zodAddRecipeForm = z.object({
+  recipeCreateRequestDto: zodRecipeInfoForm,
   recipeImage: z
     .array(typeof window !== 'undefined' ? z.instanceof(File) : z.any())
     .length(1, RECIPE_IMAGE_REQUIRED),
   recipeFoodCreateRequestDto: z.array(zodIngredientInfo).min(1, RECIPE_FOOD_REQUIRED),
   dtos: z.array(zodRecipeStepInfo).min(1, RECIPE_STEP_REQUIRED),
+});
+
+export const zodEditRecipeForm = z.object({
+  recipeCreateRequestDto: zodRecipeInfoForm,
+  recipeImage: z
+    .array(typeof window !== 'undefined' ? z.instanceof(File).or(z.string()) : z.any())
+    .length(1, RECIPE_IMAGE_REQUIRED),
 });
 
 export const zodSearchRecipeByFood = z.object({
