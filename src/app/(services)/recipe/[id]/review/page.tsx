@@ -1,13 +1,68 @@
-import { use } from 'react';
+'use client';
+import { use, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Link from 'next/link';
 
+import Button from '@/components/atoms/button/Button';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
+import { useGetReviews } from '@/hooks/recipe.hooks';
+
+import Review from './review';
 
 const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id: recipeId } = use(params);
+  const recipeId = parseInt(use(params).id);
+  const { ref, inView } = useInView();
+
+  const { data, hasNextPage, fetchNextPage, isFetching } = useGetReviews({
+    recipeId,
+    pageNumber: 0,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  const REVIEW_WRITE_PAGE_PATH = `/recipe/${recipeId}/review/write`;
 
   return (
     <div className="relative px-5 py-4">
-      <PageHeader title="리뷰" back backUrl={`/recipe/${recipeId}`} />
+      <PageHeader className="mb-4" title="리뷰" back backUrl={`/recipe/${recipeId}`}>
+        {!data?.isWriter && (
+          <Button href={REVIEW_WRITE_PAGE_PATH} size="small">
+            리뷰 작성
+          </Button>
+        )}
+      </PageHeader>
+
+      <div className="flex flex-col gap-8">
+        {data?.reviews.length === 0 ? (
+          <div className="flex flex-col items-center gap-2">
+            <p>작성된 리뷰가 없습니다</p>
+            {!data.isWriter && (
+              <Link href={REVIEW_WRITE_PAGE_PATH} className="text-sm text-grey01 underline">
+                첫 리뷰 작성하러 가기
+              </Link>
+            )}
+          </div>
+        ) : (
+          data?.reviews.map((review) => (
+            <div key={review.id} className="flex flex-col gap-6">
+              <Review review={review} isWriter={data.isWriter} />
+              {review.reply && <Review review={review.reply} isReply isWriter={data.isWriter} />}
+            </div>
+          ))
+        )}
+
+        {isFetching && (
+          <div className="flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
+        <div ref={ref} />
+      </div>
     </div>
   );
 };

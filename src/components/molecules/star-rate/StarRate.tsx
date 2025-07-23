@@ -1,16 +1,30 @@
 import React, { useState } from 'react';
+import { Control, FieldValues, Path, useController } from 'react-hook-form';
 
 import { Text } from '@/components/atoms/text/Text';
 import { cn } from '@/utils/cn';
 
-const StarRate = () => {
+interface StarRateProps<T extends FieldValues> {
+  name: Path<T>;
+  control: Control<T>;
+}
+
+const StarRate = <T extends FieldValues>({ control, name }: StarRateProps<T>) => {
   // 상태 변수로 선택된 별점 값을 저장
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number>(5);
+
+  const {
+    field: { onChange },
+  } = useController({
+    name,
+    control,
+  });
 
   // 별점을 선택했을 때 호출되는 함수
   const onChangeRating = (event: React.ChangeEvent<HTMLInputElement>) => {
     // 선택된 별점 값을 업데이트
     setRating(Number(event.target.value));
+    onChange(Number(event.target.value));
   };
 
   const startList = [
@@ -29,7 +43,7 @@ const StarRate = () => {
 
   return (
     <div className="flex items-center gap-4">
-      <div className="rating rating-lg rating-half">
+      <div className="rating rating-half rating-lg">
         {startList.map((star) => {
           const hiddenClass = star.hidden ? 'rating-hidden' : 'mask mask-star-2 bg-yellow01';
           const halfClass = star.left ? 'mask-half-1' : 'mask-half-2';

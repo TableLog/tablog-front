@@ -1,5 +1,4 @@
 'use client';
-import React, { useState } from 'react';
 import { Control, FieldValues, Path, useController } from 'react-hook-form';
 
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
@@ -26,17 +25,18 @@ const LEGEND = {
 const Range = <T extends FieldValues>({ type, name, control }: IRangeProps<T>) => {
   const isPrice = type === 'price';
   const options = OPTIONS[type];
-  const [value, setValue] = useState(OPTIONS[type][0].value);
 
   const {
-    field: { onChange },
+    field: { value: optionName, onChange },
   } = useController({
     name,
     control,
   });
 
+  const value = OPTIONS[type].find((option) => option.name === optionName)?.value;
+
   const handleClickSetValue = (value: string) => {
-    setValue(value);
+    // setValue(value);
     onChange(options.find((option) => option.value === value)?.name);
   };
 
@@ -59,7 +59,7 @@ const Range = <T extends FieldValues>({ type, name, control }: IRangeProps<T>) =
           onChange={(e) => handleClickSetValue(e.target.value)}
         />
 
-        <ul className="mt-2 ml-[-20px] flex w-[calc(100%+40px)] text-xs">
+        <ul className="ml-[-20px] mt-2 flex w-[calc(100%+40px)] text-xs">
           {options.map((option) => {
             return (
               <li

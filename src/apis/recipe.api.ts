@@ -1,12 +1,19 @@
 import { RECIPE_URL, USER_URL } from '@/constants/endpoint.constants';
 import {
   IAddLikeRecipeParams,
+  IAddRecipeReviewParams,
+  IAddRecipeReviewReplyParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
   IGetRecipeLikeResponse,
+  IGetRecipeMemoParams,
   IGetRecipeParams,
+  IGetRecipeReviewsParams,
+  IGetRecipeReviewsResponse,
   IGetSortedRecipeOption,
+  IMemoResponse,
+  IMutateRecipeMemoParams,
   IRecipeDetailParams,
   IRecipeDetailResponse,
   IRecipeFilterParams,
@@ -17,6 +24,7 @@ import {
   IRecipeProcessesResponse,
   IRecipeProcessListParams,
   IRecipeProcessResponse,
+  PayRecipeParams,
 } from '@/types/api';
 import instance from '@/utils/axios';
 
@@ -216,6 +224,73 @@ export const getRecipeByFood = async ({
         pageNumber,
       },
     });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const payRecipe = async ({ recipeId }: PayRecipeParams) => {
+  try {
+    return await instance.post(`${RECIPE_URL}/${recipeId}/payments`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeReviews = async ({ recipeId, ...params }: IGetRecipeReviewsParams) => {
+  try {
+    return await instance.get<IGetRecipeReviewsResponse>(
+      `${RECIPE_URL}/${recipeId}/recipe-reviews`,
+      {
+        params,
+      },
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addRecipeReview = async ({ recipeId, ...data }: IAddRecipeReviewParams) => {
+  try {
+    return await instance.post<IGetRecipeReviewsResponse>(
+      `${RECIPE_URL}/${recipeId}/recipe-reviews`,
+      data,
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addRecipeReviewReply = async ({ recipeId, ...data }: IAddRecipeReviewReplyParams) => {
+  try {
+    return await instance.post<IGetRecipeReviewsResponse>(
+      `${RECIPE_URL}/${recipeId}/recipe-reply`,
+      data,
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addRecipeMemo = async ({ recipeId, ...data }: IMutateRecipeMemoParams) => {
+  try {
+    return await instance.post(`${RECIPE_URL}/${recipeId}/memos`, data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateRecipeMemo = async ({ recipeId, ...data }: IMutateRecipeMemoParams) => {
+  try {
+    return await instance.put(`${RECIPE_URL}/${recipeId}/memos`, data);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getRecipeMemo = async ({ recipeId }: IGetRecipeMemoParams) => {
+  try {
+    return await instance.get<IMemoResponse>(`${RECIPE_URL}/${recipeId}/memos`);
   } catch (error) {
     throw error;
   }

@@ -26,3 +26,9 @@ export enum ERecipeOption {
   EDIT = '수정하기',
   DELETE = '삭제하기',
 }
+
+export enum EReportType {
+  BOARD = 'R_BOARD',
+  RECIPE = 'R_RECIPE',
+  USER = 'R_USER',
+}

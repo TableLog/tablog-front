@@ -1,18 +1,23 @@
-import React from 'react';
+import { MouseEvent } from 'react';
 
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
 interface IMoreOptionsProps {
   options: Array<{ id: number; title: string; alert?: boolean }>;
-  buttonEvent: (type: string) => void;
+  buttonEvent: (type: string, e: MouseEvent<HTMLButtonElement>) => void;
   iconColor?: string;
 }
 
 const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => {
   return (
     <div>
-      <div className="dropdown dropdown-end">
+      <div
+        className="dropdown dropdown-end"
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+      >
         <button tabIndex={0}>
           <BoxIcon name="dots-vertical-rounded" size={24} color={iconColor} />
         </button>
@@ -20,20 +25,19 @@ const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => 
         <ul tabIndex={0} className="dropdown-content bg-base-100 menu rounded-box z-1 shadow-sm">
           {options.map((option) => {
             return (
-              <li
-                key={option.id}
-                onClick={() => {
-                  if (buttonEvent) {
-                    buttonEvent(option.title);
-                  }
-                }}
-              >
-                <Text
-                  className="flex justify-center whitespace-nowrap"
-                  color={option.alert ? 'red01' : 'black01'}
+              <li key={option.id}>
+                <button
+                  onClick={(e) => {
+                    buttonEvent?.(option.title, e);
+                  }}
                 >
-                  {option.title}
-                </Text>
+                  <Text
+                    className="flex justify-center whitespace-nowrap"
+                    color={option.alert ? 'red01' : 'black01'}
+                  >
+                    {option.title}
+                  </Text>
+                </button>
               </li>
             );
           })}

@@ -15,7 +15,7 @@ interface ICheckboxPros {
 const Checkbox = ({ label, value, onChange }: ICheckboxPros) => {
   return (
     <div className="flex">
-      <label className="fieldset-label inline-flex gap-1">
+      <label className="fieldset-label inline-flex gap-1.5">
         <input
           checked={value}
           onChange={onChange}

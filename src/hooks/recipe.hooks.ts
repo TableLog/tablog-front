@@ -1,9 +1,13 @@
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
+// 레시피 구매
 import {
   addBookmarkRecipe,
   addLikeRecipe,
   addRecipe,
+  addRecipeMemo,
+  addRecipeReview,
+  addRecipeReviewReply,
   cancelBookmarkRecipe,
   cancelLikeRecipe,
   deleteRecipe,
@@ -14,31 +18,42 @@ import {
   getRecipeDetail,
   getRecipeIngredientList,
   getRecipeLike,
+  getRecipeMemo,
   getRecipeProcessBySequence,
   getRecipeProcessList,
+  getRecipeReviews,
   getSortedRecipeList,
+  payRecipe,
   updateRecipe,
+  updateRecipeMemo,
 } from '@/apis/recipe.api';
 import {
   RECIPE_BOOKMARK_QUERY_KEY,
   RECIPE_DETAIL_QUERY_KEY,
-  RECIPE_INGREDIENT_LIST_QUERY_KEY,
+  RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS,
   RECIPE_LIKE_QUERY_KEY,
   RECIPE_LIST_BY_FILTER_QUERY_KEY,
   RECIPE_LIST_BY_FOOD_QUERY_KEY,
   RECIPE_LIST_OPTIONS_QUERY_KEY,
-  RECIPE_PROCESS_LIST_QUERY_KEY,
-  RECIPE_PROCESS_QUERY_KEY,
+  RECIPE_MEMO_QUERY_KEY,
+  RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS,
+  RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS,
+  RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS,
 } from '@/constants/query-key.constants';
 import {
   IAddBookmarkRecipeParams,
   IAddLikeRecipeParams,
+  IAddRecipeReviewParams,
+  IAddRecipeReviewReplyParams,
   ICancelBookmarkRecipeParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
   IGetRecipeLikeParams,
+  IGetRecipeMemoParams,
   IGetRecipeParams,
+  IGetRecipeReviewsParams,
   IGetSortedRecipeOption,
+  IMutateRecipeMemoParams,
   IMutationOptions,
   IRecipeDetailParams,
   IRecipeFilterParams,
@@ -46,31 +61,29 @@ import {
   IRecipeProcessBySequenceParams,
   IRecipeProcessListParams,
   IUpdateRecipeParams,
+  PayRecipeParams,
 } from '@/types/api';
 
 // 레시피 CRUD
 export function useAddRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (formData: FormData) => addRecipe(formData),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useUpdateRecipe(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: ({ recipeId, ...formData }: IUpdateRecipeParams & FormData) =>
+    mutationFn: ({ recipeId, formData }: IUpdateRecipeParams & { formData: FormData }) =>
       updateRecipe(formData, { recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useDeleteRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: IDeleteRecipeParams) => deleteRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -92,18 +105,22 @@ export const useGetSortedRecipe = (
   });
 };
 
-export const useGetRecipeDetail = (params: IRecipeDetailParams) => {
+export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: { enabled: boolean }) => {
   const { recipeId } = params;
   return useQuery({
     queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId),
     queryFn: () => getRecipeDetail(params),
+    ...options,
   });
 };
 
 // 레시피 재료
-export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
+export const useGetRecipeIngredientList = (
+  params: IRecipeIngredientParams,
+  options?: { enabled: boolean },
+) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY(params),
+    queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeIngredientList(params),
     initialPageParam: params.pageNumber,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -116,13 +133,14 @@ export const useGetRecipeIngredientList = (params: IRecipeIngredientParams) => {
         recipeFoods: response.pages.flatMap((page) => page.data.recipeFoods),
       },
     }),
+    ...options,
   });
 };
 
 // 레시피 조리 과정
 export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_PROCESS_LIST_QUERY_KEY(params),
+    queryKey: RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessList(params),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -137,7 +155,7 @@ export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
 
 export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequenceParams) => {
   return useQuery({
-    queryKey: RECIPE_PROCESS_QUERY_KEY(params),
+    queryKey: RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessBySequence(params),
   });
 };
@@ -154,16 +172,14 @@ export function useGetRecipeLike(params: IGetRecipeLikeParams) {
 export function useAddLikeRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: IAddLikeRecipeParams) => addLikeRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useCancelLikeRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: ICancelLikeRecipeParams) => cancelLikeRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -179,16 +195,14 @@ export function useGetRecipeBookmark(params: IGetRecipeLikeParams) {
 export function useAddBookmarkRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: IAddBookmarkRecipeParams) => addBookmarkRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
 export function useCancelBookmarkRecipe(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ recipeId }: ICancelBookmarkRecipeParams) => cancelBookmarkRecipe({ recipeId }),
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    ...options,
   });
 }
 
@@ -219,3 +233,61 @@ export const useGetRecipeByFood = (keyword: string) => {
     }),
   });
 };
+
+export function usePayRecipe(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({ recipeId }: PayRecipeParams) => payRecipe({ recipeId }),
+    ...options,
+  });
+}
+
+// 레시피 리뷰
+export const useGetReviews = (params: IGetRecipeReviewsParams) => {
+  return useInfiniteQuery({
+    queryKey: RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS(params),
+    queryFn: ({ pageParam = 0 }) => getRecipeReviews({ ...params, pageNumber: pageParam }),
+    initialPageParam: params.pageNumber,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({
+      reviews: response.pages.flatMap((page) => page.data.contents),
+      isWriter: response.pages[0].data.isWriter,
+    }),
+  });
+};
+
+export function useAddReview(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IAddRecipeReviewParams) => addRecipeReview(params),
+    ...options,
+  });
+}
+
+export function useAddReviewReply(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IAddRecipeReviewReplyParams) => addRecipeReviewReply(params),
+    ...options,
+  });
+}
+
+// 레시피 메모
+export function useAddRecipeMemo(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IMutateRecipeMemoParams) => addRecipeMemo(params),
+    ...options,
+  });
+}
+
+export function useUpdateRecipeMemo(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: (params: IMutateRecipeMemoParams) => updateRecipeMemo(params),
+    ...options,
+  });
+}
+
+export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams) {
+  return useQuery({
+    queryKey: RECIPE_MEMO_QUERY_KEY(recipeId),
+    queryFn: () => getRecipeMemo({ recipeId }),
+  });
+}

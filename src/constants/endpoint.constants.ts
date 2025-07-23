@@ -25,3 +25,6 @@ export const USER_URL = '/api/v1/users';
 
 // shopping
 export const SHOPPING_URL = '/api/v1/shopping-list';
+
+// report
+export const REPORT_URL = '/api/v1/reports';
