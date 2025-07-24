@@ -60,7 +60,7 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
   function handleOptionClick(type: string) {
     switch (type) {
       case ERecipeOption.EDIT:
-        // ! 수정하기
+        router.push(`/recipe/${recipe.id}/edit`);
         break;
       case ERecipeOption.DELETE:
         HandleOpenModal(DELETE_RECIPE_MODAL);
@@ -77,7 +77,7 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
       >
         <Image src={recipe.imageUrl} alt={`${recipe.title} 이미지`} fill className="object-cover" />
 
-        <div className="absolute right-4 top-5 flex flex-col gap-1">
+        <div className="absolute right-4 top-5 flex flex-col items-center gap-1">
           {recipe.isWriter ? (
             <MoreOptions
               options={RECIPE_MY_OPTIONS}
@@ -85,17 +85,15 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
               iconColor="white"
             />
           ) : (
-            <>
-              <button
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
-                onClick={handleBookmarkButtonClick}
-              >
-                <Bookmark isMarked={recipe.isSaved} size={20} />
-              </button>
-              {recipe.isPaid && (
-                <BoxIcon name="dollar-circle" size={30} color="yellow01" type="solid" />
-              )}
-            </>
+            <button
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
+              onClick={handleBookmarkButtonClick}
+            >
+              <Bookmark isMarked={recipe.isSaved} size={20} />
+            </button>
+          )}
+          {recipe.isPaid && (
+            <BoxIcon name="dollar-circle" size={30} color="yellow01" type="solid" />
           )}
         </div>
 

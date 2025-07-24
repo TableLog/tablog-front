@@ -15,7 +15,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
-import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
 import { useGetRecipeDetail, useUpdateRecipe } from '@/hooks/recipe.hooks';
 import { zodEditRecipeForm } from '@/lib/zod/zodValidation';
@@ -33,12 +33,10 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
   const queryClient = useQueryClient();
 
   const { mutate: updateRecipe } = useUpdateRecipe({
-    onSuccess: (res) => {
-      if (res.status === 201) {
-        router.push(`/recipe/${recipeId}`);
-        queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
-        showToast({ message: '레시피 수정 완료!', type: 'success' });
-      }
+    onSuccess: () => {
+      router.push(`/recipe/${recipeId}`);
+      queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
+      showToast({ message: '레시피 수정 완료!', type: 'success' });
     },
   });
 
@@ -90,10 +88,13 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
     if (recipeImage[0]) formData.append(`multipartFile`, recipeImage[0]);
     formData.append(
       'controllerRequestDto',
-      JSON.stringify({ ...recipeCreateRequestDto, recipePoint: 0 }),
+      JSON.stringify({
+        ...recipeCreateRequestDto,
+        imageUrl: recipe?.data.imageUrl,
+        recipePoint: 0,
+      }),
     );
 
-    console.log(recipeImage, recipeCreateRequestDto);
     updateRecipe({ recipeId, formData });
   }
 

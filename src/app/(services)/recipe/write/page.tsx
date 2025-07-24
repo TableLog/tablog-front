@@ -23,12 +23,10 @@ const RecipeWritePage = () => {
   const queryClient = useQueryClient();
 
   const { mutate: addRecipe } = useAddRecipe({
-    onSuccess: (res) => {
-      if (res.status === 201) {
-        router.push('/recipe');
-        queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
-        showToast({ message: '레시피 등록 완료!', type: 'success' });
-      }
+    onSuccess: () => {
+      router.push('/recipe');
+      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
+      showToast({ message: '레시피 등록 완료!', type: 'success' });
     },
   });
 
