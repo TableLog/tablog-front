@@ -1,4 +1,4 @@
-import { ECookTime, EPrice } from './enum';
+import { ECookTime, EPrice, EReportType } from './enum';
 
 // NOTE: error type
 export type APIErrorResponse = {
@@ -199,6 +199,8 @@ export interface IRecipeListResponse extends PaginationData {
 
 export interface IRecipeDetailResponse extends IRecipe {
   hasPurchased: boolean;
+  isExpertWriter: boolean;
+  writerId: number;
 }
 
 interface IRecipeFood {
@@ -289,4 +291,59 @@ export interface AddShoppingListPayload {
 
 export interface RemoveShoppingListParams {
   shoppingListId: number;
+}
+
+// payment
+export interface PayRecipeParams {
+  recipeId: number;
+}
+
+// review
+export interface IGetRecipeReviewsParams {
+  recipeId: number;
+  pageNumber: number;
+}
+
+export interface IGetRecipeReviewsResponse extends PaginationData {
+  contents: IReview[];
+  isWriter: boolean;
+}
+
+export interface IReview {
+  id: number;
+  content: string;
+  star: number;
+  recipeId: number;
+  user: string;
+  modifiedAt: Date;
+  prrId: number; // 상위 댓글이면 prrId는 0, 하위 댓글은 댓글 id
+  isReviewer: boolean;
+  profileImgUrl: string;
+  reply: IReview;
+}
+
+export type IAddRecipeReviewParams = Pick<IReview, 'recipeId' | 'content' | 'star' | 'prrId'>;
+export type IAddRecipeReviewReplyParams = Pick<IReview, 'recipeId' | 'content' | 'prrId'>;
+
+export interface IReportParams {
+  reportedUserId: number; // 신고된 유저의 id 값
+  reportContent: string; // 신고 내용
+  reportType: EReportType; // 신고 대상이 유저, 보드, 레시피인지 구분
+  targetId: number; // 신고 대상의 고유 id 값 (신고 대상이 보드인 경우, 보드의 고유 id값)
+}
+
+export interface IMutateRecipeMemoParams {
+  recipeId: IMemoResponse['recipeId'];
+  memo: IMemoResponse['memo'];
+}
+
+export interface IGetRecipeMemoParams {
+  recipeId: IMemoResponse['recipeId'];
+}
+
+export interface IMemoResponse {
+  id: number;
+  memo: string;
+  recipeId: number;
+  userId: number;
 }

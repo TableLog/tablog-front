@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { SERVING_OPTIONS } from '@/constants/options.constants';
+import { RECIPE_INGREDIENT_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetRecipeIngredientList } from '@/hooks/recipe.hooks';
 import { useAddShoppingList, useRemoveShoppingList } from '@/hooks/shopping.hooks';
 import { AddShoppingListPayload } from '@/types/api';
@@ -15,11 +17,18 @@ interface IngredientProps {
 
 const Ingredient = ({ recipeId }: IngredientProps) => {
   const { ref, inView } = useInView();
+  const queryClient = useQueryClient();
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetRecipeIngredientList({
     recipeId,
     pageNumber: 0,
   });
-  const { mutate: addShoppingList } = useAddShoppingList();
+  const { mutate: addShoppingList } = useAddShoppingList({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [RECIPE_INGREDIENT_QUERY_KEY],
+      });
+    },
+  });
   const { mutate: removeShoppingList } = useRemoveShoppingList({});
 
   const [selectedServingOption, setSelectedServingOption] = useState(SERVING_OPTIONS[0]);
@@ -38,7 +47,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
   }
 
   return (
-    <div className="bg-white01/20 text-white01 flex flex-col items-center gap-4 rounded-[20px] px-4 py-6 backdrop-blur-2xl">
+    <div className="flex flex-col items-center gap-4 rounded-[20px] bg-white01/20 px-4 py-6 text-white01 backdrop-blur-2xl">
       {data?.recipe.recipeFoods.length === 0 ? (
         <></>
       ) : (
@@ -62,7 +71,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
                   onClick={() =>
                     handleCartButtonClick(
                       {
-                        foodId: food.id,
+                        foodId: food.foodId,
                         amount: food.amount,
                         foodUnit: food.recipeFoodUnit,
                       },

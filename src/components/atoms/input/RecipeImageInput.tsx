@@ -41,7 +41,9 @@ const RecipeImageInput = <T extends FieldValues>({
   defaultImages,
   ...props
 }: IRecipeImageInputProps<T>) => {
-  const [imageList, setImageList] = useState<IImageList[]>([]);
+  const [imageList, setImageList] = useState<IImageList[]>(
+    defaultImages?.map((src) => ({ id: `${Math.random()}`, src })) ?? [],
+  );
 
   useEffect(() => {
     setImageList(defaultImages?.map((src) => ({ id: `${Math.random()}`, src })) ?? []);
@@ -171,7 +173,9 @@ const RecipeImageInput = <T extends FieldValues>({
 
       {error && (
         <div className="validator-hint mt-1 whitespace-pre-line">
-          <Text color="red01">이미지를 업로드해주세요.</Text>
+          <Text color="red01" fontSize={14}>
+            이미지를 업로드해주세요.
+          </Text>
         </div>
       )}
 

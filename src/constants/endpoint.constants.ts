@@ -34,3 +34,5 @@ export const BOOKMARK_LIST_URL = '/api/v1/users/me/recipe-saves';
 
 // license
 export const LICENSE_URL = '/api/v1/users/license';
+// report
+export const REPORT_URL = '/api/v1/reports';
