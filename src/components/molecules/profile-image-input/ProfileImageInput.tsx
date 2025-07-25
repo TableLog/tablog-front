@@ -50,7 +50,7 @@ export default function ProfileImageInput({ imageSrc, setImageSrc, setImageFile 
           ref={imgRef}
         />
 
-        <div className="image-figure bg-grey06 h-[100px] w-[100px] rounded-full">
+        <div className="image-figure h-[100px] w-[100px] rounded-full bg-grey06">
           <div className="absolute flex h-full w-full items-center justify-center">
             <BoxIcon name="image" color="white01" size={30} class="absolute z-20" />
 
@@ -58,7 +58,7 @@ export default function ProfileImageInput({ imageSrc, setImageSrc, setImageFile 
               <Image
                 priority
                 src={imageSrc}
-                className="image-cover z-10 w-full brightness-70"
+                className="image-cover brightness-70 z-10 w-full"
                 alt={imageSrc}
                 width={100}
                 height={100}

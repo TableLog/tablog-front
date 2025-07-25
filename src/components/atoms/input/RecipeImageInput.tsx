@@ -149,7 +149,7 @@ const RecipeImageInput = <T extends FieldValues>({
               ) : (
                 <div>
                   <button
-                    className="bg-white01 absolute top-3 right-3 z-10 rounded-full px-4 py-1 font-medium"
+                    className="absolute right-3 top-3 z-10 rounded-full bg-white01 px-4 py-1 font-medium"
                     onClick={() => onClickRemoveImageFile(image.id)}
                   >
                     <Text fontSize={14}>삭제</Text>

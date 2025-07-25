@@ -25,3 +25,12 @@ export const USER_URL = '/api/v1/users';
 
 // shopping
 export const SHOPPING_URL = '/api/v1/shopping-list';
+
+// likes
+export const LIKE_LIST_URL = '/api/v1/users/me/recipe-likes';
+
+// bookmark
+export const BOOKMARK_LIST_URL = '/api/v1/users/me/recipe-saves';
+
+// license
+export const LICENSE_URL = '/api/v1/users/license';

@@ -46,7 +46,7 @@ export default function BottomSheet({
           <div
             className={clsx(
               'fixed z-50 flex items-end justify-center',
-              showBackdrop ? 'inset-0' : 'top-[60px] right-0 bottom-0 left-0',
+              showBackdrop ? 'inset-0' : 'bottom-0 left-0 right-0 top-[60px]',
             )}
             onClick={showBackdrop ? handleBackdropClick : undefined}
           >
@@ -56,8 +56,8 @@ export default function BottomSheet({
             {/* Bottom Sheet */}
             <motion.div
               className={clsx(
-                'bg-white01 pointer-events-auto relative flex h-fit w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] pb-6 shadow-lg',
-                showBackdrop ? 'max-h-[80%] min-h-1/2' : 'min-h-full',
+                'pointer-events-auto relative flex h-fit w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg',
+                showBackdrop ? 'min-h-1/2 max-h-[80%]' : 'min-h-full',
               )}
               initial={{ y: '100%' }}
               animate={{ y: isClosing ? '100%' : 0 }}
@@ -79,8 +79,8 @@ export default function BottomSheet({
             >
               <div>
                 {showHandlebar && (
-                  <div className="flex justify-center pt-4 pb-3">
-                    <div className={clsx('bg-grey07 h-1.5 w-[150px] rounded-full')} />
+                  <div className="flex justify-center pb-3 pt-4">
+                    <div className={clsx('h-1.5 w-[150px] rounded-full bg-grey07')} />
                   </div>
                 )}
 
@@ -91,7 +91,7 @@ export default function BottomSheet({
                 )}
               </div>
 
-              <div className="flex-1 overflow-y-auto pt-9 pb-5">{children}</div>
+              <div className="flex-1 overflow-y-auto pb-5 pt-9">{children}</div>
 
               {buttons && <div className="mt-5 px-5">{buttons}</div>}
             </motion.div>

@@ -1,11 +1,17 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+
+import { useLoginStore } from '@/lib/zutstand/userStore';
 
 import PointsSection from './points-section';
 import ProfileSection from './profile-section';
 import StaticsSection from './statics-section';
 
 const MyPage = () => {
+  const { isLoggedIn } = useLoginStore();
+
   const MyMenuList = [
     { id: 1, title: '찜한 목록', href: '/my/bookmark' },
     { id: 2, title: '좋아요 목록', href: '/my/likes' },
@@ -17,7 +23,7 @@ const MyPage = () => {
     { id: 8, title: '관리자에게 문의하기', href: '/my/inquiry' },
   ];
 
-  return (
+  return isLoggedIn ? (
     <div>
       <ProfileSection />
 
@@ -35,6 +41,8 @@ const MyPage = () => {
         })}
       </section>
     </div>
+  ) : (
+    <div>로그인 후 이용해주세요.</div>
   );
 };
 

@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-primary01 flex h-[60px] w-full items-center justify-between px-[20px] select-none">
+    <div className="flex h-[60px] w-full select-none items-center justify-between bg-primary01 px-[20px]">
       <Title onClick={onToMain} className="cursor-pointer" />
 
       <div className="flex gap-[10px]">
