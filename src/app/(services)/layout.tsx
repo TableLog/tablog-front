@@ -23,8 +23,8 @@ export default async function AfterLoginLayout({
 
       <Header />
 
-      <main className="bg-primary01 w-full">
-        <div className="bg-white01 overflow-hidden rounded-tl-[24px] rounded-tr-[24px]">
+      <main className="w-full bg-primary01">
+        <div className="overflow-hidden rounded-tl-[24px] rounded-tr-[24px] bg-white01">
           {children}
         </div>
       </main>

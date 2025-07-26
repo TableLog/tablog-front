@@ -29,7 +29,7 @@ export const RecipeImageInputExample = () => {
   });
 
   return (
-    <div className="flex h-100 w-100 flex-col gap-6">
+    <div className="h-100 w-100 flex flex-col gap-6">
       <RecipeImageInput half error={imageRequired} control={control} name="images" />
       <Button buttonColor="grey04" onClick={() => setImageRequired((prev) => !prev)}>
         에러 토글 버튼

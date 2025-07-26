@@ -1,4 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { useForm } from 'react-hook-form';
+import type { Meta } from '@storybook/react';
 
 import StarRate from './StarRate';
 
@@ -11,7 +12,7 @@ const meta = {
   tags: ['autodocs'],
   render: () => (
     <div className="">
-      <StarRate />
+      <StarRateExample />
     </div>
   ),
   args: {},
@@ -19,6 +20,17 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+export const StarRateExample = () => {
+  const { control } = useForm<{ star: number }>({
+    mode: 'onChange',
+    defaultValues: {
+      star: 5,
+    },
+  });
 
-export const Default: Story = {};
+  return (
+    <div className="h-[420px] w-[420px]">
+      <StarRate control={control} name="star" />
+    </div>
+  );
+};

@@ -40,7 +40,7 @@ const LatestRecipeSlider = ({ list }: ILatestRecipeSliderProps) => {
                 priority
               />
 
-              <div className="bg-white01/90 absolute right-[10px] bottom-[10px] left-[10px] rounded-[10px] p-4">
+              <div className="absolute bottom-[10px] left-[10px] right-[10px] rounded-[10px] bg-white01/90 p-4">
                 <p className="line-clamp-2 min-h-[56px] text-lg font-medium">{item.title}</p>
 
                 <div className="mt-1 flex items-center gap-1.5 text-sm">

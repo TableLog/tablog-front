@@ -41,7 +41,7 @@ const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
       <div className="flex justify-between">
         <Link
           href={`/recipe/${recipeId}/stages`}
-          className="border-black01 flex h-10 w-10 items-center justify-center rounded-full border"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-black01"
         >
           <BoxIcon name="list-ul" type="solid" size={24} />
         </Link>

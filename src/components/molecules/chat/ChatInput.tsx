@@ -61,9 +61,9 @@ const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
   const paddingClass = isKeyboardOpen ? 'env(safe-area-inset-bottom)' : '0px';
 
   return (
-    <div className={cn(positionClass, paddingClass, 'bg-white01 z-50 transition-all')}>
+    <div className={cn(positionClass, paddingClass, 'z-50 bg-white01 transition-all')}>
       <div className="flex items-center gap-3">
-        <div className="border-grey07 flex flex-1 justify-between rounded-full border px-4 py-2">
+        <div className="flex flex-1 justify-between rounded-full border border-grey07 px-4 py-2">
           <input
             ref={inputRef}
             type="text"

@@ -31,7 +31,7 @@ const PopularRecipeSlider = ({ list }: IPopularRecipeSliderProps) => {
         {/* 커스텀 페이지네이션 */}
         <div
           ref={paginationRef}
-          className="custom-pagination-popular absolute top-[20px] right-[20px] z-20 mt-2 flex justify-center gap-1.5"
+          className="custom-pagination-popular absolute right-[20px] top-[20px] z-20 mt-2 flex justify-center gap-1.5"
         ></div>
 
         <Swiper
@@ -50,15 +50,15 @@ const PopularRecipeSlider = ({ list }: IPopularRecipeSliderProps) => {
             return (
               <SwiperSlide
                 key={item.id}
-                className="relative aspect-2/3 w-full overflow-hidden"
+                className="aspect-2/3 relative w-full overflow-hidden"
                 onClick={() => handleClickRecipe(item.id)}
               >
                 <div>
-                  <div className="bg-black01/45 text-white01 absolute inset-0 z-10 flex h-full w-full flex-col justify-between px-5 py-10">
+                  <div className="absolute inset-0 z-10 flex h-full w-full flex-col justify-between bg-black01/45 px-5 py-10 text-white01">
                     <div>
                       <header className="font-gyeonggi-batang text-2xl">{item.title}</header>
 
-                      <div className="font-extraLight mt-5 line-clamp-2">{item.intro}</div>
+                      <div className="mt-5 line-clamp-2 font-extraLight">{item.intro}</div>
                     </div>
 
                     <div>

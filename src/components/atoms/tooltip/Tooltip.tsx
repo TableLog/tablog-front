@@ -35,7 +35,7 @@ const Tooltip = ({ children }: ITooltip) => {
       <div
         className={cn(
           opacityClass,
-          'bg-grey08 pointer-events-none absolute top-6 left-0 rounded-[10px] p-2.5 transition-all duration-150',
+          'pointer-events-none absolute left-0 top-6 rounded-[10px] bg-grey08 p-2.5 transition-all duration-150',
         )}
       >
         <Text fontSize={12}>{children}</Text>
