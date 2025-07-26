@@ -39,8 +39,6 @@ const LoginForm = () => {
     },
   });
 
-  console.log(watch());
-
   const { mutate: emailLogin } = useEmailLogin({
     onSuccess: async () => {
       if (typeof window !== 'undefined') {

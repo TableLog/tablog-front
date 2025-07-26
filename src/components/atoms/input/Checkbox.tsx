@@ -8,7 +8,7 @@ import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
 interface ICheckboxPros {
-  label: string;
+  label: string | React.ReactNode;
   value: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

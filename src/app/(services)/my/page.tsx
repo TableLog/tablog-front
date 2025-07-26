@@ -1,8 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+import Button from '@/components/atoms/button/Button';
+import LoadingScreen from '@/components/atoms/loading/LoadingScreen';
 import { useLoginStore } from '@/lib/zutstand/userStore';
 
 import PointsSection from './points-section';
@@ -11,6 +13,18 @@ import StaticsSection from './statics-section';
 
 const MyPage = () => {
   const { isLoggedIn } = useLoginStore();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   const MyMenuList = [
     { id: 1, title: '찜한 목록', href: '/my/bookmark' },
@@ -23,7 +37,11 @@ const MyPage = () => {
     { id: 8, title: '관리자에게 문의하기', href: '/my/inquiry' },
   ];
 
-  return isLoggedIn ? (
+  return isLoading ? (
+    <div>
+      <LoadingScreen />
+    </div>
+  ) : isLoggedIn ? (
     <div>
       <ProfileSection />
 
@@ -42,7 +60,19 @@ const MyPage = () => {
       </section>
     </div>
   ) : (
-    <div>로그인 후 이용해주세요.</div>
+    <div className="mt-[30%] flex flex-col items-center justify-center gap-6">
+      <div>🙇 로그인 후 이용해주세요.</div>
+
+      <div className="flex gap-3">
+        <Button buttonColor="grey04">
+          <Link href="/my/inquiry">관리자에게 문의하기</Link>
+        </Button>
+
+        <Button buttonColor="primary">
+          <Link href="/login">로그인</Link>
+        </Button>
+      </div>
+    </div>
   );
 };
 

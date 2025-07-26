@@ -57,7 +57,7 @@ export default function BottomSheet({
             <motion.div
               className={clsx(
                 'pointer-events-auto relative flex h-fit w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg',
-                showBackdrop ? 'min-h-1/2 max-h-[80%]' : 'min-h-full',
+                showBackdrop ? 'min-h-1/2 h-full max-h-[80%]' : 'min-h-full',
               )}
               initial={{ y: '100%' }}
               animate={{ y: isClosing ? '100%' : 0 }}

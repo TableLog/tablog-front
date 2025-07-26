@@ -45,8 +45,6 @@ export const ToggleLikeSuccess = (log: ILogResponse, queryClient: QueryClient) =
   queryClient.setQueryData(
     [FEED_QUERY_KEY, Number(log.id)],
     (oldData: ILogResponse | { data: ILogResponse } | undefined) => {
-      console.log('oldData', oldData, log.id);
-
       if (!oldData) return oldData;
 
       // oldData가 API 응답 전체 객체인 경우 data 속성에서 실제 데이터 추출
@@ -57,8 +55,6 @@ export const ToggleLikeSuccess = (log: ILogResponse, queryClient: QueryClient) =
         like_count: (actualData.like_count || 0) + likeCountChange,
         isLike: newIsLike,
       };
-
-      console.log('newData', newData);
 
       return newData;
     },

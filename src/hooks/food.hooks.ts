@@ -6,7 +6,7 @@ import { ISearchFoodParams } from '@/types/api';
 
 export function useSearchFood(params: ISearchFoodParams) {
   return useInfiniteQuery({
-    queryKey: [FOOD_LIST_QUERY_KEY, { keyword: params.search }],
+    queryKey: [FOOD_LIST_QUERY_KEY, { keyword: params.keyword }],
     queryFn: async ({ pageParam }) => await searchFood({ ...params, page: pageParam }),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>

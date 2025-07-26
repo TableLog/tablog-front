@@ -1,6 +1,8 @@
 'use client';
 import { ComponentProps, useRef } from 'react';
 
+import { useFilterStore } from '@/lib/zutstand/recipeStore';
+
 import { Text } from '../text/Text';
 
 import { useTabsContext } from './Tab.context';
@@ -10,19 +12,29 @@ interface TabButtons extends ComponentProps<'div'> {
 }
 const TabButtons = ({ className, tabs }: TabButtons) => {
   const { activeIndex, setActiveIndex } = useTabsContext();
+
+  const { setFilterCondition } = useFilterStore();
+
   const activeRef = useRef<HTMLDivElement | null>(null);
   const buttonsRef = useRef<HTMLButtonElement[]>([]);
 
   function handleButtonClick(idx: number) {
     setActiveIndex(idx);
 
+    if (idx === 4) {
+      setFilterCondition({ foodId: [] });
+    }
+
     const selectedButton = buttonsRef.current[idx];
-    if (activeRef.current) activeRef.current.style.left = `${selectedButton.offsetLeft}px`;
+
+    if (activeRef.current) {
+      activeRef.current.style.left = `${selectedButton.offsetLeft}px`;
+    }
   }
 
   return (
     <div
-      className={`bg-primary05 relative flex h-10 w-full gap-2.5 rounded-full p-1 ${className || ''}`}
+      className={`relative flex h-10 w-full gap-2.5 rounded-full bg-primary05 p-1 ${className || ''}`}
     >
       <div
         ref={activeRef}
@@ -30,7 +42,7 @@ const TabButtons = ({ className, tabs }: TabButtons) => {
           // 버튼 너비 = (100% - paddingX - gap) / 버튼 개수
           width: `calc((100% - 0.5rem - ${0.625 * (tabs.length - 1)}rem) / ${tabs.length})`,
         }}
-        className="bg-white01 absolute top-1/2 left-1 h-[calc(100%-0.5rem)] w-full -translate-y-1/2 rounded-full duration-200"
+        className="absolute left-1 top-1/2 h-[calc(100%-0.5rem)] w-full -translate-y-1/2 rounded-full bg-white01 duration-200"
       ></div>
 
       {tabs.map((tabName, idx) => (

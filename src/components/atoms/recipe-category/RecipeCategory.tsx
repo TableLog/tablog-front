@@ -3,14 +3,12 @@
 import React, { useCallback, useState } from 'react';
 
 import { RECIPE_CATEGORY_LIST } from '@/constants/options.constants';
-import { IRecipeFilterParams } from '@/types/api';
+import { useFilterStore } from '@/lib/zutstand/recipeStore';
 import { cn } from '@/utils/cn';
 
-const RecipeCategory = ({
-  setCondition,
-}: {
-  setCondition: (condition: Partial<IRecipeFilterParams> | null) => void;
-}) => {
+const RecipeCategory = () => {
+  const { setFilterCondition } = useFilterStore();
+
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
 
   const handleClickCategory = useCallback(
@@ -26,14 +24,14 @@ const RecipeCategory = ({
       );
 
       if (categoryTitles?.length === 0) {
-        setCondition(null);
+        setFilterCondition(null);
       } else {
-        setCondition({
+        setFilterCondition({
           recipeCategory: categoryTitles,
         });
       }
     },
-    [selectedCategories, setCondition],
+    [selectedCategories, setFilterCondition],
   );
 
   return (
@@ -53,7 +51,7 @@ const RecipeCategory = ({
             )}
             onClick={() => handleClickCategory(category.id)}
           >
-            <div className="bg-white01 flex aspect-square w-[44px] items-center justify-center rounded-full text-2xl">
+            <div className="flex aspect-square w-[44px] items-center justify-center rounded-full bg-white01 text-2xl">
               {category.icon}
             </div>
 

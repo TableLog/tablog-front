@@ -7,15 +7,10 @@ import TabPanel from './TabPanel';
 
 interface TabsProps extends PropsWithChildren {
   defaultIndex?: number;
-  handleTabChange?: (index: number) => void;
 }
 
-const Tab = ({ defaultIndex, children, handleTabChange }: TabsProps) => {
-  return (
-    <TabsProvider defaultIndex={defaultIndex} handleTabChange={handleTabChange}>
-      {children}
-    </TabsProvider>
-  );
+const Tab = ({ defaultIndex, children }: TabsProps) => {
+  return <TabsProvider defaultIndex={defaultIndex}>{children}</TabsProvider>;
 };
 
 export default Tab;

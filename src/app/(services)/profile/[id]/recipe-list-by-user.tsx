@@ -10,8 +10,6 @@ const RecipeListByUser = () => {
 
   const { data: recipeList, isLoading } = useGetRecipeListByUserId(Number(id));
 
-  console.log(recipeList);
-
   return (
     <div className="mt-4 text-center">
       {isLoading ? (

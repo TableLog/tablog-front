@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { LICENSE_URL, USER_URL } from '@/constants/endpoint.constants';
+import { USER_URL } from '@/constants/endpoint.constants';
 import instance from '@/utils/axios';
 
 export const getFollowingCount = async (id: number) => {
@@ -62,22 +62,6 @@ export const getFollowingList = async (id: number, page: number) => {
 export const getRecipeListByUserId = async (userId: number, page: number) => {
   try {
     return await axios.get(`${USER_URL}/${userId}/recipes?pageNumber=${page}`);
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const uploadLicense = async (data: FormData) => {
-  try {
-    return await instance.post(`${LICENSE_URL}`, data);
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getLicenseList = async (licenseType: string) => {
-  try {
-    return await instance.get(`${LICENSE_URL}?licenseType=${licenseType}`);
   } catch (error) {
     throw error;
   }

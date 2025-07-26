@@ -130,6 +130,7 @@ export interface IRecipeFilterParams {
   cookingTime: string;
   cal: number;
   recipePrice: string;
+  foodId: string[];
 }
 
 // recipe
@@ -237,7 +238,7 @@ export interface IRecipeProcessResponse {
 
 // food
 export interface ISearchFoodParams {
-  search: string;
+  keyword: string;
   page: number;
 }
 
@@ -309,6 +310,16 @@ export interface IGetRecipeReviewsResponse extends PaginationData {
   isWriter: boolean;
 }
 
+export interface IGetRecipeReviewDetailParams {
+  recipeId: number;
+  reviewId: number;
+}
+
+export interface IDeleteRecipeReviewParams {
+  recipeId: number;
+  reviewId: number;
+}
+
 export interface IReview {
   id: number;
   content: string;
@@ -319,6 +330,10 @@ export interface IReview {
   prrId: number; // 상위 댓글이면 prrId는 0, 하위 댓글은 댓글 id
   isReviewer: boolean;
   profileImgUrl: string;
+  reply: IReview;
+}
+
+export interface IGetRecipeReviewDetailResponse extends IReview {
   reply: IReview;
 }
 
@@ -346,4 +361,13 @@ export interface IMemoResponse {
   memo: string;
   recipeId: number;
   userId: number;
+}
+
+export interface IShoppingList {
+  id: number;
+  foodId: number;
+  foodName: string;
+  amount: number;
+  foodUnit: string;
+  cal: number;
 }

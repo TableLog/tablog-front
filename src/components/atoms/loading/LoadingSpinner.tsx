@@ -1,7 +1,7 @@
 import React from 'react';
 
 const LoadingSpinner = () => {
-  return <span className="loading loading-ring loading-xl text-primary"></span>;
+  return <span className="loading-xl loading loading-ring text-primary"></span>;
 };
 
 export default LoadingSpinner;

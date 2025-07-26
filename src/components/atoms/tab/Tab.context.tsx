@@ -1,7 +1,7 @@
 // TabsContext.tsx
 'use client';
 
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 type TabsContextType = {
   activeIndex: number;
@@ -14,17 +14,11 @@ const TabsContext = createContext<TabsContextType | undefined>(undefined);
 export function TabsProvider({
   defaultIndex,
   children,
-  handleTabChange,
 }: {
   defaultIndex?: number;
   children: ReactNode;
-  handleTabChange?: (index: number) => void;
 }) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex ?? 0);
-
-  useEffect(() => {
-    handleTabChange?.(activeIndex);
-  }, [activeIndex, handleTabChange]);
 
   return (
     <TabsContext.Provider value={{ activeIndex, setActiveIndex }}>{children}</TabsContext.Provider>

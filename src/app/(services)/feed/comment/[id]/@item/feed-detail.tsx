@@ -19,8 +19,6 @@ const FeedDetail = ({ id }: { id: number }) => {
   const { data: userData } = useGetUserInfo();
   const { data: logDetail } = useGetLog(Number(id));
 
-  console.log('logDetail', logDetail);
-
   const {
     setLogId,
     expandedItems,
