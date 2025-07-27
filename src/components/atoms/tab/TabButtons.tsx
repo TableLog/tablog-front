@@ -1,8 +1,6 @@
 'use client';
 import { ComponentProps, useRef } from 'react';
 
-import { useFilterStore } from '@/lib/zutstand/recipeStore';
-
 import { Text } from '../text/Text';
 
 import { useTabsContext } from './Tab.context';
@@ -13,17 +11,11 @@ interface TabButtons extends ComponentProps<'div'> {
 const TabButtons = ({ className, tabs }: TabButtons) => {
   const { activeIndex, setActiveIndex } = useTabsContext();
 
-  const { setFilterCondition } = useFilterStore();
-
   const activeRef = useRef<HTMLDivElement | null>(null);
   const buttonsRef = useRef<HTMLButtonElement[]>([]);
 
   function handleButtonClick(idx: number) {
     setActiveIndex(idx);
-
-    if (idx === 4) {
-      setFilterCondition({ foodId: [] });
-    }
 
     const selectedButton = buttonsRef.current[idx];
 

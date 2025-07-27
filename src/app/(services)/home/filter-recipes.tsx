@@ -59,7 +59,7 @@ const FilterRecipes = () => {
         </Tab.Panel>
 
         <Tab.Panel index={2}>
-          <CategoryTab list={CALORIE_OPTIONS} type="cal" />
+          <CategoryTab list={CALORIE_OPTIONS} type="calorieRange" />
         </Tab.Panel>
 
         <Tab.Panel index={3}>

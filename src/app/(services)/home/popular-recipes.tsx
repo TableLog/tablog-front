@@ -15,6 +15,8 @@ const PopularRecipes = () => {
     { sortOption: 'popular', isMine: false },
   );
 
+  console.log(popularRecipeList?.recipes);
+
   return (
     <div className="mt-8">
       <header className="mb-4 flex items-center justify-between px-5">

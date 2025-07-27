@@ -5,7 +5,6 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import { useGetRecipeByFood } from '@/hooks/recipe.hooks';
-import { useFilterStore } from '@/lib/zutstand/recipeStore';
 
 import RecipeItem from '../recipe/recipe-item';
 
@@ -13,7 +12,6 @@ import FoodsSearch from './food-search';
 
 const FilterRecipesFood = () => {
   const { ref, inView } = useInView();
-  const { setFilterCondition } = useFilterStore();
   const [keywords, setKeywords] = useState<string[]>([]);
 
   const { data: recipeList, isFetching, hasNextPage, fetchNextPage } = useGetRecipeByFood(keywords);
@@ -23,10 +21,6 @@ const FilterRecipesFood = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
-
-  useEffect(() => {
-    setFilterCondition({ foodId: keywords });
-  }, [keywords, setFilterCondition]);
 
   return (
     <div>

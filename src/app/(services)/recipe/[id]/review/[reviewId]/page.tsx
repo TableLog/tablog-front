@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { use } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -10,17 +10,30 @@ import PageHeader from '@/components/atoms/page-header/PageHeader';
 import Popup from '@/components/molecules/popup/Popup';
 import { DELETE_REVIEW_MODAL } from '@/constants/modal.constants';
 import { MY_RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useDeleteRecipeReview, useGetRecipeReviewDetail } from '@/hooks/recipe.hooks';
+import {
+  useDeleteRecipeReview,
+  useGetRecipeDetail,
+  useGetRecipeReviewDetail,
+} from '@/hooks/recipe.hooks';
 import { showToast } from '@/utils/functions';
 
-const ReviewDetailPage = () => {
+import RecipeItem from '../../../recipe-item';
+
+const ReviewDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const router = useRouter();
+
   const queryClient = useQueryClient();
+  const recipeId = parseInt(use(params).id);
+
   const { id, reviewId } = useParams<{ id: string; reviewId: string }>();
 
   const { data } = useGetRecipeReviewDetail({
     recipeId: Number(id),
     reviewId: Number(reviewId),
+  });
+
+  const { data: recipeInfo } = useGetRecipeDetail({
+    recipeId,
   });
 
   const { mutate: deleteReview } = useDeleteRecipeReview({
@@ -70,7 +83,9 @@ const ReviewDetailPage = () => {
       </PageHeader>
 
       <div>
-        <section></section>
+        <section className="flex w-full flex-col gap-4 px-5">
+          {recipeInfo?.data && <RecipeItem recipe={recipeInfo.data} />}
+        </section>
 
         {data && (
           <section>

@@ -116,6 +116,7 @@ export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: { enab
     queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId),
     queryFn: () => getRecipeDetail(params),
     ...options,
+    enabled: !!params.recipeId,
   });
 };
 
@@ -237,7 +238,7 @@ export const useGetRecipeByFood = (keywords: string[]) => {
     select: (response) => ({
       recipes: response.pages.flatMap((page) => page.data.contents),
     }),
-    enabled: !!keywords,
+    enabled: keywords.length > 0,
   });
 };
 

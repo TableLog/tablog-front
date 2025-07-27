@@ -128,7 +128,7 @@ export interface IFollowerListResponse {
 export interface IRecipeFilterParams {
   recipeCategory: string[];
   cookingTime: string;
-  cal: number;
+  calorieRange: number;
   recipePrice: string;
   foodId: string[];
 }
@@ -201,6 +201,7 @@ export interface IRecipeListResponse extends PaginationData {
 export interface IRecipeDetailResponse extends IRecipe {
   hasPurchased: boolean;
   isExpertWriter: boolean;
+  memo: string | null;
   writerId: number;
 }
 
@@ -331,6 +332,8 @@ export interface IReview {
   prrId: number; // 상위 댓글이면 prrId는 0, 하위 댓글은 댓글 id
   isReviewer: boolean;
   profileImgUrl: string;
+  recipeImageUrl: string;
+  recipeTitle: string;
   reply: IReview;
 }
 

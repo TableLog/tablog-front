@@ -69,7 +69,9 @@ export const uploadLicense = async (data: FormData) => {
 
 export const getMyRecipeReview = async (userId: number | undefined, pageNumber: number) => {
   try {
-    return await instance.get(`${USER_INFO_URL}/${userId}/recipe-reviews?pageNumber=${pageNumber}`);
+    return await instance.get(
+      `${USER_INFO_URL}/${userId}/recipe-reviews?pageNumber=${pageNumber}&includeReplies=true`,
+    );
   } catch (error) {
     throw error;
   }

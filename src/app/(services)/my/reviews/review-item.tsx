@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { IReview } from '@/types/api';
+import { cn } from '@/utils/cn';
 import { convertDateFormat } from '@/utils/functions';
 
 interface IReviewItemProps {
@@ -29,16 +30,20 @@ const ReviewItem = ({ review, isDetail }: IReviewItemProps) => {
       <section className="flex gap-3" onClick={() => goToReviewDetail(review.recipeId, review.id)}>
         {!isDetail && (
           <Image
-            src={review.profileImgUrl}
+            src={review.recipeImageUrl}
             alt={review.content}
             width={90}
             height={90}
-            className="aspect-square"
+            className="aspect-square border border-grey08"
           />
         )}
 
         <ul className="flex w-full flex-col gap-2">
-          <li className="flex items-center justify-between">
+          <li>
+            <div className="line-clamp-1 text-sm font-medium">{review.recipeTitle}</div>
+          </li>
+
+          <li className="flex items-center justify-between font-light">
             <div className="flex items-center gap-1 text-sm">
               <BoxIcon name="star" type="solid" size={10} />
 
@@ -49,7 +54,7 @@ const ReviewItem = ({ review, isDetail }: IReviewItemProps) => {
           </li>
 
           <li>
-            <div className={clampClass}>{review.content}</div>
+            <div className={cn(clampClass, 'text-sm font-light')}>{review.content}</div>
           </li>
         </ul>
       </section>

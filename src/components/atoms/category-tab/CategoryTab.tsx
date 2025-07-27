@@ -10,7 +10,7 @@ const CategoryTab = ({
   type,
 }: {
   list: { id: number; title: string; name: string }[];
-  type: 'cookingTime' | 'recipePrice' | 'cal';
+  type: 'cookingTime' | 'recipePrice' | 'calorieRange';
 }) => {
   const { setFilterCondition } = useFilterStore();
 

@@ -75,9 +75,7 @@ export const getMySortedRecipeList = async (
 
 export const getRecipeDetail = async ({ recipeId }: IRecipeDetailParams) => {
   try {
-    return await instance.get<IRecipeDetailResponse>(
-      `${RECIPE_URL}/${recipeId}?includeReplies=true`,
-    );
+    return await instance.get<IRecipeDetailResponse>(`${RECIPE_URL}/${recipeId}`);
   } catch (error) {
     throw error;
   }
@@ -298,7 +296,7 @@ export const getRecipeReviewDetail = async ({
 }: IGetRecipeReviewDetailParams) => {
   try {
     return await instance.get<IGetRecipeReviewDetailResponse>(
-      `${RECIPE_URL}/${recipeId}/recipe-reviews/${reviewId}`,
+      `${RECIPE_URL}/${recipeId}/recipe-reviews/${reviewId}?includeReplies=true`,
     );
   } catch (error) {
     throw error;

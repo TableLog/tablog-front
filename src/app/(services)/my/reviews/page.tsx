@@ -35,7 +35,7 @@ const ReviewsPage = () => {
             <div>작성된 리뷰가 없습니다.</div>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {data?.reviews?.map((review) => {
               return <ReviewItem key={review.id} review={review} />;
             })}
