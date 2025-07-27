@@ -18,7 +18,7 @@ const LatestRecipes = () => {
   return (
     <div className="mt-8">
       <header className="mb-4 flex items-center justify-between px-5">
-        <div className="font-semibold"> 레시피</div>
+        <div className="font-semibold">최신 레시피</div>
 
         <Link href="/recipes" className="border-b border-b-grey01 text-sm text-grey01">
           더보기

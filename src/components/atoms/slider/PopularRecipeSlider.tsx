@@ -49,7 +49,7 @@ const PopularRecipeSlider = ({ list }: IPopularRecipeSliderProps) => {
           return (
             <SwiperSlide
               key={item.id}
-              className="aspect-2/3 relative w-full overflow-hidden"
+              className="relative aspect-[2/3] w-full overflow-hidden"
               onClick={() => handleClickRecipe(item.id)}
             >
               <div>
