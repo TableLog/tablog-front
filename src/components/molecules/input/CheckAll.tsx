@@ -66,7 +66,7 @@ const CheckAll = ({ values, setValues, options }: ICheckAllProps) => {
     <div>
       <Checkbox label="전체 동의합니다." value={isCheckAll} onChange={onChangeCheckbox} />
 
-      <div className="bg-grey08 my-4.5 h-[1px] w-full"></div>
+      <div className="my-4.5 h-[1px] w-full bg-grey08"></div>
 
       <div className="flex flex-col gap-5">
         {options.map((item: ICheckAll) => {

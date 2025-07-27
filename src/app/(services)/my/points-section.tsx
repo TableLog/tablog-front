@@ -10,7 +10,7 @@ const PointsSection = () => {
   const { data: userData } = useGetUserInfo();
 
   return (
-    <section className="bg-grey08 mb-6 flex items-center justify-between rounded-[8px] px-3 py-2.5">
+    <section className="mb-6 flex items-center justify-between rounded-[8px] bg-grey08 px-3 py-2.5">
       <div>
         <Text fontSize={14}>포인트</Text>
 
