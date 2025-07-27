@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .transition-all-3 {
   @apply transition-all duration-300;
 }
@@ -7,7 +11,7 @@
 }
 
 .focus-outline-none {
-  @apply focus-within:ring-0 focus-within:ring-offset-0 focus-within:outline-none focus:outline-none;
+  @apply focus-within:outline-none focus-within:ring-0 focus-within:ring-offset-0 focus:outline-none;
 }
 
 .image-figure {
