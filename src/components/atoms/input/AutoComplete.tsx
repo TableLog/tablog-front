@@ -21,6 +21,7 @@ interface IAutoCompleteProps<T extends FieldValues> {
   lastListElement?: ReactNode;
   isFilteredBySearch?: boolean;
   onSearch?: (newKeyword: string) => void;
+  title?: boolean;
 }
 
 const AutoComplete = <T extends FieldValues>({
@@ -31,6 +32,7 @@ const AutoComplete = <T extends FieldValues>({
   lastListElement,
   isFilteredBySearch = true,
   onSearch,
+  title = false,
 }: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -46,9 +48,15 @@ const AutoComplete = <T extends FieldValues>({
 
   const handleSelect = (item: ItemType) => {
     if (inputRef.current) inputRef.current.value = item.title;
-    onChange(item.id);
+
     setIsOpen(false);
     inputRef.current?.blur(); // 선택 후 드롭다운 닫히게
+
+    if (title) {
+      onChange(item.title);
+    } else {
+      onChange(item.id);
+    }
   };
 
   const renderedList = isFilteredBySearch
@@ -57,39 +65,40 @@ const AutoComplete = <T extends FieldValues>({
 
   return (
     <div className="dropdown w-full">
-      <label
-        tabIndex={0}
+      <div
         className={cn(
-          'border-grey07 transition-all-3 flex h-[34px] w-full items-center border px-4',
+          'transition-all-3 flex h-[34px] w-full items-center justify-between border border-grey07 px-4',
           'rounded-2xl',
-          isOpen && 'rounded-br-none rounded-bl-none',
+          isOpen && 'rounded-bl-none rounded-br-none',
         )}
       >
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder={PLACEHOLDER_MAP[category]}
-          className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
-          onFocus={() => setIsOpen(true)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 100)}
-          onChange={(e) => {
-            setValue(e.target.value);
-            onSearch?.(e.target.value);
-          }}
-        />
+        <label tabIndex={0} className="flex-1">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder={PLACEHOLDER_MAP[category]}
+            className="flex-1 border-none bg-transparent text-sm placeholder-grey02 focus:outline-none"
+            onFocus={() => setIsOpen(true)}
+            onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+            onChange={(e) => {
+              setValue(e.target.value);
+              onSearch?.(e.target.value);
+            }}
+          />
+        </label>
 
-        <BoxIcon name="search" size={20} />
-      </label>
+        <BoxIcon name="search" size={20} onClick={() => onSearch?.(value)} />
+      </div>
 
       <ul
         tabIndex={0}
         className={cn(
-          'dropdown-content menu border-grey07 bg-white01 absolute top-[32px] w-full rounded-br-2xl rounded-bl-2xl border px-4',
+          'menu dropdown-content absolute top-[32px] w-full rounded-bl-2xl rounded-br-2xl border border-grey07 bg-white01 px-4',
           !isOpen && 'hidden',
         )}
       >
         {renderedList.length === 0 ? (
-          <li className="text-grey01 pointer-events-none cursor-default py-1">
+          <li className="pointer-events-none cursor-default py-1 text-grey01">
             검색 결과가 없습니다
           </li>
         ) : (
@@ -98,7 +107,15 @@ const AutoComplete = <T extends FieldValues>({
               <li
                 key={item.id}
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => handleSelect(item)}
+                onClick={() => {
+                  handleSelect(item);
+
+                  if (title) {
+                    setValue(item.title);
+                  } else {
+                    setValue(item.id.toString());
+                  }
+                }}
                 className="cursor-pointer py-1"
               >
                 {item.title}

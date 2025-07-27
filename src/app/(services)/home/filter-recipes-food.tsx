@@ -1,32 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { zodResolver } from '@hookform/resolvers/zod';
 
-import AutoComplete from '@/components/atoms/input/AutoComplete';
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import { useGetRecipeByFood } from '@/hooks/recipe.hooks';
-import { zodSearchRecipeByFood } from '@/lib/zod/zodValidation';
+
+import RecipeItem from '../recipe/recipe-item';
+
+import FoodsSearch from './food-search';
 
 const FilterRecipesFood = () => {
   const { ref, inView } = useInView();
+  const [keywords, setKeywords] = useState<string[]>([]);
 
-  const [keyword, setKeyword] = useState<string>('');
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(zodSearchRecipeByFood),
-    mode: 'onChange',
-    defaultValues: {
-      keyword: '',
-    },
-  });
-
-  const { data: recipeList, isFetching, hasNextPage, fetchNextPage } = useGetRecipeByFood(keyword);
+  const { data: recipeList, isFetching, hasNextPage, fetchNextPage } = useGetRecipeByFood(keywords);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -34,43 +22,50 @@ const FilterRecipesFood = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  const onSubmit = useCallback(
-    (data: { keyword: string }) => {
-      setKeyword(data.keyword);
-    },
-    [setKeyword],
-  );
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="px-5">
-      <AutoComplete
-        list={recipeList?.recipes ?? []}
-        category="ingredientName"
-        name="keyword"
-        control={control}
-        lastListElement={
-          <>
-            {isFetching && (
+    <div>
+      <div className="px-5">
+        <FoodsSearch keywords={keywords} setKeywords={setKeywords} />
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2 px-5">
+        {keywords.map((keyword) => {
+          return (
+            <div
+              key={keyword}
+              className="flex items-center justify-center gap-2 rounded-full border border-grey05 pl-2.5 pr-1.5"
+              onClick={() => setKeywords(keywords.filter((k) => k !== keyword))}
+            >
+              <Text fontSize={14}>{keyword}</Text>
+
+              <BoxIcon name="x-circle" size={14} color="grey05" />
+            </div>
+          );
+        })}
+      </div>
+
+      <div>
+        {isFetching ? (
+          <div className="flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <div className="mt-9 flex w-full flex-col gap-4 px-5">
+            {recipeList?.recipes?.length === 0 ? (
               <div className="flex items-center justify-center">
-                <LoadingSpinner />
+                <Text fontSize={14} className="text-center">
+                  레시피가 존재하지 않습니다
+                </Text>
               </div>
+            ) : (
+              recipeList?.recipes.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />)
             )}
+          </div>
+        )}
 
-            <div ref={ref} />
-          </>
-        }
-        isFilteredBySearch={false}
-        onSearch={(keyword) => {
-          setKeyword(keyword);
-        }}
-      />
-
-      {errors?.keyword && (
-        <div className="validator-hint mt-0 ml-4 whitespace-pre-line">
-          <Text color="red01">{errors['keyword'].message}</Text>
-        </div>
-      )}
-    </form>
+        <div ref={ref} />
+      </div>
+    </div>
   );
 };
 

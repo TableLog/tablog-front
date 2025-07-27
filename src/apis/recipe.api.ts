@@ -5,10 +5,13 @@ import {
   IAddRecipeReviewReplyParams,
   ICancelLikeRecipeParams,
   IDeleteRecipeParams,
+  IDeleteRecipeReviewParams,
   IGetRecipeLikeParams,
   IGetRecipeLikeResponse,
   IGetRecipeMemoParams,
   IGetRecipeParams,
+  IGetRecipeReviewDetailParams,
+  IGetRecipeReviewDetailResponse,
   IGetRecipeReviewsParams,
   IGetRecipeReviewsResponse,
   IGetSortedRecipeOption,
@@ -211,17 +214,32 @@ export const getRecipeByFilter = async ({
 };
 
 export const getRecipeByFood = async ({
-  keyword,
+  keywords,
   pageNumber,
 }: {
-  keyword: string;
+  keywords: string[];
   pageNumber: number;
 }) => {
   try {
     return await instance.get(`${RECIPE_URL}/filter/food`, {
       params: {
-        keyword,
+        keyword: keywords,
         pageNumber,
+      },
+      paramsSerializer: {
+        serialize: (params) => {
+          const searchParams = new URLSearchParams();
+
+          if (params.keyword && Array.isArray(params.keyword)) {
+            params.keyword.forEach((keyword: string) => {
+              searchParams.append('keyword', keyword);
+            });
+          }
+
+          searchParams.append('pageNumber', params.pageNumber);
+
+          return searchParams.toString();
+        },
       },
     });
   } catch (error) {
@@ -272,6 +290,27 @@ export const addRecipeReviewReply = async ({ recipeId, ...data }: IAddRecipeRevi
   }
 };
 
+export const getRecipeReviewDetail = async ({
+  recipeId,
+  reviewId,
+}: IGetRecipeReviewDetailParams) => {
+  try {
+    return await instance.get<IGetRecipeReviewDetailResponse>(
+      `${RECIPE_URL}/${recipeId}/recipe-reviews/${reviewId}?includeReplies=true`,
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteRecipeReview = async ({ recipeId, reviewId }: IDeleteRecipeReviewParams) => {
+  try {
+    return await instance.delete(`${RECIPE_URL}/${recipeId}/recipe-reviews/${reviewId}`);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addRecipeMemo = async ({ recipeId, ...data }: IMutateRecipeMemoParams) => {
   try {
     return await instance.post(`${RECIPE_URL}/${recipeId}/memos`, data);
@@ -291,6 +330,23 @@ export const updateRecipeMemo = async ({ recipeId, ...data }: IMutateRecipeMemoP
 export const getRecipeMemo = async ({ recipeId }: IGetRecipeMemoParams) => {
   try {
     return await instance.get<IMemoResponse>(`${RECIPE_URL}/${recipeId}/memos`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 식재료 검색
+export const getFoodSearch = async ({
+  keyword,
+  pageNumber,
+}: {
+  keyword: string;
+  pageNumber: number;
+}) => {
+  try {
+    return await instance.get(`${RECIPE_URL}/filter/food`, {
+      params: { keyword, pageNumber },
+    });
   } catch (error) {
     throw error;
   }

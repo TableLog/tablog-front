@@ -391,3 +391,10 @@ export const zodMemoForm = z.object({
     .min(1, { message: REVIEW_MEMO_REQUIRED })
     .max(500, { message: REVIEW_MEMO_REQUIRED }),
 });
+
+// NOTE: 장보기 목록
+export const zodShoppingListForm = z.object({
+  foodUnit: z.string(),
+  amount: z.coerce.number().min(1, { message: AMOUNT_REQUIRED }),
+  foodId: z.number().min(1, { message: INGREDIENT_NAME_REQUIRED }),
+});

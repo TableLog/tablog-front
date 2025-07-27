@@ -52,7 +52,7 @@ const StagesPage = ({ params }: { params: Promise<{ id: string }> }) => {
       </div>
       <button
         type="button"
-        className="border-black01 bg-white01 fixed bottom-4 left-5 flex h-10 w-10 items-center justify-center rounded-full border"
+        className="fixed bottom-4 left-5 flex h-10 w-10 items-center justify-center rounded-full border border-black01 bg-white01"
         onClick={handleBackButtonClick}
       >
         <BoxIcon name="x" type="solid" size={24} />

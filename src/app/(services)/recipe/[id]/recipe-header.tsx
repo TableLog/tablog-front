@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
-import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 
@@ -98,9 +97,9 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
   return (
     <>
       <div className="sticky z-50 flex items-center justify-between px-5 py-4">
-        <Link href="/recipe">
+        <button onClick={() => router.back()}>
           <BoxIcon name="arrow-back" size={24} color="white" />
-        </Link>
+        </button>
         <div className="absolute left-1/2 -translate-x-1/2 text-white01">
           <ToggleModeButton
             options={[ERecipeDetailSection.INGREDIENT, ERecipeDetailSection.DESCRIPTION]}

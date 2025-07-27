@@ -59,7 +59,7 @@ const SelectBox = <T extends FieldValues>({
 
       <label
         tabIndex={0}
-        className={cn(borderClass, 'transition-all-3 flex h-[34px] w-full items-center border-b-1')}
+        className={cn(borderClass, 'transition-all-3 border-b-1 flex h-[34px] w-full items-center')}
       >
         <input
           ref={inputRef}
@@ -67,7 +67,7 @@ const SelectBox = <T extends FieldValues>({
           readOnly
           value={selectedOption.title}
           placeholder={PLACEHOLDER_MAP[category]}
-          className="placeholder-grey02 flex-1 border-none bg-transparent text-sm focus:outline-none"
+          className="flex-1 border-none bg-transparent text-sm placeholder-grey02 focus:outline-none"
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 100)}
         />
@@ -77,7 +77,7 @@ const SelectBox = <T extends FieldValues>({
         tabIndex={0}
         className={cn(
           !isOpen && 'hidden',
-          'dropdown-content bg-white01 border-grey07 w-full rounded-br-[10px] rounded-bl-[10px] border border-t-transparent px-2.5 py-1',
+          'dropdown-content w-full rounded-bl-[10px] rounded-br-[10px] border border-grey07 border-t-transparent bg-white01 px-2.5 py-1',
         )}
       >
         {list.map((option) => {

@@ -147,7 +147,7 @@ const FeedItem = ({
           ref={(el) => {
             contentRefs.current[log.id] = el;
           }}
-          className={cn(clampClass, 'text-sm whitespace-pre-line text-black transition-all')}
+          className={cn(clampClass, 'whitespace-pre-line text-sm text-black transition-all')}
         >
           {log.content}
         </div>
@@ -155,7 +155,7 @@ const FeedItem = ({
         {showMore && (
           <button
             onClick={() => toggleExpand(log.id)}
-            className="text-grey02 mt-1 text-sm font-medium"
+            className="mt-1 text-sm font-medium text-grey02"
           >
             {isExpanded ? '접기' : '더보기'}
           </button>

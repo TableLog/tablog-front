@@ -29,7 +29,7 @@ const RecipeInfo = ({
       <div className="flex-1/2"></div>
       <div
         className={cn(
-          'bg-white01/20 box-border flex-1/2 rounded-b-[20px] px-4 py-2.5 backdrop-blur-2xl',
+          'flex-1/2 box-border rounded-b-[20px] bg-white01/20 px-4 py-2.5 backdrop-blur-2xl',
           latest && 'm-[10px] rounded-[20px]',
         )}
       >

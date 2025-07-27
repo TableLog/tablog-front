@@ -14,7 +14,7 @@ const FeedSlider = ({ imageList }: IFeedSliderProps) => {
     imageList && (
       <div className="min-h-64">
         <Swiper
-          className="border-grey08 aspect-[3/2] w-full overflow-hidden rounded-[10px] border"
+          className="aspect-[3/2] w-full overflow-hidden rounded-[10px] border border-grey08"
           slidesPerView={1}
           modules={[Pagination]}
           pagination={{

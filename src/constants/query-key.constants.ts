@@ -1,5 +1,6 @@
 import {
   IGetRecipeParams,
+  IGetRecipeReviewDetailParams,
   IGetRecipeReviewsParams,
   IGetSortedRecipeOption,
   IRecipeIngredientParams,
@@ -43,6 +44,10 @@ export const RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS = ({
   ...params
 }: IGetRecipeReviewsParams) => ['recipe-review', recipeId, { ...params }];
 export const RECIPE_MEMO_QUERY_KEY = (recipeId: number) => ['recipe-memo', recipeId];
+export const RECIPE_REVIEW_DETAIL_QUERY_KEY = (params: IGetRecipeReviewDetailParams) => [
+  'recipe-review-detail',
+  params,
+];
 
 export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';
 export const FOOD_LIST_QUERY_KEY = 'food-list';
@@ -58,3 +63,28 @@ export const FOLLOWING_LIST_QUERY_KEY = 'following-list';
 export const RECIPE_LIST_BY_USER_ID_QUERY_KEY = 'recipe-list-by-user-id';
 export const RECIPE_LIST_BY_FILTER_QUERY_KEY = 'recipe-list-by-filter';
 export const RECIPE_LIST_BY_FOOD_QUERY_KEY = 'recipe-list-by-food';
+export const BOOKMARK_LIST_QUERY_KEY = 'bookmark-list';
+
+// my
+export const MY_LIKE_LIST_QUERY_KEY = ['my-like-list'];
+
+export const MY_LIKE_LIST_OPTIONS_QUERY_KEY = (
+  params: IGetRecipeParams,
+  option: IGetSortedRecipeOption,
+) => [...MY_LIKE_LIST_QUERY_KEY, { ...params, ...option }];
+
+export const MY_BOOKMARK_LIST_QUERY_KEY = ['my-bookmark-list'];
+
+export const MY_BOOKMARK_LIST_OPTIONS_QUERY_KEY = (
+  params: IGetRecipeParams,
+  option: IGetSortedRecipeOption,
+) => [...MY_BOOKMARK_LIST_QUERY_KEY, { ...params, ...option }];
+
+export const SHOPPING_LIST_QUERY_KEY = 'shopping-list';
+
+// license
+export const LICENSE_COUNT_QUERY_KEY = 'license-count';
+export const LICENSE_LIST_QUERY_KEY = 'license-list';
+
+// recipe review
+export const MY_RECIPE_REVIEW_LIST_QUERY_KEY = 'my-recipe-review-list';

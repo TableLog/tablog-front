@@ -20,7 +20,7 @@ const LatestRecipes = () => {
       <header className="mb-4 flex items-center justify-between px-5">
         <div className="font-semibold">최신 레시피</div>
 
-        <Link href="/recipes" className="text-grey01 border-b-grey01 border-b text-sm">
+        <Link href="/recipes" className="border-b border-b-grey01 text-sm text-grey01">
           더보기
         </Link>
       </header>

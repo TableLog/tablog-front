@@ -83,7 +83,7 @@ const ChangePasswordForm = ({ accountInfo }: IChangePasswordFormProps) => {
   return (
     <div>
       <section>
-        <div className="bg-grey08 mb-11 flex flex-col items-center justify-center gap-4 py-5">
+        <div className="mb-11 flex flex-col items-center justify-center gap-4 bg-grey08 py-5">
           <Text fontSize={14}>가입하신 계정 정보입니다.</Text>
 
           <div className="flex flex-col items-center justify-center gap-2">

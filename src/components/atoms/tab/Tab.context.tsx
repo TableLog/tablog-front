@@ -27,7 +27,9 @@ export function TabsProvider({
   }, [activeIndex, handleTabChange]);
 
   return (
-    <TabsContext.Provider value={{ activeIndex, setActiveIndex }}>{children}</TabsContext.Provider>
+    <TabsContext.Provider value={{ activeIndex, setActiveIndex, handleTabChange }}>
+      {children}
+    </TabsContext.Provider>
   );
 }
 

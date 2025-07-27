@@ -26,7 +26,7 @@ const EditPage = () => {
     <div>
       <PageHeader title="계정 관리" back backUrl="/my" />
 
-      <div className="mt-4 mb-8 flex items-center justify-center">
+      <div className="mb-8 mt-4 flex items-center justify-center">
         <ProfileImageInput
           imageSrc={imageSrc}
           setImageSrc={setImageSrc}

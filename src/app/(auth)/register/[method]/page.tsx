@@ -58,7 +58,7 @@ const Register = () => {
     <div className="py-4">
       <PageHeader back title={pageTitle} backUrl="/login" />
 
-      <div className="mt-8 mb-8 flex items-center justify-center">
+      <div className="mb-8 mt-8 flex items-center justify-center">
         <ProfileImageInput
           imageSrc={imageSrc}
           setImageSrc={setImageSrc}

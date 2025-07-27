@@ -17,3 +17,11 @@ export const removeShoppingList = async ({ shoppingListId }: RemoveShoppingListP
     throw error;
   }
 };
+
+export const getShoppingList = async (page: number) => {
+  try {
+    return await instance.get(SHOPPING_URL, { params: { page } });
+  } catch (error) {
+    throw error;
+  }
+};

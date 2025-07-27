@@ -1,36 +1,36 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
-import { IRecipeFilterParams } from '@/types/api';
+import { useFilterStore } from '@/lib/zutstand/recipeStore';
 import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';
 
 const CategoryTab = ({
   list,
-  setCondition,
   type,
 }: {
   list: { id: number; title: string; name: string }[];
-  setCondition: (condition: Partial<IRecipeFilterParams> | null) => void;
-  type: 'cookingTime' | 'recipePrice' | 'cal';
+  type: 'cookingTime' | 'recipePrice' | 'calorieRange';
 }) => {
-  const [selected, setSelected] = useState<number>(0);
+  const { setFilterCondition } = useFilterStore();
 
   const tabsContainerRef = useRef<HTMLDivElement>(null);
   const activeBorderRef = useRef<HTMLDivElement>(null);
 
+  const [selected, setSelected] = useState<number | null>(null);
+
   const handleClick = useCallback(
     (index: number, name: string) => {
-      console.log('selected');
-
       setSelected(index);
-      setCondition({ [type]: name });
+      setFilterCondition({ [type]: name });
     },
-    [type, setCondition],
+    [type, setFilterCondition],
   );
 
   useLayoutEffect(() => {
     if (activeBorderRef.current && tabsContainerRef.current) {
+      if (selected === null) return;
+
       const selectedTab = tabsContainerRef.current.children[selected] as HTMLDivElement;
 
       if (selectedTab) {
@@ -43,7 +43,7 @@ const CategoryTab = ({
   const widthClass = type === 'recipePrice' ? 'w-[110%]' : 'w-full';
 
   return (
-    <div className="border-grey07 no-scrollbar relative max-w-screen overflow-x-auto border-b">
+    <div className="no-scrollbar max-w-screen relative overflow-x-auto border-b border-grey07">
       <div className={cn(widthClass, 'flex')} ref={tabsContainerRef}>
         {list.map((item, index) => (
           <div
@@ -61,7 +61,7 @@ const CategoryTab = ({
 
       <div
         ref={activeBorderRef}
-        className="bg-primary02 absolute bottom-0 h-0.5 transition-all duration-300"
+        className="absolute bottom-0 h-0.5 bg-primary02 transition-all duration-300"
       ></div>
     </div>
   );

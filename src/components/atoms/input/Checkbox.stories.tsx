@@ -16,7 +16,7 @@ const meta = {
 export default meta;
 
 interface ICheckboxPros {
-  label: string;
+  label: string | React.ReactNode;
   value: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
