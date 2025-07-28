@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import Image from 'next/image';
 
 import Button from '@/components/atoms/button/Button';
@@ -45,63 +46,68 @@ const RecipeForm = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <Button size="large" full onClick={handleAddStep}>
-        순서 추가 +
-      </Button>
-
-      {stepFields.map(({ id }, idx) => (
-        <div key={id} className="flex flex-col gap-1.5">
-          <div className="flex w-full items-center justify-between">
-            <button
-              type="button"
-              className="flex gap-2.5"
-              onClick={() => handleStepButtonClick(idx)}
-            >
-              <span className="w-[50px]">단계 {idx + 1}</span>
-              <Image
-                width={18}
-                height={18}
-                src="/icons/arrow.svg"
-                alt="토글 아이콘"
-                className={cn('duration-150', idx === activeStep && '-rotate-180')}
-              />
-            </button>
-            <button
-              type="button"
-              className={cn(idx !== activeStep && 'hidden')}
-              onClick={() => handleDeleteStep(idx)}
-            >
-              <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
-            </button>
-          </div>
-
-          <div className={cn('w-full', idx !== activeStep && 'hidden')}>
-            <RecipeImageInput
-              className="mb-8"
-              maxImage={3}
-              label="이미지 업로드"
-              control={control}
-              name={`dtos.${idx}.files`}
-            />
-            <TextInput
-              category="stepTitle"
-              name={`dtos.${idx}.rpTitle`}
-              register={register}
-              errors={errors}
-            />
-            <TextArea
-              category="stepDescription"
-              name={`dtos.${idx}.description`}
-              register={register}
-              errors={errors}
-              maxLength={500}
-            />
-          </div>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-8">
+          {stepFields.map(({ id }, idx) => (
+            <div key={id} className="flex flex-col gap-1.5">
+              <div className="flex w-full items-center justify-between">
+                <button
+                  type="button"
+                  className="flex gap-2"
+                  onClick={() => handleStepButtonClick(idx)}
+                >
+                  <span className="w-[50px] font-medium text-grey01">단계 {idx + 1}</span>
+                  <Image
+                    width={20}
+                    height={20}
+                    src="/icons/arrow.svg"
+                    alt="토글 아이콘"
+                    className={cn('duration-150', idx === activeStep && '-rotate-180')}
+                  />
+                </button>
+                <button type="button" onClick={() => handleDeleteStep(idx)}>
+                  <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
+                </button>
+              </div>
+              <div className={cn('w-full', idx !== activeStep && 'hidden')}>
+                <div className="mb-8">
+                  <RecipeImageInput
+                    maxImage={3}
+                    label="이미지 업로드"
+                    control={control}
+                    name={`dtos.${idx}.files`}
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name={`dtos.${idx}.files`}
+                    render={({ message }) => (
+                      <div className="validator-hint mt-0 whitespace-pre-line text-sm font-normal leading-[1.5] text-red01">
+                        {message}
+                      </div>
+                    )}
+                  />
+                </div>
+                <TextInput
+                  category="stepTitle"
+                  name={`dtos.${idx}.rpTitle`}
+                  register={register}
+                  errors={errors}
+                />
+                <TextArea
+                  category="stepDescription"
+                  name={`dtos.${idx}.description`}
+                  register={register}
+                  errors={errors}
+                  maxLength={500}
+                />
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
 
-      <Button type="submit" size="large" full>
-        레시피 등록
+      <Button size="large" full onClick={handleAddStep}>
+        + 순서 추가
       </Button>
     </div>
   );

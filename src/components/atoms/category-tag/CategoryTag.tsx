@@ -1,6 +1,7 @@
 'use client';
 import { ComponentProps } from 'react';
-import { Control, FieldValues, Path, PathValue, useController } from 'react-hook-form';
+import { Control, FieldErrors, FieldValues, Path, PathValue, useController } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
 import { Text } from '@/components/atoms/text/Text';
 import { cn } from '@/utils/cn';
@@ -10,12 +11,14 @@ type CategoryType = string;
 interface CategoryTagProps<T extends FieldValues> extends ComponentProps<'div'> {
   control: Control<T>;
   name: Path<T>;
+  errors?: FieldErrors;
 }
 
 const CategoryTag = <T extends FieldValues>({
   className,
   name,
   control,
+  errors,
   ...props
 }: CategoryTagProps<T>) => {
   const categories = ['밥요리', '면요리', '밑반찬', '국/찌개', '아침', '점심', '저녁', '간식/후식'];
@@ -66,6 +69,16 @@ const CategoryTag = <T extends FieldValues>({
           );
         })}
       </div>
+
+      <ErrorMessage
+        errors={errors}
+        name={name as string}
+        render={({ message }) => (
+          <div className="validator-hint mt-0 whitespace-pre-line text-xs font-normal leading-[1.5] text-red01">
+            {message}
+          </div>
+        )}
+      />
     </div>
   );
 };

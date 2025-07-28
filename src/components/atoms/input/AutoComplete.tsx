@@ -93,7 +93,7 @@ const AutoComplete = <T extends FieldValues>({
       <ul
         tabIndex={0}
         className={cn(
-          'menu dropdown-content absolute top-[32px] w-full rounded-bl-2xl rounded-br-2xl border border-grey07 bg-white01 px-4',
+          'menu dropdown-content absolute top-[32px] z-10 w-full rounded-bl-2xl rounded-br-2xl border border-grey07 bg-white01 px-4',
           !isOpen && 'hidden',
         )}
       >

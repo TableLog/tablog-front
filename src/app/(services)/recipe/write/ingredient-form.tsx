@@ -78,15 +78,15 @@ const IngredientForm = () => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-6">
       <Button onClick={openBottomSheet} size="large" full>
-        재료 등록 +
+        재료 추가 +
       </Button>
 
       {ingredientFields.length === 0 ? (
-        <div>요리에 필요한 재료를 입력해주세요.</div>
+        <div className="text-sm">요리에 필요한 재료를 입력해주세요.</div>
       ) : (
-        <div className="flex w-full flex-col-reverse gap-8">
+        <div className="flex w-full flex-col-reverse gap-6">
           {ingredientFields.map((ingredient, idx) => (
             <div key={ingredient.id} className="flex justify-between">
               <Text>
@@ -144,23 +144,28 @@ const IngredientForm = () => {
               }}
             />
             {errors?.foodId && (
-              <div className="validator-hint ml-4 mt-0 whitespace-pre-line">
-                <Text color="red01">{errors['foodId'].message}</Text>
+              <div className="validator-hint ml-4 mt-1 whitespace-pre-line">
+                <Text color="red01" fontSize={12}>
+                  {errors['foodId'].message}
+                </Text>
               </div>
             )}
           </div>
           <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-            <TextInput type="number" category="amount" register={register} errors={errors} />
+            <div className="flex flex-col gap-1">
+              <TextInput type="number" category="amount" register={register} errors={errors} />
+              <div className="flex gap-1">
+                <BoxIcon name="info-circle" size={20} />
+                <Text fontSize={12}>1인분 기준으로 입력해주세요.</Text>
+              </div>
+            </div>
+
             <SelectBox
               category="unit"
               name="recipeFoodUnit"
               list={UNIT_OPTIONS}
               control={control}
             />
-            <div className="col-span-2 flex gap-1">
-              <BoxIcon name="info-circle" size={20} />
-              <Text fontSize={12}>1인분 기준으로 입력해주세요.</Text>
-            </div>
           </div>
         </form>
       </BottomSheet>

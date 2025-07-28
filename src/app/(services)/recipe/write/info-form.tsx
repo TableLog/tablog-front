@@ -29,6 +29,7 @@ const InfoForm = () => {
           label="썸네일 이미지 업로드"
           control={control}
           name="recipeImage"
+          error={!!errors['recipeImage']}
         />
         <TextInput
           category="recipeName"
@@ -45,7 +46,11 @@ const InfoForm = () => {
         />
       </div>
 
-      <CategoryTag name="recipeCreateRequestDto.recipeCategoryList" control={control} />
+      <CategoryTag
+        name="recipeCreateRequestDto.recipeCategoryList"
+        control={control}
+        errors={errors}
+      />
 
       <Range type="price" name="recipeCreateRequestDto.price" control={control} />
 

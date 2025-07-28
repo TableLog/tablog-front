@@ -59,7 +59,10 @@ const SelectBox = <T extends FieldValues>({
 
       <label
         tabIndex={0}
-        className={cn(borderClass, 'transition-all-3 border-b-1 flex h-[34px] w-full items-center')}
+        className={cn(
+          borderClass,
+          'flex h-[34px] w-full items-center border-b-[1px] transition-all duration-300',
+        )}
       >
         <input
           ref={inputRef}
