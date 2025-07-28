@@ -19,6 +19,8 @@ import { zodIngredientInfo } from '@/lib/zod/zodValidation';
 
 import { TRecipeFormValues } from './page';
 
+const foodMap = new Map();
+
 const IngredientForm = () => {
   const { ref, inView } = useInView();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -48,7 +50,6 @@ const IngredientForm = () => {
     mode: 'onChange',
     defaultValues: {
       amount: 0,
-      foodId: 0,
       recipeFoodUnit: UNIT_OPTIONS[0].name,
     },
   });
@@ -90,7 +91,7 @@ const IngredientForm = () => {
           {ingredientFields.map((ingredient, idx) => (
             <div key={ingredient.id} className="flex justify-between">
               <Text>
-                {foodList?.find(({ id }) => id === ingredient.foodId)?.title} | {ingredient.amount}{' '}
+                {foodMap.get(ingredient.foodId)} | {ingredient.amount}
                 {ingredient.recipeFoodUnit}
               </Text>
               <button
@@ -142,6 +143,9 @@ const IngredientForm = () => {
               onSearch={(keyword) => {
                 setKeyword(keyword);
               }}
+              onSelect={(item) => {
+                foodMap.set(item.id, item.title);
+              }}
             />
             {errors?.foodId && (
               <div className="validator-hint ml-4 mt-1 whitespace-pre-line">
@@ -152,13 +156,7 @@ const IngredientForm = () => {
             )}
           </div>
           <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-            <div className="flex flex-col gap-1">
-              <TextInput type="number" category="amount" register={register} errors={errors} />
-              <div className="flex gap-1">
-                <BoxIcon name="info-circle" size={20} />
-                <Text fontSize={12}>1인분 기준으로 입력해주세요.</Text>
-              </div>
-            </div>
+            <TextInput type="number" category="amount" register={register} errors={errors} />
 
             <SelectBox
               category="unit"
@@ -166,6 +164,11 @@ const IngredientForm = () => {
               list={UNIT_OPTIONS}
               control={control}
             />
+
+            <div className="col-span-2 flex gap-1">
+              <BoxIcon name="info-circle" size={20} />
+              <Text fontSize={12}>1인분 기준으로 입력해주세요.</Text>
+            </div>
           </div>
         </form>
       </BottomSheet>

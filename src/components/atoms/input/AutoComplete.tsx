@@ -22,6 +22,7 @@ interface IAutoCompleteProps<T extends FieldValues> {
   isFilteredBySearch?: boolean;
   onSearch?: (newKeyword: string) => void;
   title?: boolean;
+  onSelect?: (item: ItemType) => void;
 }
 
 const AutoComplete = <T extends FieldValues>({
@@ -33,6 +34,7 @@ const AutoComplete = <T extends FieldValues>({
   isFilteredBySearch = true,
   onSearch,
   title = false,
+  onSelect,
 }: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -47,6 +49,7 @@ const AutoComplete = <T extends FieldValues>({
   });
 
   const handleSelect = (item: ItemType) => {
+    onSelect?.(item);
     if (inputRef.current) inputRef.current.value = item.title;
 
     setIsOpen(false);

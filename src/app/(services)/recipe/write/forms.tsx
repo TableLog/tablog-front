@@ -79,7 +79,16 @@ const Forms = () => {
 
     if (recipeImage[0]) formdata.append(`recipeImage`, recipeImage[0]);
     formdata.append('recipeCreateRequestDto', JSON.stringify(recipeCreateRequestDto));
-    formdata.append('recipeFoodCreateRequestDto', JSON.stringify(recipeFoodCreateRequestDto));
+    formdata.append(
+      'recipeFoodCreateRequestDto',
+      JSON.stringify(
+        recipeFoodCreateRequestDto.map(({ foodId, amount, recipeFoodUnit }) => ({
+          foodId,
+          amount,
+          recipeFoodUnit,
+        })),
+      ),
+    );
     dtos.forEach((step, idx) => {
       formdata.append(`dtos[${idx}].sequence`, String(idx));
       formdata.append(`dtos[${idx}].rpTitle`, step.rpTitle);
