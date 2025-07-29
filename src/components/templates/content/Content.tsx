@@ -5,5 +5,5 @@ interface IContentProps {
 }
 
 export default function Content({ children }: IContentProps) {
-  return <section className="px-[20px] pt-[16px]">{children}</section>;
+  return <section className="px-5 pt-4">{children}</section>;
 }
