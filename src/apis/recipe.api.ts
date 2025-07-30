@@ -14,6 +14,8 @@ import {
   IGetRecipeReviewDetailResponse,
   IGetRecipeReviewsParams,
   IGetRecipeReviewsResponse,
+  IGetRecipeSearchParams,
+  IGetRecipeSearchResponse,
   IGetSortedRecipeOption,
   IMemoResponse,
   IMutateRecipeMemoParams,
@@ -345,6 +347,17 @@ export const getFoodSearch = async ({
 }) => {
   try {
     return await instance.get(`${RECIPE_URL}/filter/food`, {
+      params: { keyword, pageNumber },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+// 레시피 검색
+export const getRecipeSearch = async ({ keyword, pageNumber }: IGetRecipeSearchParams) => {
+  try {
+    return await instance.get<IGetRecipeSearchResponse>(`${RECIPE_URL}/filter/search`, {
       params: { keyword, pageNumber },
     });
   } catch (error) {

@@ -2,6 +2,7 @@ import {
   IGetRecipeParams,
   IGetRecipeReviewDetailParams,
   IGetRecipeReviewsParams,
+  IGetRecipeSearchParams,
   IGetSortedRecipeOption,
   IRecipeIngredientParams,
   IRecipeProcessBySequenceParams,
@@ -47,6 +48,10 @@ export const RECIPE_MEMO_QUERY_KEY = (recipeId: number) => ['recipe-memo', recip
 export const RECIPE_REVIEW_DETAIL_QUERY_KEY = (params: IGetRecipeReviewDetailParams) => [
   'recipe-review-detail',
   params,
+];
+export const RECIPE_SEARCH_QUERY_KEY_WITH_PARAMS = ({ ...params }: IGetRecipeSearchParams) => [
+  'recipe-search',
+  { ...params },
 ];
 
 export const RECIPE_INGREDIENT_QUERY_KEY = 'recipe-ingredient';

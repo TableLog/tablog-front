@@ -24,6 +24,7 @@ import {
   getRecipeProcessList,
   getRecipeReviewDetail,
   getRecipeReviews,
+  getRecipeSearch,
   getSortedRecipeList,
   payRecipe,
   updateRecipe,
@@ -42,6 +43,7 @@ import {
   RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS,
   RECIPE_REVIEW_DETAIL_QUERY_KEY,
   RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS,
+  RECIPE_SEARCH_QUERY_KEY_WITH_PARAMS,
 } from '@/constants/query-key.constants';
 import {
   IAddBookmarkRecipeParams,
@@ -57,6 +59,7 @@ import {
   IGetRecipeParams,
   IGetRecipeReviewDetailParams,
   IGetRecipeReviewsParams,
+  IGetRecipeSearchParams,
   IGetSortedRecipeOption,
   IMutateRecipeMemoParams,
   IMutationOptions,
@@ -314,3 +317,17 @@ export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams) {
     queryFn: () => getRecipeMemo({ recipeId }),
   });
 }
+
+export const useGetRecipeSearch = (params: IGetRecipeSearchParams) => {
+  return useInfiniteQuery({
+    queryKey: RECIPE_SEARCH_QUERY_KEY_WITH_PARAMS(params),
+    queryFn: ({ pageParam = 0 }) => getRecipeSearch({ ...params, pageNumber: pageParam }),
+    initialPageParam: params.pageNumber,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({
+      recipes: response.pages.flatMap((page) => page.data.contents),
+    }),
+    enabled: params.keyword.length > 0,
+  });
+};

@@ -34,6 +34,9 @@ export default function BottomSheet({
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'auto';
+
     return () => {
       setIsClosing(false);
     };
@@ -48,7 +51,7 @@ export default function BottomSheet({
         <AnimatePresence>
           <div
             className={clsx(
-              'fixed z-50 flex items-end justify-center',
+              'fixed z-[10000] flex items-end justify-center',
               showBackdrop ? 'inset-0' : 'bottom-0 left-0 right-0 top-[60px]',
             )}
             onClick={showBackdrop ? handleBackdropClick : undefined}
@@ -59,7 +62,7 @@ export default function BottomSheet({
             {/* Bottom Sheet */}
             <motion.div
               className={clsx(
-                'pointer-events-auto relative flex h-fit w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg duration-300',
+                'pointer-events-auto relative flex h-fit max-h-[calc(100%-60px)] w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg duration-300',
                 showBackdrop ? 'min-h-1/2 h-full max-h-[80%]' : 'min-h-full',
               )}
               initial={{ y: '100%' }}

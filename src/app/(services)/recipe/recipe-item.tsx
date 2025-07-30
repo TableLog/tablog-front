@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { ComponentProps, MouseEvent } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,14 +18,14 @@ import {
   useCancelBookmarkRecipe,
   useDeleteRecipe,
 } from '@/hooks/recipe.hooks';
-import { IRecipeList } from '@/types/api';
+import { IRecipe } from '@/types/api';
 import { ECookTime, EPrice, ERecipeOption } from '@/types/enum';
 import { HandleOpenModal, showToast } from '@/utils/functions';
 
-interface RecipeListProps {
-  recipe: IRecipeList;
+interface RecipeListProps extends ComponentProps<'a'> {
+  recipe: IRecipe;
 }
-const RecipeItem = ({ recipe }: RecipeListProps) => {
+const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
@@ -74,6 +74,7 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
         key={recipe.id}
         href={`/recipe/${recipe.id}`}
         className="relative aspect-[16/12] w-full overflow-hidden rounded-[20px]"
+        {...props}
       >
         <Image src={recipe.imageUrl} alt={`${recipe.title} 이미지`} fill className="object-cover" />
 
@@ -86,6 +87,7 @@ const RecipeItem = ({ recipe }: RecipeListProps) => {
             />
           ) : (
             <button
+              type="button"
               className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
               onClick={handleBookmarkButtonClick}
             >
