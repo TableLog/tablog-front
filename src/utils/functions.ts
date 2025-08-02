@@ -107,3 +107,11 @@ export const convertDateFormat = (date: string | Date) => {
 
   return day.format('YYYY.MM.DD');
 };
+
+export const addComma = (number: number) => {
+  if (typeof number === 'number') {
+    return number.toLocaleString();
+  }
+
+  return number;
+};

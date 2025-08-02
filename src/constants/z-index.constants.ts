@@ -1,4 +1,5 @@
 export const Z_INDEX = {
   LOADING_SCREEN: 9999,
   NAVIGATION: 9998,
+  SEARCH_USER: 9999,
 };

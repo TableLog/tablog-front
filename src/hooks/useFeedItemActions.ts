@@ -12,8 +12,6 @@ interface UseFeedItemActionsOptions {
 
 export const useFeedItemActions = (options?: UseFeedItemActionsOptions) => {
   const [logId, setLogId] = useState(-1);
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>({});
-  const [showMoreButton, setShowMoreButton] = useState<Record<number, boolean>>({});
 
   const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const queryClient = useQueryClient();
@@ -30,13 +28,6 @@ export const useFeedItemActions = (options?: UseFeedItemActionsOptions) => {
     },
   });
 
-  const toggleExpand = useCallback((id: number) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  }, []);
-
   const handleDelete = useCallback(() => {
     if (logId) {
       deleteLog(logId);
@@ -46,11 +37,7 @@ export const useFeedItemActions = (options?: UseFeedItemActionsOptions) => {
   return {
     logId,
     setLogId,
-    expandedItems,
-    showMoreButton,
-    setShowMoreButton,
     contentRefs,
-    toggleExpand,
     handleDelete,
   };
 };

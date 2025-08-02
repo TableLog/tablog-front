@@ -9,7 +9,7 @@ const FeedDetailPage = async ({ params }: { params: Promise<{ id: string }> }) =
 
   return (
     <div>
-      <PageHeader back backUrl="/feed" title="댓글" />
+      <PageHeader back title="댓글" />
 
       <FeedDetail id={Number(id)} />
     </div>

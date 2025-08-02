@@ -61,6 +61,8 @@ export const PROFILE_INFO_QUERY_KEY = 'profile-info';
 export const FOLLOWER_LIST_QUERY_KEY = 'follower-list';
 export const FOLLOWING_LIST_QUERY_KEY = 'following-list';
 export const RECIPE_LIST_BY_USER_ID_QUERY_KEY = 'recipe-list-by-user-id';
+export const FEED_LIST_BY_USER_ID_QUERY_KEY = 'feed-list-by-user-id';
+export const USER_LIST_QUERY_KEY = 'user-list';
 export const RECIPE_LIST_BY_FILTER_QUERY_KEY = 'recipe-list-by-filter';
 export const RECIPE_LIST_BY_FOOD_QUERY_KEY = 'recipe-list-by-food';
 export const BOOKMARK_LIST_QUERY_KEY = 'bookmark-list';
@@ -88,3 +90,6 @@ export const LICENSE_LIST_QUERY_KEY = 'license-list';
 
 // recipe review
 export const MY_RECIPE_REVIEW_LIST_QUERY_KEY = 'my-recipe-review-list';
+
+// point history
+export const POINT_HISTORY_QUERY_KEY = 'point-history';

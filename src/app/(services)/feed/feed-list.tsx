@@ -19,29 +19,7 @@ const FeedList = () => {
   const { ref, inView } = useInView();
   const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
 
-  const {
-    setLogId,
-    expandedItems,
-    showMoreButton,
-    setShowMoreButton,
-    contentRefs,
-    toggleExpand,
-    handleDelete,
-  } = useFeedItemActions();
-
-  useEffect(() => {
-    // 더보기 버튼 표시 여부
-    const newState: Record<number, boolean> = {};
-
-    for (const key in contentRefs.current) {
-      const el = contentRefs.current[key];
-
-      if (el) {
-        newState[+key] = el.scrollHeight > 40;
-      }
-    }
-    setShowMoreButton(newState);
-  }, [contentRefs, logList, setShowMoreButton]);
+  const { setLogId, contentRefs, handleDelete } = useFeedItemActions();
 
   useEffect(() => {
     // 무한 스크롤
@@ -63,18 +41,12 @@ const FeedList = () => {
       <div>
         {logList?.pages?.map((page) =>
           page.data.boards.map((log: ILogResponse) => {
-            const isExpanded = expandedItems[log.id];
-            const showMore = showMoreButton[log.id];
-
             return (
               <FeedItem
                 key={log.id}
                 log={log}
                 setLogId={setLogId}
-                showMore={showMore}
                 isMyPost={log.isMe}
-                isExpanded={isExpanded}
-                toggleExpand={toggleExpand}
                 contentRefs={contentRefs}
               />
             );

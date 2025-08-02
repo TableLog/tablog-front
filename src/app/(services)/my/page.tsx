@@ -30,6 +30,7 @@ const MyPage = () => {
     { id: 1, title: '찜한 목록', href: '/my/bookmark' },
     { id: 2, title: '좋아요 목록', href: '/my/likes' },
     { id: 3, title: '남긴 리뷰', href: '/my/reviews' },
+    { id: 3, title: '포인트 이용내역', href: '/my/point-history' },
     { id: 4, title: '전문가 인증하기', href: '/my/certificate' },
     { id: 5, title: '환경 설정', href: '/my/settings' },
     { id: 6, title: '채팅 목록', href: '/my/chats' },

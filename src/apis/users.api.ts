@@ -66,3 +66,23 @@ export const getRecipeListByUserId = async (userId: number, page: number) => {
     throw error;
   }
 };
+
+export const getFeedListByUserId = async (userId: number, page: number) => {
+  try {
+    return await axios.get(`/api/v1/${userId}/boards?page=${page}`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getUserList = async (nickname: string, page: number, isLoggedIn: boolean) => {
+  try {
+    if (isLoggedIn) {
+      return await instance.get(`${USER_URL}/search?keyword=${nickname}&pageNumber=${page}`);
+    } else {
+      return await axios.get(`${USER_URL}/search?keyword=${nickname}&pageNumber=${page}`);
+    }
+  } catch (error) {
+    throw error;
+  }
+};

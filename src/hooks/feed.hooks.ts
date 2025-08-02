@@ -3,6 +3,7 @@ import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import {
   AddLog,
   AddLogComment,
+  AddLogCommentReply,
   AddLogLike,
   DeleteLog,
   EditLog,
@@ -93,6 +94,22 @@ export function useGetCommentList(id: number) {
 export function useAddComment(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ id, content }: { id: number; content: string }) => AddLogComment(id, content),
+    onSuccess: options?.onSuccess,
+    onError: options?.onError,
+  });
+}
+
+export function useAddCommentReply(options?: IMutationOptions) {
+  return useMutation({
+    mutationFn: ({
+      boardId,
+      commentId,
+      content,
+    }: {
+      boardId: number;
+      commentId: number;
+      content: string;
+    }) => AddLogCommentReply(boardId, commentId, content),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
