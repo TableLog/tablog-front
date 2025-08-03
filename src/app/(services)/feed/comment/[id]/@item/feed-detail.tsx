@@ -31,7 +31,7 @@ const FeedDetail = ({ id }: { id: number }) => {
       <>
         <DeleteFeedModal onDelete={handleDelete} />
 
-        <div className="relative flex h-[calc(100svh-160px)] w-full flex-col">
+        <div className="relative flex h-[calc(100svh-120px)] w-full flex-col">
           <div className="flex-1 overflow-y-auto pb-6">
             <FeedItem
               log={logDetail}
