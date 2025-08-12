@@ -375,3 +375,19 @@ export interface IShoppingList {
   foodUnit: string;
   cal: number;
 }
+
+export interface IUser {
+  userId: number;
+  nickname: string;
+  profileImgUrl: string;
+  isFollowed: boolean;
+}
+
+export interface IPointHistory {
+  id: number;
+  userId: number;
+  pointReason: string;
+  amount: number;
+  pointType: 'EARN' | 'USE';
+  modifiedAt: string;
+}

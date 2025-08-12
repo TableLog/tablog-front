@@ -76,3 +76,11 @@ export const getMyRecipeReview = async (userId: number | undefined, pageNumber: 
     throw error;
   }
 };
+
+export const getPointHistory = async (page: number, type: string) => {
+  try {
+    return await instance.get(`${USER_INFO_URL}/me/point?pageNumber=${page}&pointType=${type}`);
+  } catch (error) {
+    throw error;
+  }
+};

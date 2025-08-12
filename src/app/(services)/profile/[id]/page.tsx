@@ -12,8 +12,10 @@ const ProfilePage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div>
-      <div className="px-5 py-4">
-        <PageHeader title="프로필 상세" back />
+      <div className="py-4">
+        <div className="px-5">
+          <PageHeader title="프로필 상세" back />
+        </div>
 
         <ProfileInfoSection id={Number(id)} />
 

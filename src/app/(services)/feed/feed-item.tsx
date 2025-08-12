@@ -9,6 +9,7 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import FeedSlider from '@/components/atoms/slider/FeedSlider';
+import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
@@ -20,22 +21,12 @@ import { convertDateFormat, HandleOpenModal } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
-  showMore: boolean;
   isMyPost: boolean;
-  isExpanded: boolean;
-  toggleExpand: (id: number) => void;
   setLogId: React.Dispatch<SetStateAction<number>>;
   contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
+  isDetail?: boolean;
 }
-const FeedItem = ({
-  log,
-  showMore,
-  isMyPost,
-  isExpanded,
-  toggleExpand,
-  contentRefs,
-  setLogId,
-}: IFeedItemProps) => {
+const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -76,8 +67,6 @@ const FeedItem = ({
     },
     [log.id, router, setLogId],
   );
-
-  const clampClass = isExpanded ? '' : 'line-clamp-2';
 
   return (
     <div className="mb-6">
@@ -129,15 +118,17 @@ const FeedItem = ({
           </Text>
         </li>
 
-        <li>
-          <Link href={`/feed/comment/${log.id}`} className="flex items-center gap-0.5">
-            <BoxIcon name="chat" size={24} />
+        {!isDetail && (
+          <li>
+            <Link href={`/feed/comment/${log.id}`} className="flex items-center gap-0.5">
+              <BoxIcon name="chat" size={24} />
 
-            <Text fontSize={14}>{log.comment_count || 0}</Text>
-          </Link>
-        </li>
+              <Text fontSize={14}>{log.comment_count || 0}</Text>
+            </Link>
+          </li>
+        )}
 
-        <li>
+        <li className="h-[25px]">
           <BoxIcon name="share" size={24} flip="horizontal" />
         </li>
       </ul>
@@ -147,19 +138,10 @@ const FeedItem = ({
           ref={(el) => {
             contentRefs.current[log.id] = el;
           }}
-          className={cn(clampClass, 'whitespace-pre-line text-sm text-black transition-all')}
+          className={cn('whitespace-pre-line text-sm text-black transition-all')}
         >
-          {log.content}
+          <ClampedTexts>{log.content}</ClampedTexts>
         </div>
-
-        {showMore && (
-          <button
-            onClick={() => toggleExpand(log.id)}
-            className="mt-1 text-sm font-medium text-grey02"
-          >
-            {isExpanded ? '접기' : '더보기'}
-          </button>
-        )}
       </div>
     </div>
   );

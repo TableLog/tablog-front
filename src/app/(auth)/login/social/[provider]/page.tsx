@@ -7,6 +7,7 @@ import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import { useSocialLogin } from '@/hooks/auth.hooks';
 import { useUserStore } from '@/lib/zutstand/userStore';
+import { showToast } from '@/utils/functions';
 
 const SocialRegister = () => {
   const params = useSearchParams();
@@ -26,6 +27,22 @@ const SocialRegister = () => {
           setSocialUserData(res.data);
           router.push(`/register/${provider}`);
         }
+      }
+    },
+    onError: (err) => {
+      if (err.response.status === 400) {
+        showToast({
+          message: (
+            <div>
+              <p>소셜 로그인/가입에 실패했습니다.</p>
+
+              <p>관리자에게 문의해주세요.</p>
+            </div>
+          ),
+          type: 'error',
+        });
+
+        router.push(`/login`);
       }
     },
   });

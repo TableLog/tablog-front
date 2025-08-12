@@ -121,4 +121,11 @@ export const getValueByPath = <T, R = unknown>(
       return undefined;
     }, obj as unknown) as R) ?? defaultValue
   );
+  
+export const addComma = (number: number) => {
+  if (typeof number === 'number') {
+    return number.toLocaleString();
+  }
+
+  return number;
 };

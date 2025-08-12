@@ -6,6 +6,7 @@ import {
   getMyBookmarkList,
   getMyLikeList,
   getMyRecipeReview,
+  getPointHistory,
   requestExpertVerification,
   uploadLicense,
 } from '@/apis/my.api';
@@ -15,6 +16,7 @@ import {
   MY_BOOKMARK_LIST_OPTIONS_QUERY_KEY,
   MY_LIKE_LIST_OPTIONS_QUERY_KEY,
   MY_RECIPE_REVIEW_LIST_QUERY_KEY,
+  POINT_HISTORY_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import { IGetRecipeParams, IGetSortedRecipeOption, IMutationOptions } from '@/types/api';
 
@@ -90,5 +92,16 @@ export const useGetMyRecipeReview = ({ userId }: { userId: number | undefined })
       lastPage.data.hasNext ? pageParam + 1 : undefined,
     select: (response) => ({ reviews: response.pages.flatMap((page) => page.data.contents) }),
     enabled: !!userId,
+  });
+};
+
+export const useGetPointHistory = (type: string) => {
+  return useInfiniteQuery({
+    queryKey: [POINT_HISTORY_QUERY_KEY, type],
+    queryFn: async ({ pageParam }) => await getPointHistory(pageParam, type),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (response) => ({ pointHistory: response.pages.flatMap((page) => page.data.contents) }),
   });
 };

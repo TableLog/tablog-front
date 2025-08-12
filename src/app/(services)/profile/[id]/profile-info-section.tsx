@@ -13,6 +13,7 @@ import {
   useGetProfileInfo,
   useUnfollowUser,
 } from '@/hooks/users.hooks';
+import { useLoginStore } from '@/lib/zutstand/userStore';
 import { cn } from '@/utils/cn';
 
 interface IProfileInfoSectionProps {
@@ -22,6 +23,8 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
   const router = useRouter();
 
   const { data: profileInfo } = useGetProfileInfo(Number(id));
+
+  const { isLoggedIn } = useLoginStore();
 
   const { data: followingCount } = useGetFollowingCount(id);
   const { data: followerCount } = useGetFollowerCount(id);
@@ -53,7 +56,7 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
   }, [followUser, id, profileInfo?.isFollowed, unfollowUser]);
 
   return (
-    <div>
+    <div className="px-5">
       <section className="mb-2.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <ProfileImage src={profileInfo?.profileImgUrl} size={50} />
@@ -61,13 +64,15 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
           <Text fontSize={14}>{profileInfo?.nickname}</Text>
         </div>
 
-        <Button
-          size="small"
-          buttonColor={profileInfo?.isFollowed ? 'grey06' : 'primary'}
-          onClick={onClickFollowButton}
-        >
-          {profileInfo?.isFollowed ? '팔로우 취소' : '팔로우'}
-        </Button>
+        {isLoggedIn && (
+          <Button
+            size="small"
+            buttonColor={profileInfo?.isFollowed ? 'grey06' : 'primary'}
+            onClick={onClickFollowButton}
+          >
+            {profileInfo?.isFollowed ? '팔로우 취소' : '팔로우'}
+          </Button>
+        )}
       </section>
 
       <section className="grid grid-cols-4">

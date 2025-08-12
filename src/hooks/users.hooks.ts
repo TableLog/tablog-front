@@ -2,21 +2,25 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 
 import {
   folloUser,
+  getFeedListByUserId,
   getFollowerCount,
   getFollowerList,
   getFollowingCount,
   getFollowingList,
   getProfileInfo,
   getRecipeListByUserId,
+  getUserList,
   unfolloUser,
 } from '@/apis/users.api';
 import {
+  FEED_LIST_BY_USER_ID_QUERY_KEY,
   FOLLOWER_COUNT_QUERY_KEY,
   FOLLOWER_LIST_QUERY_KEY,
   FOLLOWING_COUNT_QUERY_KEY,
   FOLLOWING_LIST_QUERY_KEY,
   PROFILE_INFO_QUERY_KEY,
   RECIPE_LIST_BY_USER_ID_QUERY_KEY,
+  USER_LIST_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import { showErrorToast } from '@/utils/functions';
 
@@ -49,9 +53,10 @@ export function useFollowUser(id: number) {
   return useMutation({
     mutationFn: (id: number) => folloUser(id),
     onSuccess: (res) => {
-      if (res.status === 200) {
+      if (res.status === 201 || res.status === 200) {
         queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(id)] });
         queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(id)] });
+        queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
       }
     },
     onError: (err) => {
@@ -66,9 +71,10 @@ export function useUnfollowUser(id: number) {
   return useMutation({
     mutationFn: (id: number) => unfolloUser(id),
     onSuccess: (res) => {
-      if (res.status === 200) {
+      if (res.status === 201 || res.status === 200) {
         queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(id)] });
         queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(id)] });
+        queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
       }
     },
     onError: (err) => {
@@ -104,7 +110,30 @@ export function useGetRecipeListByUserId(userId: number) {
     queryKey: [RECIPE_LIST_BY_USER_ID_QUERY_KEY, userId],
     queryFn: async ({ pageParam = 0 }) => await getRecipeListByUserId(userId, pageParam),
     initialPageParam: 0,
+    enabled: !!userId,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
+  });
+}
+
+export function useGetFeedListByUserId(userId: number) {
+  return useInfiniteQuery({
+    queryKey: [FEED_LIST_BY_USER_ID_QUERY_KEY, userId],
+    queryFn: async ({ pageParam = 0 }) => await getFeedListByUserId(userId, pageParam),
+    initialPageParam: 0,
+    enabled: !!userId,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+  });
+}
+
+export function useGetUserList(nickname: string, isLoggedIn: boolean) {
+  return useInfiniteQuery({
+    queryKey: [USER_LIST_QUERY_KEY, nickname],
+    queryFn: async ({ pageParam = 0 }) => await getUserList(nickname, pageParam, isLoggedIn),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    enabled: !!nickname,
   });
 }

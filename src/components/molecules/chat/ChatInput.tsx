@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { Text } from '@/components/atoms/text/Text';
 import { FEED_COMMENT_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddComment } from '@/hooks/feed.hooks';
+import { useAddComment, useAddCommentReply } from '@/hooks/feed.hooks';
 import { cn } from '@/utils/cn';
 
 interface IChatInputProps {
@@ -29,6 +29,15 @@ const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
         queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
 
         setChatValue('');
+      }
+    },
+  });
+
+  const { mutate: addCommentReply } = useAddCommentReply({
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        queryClient.invalidateQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
+        queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
       }
     },
   });
@@ -61,7 +70,9 @@ const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
   const paddingClass = isKeyboardOpen ? 'env(safe-area-inset-bottom)' : '0px';
 
   return (
-    <div className={cn(positionClass, paddingClass, 'z-50 bg-white01 transition-all')}>
+    <div
+      className={cn(positionClass, paddingClass, 'left-0 z-50 w-full bg-white01 transition-all')}
+    >
       <div className="flex items-center gap-3">
         <div className="flex flex-1 justify-between rounded-full border border-grey07 px-4 py-2">
           <input
@@ -90,7 +101,11 @@ const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
           onClick={() => {
             if (chatValue.trim() === '') return;
 
-            addComment({ id: logId, content: chatValue });
+            if (isReply) {
+              addCommentReply({ boardId: logId, commentId: 0, content: chatValue });
+            } else {
+              addComment({ id: logId, content: chatValue });
+            }
           }}
         />
       </div>

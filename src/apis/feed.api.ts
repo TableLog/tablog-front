@@ -82,3 +82,13 @@ export const AddLogComment = async (id: number, comment: string) => {
     throw error;
   }
 };
+
+export const AddLogCommentReply = async (boardId: number, commentId: number, comment: string) => {
+  try {
+    return await instance.post(`${BOARD_URL}/${boardId}/board_comment/${commentId}`, {
+      content: comment,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
