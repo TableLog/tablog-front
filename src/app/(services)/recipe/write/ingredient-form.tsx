@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { useInView } from 'react-intersection-observer';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
 
 import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -100,7 +99,7 @@ const IngredientForm = () => {
                   removeIngredient(idx);
                 }}
               >
-                <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
+                <BoxIcon name="x" size={24} color="grey03" />
               </button>
             </div>
           ))}

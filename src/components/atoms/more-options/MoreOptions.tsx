@@ -16,13 +16,14 @@ const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => 
         className="dropdown dropdown-end"
         onClick={(e) => {
           e.preventDefault();
+          e.stopPropagation();
         }}
       >
         <button tabIndex={0}>
           <BoxIcon name="dots-vertical-rounded" size={24} color={iconColor} />
         </button>
 
-        <ul tabIndex={0} className="z-1 menu dropdown-content rounded-box bg-base-100 shadow-sm">
+        <ul tabIndex={0} className="menu dropdown-content z-[1] rounded-box bg-base-100 shadow-sm">
           {options.map((option) => {
             return (
               <li key={option.id}>
