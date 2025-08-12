@@ -4,6 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import Image from 'next/image';
 
 import Button from '@/components/atoms/button/Button';
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
@@ -71,7 +72,7 @@ const RecipeForm = () => {
               className={cn(idx !== activeStep && 'hidden')}
               onClick={() => handleDeleteStep(idx)}
             >
-              <Image width={24} height={24} src="/icons/delete.svg" alt="삭제 아이콘" />
+              <BoxIcon name="x" size={24} color="grey03" />
             </button>
           </div>
 

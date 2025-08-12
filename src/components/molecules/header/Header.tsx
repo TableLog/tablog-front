@@ -17,9 +17,19 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const getContent = () => {
-    if (isSearching) return <Search />;
-    if (isNotichecking) return <Notification />;
+    if (isSearching) return <Search handleCloseSearch={handleCloseSearch} />;
+    if (isNotichecking) return <Notification handleCloseNotification={handleCloseNotification} />;
     return <div />;
+  };
+
+  const handleCloseSearch = () => {
+    setIsSearching(false);
+    setIsOpen(false);
+  };
+
+  const handleCloseNotification = () => {
+    setIsNotichecking(false);
+    setIsOpen(false);
   };
 
   const onSearch = () => {
@@ -57,6 +67,7 @@ const Header = () => {
         onClose={() => setIsOpen(false)}
         showBackdrop={false}
         showHandlebar={false}
+        sheetClassName="p-0"
       >
         {getContent()}
       </BottomSheet>

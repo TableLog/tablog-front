@@ -360,11 +360,20 @@ export interface IGetRecipeMemoParams {
   recipeId: IMemoResponse['recipeId'];
 }
 
+export interface IGetRecipeSearchParams {
+  keyword: string;
+  pageNumber: number;
+}
+
 export interface IMemoResponse {
   id: number;
   memo: string;
   recipeId: number;
   userId: number;
+}
+
+export interface IGetRecipeSearchResponse extends PaginationData {
+  contents: IRecipe[];
 }
 
 export interface IShoppingList {

@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer';
 
 import Backdrop from '@/components/atoms/backdrop/Backdrop';
 import { Text } from '@/components/atoms/text/Text';
+import { cn } from '@/utils/cn';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ interface BottomSheetProps {
   children: React.ReactNode;
   title?: string;
   buttons?: React.ReactNode;
+  sheetClassName?: string;
 }
 
 export default function BottomSheet({
@@ -27,10 +29,14 @@ export default function BottomSheet({
   children,
   title,
   buttons,
+  sheetClassName,
 }: BottomSheetProps) {
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'auto';
+
     return () => {
       setIsClosing(false);
     };
@@ -45,7 +51,7 @@ export default function BottomSheet({
         <AnimatePresence>
           <div
             className={clsx(
-              'fixed z-50 flex items-end justify-center',
+              'fixed z-[10000] flex items-end justify-center',
               showBackdrop ? 'inset-0' : 'bottom-0 left-0 right-0 top-[60px]',
             )}
             onClick={showBackdrop ? handleBackdropClick : undefined}
@@ -56,7 +62,7 @@ export default function BottomSheet({
             {/* Bottom Sheet */}
             <motion.div
               className={clsx(
-                'pointer-events-auto relative flex h-fit w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg',
+                'pointer-events-auto relative flex h-fit max-h-[calc(100%-60px)] w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg duration-300',
                 showBackdrop ? 'min-h-1/2 h-full max-h-[80%]' : 'min-h-full',
               )}
               initial={{ y: '100%' }}
@@ -91,7 +97,9 @@ export default function BottomSheet({
                 )}
               </div>
 
-              <div className="flex-1 overflow-y-auto pb-5 pt-9">{children}</div>
+              <div className={cn('flex-1 overflow-y-auto pb-5 pt-9', sheetClassName)}>
+                {children}
+              </div>
 
               {buttons && <div className="mt-5 px-5">{buttons}</div>}
             </motion.div>
