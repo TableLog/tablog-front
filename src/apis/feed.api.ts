@@ -1,11 +1,9 @@
-import axios from 'axios';
-
 import { BOARD_URL } from '@/constants/endpoint.constants';
 import instance from '@/utils/axios';
 
 export const GetLogList = async (page: number) => {
   try {
-    return await axios.get(`${BOARD_URL}/desc?page=${page}`);
+    return await instance.get(`${BOARD_URL}/desc?page=${page}`);
   } catch (error) {
     throw error;
   }
@@ -29,7 +27,7 @@ export const EditLog = async (id: number, formdata: FormData) => {
 
 export const GetLog = async (id: number) => {
   try {
-    return await axios.get(`${BOARD_URL}/${id}`);
+    return await instance.get(`${BOARD_URL}/${id}`);
   } catch (error) {
     throw error;
   }
@@ -61,7 +59,7 @@ export const RemoveLogLike = async (id: number) => {
 
 export const GetLogCommentList = async (id: number, page: number) => {
   try {
-    return await axios.get(`${BOARD_URL}/${id}/board_comments?page=${page}`);
+    return await instance.get(`${BOARD_URL}/${id}/board_comments?page=${page}`);
   } catch (error) {
     throw error;
   }

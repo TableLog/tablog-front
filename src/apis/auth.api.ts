@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import {
   CHANGE_PASSWORD,
   EMAIL_CHECK_URL,
@@ -23,7 +21,7 @@ import { hanldeApiError } from '@/utils/functions';
 
 export const EmailLogin = async (data: TLoginFormValues) => {
   try {
-    return await axios.post(LOGIN_URL, data);
+    return await instance.post(LOGIN_URL, data);
   } catch (error) {
     throw error;
   }
@@ -39,7 +37,7 @@ export const SocialLogin = async (provider: string | string[], code: string) => 
 
 export const FindAccount = async (data: TFindAccountFormValues) => {
   try {
-    return await axios.post(`${FIND_ACCOUNT}`, data);
+    return await instance.post(`${FIND_ACCOUNT}`, data);
   } catch (error) {
     throw error;
   }
@@ -47,7 +45,7 @@ export const FindAccount = async (data: TFindAccountFormValues) => {
 
 export const ChangePassword = async (data: TChangePasswordFormData) => {
   try {
-    return await axios.put(`${CHANGE_PASSWORD}`, data);
+    return await instance.put(`${CHANGE_PASSWORD}`, data);
   } catch (error) {
     throw error;
   }
@@ -71,7 +69,7 @@ export const Logout = async () => {
 
 export const RegisterUser = async (formdata: FormData) => {
   try {
-    return await axios.post(REGISTER_URL, formdata, {
+    return await instance.post(REGISTER_URL, formdata, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -83,7 +81,7 @@ export const RegisterUser = async (formdata: FormData) => {
 
 export const CheckNickname = async (nickname: string) => {
   try {
-    return await axios.post(NICKNAME_CHECK_URL, {
+    return await instance.post(NICKNAME_CHECK_URL, {
       nickname: nickname,
     });
   } catch (error) {
@@ -93,7 +91,7 @@ export const CheckNickname = async (nickname: string) => {
 
 export const CheckEmail = async (email: string) => {
   try {
-    return await axios.post(EMAIL_CHECK_URL, {
+    return await instance.post(EMAIL_CHECK_URL, {
       email: email,
     });
   } catch (error) {
