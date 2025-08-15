@@ -63,6 +63,8 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
     },
   });
 
+  console.log(process.env.NEXT_PUBLIC_SERVER_URL, 'env');
+
   const { mutate: registerUser } = useRegisterUser({
     onSuccess: (res) => {
       if (res.status === 201) {

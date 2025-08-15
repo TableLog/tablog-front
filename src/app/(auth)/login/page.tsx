@@ -7,8 +7,6 @@ import LoginForm from './@form/login-form';
 import { SocialButtons } from './social/SocialButtons';
 
 const LoginPage = () => {
-  console.log(process.env.NEXT_PUBLIC_SERVER_URL, 'env');
-
   return (
     <div className="pt-[88px]">
       <div className="flex flex-col items-center justify-center gap-1 text-primary01">
