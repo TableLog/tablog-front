@@ -1,5 +1,5 @@
 'use client';
-import { ComponentProps, useRef } from 'react';
+import { ComponentProps, useEffect, useRef } from 'react';
 
 import { Text } from '../text/Text';
 
@@ -14,6 +14,11 @@ const TabButtons = ({ className, tabs }: TabButtons) => {
   const activeRef = useRef<HTMLDivElement | null>(null);
   const buttonsRef = useRef<HTMLButtonElement[]>([]);
 
+  useEffect(() => {
+    const selectedButton = buttonsRef.current[activeIndex];
+    if (activeRef.current) activeRef.current.style.left = `${selectedButton.offsetLeft}px`;
+  }, [activeIndex]);
+
   function handleButtonClick(idx: number) {
     setActiveIndex(idx);
 
@@ -26,7 +31,7 @@ const TabButtons = ({ className, tabs }: TabButtons) => {
 
   return (
     <div
-      className={`relative flex h-10 w-full gap-2.5 rounded-full bg-primary05 p-1 ${className || ''}`}
+      className={`relative z-10 flex h-10 w-full gap-2.5 rounded-full bg-primary05 p-1 ${className || ''}`}
     >
       <div
         ref={activeRef}

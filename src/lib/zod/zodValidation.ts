@@ -29,6 +29,7 @@ import {
   REVIEW_CONTENT_REQUIRED,
   REVIEW_MEMO_REQUIRED,
   STEP_DESCRIPTION_REQUIRED,
+  STEP_FILE_REQUIRED,
   STEP_TITLE_REQUIRED,
 } from '@/constants/validation.constants';
 
@@ -331,7 +332,10 @@ const zodRecipeStepInfo = z.object({
     .min(1, STEP_TITLE_REQUIRED)
     .max(500, STEP_TITLE_REQUIRED),
   description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
-  files: z.array(typeof window !== 'undefined' ? z.instanceof(File) : z.any()).max(3),
+  files: z
+    .array(typeof window !== 'undefined' ? z.instanceof(File) : z.any())
+    .min(1, STEP_FILE_REQUIRED)
+    .max(3, STEP_FILE_REQUIRED),
 });
 
 export const zodIngredientInfo = z.object({

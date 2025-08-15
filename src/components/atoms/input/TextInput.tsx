@@ -9,6 +9,7 @@ import {
   UseFormRegister,
   UseFormSetValue,
 } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
 import { LABEL_MAP, PLACEHOLDER_MAP } from '@/constants/map/input.map';
 import { cn } from '@/utils/cn';
@@ -30,7 +31,7 @@ interface ITextInputProps<T extends FieldValues> {
   buttonEvent?: () => void;
   value?: string | '';
   maxLength?: number;
-  errors: FieldErrors<typeof LABEL_MAP>;
+  errors: FieldErrors;
   inputMode?: 'text' | 'tel' | 'url' | 'email' | 'search' | 'numeric' | 'decimal';
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   setValue?: UseFormSetValue<T>;
@@ -132,11 +133,15 @@ const TextInput = <T extends FieldValues>({
         )}
       </div>
 
-      {errors?.[category]?.message && (
-        <div className="validator-hint mt-0 whitespace-pre-line">
-          <Text color="red01">{errors[category]?.message}</Text>
-        </div>
-      )}
+      <ErrorMessage
+        errors={errors}
+        name={name as string}
+        render={({ message }) => (
+          <div className="validator-hint mt-0 whitespace-pre-line text-xs font-normal leading-[1.5] text-red01">
+            {message}
+          </div>
+        )}
+      />
 
       {successMessage && (
         <div className="validator-hint mt-0 whitespace-pre-line">

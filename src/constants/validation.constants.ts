@@ -28,6 +28,7 @@ export const INGREDIENT_NAME_REQUIRED = '재료 이름을 입력해주세요.';
 export const AMOUNT_REQUIRED = '용량을 입력해주세요.';
 export const STEP_TITLE_REQUIRED = '순서 제목을 50자 이내로 입력해주세요.';
 export const STEP_DESCRIPTION_REQUIRED = '순서 과정에 대한 설명을 500자 이내로 입력해주세요.';
+export const STEP_FILE_REQUIRED = '조리 방법에 대한 이미지를 1~3개 업로드해주세요.';
 export const REPORT_REASON_REQUIRED = '신규 사유를 300자 이내로 입력해주세요.';
 export const REVIEW_CONTENT_REQUIRED = '리뷰를 300자 이내로 입력해주세요.';
 export const REVIEW_MEMO_REQUIRED = '개인 메모를 500자 이내로 읿력해주세요.';
