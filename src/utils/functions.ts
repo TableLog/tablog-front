@@ -108,20 +108,6 @@ export const convertDateFormat = (date: string | Date) => {
   return day.format('YYYY.MM.DD');
 };
 
-export const getValueByPath = <T, R = unknown>(
-  obj: T,
-  path: string,
-  defaultValue?: R,
-): R | undefined => {
-  return (
-    (path.split('.').reduce<unknown>((acc, key) => {
-      if (typeof acc === 'object' && acc !== null && key in acc) {
-        return (acc as Record<string, unknown>)[key];
-      }
-      return undefined;
-    }, obj as unknown) as R) ?? defaultValue
-  );
-  
 export const addComma = (number: number) => {
   if (typeof number === 'number') {
     return number.toLocaleString();
