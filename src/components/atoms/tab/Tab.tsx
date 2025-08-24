@@ -6,7 +6,7 @@ import TabButtons from './TabButtons';
 import TabPanel from './TabPanel';
 
 interface TabsProps extends PropsWithChildren {
-  defaultIndex?: number;
+  defaultIndex: number;
   handleTabChange?: (index: number) => void;
 }
 

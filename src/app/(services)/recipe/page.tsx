@@ -29,6 +29,7 @@ const RecipePage = () => {
     <>
       <div className="pb-18 relative px-5 pt-4">
         <Tab
+          defaultIndex={0}
           handleTabChange={(index) => {
             setActiveIndex(index);
           }}

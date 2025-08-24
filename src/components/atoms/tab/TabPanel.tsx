@@ -11,7 +11,7 @@ interface TabPanelProps extends ComponentProps<'div'> {
 const TabPanel = ({ className, index, children }: TabPanelProps) => {
   const { activeIndex } = useTabsContext();
 
-  return <div className={cn(activeIndex !== index && 'hidden', className)}>{children}</div>;
+  return <div className={cn(className, activeIndex !== index && 'hidden')}>{children}</div>;
 };
 
 export default TabPanel;
