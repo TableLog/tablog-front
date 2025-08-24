@@ -17,7 +17,11 @@ instance.interceptors.response.use(
     // NOTE: 토근 만료시 refresh 요청
     if (error.response?.status === 401) {
       try {
-        await axios.post(REFRESH_URL, {}, { withCredentials: true });
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}${REFRESH_URL}`,
+          {},
+          { withCredentials: true },
+        );
 
         return instance.request(error.config);
       } catch (err) {

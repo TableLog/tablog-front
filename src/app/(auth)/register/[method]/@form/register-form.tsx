@@ -28,6 +28,8 @@ interface IRegisterForm {
 const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm) => {
   const router = useRouter();
 
+  console.log(process.env.NEXT_PUBLIC_SERVER_URL, 'env');
+
   const { socialUserData, clearSocialUserData } = useUserStore();
 
   const [openTerms, setOpenTerms] = useState(false);

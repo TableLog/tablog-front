@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import { USER_URL } from '@/constants/endpoint.constants';
 import instance from '@/utils/axios';
 
@@ -21,7 +19,7 @@ export const getFollowerCount = async (id: number) => {
 
 export const getProfileInfo = async (id: number) => {
   try {
-    return await axios.get(`${USER_URL}/${id}`);
+    return await instance.get(`${USER_URL}/${id}`);
   } catch (error) {
     throw error;
   }
@@ -29,7 +27,7 @@ export const getProfileInfo = async (id: number) => {
 
 export const folloUser = async (id: number) => {
   try {
-    return await axios.post(`${USER_URL}/${id}/follow`);
+    return await instance.post(`${USER_URL}/${id}/follow`);
   } catch (error) {
     throw error;
   }
@@ -37,7 +35,7 @@ export const folloUser = async (id: number) => {
 
 export const unfolloUser = async (id: number) => {
   try {
-    return await axios.delete(`${USER_URL}/${id}/follow`);
+    return await instance.delete(`${USER_URL}/${id}/follow`);
   } catch (error) {
     throw error;
   }
@@ -45,7 +43,7 @@ export const unfolloUser = async (id: number) => {
 
 export const getFollowerList = async (id: number, page: number) => {
   try {
-    return await axios.get(`${USER_URL}/${id}/follower?pageNumber=${page}`);
+    return await instance.get(`${USER_URL}/${id}/follower?pageNumber=${page}`);
   } catch (error) {
     throw error;
   }
@@ -53,7 +51,7 @@ export const getFollowerList = async (id: number, page: number) => {
 
 export const getFollowingList = async (id: number, page: number) => {
   try {
-    return await axios.get(`${USER_URL}/${id}/following?pageNumber=${page}`);
+    return await instance.get(`${USER_URL}/${id}/following?pageNumber=${page}`);
   } catch (error) {
     throw error;
   }
@@ -61,7 +59,7 @@ export const getFollowingList = async (id: number, page: number) => {
 
 export const getRecipeListByUserId = async (userId: number, page: number) => {
   try {
-    return await axios.get(`${USER_URL}/${userId}/recipes?pageNumber=${page}`);
+    return await instance.get(`${USER_URL}/${userId}/recipes?pageNumber=${page}`);
   } catch (error) {
     throw error;
   }
@@ -69,7 +67,7 @@ export const getRecipeListByUserId = async (userId: number, page: number) => {
 
 export const getFeedListByUserId = async (userId: number, page: number) => {
   try {
-    return await axios.get(`/api/v1/${userId}/boards?page=${page}`);
+    return await instance.get(`/api/v1/${userId}/boards?page=${page}`);
   } catch (error) {
     throw error;
   }
@@ -80,7 +78,7 @@ export const getUserList = async (nickname: string, page: number, isLoggedIn: bo
     if (isLoggedIn) {
       return await instance.get(`${USER_URL}/search?keyword=${nickname}&pageNumber=${page}`);
     } else {
-      return await axios.get(`${USER_URL}/search?keyword=${nickname}&pageNumber=${page}`);
+      return await instance.get(`${USER_URL}/search?keyword=${nickname}&pageNumber=${page}`);
     }
   } catch (error) {
     throw error;
