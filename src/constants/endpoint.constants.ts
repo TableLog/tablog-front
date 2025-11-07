@@ -40,3 +40,6 @@ export const REPORT_URL = '/api/v1/reports';
 
 // expert
 export const EXPERT_URL = '/api/v1/users/request/expert-verification';
+
+// chat
+export const CHAT_URL = '/api/v1/chats';

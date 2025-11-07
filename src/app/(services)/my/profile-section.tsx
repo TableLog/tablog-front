@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
@@ -12,7 +11,7 @@ const ProfileSection = () => {
   const { data: userData } = useGetUserInfo();
 
   return (
-    <section className="mb-2.5 flex items-center justify-between">
+    <section className="mb-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
         <ProfileImage src={userData?.profileImgUrl} size={50} />
 
@@ -20,7 +19,7 @@ const ProfileSection = () => {
       </div>
 
       <Link href="/my/edit">
-        <Button size="mini" buttonColor="grey06">
+        <Button size="medium" buttonColor="grey06">
           계정 관리
         </Button>
       </Link>

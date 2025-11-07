@@ -6,7 +6,7 @@ import { cn } from '@/utils/cn';
 const sizeClasses = {
   mini: 'h-6 text-14 max-h-6', // height: 24px
   small: 'h-[30px] text-14 max-h-[30px]', // height: 30px
-  medium: 'h-9 text-base max-h-9', // height: 36px
+  medium: 'h-9 text-14 max-h-9', // height: 36px
   large: 'h-10 text-base max-h-10', // height: 40px
 };
 

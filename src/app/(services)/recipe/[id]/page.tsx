@@ -52,7 +52,7 @@ const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }
 
   return (
-    <div className="relative h-[calc(100vh-60px)] w-full">
+    <div className="relative h-[calc(100dvh-92px)] w-full">
       <RecipeHeader recipeId={recipeId} authorId={recipe?.writerId} isMyRecipe={recipe?.isWriter} />
 
       {recipe && (

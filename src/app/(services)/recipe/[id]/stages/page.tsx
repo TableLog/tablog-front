@@ -35,7 +35,7 @@ const StagesPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }
 
   return (
-    <div className="flex h-[calc(100vh-60px)] flex-col px-5 py-4">
+    <div className="flex h-[calc(100dvh-92px)] flex-col px-5 py-4">
       <div className="mb-3 font-semibold">단계 목록</div>
       <div className="flex flex-grow flex-col gap-5 overflow-auto">
         {recipeProcesses?.data.map((recipeProcess) => (

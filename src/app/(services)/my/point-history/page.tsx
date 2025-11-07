@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import Tab from '@/components/atoms/tab/Tab';

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Text } from '@/components/atoms/text/Text';
@@ -45,7 +45,7 @@ const StaticsSection = () => {
         return (
           <div
             key={statics.id}
-            className="mb-5 flex flex-col items-center justify-center gap-3 p-2.5"
+            className="mb-5 flex flex-col items-center justify-center gap-2 p-2"
             onClick={() => {
               if (statics.href) router.push(statics.href);
             }}

@@ -70,7 +70,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
 
   return (
     <div className="mb-6">
-      <div className="flex justify-between">
+      <div className="mb-1 flex justify-between">
         <div className="mb-1.5 flex gap-1.5" onClick={() => router.push(`/profile/${log.user_id}`)}>
           <ProfileImage src={log?.profileImgUrl} size={42} />
 
@@ -91,7 +91,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
 
       <FeedSlider imageList={log.image_urls} />
 
-      <ul className="mb-2 flex items-center gap-4">
+      <ul className="mb-2 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">
           {log.isLike ? (
             <BoxIcon
