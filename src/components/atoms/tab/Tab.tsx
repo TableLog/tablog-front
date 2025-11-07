@@ -6,11 +6,11 @@ import TabButtons from './TabButtons';
 import TabPanel from './TabPanel';
 
 interface TabsProps extends PropsWithChildren {
-  defaultIndex: number;
+  defaultIndex?: number;
   handleTabChange?: (index: number) => void;
 }
 
-const Tab = ({ defaultIndex, children, handleTabChange }: TabsProps) => {
+const Tab = ({ defaultIndex = 0, children, handleTabChange }: TabsProps) => {
   return (
     <TabsProvider defaultIndex={defaultIndex} handleTabChange={handleTabChange}>
       {children}

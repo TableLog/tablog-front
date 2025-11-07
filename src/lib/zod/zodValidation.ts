@@ -6,6 +6,7 @@ import {
   AMOUNT_REQUIRED,
   BIRTH_FORMAT,
   BIRTH_REQUIRED,
+  CHAT_MESSAGE_REQUIRED,
   EMAIL_CHECK_REQUIRED,
   EMAIL_FORMAT,
   EMAIL_REQUIRED,
@@ -401,4 +402,9 @@ export const zodShoppingListForm = z.object({
   foodUnit: z.string(),
   amount: z.coerce.number().min(1, { message: AMOUNT_REQUIRED }),
   foodId: z.number().min(1, { message: INGREDIENT_NAME_REQUIRED }),
+});
+
+// NOTE: 채팅
+export const zodChatForm = z.object({
+  message: z.string().min(1, { message: CHAT_MESSAGE_REQUIRED }),
 });

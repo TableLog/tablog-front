@@ -23,7 +23,7 @@ const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const currentProcess = recipeProcess.data.recipeProcesses;
 
   return (
-    <div className="flex h-[calc(100vh-60px)] flex-col justify-between gap-8 px-5 py-4">
+    <div className="flex h-[calc(100dvh-92px)] flex-col justify-between gap-8 px-5 py-4">
       <div className="flex flex-grow flex-col overflow-auto">
         <div className="mb-3 font-semibold">
           {sequence + 1}단계. {currentProcess.rpTitle}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
@@ -38,16 +38,34 @@ const MyPage = () => {
     { id: 9, title: '관리자에게 문의하기', href: '/my/inquiry' },
   ];
 
-  return isLoading ? (
+  if (isLoading) {
     <div>
       <LoadingScreen />
-    </div>
-  ) : isLoggedIn ? (
+    </div>;
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex h-[calc(100dvh-92px)] w-full items-center justify-center">
+        <div className="flex -translate-y-full flex-col items-center gap-6">
+          <div>🙇 로그인 후 이용해주세요.</div>
+          <div className="flex gap-3">
+            <Button buttonColor="grey04">
+              <Link href="/my/inquiry">관리자에게 문의하기</Link>
+            </Button>
+            <Button buttonColor="primary">
+              <Link href="/login">로그인</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div>
       <ProfileSection />
-
       <StaticsSection />
-
       <PointsSection />
 
       <section className="flex flex-col">
@@ -59,20 +77,6 @@ const MyPage = () => {
           );
         })}
       </section>
-    </div>
-  ) : (
-    <div className="mt-[30%] flex flex-col items-center justify-center gap-6">
-      <div>🙇 로그인 후 이용해주세요.</div>
-
-      <div className="flex gap-3">
-        <Button buttonColor="grey04">
-          <Link href="/my/inquiry">관리자에게 문의하기</Link>
-        </Button>
-
-        <Button buttonColor="primary">
-          <Link href="/login">로그인</Link>
-        </Button>
-      </div>
     </div>
   );
 };
