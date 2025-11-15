@@ -7,6 +7,8 @@ import { Provider } from '@/lib/tanstack-query/QueryProvider';
 
 import { GyeonggiBatang, GyeonggiTitle, pretendard } from '../../public/fonts/local-fonts';
 
+import GoogleAnalytics from './analytics';
+
 import '@/styles/global.css';
 import '@/styles/common.css';
 
@@ -30,6 +32,28 @@ export default function RootLayout({
       className={`${pretendard.variable} ${GyeonggiBatang.variable} ${GyeonggiTitle.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+        />
+
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+      </head>
+
       <body className="max-w-[100svw] overflow-x-hidden" suppressHydrationWarning>
         <Script
           id="scroll-restoration"
@@ -38,6 +62,8 @@ export default function RootLayout({
           }}
           strategy="beforeInteractive"
         />
+
+        <GoogleAnalytics />
 
         <Provider>
           <Toast />
