@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { z } from 'zod';
 
@@ -11,7 +11,7 @@ import PageHeader from '@/components/atoms/page-header/PageHeader';
 import { Text } from '@/components/atoms/text/Text';
 import { CHATS_QUERY_KEY, MY_CHAT_ROOMS_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
-import { useGetChats } from '@/hooks/queries/chat.hooks';
+import { getMyChatRoomsQueryOptions, useGetChats } from '@/hooks/queries/chat.hooks';
 import useStomp from '@/hooks/useStomp';
 import { zodChatForm } from '@/lib/zod/zodValidation';
 
@@ -33,7 +33,15 @@ function ChatPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const [messages, setMessages] = useState<MessageType[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { data: userInfo, isPending, isError } = useGetUserInfo();
+  const { data: userInfo, isPending: isGetUserPending, isError: isGetUserError } = useGetUserInfo();
+  const {
+    data: chatRoom,
+    isPending: isGetChatRoomPending,
+    isError: isGetChatRoomError,
+  } = useQuery({
+    ...getMyChatRoomsQueryOptions(),
+    select: (res) => res.data.find((room) => room.roomId === roomId),
+  });
   const {
     data: savedMessages,
     isPending: isGetChatsPending,
@@ -60,8 +68,8 @@ function ChatPage() {
     wrapperRef.current?.scrollIntoView({ block: 'end' });
   }, [savedMessages, messages]);
 
-  if (isPending || isGetChatsPending) return <div>Loading...</div>;
-  if (isError || isGetChatsError) return <div>Error...</div>;
+  if (isGetUserPending || isGetChatsPending || isGetChatRoomPending) return <div>Loading...</div>;
+  if (isGetUserError || isGetChatsError || isGetChatRoomError) return <div>Error...</div>;
 
   const totalMessages = [...savedMessages, ...messages];
 
@@ -81,10 +89,9 @@ function ChatPage() {
 
   return (
     <div ref={wrapperRef} className="relative px-5 pb-4">
-      {/* // ! TODO 상대방과 대화한 적이 없을 경우 닉네임을 어떻게 가져올지 */}
-      <PageHeader title={`${savedMessages[0].nickname}님과의 대화`} back />
+      <PageHeader title={`${chatRoom?.nickname}님과의 대화`} back />
       <div className="flex min-h-[calc(100dvh-132px)] flex-col items-center justify-center gap-5">
-        <div className="flex w-full flex-grow flex-col gap-2 pb-[66px]">
+        <div className="flex w-full flex-grow flex-col gap-3 pb-[66px] pt-2">
           {totalMessages.length === 0 ? (
             <div>
               <Text fontSize={14}>대화가 없습니다. 먼저 메시지를 보내보세요</Text>
@@ -111,13 +118,13 @@ function ChatPage() {
             <input
               type="text"
               {...register('message')}
-              className="w-full rounded-full border border-grey07 px-5 py-3 text-lg"
+              className="w-full rounded-full border border-grey07 px-5 py-3 text-base"
               placeholder="메시지 입력"
               autoFocus
               disabled={!isConnected}
             />
             <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 -rotate-45">
-              <BoxIcon color="grey04" name="send b" size={28} />
+              <BoxIcon color="grey04" name="send b" size={24} />
             </button>
           </div>
         </form>
