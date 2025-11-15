@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -11,25 +10,35 @@ interface ShoppingButtonProps {
   amount: number;
   foodUnit: string;
   isChecked: boolean;
+  shoppingListId?: number;
 }
 
-function ShoppingButton({ foodId, amount, foodUnit, isChecked }: ShoppingButtonProps) {
+function ShoppingButton({
+  foodId,
+  amount,
+  foodUnit,
+  isChecked,
+  shoppingListId,
+}: ShoppingButtonProps) {
   const queryClient = useQueryClient();
-  const shoppingListId = useRef<number>(-1);
 
   const { mutate: addShoppingList } = useAddShoppingList({
-    onSuccess: (res) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [RECIPE_INGREDIENT_QUERY_KEY],
       });
-      console.log(res);
-      shoppingListId.current = res.data.id;
     },
   });
-  const { mutate: removeShoppingList } = useRemoveShoppingList({});
+  const { mutate: removeShoppingList } = useRemoveShoppingList({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [RECIPE_INGREDIENT_QUERY_KEY],
+      });
+    },
+  });
 
   function handleCartButtonClick(data: AddShoppingListPayload, isChecked: boolean) {
-    if (isChecked) removeShoppingList({ shoppingListId: shoppingListId.current });
+    if (isChecked && shoppingListId) removeShoppingList({ shoppingListId });
     else addShoppingList(data);
   }
 

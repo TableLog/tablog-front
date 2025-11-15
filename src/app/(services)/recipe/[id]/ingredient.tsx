@@ -43,7 +43,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
           />
           <div className="flex w-full flex-col gap-4">
             {data?.recipe.recipeFoods.map(
-              ({ id, foodName, amount, recipeFoodUnit, cal, isChecked }) => (
+              ({ id, foodName, amount, recipeFoodUnit, cal, isChecked, shoppingListId }) => (
                 <div key={id} className="flex justify-between">
                   <div>
                     {foodName} | {amount * servingNumber}
@@ -54,6 +54,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
                     amount={amount}
                     foodUnit={recipeFoodUnit}
                     isChecked={isChecked}
+                    shoppingListId={shoppingListId}
                   />
                 </div>
               ),
