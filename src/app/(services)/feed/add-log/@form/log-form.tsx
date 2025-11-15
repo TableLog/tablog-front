@@ -10,7 +10,7 @@ import Button from '@/components/atoms/button/Button';
 import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
 import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddLog, useEditLog, useGetLog } from '@/hooks/feed.hooks';
+import { useAddLog, useEditLog, useGetLog } from '@/hooks/queries/feed.hooks';
 import { zodAddLog } from '@/lib/zod/zodValidation';
 import { TAddLogFormData } from '@/types/api';
 import { showToast } from '@/utils/functions';

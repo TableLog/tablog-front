@@ -17,10 +17,10 @@ import {
   useAddBookmarkRecipe,
   useCancelBookmarkRecipe,
   useDeleteRecipe,
-} from '@/hooks/recipe.hooks';
+} from '@/hooks/queries/recipe.hooks';
 import { IRecipe } from '@/types/api';
 import { ECookTime, EPrice, ERecipeOption } from '@/types/enum';
-import { HandleOpenModal, showToast } from '@/utils/functions';
+import { handleOpenModal, showToast } from '@/utils/functions';
 
 interface RecipeListProps extends ComponentProps<'a'> {
   recipe: IRecipe;
@@ -63,7 +63,7 @@ const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
         router.push(`/recipe/${recipe.id}/edit`);
         break;
       case ERecipeOption.DELETE:
-        HandleOpenModal(DELETE_RECIPE_MODAL);
+        handleOpenModal(DELETE_RECIPE_MODAL);
         break;
     }
   }

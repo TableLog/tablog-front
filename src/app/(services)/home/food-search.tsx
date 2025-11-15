@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import AutoComplete from '@/components/atoms/input/AutoComplete';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
-import { useSearchFood } from '@/hooks/food.hooks';
+import { useSearchFood } from '@/hooks/queries/food.hooks';
 import { zodSearchRecipeByFood } from '@/lib/zod/zodValidation';
 
 interface IFoodsSearchProps {

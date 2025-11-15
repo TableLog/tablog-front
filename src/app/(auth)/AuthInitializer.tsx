@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zustand/userStore';
 
 interface IAuthInitializerProps {
   isToken: boolean;

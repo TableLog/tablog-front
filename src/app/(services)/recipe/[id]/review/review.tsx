@@ -12,7 +12,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import { Text } from '@/components/atoms/text/Text';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddReviewReply } from '@/hooks/recipe.hooks';
+import { useAddReviewReply } from '@/hooks/queries/recipe.hooks';
 import { zodReviewReplyForm } from '@/lib/zod/zodValidation';
 import { IReview } from '@/types/api';
 import { cn } from '@/utils/cn';

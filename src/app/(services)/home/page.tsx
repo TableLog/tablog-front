@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-
-import { useRecipeStore } from '@/lib/zutstand/recipeStore';
+import { useRecipeStore } from '@/lib/zustand/recipeStore';
 
 import FilterRecipes from './filter-recipes';
 import LatestRecipes from './latest-recipes';

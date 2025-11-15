@@ -1,6 +1,6 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
-import { useFilterStore } from '@/lib/zutstand/recipeStore';
+import { useFilterStore } from '@/lib/zustand/recipeStore';
 import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';

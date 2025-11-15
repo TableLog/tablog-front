@@ -14,9 +14,9 @@ import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { TERMS_OPTIONS } from '@/constants/options.constants';
 import { TERM_REQUIRED } from '@/constants/validation.constants';
-import { useRegisterUser } from '@/hooks/auth.hooks';
+import { useRegisterUser } from '@/hooks/queries/auth.hooks';
 import { zodEmailRegister, zodSocialRegister } from '@/lib/zod/zodValidation';
-import { useUserStore } from '@/lib/zutstand/userStore';
+import { useUserStore } from '@/lib/zustand/userStore';
 import { TRegisterFormValues } from '@/types/api';
 import { getErrorCode, showToast } from '@/utils/functions';
 
@@ -27,8 +27,6 @@ interface IRegisterForm {
 }
 const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm) => {
   const router = useRouter();
-
-  console.log(process.env.NEXT_PUBLIC_SERVER_URL, 'env');
 
   const { socialUserData, clearSocialUserData } = useUserStore();
 
@@ -271,7 +269,7 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
                 닫기
               </Button>
 
-              <Button full type="submit" form="register-form">
+              <Button full type="submit" form="register-form" className="flex-shrink">
                 동의하고 회원가입
               </Button>
             </div>

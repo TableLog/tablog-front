@@ -7,7 +7,7 @@ interface ScrollPositionProps {
   behavior?: ScrollBehavior;
 }
 
-export const useScrollPosition = ({
+const useScrollPosition = ({
   storageKey,
   scrollElementSelector = '.scrollable-content',
   shouldRestore = true,
@@ -72,3 +72,5 @@ export const useScrollPosition = ({
 
   return null;
 };
+
+export default useScrollPosition;

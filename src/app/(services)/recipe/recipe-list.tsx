@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetSortedRecipe } from '@/hooks/recipe.hooks';
+import { useGetSortedRecipe } from '@/hooks/queries/recipe.hooks';
 
 import RecipeItem from './recipe-item';
 

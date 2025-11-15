@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
-import { useGetRecipeByFood } from '@/hooks/recipe.hooks';
+import { useGetRecipeByFood } from '@/hooks/queries/recipe.hooks';
 
 import RecipeItem from '../recipe/recipe-item';
 

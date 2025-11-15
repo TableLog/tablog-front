@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import Carousel from '@/components/organisms/carousel/Carousel';
-import { useGetRecipeProcessBySequence } from '@/hooks/recipe.hooks';
+import { useGetRecipeProcessBySequence } from '@/hooks/queries/recipe.hooks';
 
 const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);

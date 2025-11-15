@@ -4,21 +4,21 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import {
-  ChangePassword,
-  CheckEmail,
-  CheckNickname,
-  EmailLogin,
-  FindAccount,
-  Logout,
-  RegisterUser,
-  SocialLink,
-  SocialLogin,
-  UnregisterUser,
-  UserInfo,
-  UserInfoUpdate,
+  changePassword,
+  checkEmail,
+  checkNickname,
+  deleteUser,
+  findAccount,
+  getUserInfo,
+  loginWithEmail,
+  loginWithSocialAccount,
+  logout,
+  registerUser,
+  socialLink,
+  updateUserInfo,
 } from '@/apis/auth.api';
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zustand/userStore';
 import { IMutationOptions, TChangePasswordFormData, TFindAccountFormValues } from '@/types/api';
 import { showErrorToast } from '@/utils/functions';
 
@@ -26,7 +26,7 @@ import { showErrorToast } from '@/utils/functions';
 // 로그인: 이메일
 export function useEmailLogin(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: EmailLogin,
+    mutationFn: loginWithEmail,
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -36,7 +36,7 @@ export function useEmailLogin(options?: IMutationOptions) {
 export function useSocialLogin(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
-      SocialLogin(provider, code),
+      loginWithSocialAccount(provider, code),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -45,7 +45,7 @@ export function useSocialLogin(options?: IMutationOptions) {
 // 계정 찾기
 export function useFindAccount(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (data: TFindAccountFormValues) => FindAccount(data),
+    mutationFn: (data: TFindAccountFormValues) => findAccount(data),
     onSuccess: options?.onSuccess,
     onError: (err) => {
       showErrorToast(err);
@@ -56,7 +56,7 @@ export function useFindAccount(options?: IMutationOptions) {
 // 비밀번호 변경하기
 export function useChangePassword(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (data: TChangePasswordFormData) => ChangePassword(data),
+    mutationFn: (data: TChangePasswordFormData) => changePassword(data),
     onSuccess: options?.onSuccess,
     onError: (err) => {
       showErrorToast(err);
@@ -68,7 +68,7 @@ export function useChangePassword(options?: IMutationOptions) {
 export function useSocialLink(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({ provider, code }: { provider: string | string[]; code: string }) =>
-      SocialLink(provider, code),
+      socialLink(provider, code),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -83,7 +83,7 @@ export function useLogout() {
   const { setIsLoggedIn } = useLoginStore();
 
   return useMutation({
-    mutationFn: () => Logout(),
+    mutationFn: () => logout(),
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsLoggedIn(false);
@@ -99,7 +99,7 @@ export function useLogout() {
 // 회원가입
 export function useRegisterUser(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (formData: FormData) => RegisterUser(formData),
+    mutationFn: (formData: FormData) => registerUser(formData),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -108,7 +108,7 @@ export function useRegisterUser(options?: IMutationOptions) {
 // 닉네임 중복 확인
 export function useCheckNickname(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (nickname: string) => CheckNickname(nickname),
+    mutationFn: (nickname: string) => checkNickname(nickname),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -117,7 +117,7 @@ export function useCheckNickname(options?: IMutationOptions) {
 // 이메일 중복 확인
 export function useCheckEmail(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (email: string) => CheckEmail(email),
+    mutationFn: (email: string) => checkEmail(email),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -129,7 +129,7 @@ export function useGetUserInfo() {
 
   return useQuery({
     queryKey: [USER_INFO_QUERY_KEY],
-    queryFn: () => UserInfo(),
+    queryFn: () => getUserInfo(),
     enabled: isLoggedIn,
     select: (res) => res.data,
   });
@@ -138,7 +138,7 @@ export function useGetUserInfo() {
 // 유저 정보 수정
 export function useUpdateUserInfo(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: (formData: FormData) => UserInfoUpdate(formData),
+    mutationFn: (formData: FormData) => updateUserInfo(formData),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -153,7 +153,7 @@ export function useUnregister() {
   const { setIsLoggedIn } = useLoginStore();
 
   return useMutation({
-    mutationFn: () => UnregisterUser(),
+    mutationFn: () => deleteUser(),
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsLoggedIn(false);

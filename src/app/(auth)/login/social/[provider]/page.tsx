@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
-import { useSocialLogin } from '@/hooks/auth.hooks';
-import { useUserStore } from '@/lib/zutstand/userStore';
+import { useSocialLogin } from '@/hooks/queries/auth.hooks';
+import { useUserStore } from '@/lib/zustand/userStore';
 import { showToast } from '@/utils/functions';
 
 const SocialRegister = () => {

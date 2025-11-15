@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Slide, toast } from 'react-toastify';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -6,29 +5,7 @@ import dayjs from 'dayjs';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { APIErrorResponse } from '@/types/api';
 
-export function hanldeApiError(error: unknown): never {
-  console.info('running handle api error');
-
-  if (axios.isAxiosError<APIErrorResponse>(error) && error.response) {
-    if (error.status === 403) {
-      console.error('토큰을 확인해주세요');
-    }
-
-    const { code } = error.response.data.message;
-
-    if (code) {
-      const errorMessage = ERROR_CODE_MESSAGE_MAP[code];
-
-      console.error(`공통 에러 메세지: ${errorMessage}`);
-    } else {
-      console.error('알 수 없는 오류가 발생했습니다.');
-    }
-  }
-
-  throw error;
-}
-
-export function HandleOpenModal(modalId: string) {
+export function handleOpenModal(modalId: string) {
   const modal = document.getElementById(modalId) as HTMLDialogElement | null;
 
   if (modal) {
@@ -40,26 +17,6 @@ export function handleCloseModal(modalId: string) {
   const modal = document.getElementById(modalId) as HTMLDialogElement | null;
 
   if (modal) modal.close();
-}
-
-// 모달 등 해당 컨텐츠 밖 클릭시 닫기 이벤트
-export function useClickOutsideClose(
-  ref: React.RefObject<HTMLElement | null>,
-  closeEvent: () => void,
-) {
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        closeEvent();
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [closeEvent, ref]);
 }
 
 // NOTE: 생년월일 포맷 자동으로 조정 ("YYYY-MM-DD")
@@ -76,6 +33,7 @@ interface ToastProps {
   message: string | React.ReactNode;
   type: 'success' | 'error' | 'warning' | 'info';
 }
+
 export const showToast = ({ message, type }: ToastProps) => {
   toast[type](message, {
     transition: Slide,
@@ -88,7 +46,7 @@ export const showToast = ({ message, type }: ToastProps) => {
   });
 };
 
-export function getErrorCode(err: APIErrorResponse) {
+export function getErrorCode(err: unknown) {
   if (axios.isAxiosError<APIErrorResponse>(err) && err.response) {
     return err.response.data.message;
   }
@@ -106,6 +64,12 @@ export const convertDateFormat = (date: string | Date) => {
   const day = dayjs(date);
 
   return day.format('YYYY.MM.DD');
+};
+
+export const convertTimeFormat = (date: string | Date) => {
+  const time = dayjs(date);
+
+  return time.format('HH:mm');
 };
 
 export const addComma = (number: number) => {

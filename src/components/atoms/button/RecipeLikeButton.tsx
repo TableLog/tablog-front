@@ -1,7 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddLikeRecipe, useCancelLikeRecipe, useGetRecipeLike } from '@/hooks/recipe.hooks';
+import {
+  useAddLikeRecipe,
+  useCancelLikeRecipe,
+  useGetRecipeLike,
+} from '@/hooks/queries/recipe.hooks';
 
 import { BoxIcon } from '../icon/BoxIcon';
 

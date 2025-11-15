@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import SplashScreen from '@/components/organisms/splash-screen/SplashScreen';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zustand/userStore';
 
 const Page = () => {
   const router = useRouter();

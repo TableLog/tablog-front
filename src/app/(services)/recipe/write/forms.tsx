@@ -9,7 +9,7 @@ import Tab from '@/components/atoms/tab/Tab';
 import { useTabsContext } from '@/components/atoms/tab/Tab.context';
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddRecipe } from '@/hooks/recipe.hooks';
+import { useAddRecipe } from '@/hooks/queries/recipe.hooks';
 import { zodAddRecipeForm } from '@/lib/zod/zodValidation';
 import { showToast } from '@/utils/functions';
 

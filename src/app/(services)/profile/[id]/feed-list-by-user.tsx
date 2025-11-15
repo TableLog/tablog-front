@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetFeedListByUserId } from '@/hooks/users.hooks';
+import { useGetFeedListByUserId } from '@/hooks/queries/users.hooks';
 import { ILogResponse } from '@/types/api';
 
 const FeedListByUser = () => {
@@ -29,7 +29,7 @@ const FeedListByUser = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="mt-4 text-center">
+    <div className="mt-4 px-5 text-center">
       {isLoading ? (
         <LoadingSpinner />
       ) : feedList?.pages?.[0]?.data.boards.length === 0 ? (

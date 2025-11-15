@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   FieldErrors,
   FieldValues,
@@ -21,7 +21,7 @@ import {
   NICKNAME_FORMAT,
   NICKNAME_REQUIRED,
 } from '@/constants/validation.constants';
-import { useCheckEmail, useCheckNickname } from '@/hooks/auth.hooks';
+import { useCheckEmail, useCheckNickname } from '@/hooks/queries/auth.hooks';
 import { EMAIL_REGEX, NICKNAME_REGEX } from '@/lib/zod/zodValidation';
 
 interface IDuplicateCheck<T extends FieldValues> {

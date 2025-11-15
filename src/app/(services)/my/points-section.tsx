@@ -2,7 +2,7 @@
 
 import Button from '@/components/atoms/button/Button';
 import { Text } from '@/components/atoms/text/Text';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 
 const PointsSection = () => {
   const { data: userData } = useGetUserInfo();

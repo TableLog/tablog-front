@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useDeleteLog } from '@/hooks/feed.hooks';
+import { useDeleteLog } from '@/hooks/queries/feed.hooks';
 import { showToast } from '@/utils/functions';
 
 interface UseFeedItemActionsOptions {

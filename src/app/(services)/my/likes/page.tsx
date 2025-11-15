@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Checkbox } from '@/components/atoms/input/Checkbox';
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
@@ -19,7 +19,7 @@ const LikesPage = () => {
   }
 
   return (
-    <div>
+    <div className="relative px-5 pb-4">
       <PageHeader title="좋아요 목록" back />
 
       <div className="mb-5 flex items-center justify-between">

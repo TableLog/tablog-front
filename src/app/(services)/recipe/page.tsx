@@ -8,7 +8,7 @@ import Tab from '@/components/atoms/tab/Tab';
 import Popup from '@/components/molecules/popup/Popup';
 import { NO_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_FILTER_OPTIONS } from '@/constants/options.constants';
-import { HandleOpenModal } from '@/utils/functions';
+import { handleOpenModal } from '@/utils/functions';
 
 import RecipeList from './recipe-list';
 
@@ -22,7 +22,7 @@ const RecipePage = () => {
   }
 
   function onMyRecipeEmpty() {
-    if (activeIndex === 1) HandleOpenModal(NO_RECIPE_MODAL);
+    if (activeIndex === 1) handleOpenModal(NO_RECIPE_MODAL);
   }
 
   return (

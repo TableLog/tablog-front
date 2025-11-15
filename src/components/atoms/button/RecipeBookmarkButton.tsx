@@ -1,4 +1,3 @@
-import React from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Bookmark from '@/components/molecules/bookmark/Bookmark';
@@ -7,7 +6,7 @@ import {
   useAddBookmarkRecipe,
   useCancelBookmarkRecipe,
   useGetRecipeBookmark,
-} from '@/hooks/recipe.hooks';
+} from '@/hooks/queries/recipe.hooks';
 
 interface RecipeBookmarkButtonProps {
   recipeId: number;

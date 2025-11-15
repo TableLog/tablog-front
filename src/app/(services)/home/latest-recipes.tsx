@@ -3,7 +3,7 @@ import Link from 'next/link';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import LatestRecipeSlider from '@/components/atoms/slider/LatestRecipeSlider';
 import { Text } from '@/components/atoms/text/Text';
-import { useGetSortedRecipe } from '@/hooks/recipe.hooks';
+import { useGetSortedRecipe } from '@/hooks/queries/recipe.hooks';
 
 const LatestRecipes = () => {
   const { data: latestRecipeList, isLoading } = useGetSortedRecipe(

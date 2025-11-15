@@ -92,7 +92,7 @@
 }
 
 .custom-toast {
-  @apply mt-4 min-h-8 w-[calc(100%-40px)] items-start break-keep rounded-[10px] p-2.5 text-sm text-grey01 shadow-md;
+  @apply mt-4 min-h-8 w-full items-center break-keep rounded-[10px] p-2.5 text-sm text-grey01 shadow-md;
 }
 
 .custom-toast .Toastify__toast-icon {

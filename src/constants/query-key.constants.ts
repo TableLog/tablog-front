@@ -71,6 +71,8 @@ export const USER_LIST_QUERY_KEY = 'user-list';
 export const RECIPE_LIST_BY_FILTER_QUERY_KEY = 'recipe-list-by-filter';
 export const RECIPE_LIST_BY_FOOD_QUERY_KEY = 'recipe-list-by-food';
 export const BOOKMARK_LIST_QUERY_KEY = 'bookmark-list';
+export const MY_CHAT_ROOMS_QUERY_KEY = 'my-chat-rooms';
+export const CHATS_QUERY_KEY = 'chats';
 
 // my
 export const MY_LIKE_LIST_QUERY_KEY = ['my-like-list'];

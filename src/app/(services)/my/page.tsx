@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
 import LoadingScreen from '@/components/atoms/loading/LoadingScreen';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zustand/userStore';
 
 import PointsSection from './points-section';
 import ProfileSection from './profile-section';
@@ -63,7 +63,7 @@ const MyPage = () => {
   }
 
   return (
-    <div>
+    <div className="relative px-5 py-4">
       <ProfileSection />
       <StaticsSection />
       <PointsSection />
