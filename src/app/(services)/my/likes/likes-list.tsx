@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 
 import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetMyLikesList } from '@/hooks/my.hooks';
+import { useGetMyLikesList } from '@/hooks/queries/my.hooks';
 
 import RecipeItem from '../../recipe/recipe-item';
 
@@ -32,7 +32,7 @@ const LikesList = ({ isOnlyPaid, selectedSortOption }: ILikesListProps) => {
   return (
     <div className="flex flex-col gap-4">
       {data?.recipes?.length === 0 ? (
-        <div className="flex aspect-square w-full flex-col items-center justify-center gap-10 text-center">
+        <div className="flex aspect-square w-full flex-col items-center justify-center gap-6 text-center">
           <div>좋아요 레시피가 존재하지 않습니다 </div>
 
           <Button href="/recipe">레시피 둘러보기</Button>

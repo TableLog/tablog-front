@@ -9,8 +9,8 @@ import RecipeCategory from '@/components/atoms/recipe-category/RecipeCategory';
 import Tab from '@/components/atoms/tab/Tab';
 import { Text } from '@/components/atoms/text/Text';
 import { CALORIE_OPTIONS, COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
-import { useGetRecipeByFilter } from '@/hooks/recipe.hooks';
-import { useFilterStore, useRecipeStore } from '@/lib/zutstand/recipeStore';
+import { useGetRecipeByFilter } from '@/hooks/queries/recipe.hooks';
+import { useFilterStore, useRecipeStore } from '@/lib/zustand/recipeStore';
 
 import RecipeItem from '../recipe/recipe-item';
 

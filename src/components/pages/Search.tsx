@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import RecipeItem from '@/app/(services)/recipe/recipe-item';
-import { useGetRecipeSearch } from '@/hooks/recipe.hooks';
+import { useGetRecipeSearch } from '@/hooks/queries/recipe.hooks';
 import useDebounce from '@/hooks/useDebounce';
 
 import { BoxIcon } from '../atoms/icon/BoxIcon';

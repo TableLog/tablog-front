@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import Button from '@/components/atoms/button/Button';
-import { HandleOpenModal } from '@/utils/functions';
+import { handleOpenModal } from '@/utils/functions';
 
 import Popup from './Popup';
 
@@ -14,7 +14,7 @@ const meta: Meta<typeof Popup> = {
   tags: ['autodocs'],
   render: (args) => (
     <div className="max-w-[420px]">
-      <Button onClick={() => HandleOpenModal('my_modal_2')}>open modal</Button>
+      <Button onClick={() => handleOpenModal('my_modal_2')}>open modal</Button>
 
       <Popup {...args}>
         <>

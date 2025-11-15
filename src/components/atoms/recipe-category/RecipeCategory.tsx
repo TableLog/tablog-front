@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { RECIPE_CATEGORY_LIST } from '@/constants/options.constants';
-import { useFilterStore } from '@/lib/zutstand/recipeStore';
+import { useFilterStore } from '@/lib/zustand/recipeStore';
 import { cn } from '@/utils/cn';
 
 const RecipeCategory = () => {

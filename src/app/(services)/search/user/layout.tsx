@@ -5,5 +5,5 @@ export default function SearchUserLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="relative px-5 py-4">{children}</div>;
+  return <div className="relative min-h-[calc(100dvh-60px)] px-5 pb-4">{children}</div>;
 }

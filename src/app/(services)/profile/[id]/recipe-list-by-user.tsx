@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetRecipeListByUserId } from '@/hooks/users.hooks';
+import { useGetRecipeListByUserId } from '@/hooks/queries/users.hooks';
 import { IRecipe } from '@/types/api';
 
 const RecipeListByUser = () => {
@@ -27,7 +27,7 @@ const RecipeListByUser = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="mt-4 text-center">
+    <div className="mt-4 px-5 text-center">
       {isLoading ? (
         <LoadingSpinner />
       ) : recipeList?.pages?.[0]?.data.contents.length === 0 ? (

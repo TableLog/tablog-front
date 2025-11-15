@@ -6,9 +6,9 @@ import dynamic from 'next/dynamic';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
 import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useGetLogList } from '@/hooks/feed.hooks';
-import { useScrollPosition } from '@/hooks/function.hooks';
+import { useGetLogList } from '@/hooks/queries/feed.hooks';
 import { useFeedItemActions } from '@/hooks/useFeedItemActions';
+import useScrollPosition from '@/hooks/useScrollPosition';
 import { ILogResponse } from '@/types/api';
 
 const FeedItem = dynamic(() => import('./feed-item'), {

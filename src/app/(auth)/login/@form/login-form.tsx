@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -11,9 +11,9 @@ import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { LOCAL_REMEMBER_EMAIL } from '@/constants/storage-key.constants';
-import { useEmailLogin } from '@/hooks/auth.hooks';
+import { useEmailLogin } from '@/hooks/queries/auth.hooks';
 import { zodLogin } from '@/lib/zod/zodValidation';
-import { useUserStore } from '@/lib/zutstand/userStore';
+import { useUserStore } from '@/lib/zustand/userStore';
 import { TLoginFormValues } from '@/types/api';
 
 const LoginForm = () => {
@@ -48,7 +48,6 @@ const LoginForm = () => {
           localStorage.removeItem(LOCAL_REMEMBER_EMAIL);
         }
       }
-
       router.push('/home');
     },
     onError: (error) => {

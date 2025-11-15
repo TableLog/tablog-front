@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetRecipeProcesses } from '@/hooks/recipe.hooks';
+import { useGetRecipeProcesses } from '@/hooks/queries/recipe.hooks';
 
 import Sequence from './sequence';
 

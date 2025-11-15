@@ -11,7 +11,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import StarRate from '@/components/molecules/star-rate/StarRate';
 import { RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddReview } from '@/hooks/recipe.hooks';
+import { useAddReview } from '@/hooks/queries/recipe.hooks';
 import { zodReviewForm } from '@/lib/zod/zodValidation';
 import { showToast } from '@/utils/functions';
 
@@ -49,7 +49,7 @@ const RecipeReviewWritePage = ({ params }: { params: Promise<{ id: string }> }) 
   }
 
   return (
-    <div className="relative px-5 py-4">
+    <div className="relative px-5 pb-4">
       <PageHeader className="mb-4" title="리뷰 작성" back backUrl={`/recipe/${recipeId}/review`} />
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">

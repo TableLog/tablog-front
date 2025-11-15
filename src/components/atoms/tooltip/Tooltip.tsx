@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
+import useClickOutsideClose from '@/hooks/useClickOutsideClose';
 import { cn } from '@/utils/cn';
-import { useClickOutsideClose } from '@/utils/functions';
 
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';

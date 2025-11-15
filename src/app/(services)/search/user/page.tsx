@@ -9,8 +9,8 @@ import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
-import { useFollowUser, useGetUserList, useUnfollowUser } from '@/hooks/users.hooks';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useFollowUser, useGetUserList, useUnfollowUser } from '@/hooks/queries/users.hooks';
+import { useLoginStore } from '@/lib/zustand/userStore';
 import { IUser } from '@/types/api';
 
 const SearchUserPage = () => {

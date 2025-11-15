@@ -18,7 +18,7 @@ import {
   useAddShoppingList,
   useGetShoppingList,
   useRemoveShoppingList,
-} from '@/hooks/shopping.hooks';
+} from '@/hooks/queries/shopping.hooks';
 import { zodShoppingListForm } from '@/lib/zod/zodValidation';
 import { IShoppingList } from '@/types/api';
 import { cn } from '@/utils/cn';
@@ -104,7 +104,7 @@ const ShoppingListPage = () => {
   };
 
   return (
-    <div>
+    <div className="relative px-5 pb-4">
       <PageHeader title="장보기 메모" back />
 
       <div className="mt-4">

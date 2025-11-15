@@ -10,7 +10,11 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import TextArea from '@/components/atoms/input/TextArea';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { RECIPE_MEMO_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddRecipeMemo, useGetRecipeMemo, useUpdateRecipeMemo } from '@/hooks/recipe.hooks';
+import {
+  useAddRecipeMemo,
+  useGetRecipeMemo,
+  useUpdateRecipeMemo,
+} from '@/hooks/queries/recipe.hooks';
 import { zodMemoForm } from '@/lib/zod/zodValidation';
 import { showToast } from '@/utils/functions';
 

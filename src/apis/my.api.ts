@@ -11,13 +11,7 @@ import instance from '@/utils/axios';
 export const getMyLikeList = async (params: IGetRecipeParams, option: IGetSortedRecipeOption) => {
   const { sortOption = 'latest' } = option;
 
-  try {
-    return await instance.get<IRecipeListResponse>(`${LIKE_LIST_URL}/${sortOption}`, {
-      params,
-    });
-  } catch (error) {
-    throw error;
-  }
+  return await instance.get<IRecipeListResponse>(`${LIKE_LIST_URL}/${sortOption}`, { params });
 };
 
 export const getMyBookmarkList = async (
@@ -26,61 +20,33 @@ export const getMyBookmarkList = async (
 ) => {
   const { sortOption = 'latest' } = option;
 
-  try {
-    return await instance.get<IRecipeListResponse>(`${BOOKMARK_LIST_URL}/${sortOption}`, {
-      params,
-    });
-  } catch (error) {
-    throw error;
-  }
+  return await instance.get<IRecipeListResponse>(`${BOOKMARK_LIST_URL}/${sortOption}`, { params });
 };
 
 export const requestExpertVerification = async () => {
-  try {
-    return await instance.post(EXPERT_URL);
-  } catch (error) {
-    throw error;
-  }
+  return await instance.post(EXPERT_URL);
 };
 
 export const getLicenseList = async (page: number, licenseType: string) => {
-  try {
-    return await instance.get(`${LICENSE_URL}?page=${page}&licenseType=${licenseType}`);
-  } catch (error) {
-    throw error;
-  }
+  return await instance.get(`${LICENSE_URL}`, { params: { page, licenseType } });
 };
 
 export const getLicenseCount = async () => {
-  try {
-    return await instance.get(`${LICENSE_URL}/count`);
-  } catch (error) {
-    throw error;
-  }
+  return await instance.get(`${LICENSE_URL}/count`);
 };
 
 export const uploadLicense = async (data: FormData) => {
-  try {
-    return await instance.post(`${LICENSE_URL}`, data);
-  } catch (error) {
-    throw error;
-  }
+  return await instance.post(`${LICENSE_URL}`, data);
 };
 
 export const getMyRecipeReview = async (userId: number | undefined, pageNumber: number) => {
-  try {
-    return await instance.get(
-      `${USER_INFO_URL}/${userId}/recipe-reviews?pageNumber=${pageNumber}&includeReplies=true`,
-    );
-  } catch (error) {
-    throw error;
-  }
+  return await instance.get(`${USER_INFO_URL}/${userId}/recipe-reviews`, {
+    params: { pageNumber, includeReplies: true },
+  });
 };
 
-export const getPointHistory = async (page: number, type: string) => {
-  try {
-    return await instance.get(`${USER_INFO_URL}/me/point?pageNumber=${page}&pointType=${type}`);
-  } catch (error) {
-    throw error;
-  }
+export const getPointHistory = async (pageNumber: number, pointType: string) => {
+  return await instance.get(`${USER_INFO_URL}/me/point`, {
+    params: { pageNumber, pointType },
+  });
 };

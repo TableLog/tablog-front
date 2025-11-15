@@ -5,8 +5,8 @@ import { useInView } from 'react-intersection-observer';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
-import { useGetMyRecipeReview } from '@/hooks/my.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
+import { useGetMyRecipeReview } from '@/hooks/queries/my.hooks';
 
 import ReviewItem from './review-item';
 
@@ -26,7 +26,7 @@ const ReviewsPage = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div>
+    <div className="relative px-5 pb-4">
       <PageHeader title="남긴 리뷰" back />
 
       <div>

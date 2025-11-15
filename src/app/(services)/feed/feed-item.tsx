@@ -13,11 +13,12 @@ import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
-import { useAddLike, useRemoveLike } from '@/hooks/feed.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
+import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
 import { ToggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
-import { convertDateFormat, HandleOpenModal } from '@/utils/functions';
+import { convertDateFormat, handleOpenModal } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
@@ -29,6 +30,8 @@ interface IFeedItemProps {
 const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const { data: userInfo } = useGetUserInfo();
 
   const { mutate: addLike } = useAddLike({
     onSuccess: (res) => {
@@ -54,18 +57,22 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     },
   });
 
-  const deleteMyFeed = useCallback(
+  const handleOptionClick = useCallback(
     (type: string) => {
-      if (type === '삭제하기') {
-        HandleOpenModal(DELETE_FEED_MODAL);
-        setLogId(Number(log.id));
-      }
-
-      if (type === '수정하기') {
-        router.push(`/feed/edit-log/${log.id}`);
+      switch (type) {
+        case '삭제하기':
+          handleOpenModal(DELETE_FEED_MODAL);
+          setLogId(Number(log.id));
+          break;
+        case '수정하기':
+          router.push(`/feed/edit-log/${log.id}`);
+          break;
+        case '채팅하기':
+          router.push(`/chat/${log.user_id}--${userInfo?.id}`);
+          break;
       }
     },
-    [log.id, router, setLogId],
+    [log.id, log.user_id, router, setLogId, userInfo?.id],
   );
 
   return (
@@ -85,7 +92,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
 
         <MoreOptions
           options={isMyPost ? FEED_MY_OPTIONS : FEED_OPTIONS}
-          buttonEvent={deleteMyFeed}
+          buttonEvent={handleOptionClick}
         />
       </div>
 

@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { Text } from '@/components/atoms/text/Text';
 import { FEED_COMMENT_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddComment, useAddCommentReply } from '@/hooks/feed.hooks';
+import { useAddComment, useAddCommentReply } from '@/hooks/queries/feed.hooks';
 import { cn } from '@/utils/cn';
 
 interface IChatInputProps {

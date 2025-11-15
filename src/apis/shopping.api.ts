@@ -3,25 +3,13 @@ import { AddShoppingListPayload, RemoveShoppingListParams } from '@/types/api';
 import instance from '@/utils/axios';
 
 export const addShoppingList = async (payload: AddShoppingListPayload) => {
-  try {
-    return await instance.post(SHOPPING_URL, payload);
-  } catch (error) {
-    throw error;
-  }
+  return await instance.post(SHOPPING_URL, payload);
 };
 
 export const removeShoppingList = async ({ shoppingListId }: RemoveShoppingListParams) => {
-  try {
-    return await instance.delete(`${SHOPPING_URL}/${shoppingListId}`);
-  } catch (error) {
-    throw error;
-  }
+  return await instance.delete(`${SHOPPING_URL}/${shoppingListId}`);
 };
 
 export const getShoppingList = async (page: number) => {
-  try {
-    return await instance.get(SHOPPING_URL, { params: { page } });
-  } catch (error) {
-    throw error;
-  }
+  return await instance.get(SHOPPING_URL, { params: { page } });
 };

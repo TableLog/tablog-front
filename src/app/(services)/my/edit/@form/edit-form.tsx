@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ import { Text } from '@/components/atoms/text/Text';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
-import { useUpdateUserInfo } from '@/hooks/auth.hooks';
+import { useUpdateUserInfo } from '@/hooks/queries/auth.hooks';
 import { zodEmailUserInfo, zodSocialUserInfo } from '@/lib/zod/zodValidation';
 import { TUserData, TUserInfoEditFormValues } from '@/types/api';
 import { getErrorCode, showToast } from '@/utils/functions';

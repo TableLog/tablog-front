@@ -10,7 +10,7 @@ import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { UNIT_OPTIONS } from '@/constants/options.constants';
-import { useSearchFood } from '@/hooks/food.hooks';
+import { useSearchFood } from '@/hooks/queries/food.hooks';
 import { zodShoppingListForm } from '@/lib/zod/zodValidation';
 
 interface IFoodsSearchProps {

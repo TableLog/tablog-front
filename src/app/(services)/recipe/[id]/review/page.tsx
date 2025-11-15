@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
-import { useGetReviews } from '@/hooks/recipe.hooks';
+import { useGetReviews } from '@/hooks/queries/recipe.hooks';
 
 import Review from './review';
 
@@ -28,7 +28,7 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const REVIEW_WRITE_PAGE_PATH = `/recipe/${recipeId}/review/write`;
 
   return (
-    <div className="relative px-5 py-4">
+    <div className="relative px-5 pb-4">
       <PageHeader className="mb-4" title="리뷰" back backUrl={`/recipe/${recipeId}`}>
         {!data?.isWriter && (
           <Button href={REVIEW_WRITE_PAGE_PATH} size="small">

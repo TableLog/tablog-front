@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
-import { useChangePassword } from '@/hooks/auth.hooks';
+import { useChangePassword } from '@/hooks/queries/auth.hooks';
 import { zodChangePassword } from '@/lib/zod/zodValidation';
-import { useUserStore } from '@/lib/zutstand/userStore';
+import { useUserStore } from '@/lib/zustand/userStore';
 import { TChangePasswordFormValues } from '@/types/api';
 import { showToast } from '@/utils/functions';
 
