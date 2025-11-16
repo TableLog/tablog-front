@@ -14,7 +14,12 @@ const eslintConfig = [
     extends: ['next/core-web-vitals', 'next/typescript', 'prettier'],
     plugins: ['prettier', 'react', 'simple-import-sort'],
     rules: {
-      'prettier/prettier': ['error'],
+      'prettier/prettier': [
+        'error',
+        {
+          endOfLine: 'auto', // 줄 바꿈 형식을 시스템에 맞게 자동으로 변환
+        },
+      ],
       'react/react-in-jsx-scope': 'off',
       'simple-import-sort/exports': 'error',
       'import/first': 'error',
