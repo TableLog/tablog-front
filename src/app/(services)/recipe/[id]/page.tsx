@@ -1,11 +1,12 @@
 'use client';
 
-import { use } from 'react';
+import { Suspense, use } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import Popup from '@/components/molecules/popup/Popup';
 import { ERecipeDetailSection } from '@/constants/common.constants';
 import { PAY_RECIPE_MODAL } from '@/constants/modal.constants';
@@ -17,7 +18,7 @@ import Description from './description';
 import Ingredient from './ingredient';
 import RecipeHeader from './recipe-header';
 
-const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) => {
   const queryClient = useQueryClient();
   const recipeId = parseInt(use(params).id);
   const { data: recipeInfo } = useGetRecipeDetail({
@@ -86,6 +87,20 @@ const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
         <p>포인트 200p를 차감하여 레시피를 열람하시겠습니까?.</p>
       </Popup>
     </div>
+  );
+};
+
+const RecipeDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-[calc(100dvh-92px)] items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      }
+    >
+      <RecipeDetailContent params={params} />
+    </Suspense>
   );
 };
 

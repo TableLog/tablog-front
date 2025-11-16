@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
@@ -10,7 +10,7 @@ import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
 import { useSocialLink } from '@/hooks/auth.hooks';
 import { showErrorToast } from '@/utils/functions';
 
-const SocialRegister = () => {
+const SocialLinkContent = () => {
   const queryClient = useQueryClient();
 
   const params = useSearchParams();
@@ -46,6 +46,21 @@ const SocialRegister = () => {
 
       <LoadingSpinner />
     </div>
+  );
+};
+
+const SocialRegister = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="absolute inset-0 flex h-screen w-screen flex-col items-center justify-center gap-4">
+          <LoadingSpinner />
+          <Text fontSize={14}>로딩중...</Text>
+        </div>
+      }
+    >
+      <SocialLinkContent />
+    </Suspense>
   );
 };
 

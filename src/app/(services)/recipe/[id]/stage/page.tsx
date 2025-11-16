@@ -1,14 +1,15 @@
 'use client';
-import { use } from 'react';
+import { Suspense, use } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import Carousel from '@/components/organisms/carousel/Carousel';
 import { useGetRecipeProcessBySequence } from '@/hooks/recipe.hooks';
 
-const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
+const RecipeProcessContent = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);
   const searchParams = useSearchParams();
   const sequenceParam = searchParams.get('sequence');
@@ -66,6 +67,20 @@ const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const RecipeProcessPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-[calc(100dvh-92px)] items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      }
+    >
+      <RecipeProcessContent params={params} />
+    </Suspense>
   );
 };
 

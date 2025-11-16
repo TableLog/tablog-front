@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
@@ -9,7 +9,7 @@ import { useSocialLogin } from '@/hooks/auth.hooks';
 import { useUserStore } from '@/lib/zutstand/userStore';
 import { showToast } from '@/utils/functions';
 
-const SocialRegister = () => {
+const SocialRegisterContent = () => {
   const params = useSearchParams();
   const { provider } = useParams();
   const router = useRouter();
@@ -59,6 +59,21 @@ const SocialRegister = () => {
 
       <Text fontSize={14}>소셜 로그인 진행중입니다</Text>
     </div>
+  );
+};
+
+const SocialRegister = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="absolute inset-0 flex h-screen w-screen flex-col items-center justify-center gap-4">
+          <LoadingSpinner />
+          <Text fontSize={14}>로딩중...</Text>
+        </div>
+      }
+    >
+      <SocialRegisterContent />
+    </Suspense>
   );
 };
 

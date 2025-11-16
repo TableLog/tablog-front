@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -30,7 +30,7 @@ interface RecipeHeaderProps {
   isMyRecipe?: boolean;
 }
 
-const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderProps) => {
+const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -155,6 +155,22 @@ const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderPr
         <p>레시피를 삭제하시면 되돌리실 수 없습니다.</p>
       </Popup>
     </>
+  );
+};
+
+const RecipeHeader = ({ recipeId, authorId, isMyRecipe = false }: RecipeHeaderProps) => {
+  return (
+    <Suspense
+      fallback={
+        <div className="sticky z-50 flex items-center justify-between px-5 py-4">
+          <button>
+            <BoxIcon name="arrow-back" size={24} color="white" />
+          </button>
+        </div>
+      }
+    >
+      <RecipeHeaderContent recipeId={recipeId} authorId={authorId} isMyRecipe={isMyRecipe} />
+    </Suspense>
   );
 };
 
