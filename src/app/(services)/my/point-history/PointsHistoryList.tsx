@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { IPointHistory } from '@/types/api';
-import { addComma, convertDateFormat } from '@/utils/functions';
+import { convertDateFormat } from '@/utils/functions';
 
 interface IPointsHistoryListProps {
   type: 'EARN' | 'USE';
@@ -43,7 +43,7 @@ const PointsHistoryList = ({
 
                 <div className="text-sm font-bold">
                   {type === 'EARN' ? `+ ` : `- `}
-                  {addComma(point.amount)}
+                  {point.amount.toLocaleString()}
                 </div>
               </div>
 

@@ -71,11 +71,3 @@ export const convertTimeFormat = (date: string | Date) => {
 
   return time.format('HH:mm');
 };
-
-export const addComma = (number: number) => {
-  if (typeof number === 'number') {
-    return number.toLocaleString();
-  }
-
-  return number;
-};
