@@ -195,7 +195,7 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} id="register-form">
-      <div className="mb-[56px] flex flex-col gap-2">
+      <div className="mb-8 flex flex-col gap-2">
         <CheckNicknameInput
           register={register}
           errors={errors}

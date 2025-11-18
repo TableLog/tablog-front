@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 
 import { Text } from '@/components/atoms/text/Text';
@@ -18,13 +17,13 @@ const LoginPage = () => {
       <div className="mb-[120px]">
         <LoginForm />
 
-        <div className="flex items-center justify-between text-xs">
+        <div className="flex items-center justify-between px-2">
           <Link href="/find-account">
-            <Text>이메일/비밀번호 찾기</Text>
+            <Text fontSize={14}>이메일/비밀번호 찾기</Text>
           </Link>
 
           <Link href="/register/local">
-            <Text>이메일 회원가입</Text>
+            <Text fontSize={14}>회원가입</Text>
           </Link>
         </div>
       </div>
