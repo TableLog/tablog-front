@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
-import FeedSlider from '@/components/atoms/slider/FeedSlider';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
+import Carousel from '@/components/organisms/carousel/Carousel';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
@@ -27,6 +27,7 @@ interface IFeedItemProps {
   contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
   isDetail?: boolean;
 }
+
 const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -96,7 +97,15 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         />
       </div>
 
-      <FeedSlider imageList={log.image_urls} />
+      {log.image_urls && (
+        <Carousel
+          imageList={log.image_urls.map((image, idx) => ({
+            src: image,
+            alt: `${log.title}-이미지-${idx}`,
+          }))}
+          half
+        />
+      )}
 
       <ul className="mb-2 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">

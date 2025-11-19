@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useRef } from 'react';
 import Image from 'next/image';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -11,18 +11,26 @@ interface CarouselProps extends ComponentProps<'div'> {
 }
 
 const Carousel = ({ className, imageList, half = false }: CarouselProps) => {
+  const paginationRef = useRef<HTMLDivElement | null>(null);
   const aspectClass = half ? 'aspect-[3/2]' : 'aspect-square';
 
   return (
-    <div className={cn('min-h-64', aspectClass, className)}>
+    <div className={cn(aspectClass, className)}>
       <Swiper
         className={cn(aspectClass, 'overflow-hidden rounded-[10px] border')}
         slidesPerView={1}
         modules={[Pagination]}
         pagination={{
           clickable: true,
-          el: '.custom-pagination',
+          el: paginationRef.current!,
         }}
+        // onSwiper={(swiper) => {
+        //   if (swiper.params.pagination && typeof swiper.params.pagination !== 'boolean') {
+        //     swiper.params.pagination.el = paginationRef.current;
+        //     swiper.pagination.init();
+        //     swiper.pagination.update();
+        //   }
+        // }}
       >
         {imageList.map((image) => (
           <SwiperSlide key={image.alt}>
@@ -40,26 +48,8 @@ const Carousel = ({ className, imageList, half = false }: CarouselProps) => {
           </SwiperSlide>
         ))}
       </Swiper>
-
       {/* 커스텀 페이지네이션 */}
-      <div className="custom-pagination mt-2 flex justify-center gap-1.5"></div>
-
-      <style jsx global>{`
-        .custom-pagination .swiper-pagination-bullet {
-          width: 10px;
-          height: 10px;
-          background-color: #acacac;
-          border-radius: 200px;
-          opacity: 1;
-          transition: width 0.3s;
-          margin: 0 !important;
-        }
-
-        .custom-pagination .swiper-pagination-bullet-active {
-          width: 24px;
-          background-color: #0e0e0e;
-        }
-      `}</style>
+      <div ref={paginationRef} className="custom-pagination mt-2 flex justify-center gap-1.5"></div>
     </div>
   );
 };
