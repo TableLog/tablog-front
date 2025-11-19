@@ -21,8 +21,8 @@ interface IAutoCompleteProps<T extends FieldValues> {
   lastListElement?: ReactNode;
   isFilteredBySearch?: boolean;
   onSearch?: (newKeyword: string) => void;
-  title?: boolean;
   onSelect?: (item: ItemType) => void;
+  title?: boolean;
 }
 
 const AutoComplete = <T extends FieldValues>({
@@ -33,8 +33,8 @@ const AutoComplete = <T extends FieldValues>({
   lastListElement,
   isFilteredBySearch = true,
   onSearch,
-  title = false,
   onSelect,
+  title = false,
 }: IAutoCompleteProps<T>) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
