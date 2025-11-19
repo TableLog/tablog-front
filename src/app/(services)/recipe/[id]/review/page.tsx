@@ -1,29 +1,21 @@
 'use client';
-import { use, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { use } from 'react';
 import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { useGetReviews } from '@/hooks/queries/recipe.hooks';
 
 import Review from './review';
 
 const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);
-  const { ref, inView } = useInView();
 
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetReviews({
     recipeId,
     pageNumber: 0,
   });
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   const REVIEW_WRITE_PAGE_PATH = `/recipe/${recipeId}/review/write`;
 
@@ -37,7 +29,12 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
         )}
       </PageHeader>
 
-      <div className="flex flex-col gap-8">
+      <InfiniteScroll
+        className="flex flex-col gap-8"
+        hasNextPage={hasNextPage}
+        isFetching={isFetching}
+        fetchNextPage={fetchNextPage}
+      >
         {data?.reviews.length === 0 ? (
           <div className="flex flex-col items-center gap-2">
             <p>작성된 리뷰가 없습니다</p>
@@ -55,14 +52,7 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
           ))
         )}
-
-        {isFetching && (
-          <div className="flex items-center justify-center">
-            <LoadingSpinner />
-          </div>
-        )}
-        <div ref={ref} />
-      </div>
+      </InfiniteScroll>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
-import { useInView } from 'react-intersection-observer';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import Button from '@/components/atoms/button/Button';
@@ -9,9 +8,9 @@ import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import AutoComplete from '@/components/atoms/input/AutoComplete';
 import SelectBox from '@/components/atoms/input/SelectBox';
 import TextInput from '@/components/atoms/input/TextInput';
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { UNIT_OPTIONS } from '@/constants/options.constants';
 import { useSearchFood } from '@/hooks/queries/food.hooks';
 import { zodIngredientInfo } from '@/lib/zod/zodValidation';
@@ -21,7 +20,6 @@ import { TRecipeFormValues } from './page';
 const foodMap = new Map();
 
 const IngredientForm = () => {
-  const { ref, inView } = useInView();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>('');
 
@@ -31,12 +29,6 @@ const IngredientForm = () => {
   });
 
   const foodList = data?.foods.map((food) => ({ id: food.id, title: food.foodName }));
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   const {
     control,
@@ -128,15 +120,11 @@ const IngredientForm = () => {
               name="foodId"
               control={control}
               lastListElement={
-                <>
-                  {isFetching && (
-                    <div className="flex items-center justify-center">
-                      <LoadingSpinner />
-                    </div>
-                  )}
-
-                  <div ref={ref} />
-                </>
+                <InfiniteScroll
+                  hasNextPage={hasNextPage}
+                  isFetching={isFetching}
+                  fetchNextPage={fetchNextPage}
+                />
               }
               isFilteredBySearch={false}
               onSearch={(keyword) => {

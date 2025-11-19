@@ -1,38 +1,29 @@
-import React, { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { useGetFeedListByUserId } from '@/hooks/queries/users.hooks';
 import { ILogResponse } from '@/types/api';
 
 const FeedListByUser = () => {
   const { id } = useParams();
 
-  const { ref, inView } = useInView();
-
   const {
     data: feedList,
-    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetching,
   } = useGetFeedListByUserId(Number(id));
 
-  useEffect(() => {
-    // 무한 스크롤
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
-
   return (
-    <div className="mt-4 px-5 text-center">
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : feedList?.pages?.[0]?.data.boards.length === 0 ? (
+    <InfiniteScroll
+      className="mt-4 px-5 text-center"
+      hasNextPage={hasNextPage}
+      isFetching={isFetching}
+      fetchNextPage={fetchNextPage}
+    >
+      {feedList?.pages?.[0]?.data.boards.length === 0 ? (
         <div>작성된 일기가 없습니다.</div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
@@ -56,25 +47,9 @@ const FeedListByUser = () => {
               </Link>
             ));
           })}
-
-          {isFetching && (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          )}
-
-          <div ref={ref as React.RefCallback<HTMLDivElement>} />
         </div>
       )}
-
-      {isFetching && (
-        <div className="flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      )}
-
-      <div ref={ref as React.RefCallback<HTMLDivElement>} />
-    </div>
+    </InfiniteScroll>
   );
 };
 

@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
-
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { IPointHistory } from '@/types/api';
 import { convertDateFormat } from '@/utils/functions';
 
@@ -19,16 +16,8 @@ const PointsHistoryList = ({
   isFetching,
   fetchNextPage,
 }: IPointsHistoryListProps) => {
-  const { ref, inView } = useInView();
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
-
   return (
-    <div>
+    <InfiniteScroll hasNextPage={hasNextPage} isFetching={isFetching} fetchNextPage={fetchNextPage}>
       {pointHistory?.length === 0 ? (
         <div className="text-center text-sm text-grey01">내역이 없습니다.</div>
       ) : (
@@ -52,15 +41,7 @@ const PointsHistoryList = ({
           );
         })
       )}
-
-      {isFetching && (
-        <div className="flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      )}
-
-      <div ref={ref as React.RefCallback<HTMLDivElement>} />
-    </div>
+    </InfiniteScroll>
   );
 };
 

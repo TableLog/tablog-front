@@ -1,7 +1,6 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useInView } from 'react-intersection-observer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
@@ -9,9 +8,9 @@ import { z } from 'zod';
 import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import FoodsSearch from '@/components/molecules/foods-search/FoodsSearch';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { UNIT_OPTIONS } from '@/constants/options.constants';
 import { SHOPPING_LIST_QUERY_KEY } from '@/constants/query-key.constants';
 import {
@@ -25,7 +24,6 @@ import { cn } from '@/utils/cn';
 
 const ShoppingListPage = () => {
   const searchRef = useRef<HTMLDivElement>(null!);
-  const { ref, inView } = useInView();
   const queryClient = useQueryClient();
 
   const [isChecked, setIsChecked] = useState<boolean[]>([false]);
@@ -68,13 +66,6 @@ const ShoppingListPage = () => {
     },
   });
 
-  useEffect(() => {
-    // 무한 스크롤
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
-
   const handleCheckboxChange = (id: number) => {
     setIsChecked((prev) => {
       const newChecked = [...prev];
@@ -107,54 +98,49 @@ const ShoppingListPage = () => {
     <div className="relative px-5 pb-4">
       <PageHeader title="장보기 메모" back />
 
-      <div className="mt-4">
-        <div>
-          {shoppingList?.pages?.map((page) =>
-            page?.data?.shoppingLists?.map((item: IShoppingList) => {
-              return (
-                <div key={item.id} className="mb-3 flex w-full items-center justify-between">
-                  <Checkbox
-                    label={
-                      <div className="relative flex w-full items-center gap-4">
-                        <div
-                          className={cn(
-                            isChecked[item.id] ? 'w-full' : 'w-0',
-                            'absolute left-0 top-1/2 h-[1px] bg-black/50 transition-all duration-300',
-                          )}
-                        />
+      <InfiniteScroll
+        className="mt-4"
+        hasNextPage={hasNextPage}
+        isFetching={isFetching}
+        fetchNextPage={fetchNextPage}
+      >
+        {shoppingList?.pages?.map((page) =>
+          page?.data?.shoppingLists?.map((item: IShoppingList) => {
+            return (
+              <div key={item.id} className="mb-3 flex w-full items-center justify-between">
+                <Checkbox
+                  label={
+                    <div className="relative flex w-full items-center gap-4">
+                      <div
+                        className={cn(
+                          isChecked[item.id] ? 'w-full' : 'w-0',
+                          'absolute left-0 top-1/2 h-[1px] bg-black/50 transition-all duration-300',
+                        )}
+                      />
 
-                        <div>{item.foodName}</div>
+                      <div>{item.foodName}</div>
 
-                        <div>
-                          {item.amount}
-                          {item.foodUnit}
-                        </div>
+                      <div>
+                        {item.amount}
+                        {item.foodUnit}
                       </div>
-                    }
-                    value={isChecked[item.id]}
-                    onChange={() => handleCheckboxChange(item.id)}
-                  />
+                    </div>
+                  }
+                  value={isChecked[item.id]}
+                  onChange={() => handleCheckboxChange(item.id)}
+                />
 
-                  <div
-                    className="h-[24px] cursor-pointer"
-                    onClick={() => handleRemoveShoppingList(item.id)}
-                  >
-                    <BoxIcon name="x" size={24} color="grey04" />
-                  </div>
+                <div
+                  className="h-[24px] cursor-pointer"
+                  onClick={() => handleRemoveShoppingList(item.id)}
+                >
+                  <BoxIcon name="x" size={24} color="grey04" />
                 </div>
-              );
-            }),
-          )}
-        </div>
-
-        {isFetching && (
-          <div className="flex items-center justify-center">
-            <LoadingSpinner />
-          </div>
+              </div>
+            );
+          }),
         )}
-
-        <div ref={ref as React.RefCallback<HTMLDivElement>} />
-      </div>
+      </InfiniteScroll>
 
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} id="shopping-list-form">
