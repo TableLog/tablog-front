@@ -29,6 +29,7 @@ const FeedList = () => {
       <DeleteFeedModal onDelete={handleDelete} />
 
       <InfiniteScroll
+        className="space-y-8"
         hasNextPage={hasNextPage}
         isFetching={isFetching}
         fetchNextPage={fetchNextPage}
