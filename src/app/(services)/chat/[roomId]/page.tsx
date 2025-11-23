@@ -49,7 +49,7 @@ function ChatPage() {
   } = useGetChats(roomId);
 
   const { isConnected, publishMessage } = useStomp({
-    brokerURL: 'ws://localhost:8080/ws/websocket',
+    brokerURL: `ws://${process.env.NEXT_PUBLIC_SERVER_URL}/ws/websocket`,
     publishDestination: '/pub/chat/send',
     subsribeDestination: `/sub/chat/room/${roomId}`,
     onMessageReceived: () => {

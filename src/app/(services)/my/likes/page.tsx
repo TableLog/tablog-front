@@ -19,7 +19,7 @@ const LikesPage = () => {
   }
 
   return (
-    <div className="relative px-5 pb-4">
+    <div className="relative min-h-[calc(100dvh-60px)] px-5 pb-4">
       <PageHeader title="좋아요 목록" back />
 
       <div className="mb-5 flex items-center justify-between">
