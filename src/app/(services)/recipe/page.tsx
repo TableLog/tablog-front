@@ -27,7 +27,7 @@ const RecipePage = () => {
 
   return (
     <>
-      <div className="pb-18 relative px-5 pt-4">
+      <div className="pb-18 relative min-h-[calc(100dvh-60px)] px-5 pt-4">
         <Tab
           handleTabChange={(index) => {
             setActiveIndex(index);
@@ -49,11 +49,11 @@ const RecipePage = () => {
             <Checkbox label="유료 레시피만 보기" value={isOnlyPaid} onChange={togglePaidCheckbox} />
           </div>
 
-          <Tab.Panel index={0} className="mb-[72px] flex flex-col gap-4">
+          <Tab.Panel index={0} className="mb-[72px]">
             <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
           </Tab.Panel>
 
-          <Tab.Panel index={1} className="mb-[72px] flex flex-col gap-4">
+          <Tab.Panel index={1} className="mb-[72px]">
             <RecipeList
               isOnlyPaid={isOnlyPaid}
               selectedSortOption={selectedSortOption}

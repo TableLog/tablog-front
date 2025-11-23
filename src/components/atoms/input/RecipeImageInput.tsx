@@ -137,7 +137,7 @@ const RecipeImageInput = <T extends FieldValues>({
                       }}
                       multiple
                     />
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-gray-500">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-grey07">
                       <BoxIcon name="image-add" size={32} color="grey01" />
 
                       <div className="flex flex-col">

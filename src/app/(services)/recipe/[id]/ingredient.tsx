@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useState } from 'react';
 
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { SERVING_OPTIONS } from '@/constants/options.constants';
 import { useGetRecipeIngredientList } from '@/hooks/queries/recipe.hooks';
 
@@ -13,7 +12,6 @@ interface IngredientProps {
 }
 
 const Ingredient = ({ recipeId }: IngredientProps) => {
-  const { ref, inView } = useInView();
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetRecipeIngredientList({
     recipeId,
     pageNumber: 0,
@@ -21,12 +19,6 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
 
   const [selectedServingOption, setSelectedServingOption] = useState(SERVING_OPTIONS[0]);
   const servingNumber = parseInt(selectedServingOption.name);
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <div className="flex flex-col items-center gap-4 rounded-[20px] bg-white01/20 px-4 py-6 text-white01 backdrop-blur-2xl">
@@ -41,7 +33,12 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
             value={selectedServingOption}
             onChange={(newOption) => setSelectedServingOption(newOption)}
           />
-          <div className="flex w-full flex-col gap-4">
+          <InfiniteScroll
+            className="flex w-full flex-col gap-4"
+            hasNextPage={hasNextPage}
+            isFetching={isFetching}
+            fetchNextPage={fetchNextPage}
+          >
             {data?.recipe.recipeFoods.map(
               ({ id, foodName, amount, recipeFoodUnit, cal, isChecked, shoppingListId }) => (
                 <div key={id} className="flex justify-between">
@@ -59,15 +56,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
                 </div>
               ),
             )}
-
-            {isFetching && (
-              <div className="flex items-center justify-center">
-                <LoadingSpinner />
-              </div>
-            )}
-
-            <div ref={ref} />
-          </div>
+          </InfiniteScroll>
         </>
       )}
     </div>

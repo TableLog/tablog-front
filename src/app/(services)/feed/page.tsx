@@ -9,7 +9,7 @@ import FeedList from './feed-list';
 
 const FeedPage = () => {
   return (
-    <div className="pb-16">
+    <div className="pb-16 pt-4">
       <div className="mb-4 flex justify-between gap-3">
         <Link
           href="/search/user"

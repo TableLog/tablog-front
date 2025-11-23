@@ -10,7 +10,7 @@ const HomePage = () => {
   const { isFilter } = useRecipeStore();
 
   return (
-    <div className="pb-[80px]">
+    <div className="min-h-[calc(100dvh-60px)] pb-[72px]">
       <section className="py-4">
         <FilterRecipes />
       </section>

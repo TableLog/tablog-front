@@ -34,7 +34,7 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ className, list, value, onC
   return (
     <div
       className={cn(
-        'transition-all-3 w-fit overflow-hidden rounded-[10px] border border-grey05 bg-white01 text-sm leading-none',
+        'transition-all-3 w-fit overflow-hidden rounded-[10px] border border-grey07 bg-white01 text-sm leading-none',
         isOpen ? 'max-h-[160px]' : 'max-h-[34px]',
         className,
       )}
@@ -60,7 +60,7 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ className, list, value, onC
           .map((option) => (
             <div
               key={option.id}
-              className="flex h-8 cursor-pointer items-center px-2 hover:bg-gray-100"
+              className="flex h-8 cursor-pointer items-center px-2 hover:bg-grey08"
               onClick={() => handleSelect(option)}
             >
               <Text fontSize={14} color="grey01" className="leading-none">

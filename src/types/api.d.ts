@@ -240,7 +240,6 @@ export interface IRecipeProcessResponse {
 // food
 export interface ISearchFoodParams {
   search?: string;
-  keyword?: string;
   page: number;
 }
 

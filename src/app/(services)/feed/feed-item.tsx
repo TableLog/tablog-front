@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
-import FeedSlider from '@/components/atoms/slider/FeedSlider';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
+import Carousel from '@/components/organisms/carousel/Carousel';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
@@ -27,6 +27,7 @@ interface IFeedItemProps {
   contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
   isDetail?: boolean;
 }
+
 const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -76,15 +77,15 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
   );
 
   return (
-    <div className="mb-6">
-      <div className="mb-1 flex justify-between">
-        <div className="mb-1.5 flex gap-1.5" onClick={() => router.push(`/profile/${log.user_id}`)}>
-          <ProfileImage src={log?.profileImgUrl} size={42} />
+    <div>
+      <div className="mb-2.5 flex items-center justify-between">
+        <div className="flex gap-2" onClick={() => router.push(`/profile/${log.user_id}`)}>
+          <ProfileImage src={log?.profileImgUrl} size={40} />
 
           <div className="flex flex-col justify-center">
             <Text fontSize={14}>{log.user}</Text>
 
-            <Text fontSize={14} color="grey04">
+            <Text fontSize={12} color="grey04">
               {convertDateFormat(log.createdAt)}
             </Text>
           </div>
@@ -96,7 +97,15 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         />
       </div>
 
-      <FeedSlider imageList={log.image_urls} />
+      {log.image_urls && (
+        <Carousel
+          imageList={log.image_urls.map((image, idx) => ({
+            src: image,
+            alt: `${log.title}-이미지-${idx}`,
+          }))}
+          half
+        />
+      )}
 
       <ul className="mb-2 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">

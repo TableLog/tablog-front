@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import RecipeItem from '@/app/(services)/recipe/recipe-item';
 import { useGetRecipeSearch } from '@/hooks/queries/recipe.hooks';
@@ -8,8 +7,8 @@ import useDebounce from '@/hooks/useDebounce';
 
 import { BoxIcon } from '../atoms/icon/BoxIcon';
 import SearchInput from '../atoms/input/SearchInput';
-import LoadingSpinner from '../atoms/loading/LoadingSpinner';
 import { Text } from '../atoms/text/Text';
+import InfiniteScroll from '../organisms/infinite-scroll/InfiniteScroll';
 import Content from '../templates/content/Content';
 
 interface SearchProps {
@@ -26,19 +25,12 @@ interface KeywordType {
 export default function Search({ handleCloseSearch }: SearchProps) {
   const [keyword, setKeyword] = useState<string>('');
   const [recentKeywords, setRecentKeywords] = useState<KeywordType[]>([]);
-  const { ref, inView } = useInView();
   const debouncedKeyword = useDebounce(keyword, 600);
 
   const { data, hasNextPage, fetchNextPage, isFetching, isPending } = useGetRecipeSearch({
     keyword: debouncedKeyword,
     pageNumber: 0,
   });
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
     const storageItem = localStorage.getItem(RECENT_KEYWORDS_KEY);
@@ -126,7 +118,12 @@ export default function Search({ handleCloseSearch }: SearchProps) {
           </div>
         </div>
       ) : (
-        <div className="mt-5 flex flex-grow flex-col gap-4 overflow-auto">
+        <InfiniteScroll
+          className="mt-5 flex flex-grow flex-col gap-4 overflow-auto"
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+        >
           {!isPending && data?.recipes.length === 0 ? (
             <Text fontSize={14}>{keyword}에 해당하는 검색 결과가 없습니다</Text>
           ) : (
@@ -134,14 +131,8 @@ export default function Search({ handleCloseSearch }: SearchProps) {
               <RecipeItem key={recipe.id} recipe={recipe} onClick={handleCloseSearch} />
             ))
           )}
-        </div>
+        </InfiniteScroll>
       )}
-      {isFetching && (
-        <div className="flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      )}
-      <div ref={ref} />
     </Content>
   );
 }
