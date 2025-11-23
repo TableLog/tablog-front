@@ -32,6 +32,7 @@ const InfoForm = () => {
           error={!!errors['recipeImage']}
         />
         <TextInput
+          className="mb-4"
           category="recipeName"
           name="recipeCreateRequestDto.title"
           register={register}

@@ -54,7 +54,9 @@ const TextArea = <T extends FieldValues>({
 
         {errors?.[category]?.message && (
           <div className="validator-hint mt-0 whitespace-pre-line">
-            <Text color="red01">{errors[category]?.message}</Text>
+            <Text color="red01" fontSize={14}>
+              {errors[category]?.message}
+            </Text>
           </div>
         )}
       </fieldset>

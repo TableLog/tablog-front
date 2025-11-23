@@ -20,6 +20,7 @@ import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
 interface ITextInputProps<T extends FieldValues> {
+  className?: string;
   category: keyof typeof LABEL_MAP;
   name?: Path<T>;
   errorMessage?: string;
@@ -39,6 +40,7 @@ interface ITextInputProps<T extends FieldValues> {
   successMessage?: string;
 }
 const TextInput = <T extends FieldValues>({
+  className,
   type = 'text',
   category,
   name,
@@ -72,7 +74,7 @@ const TextInput = <T extends FieldValues>({
   };
 
   return (
-    <fieldset className="fieldset min-h-[76px] gap-1 p-0">
+    <fieldset className={cn('fieldset min-h-[76px] gap-1 p-0', className)}>
       <legend className="fieldset-legend mb-1 p-0">
         <Text fontWeight="medium" fontSize={12} color="black03">
           {LABEL_MAP[category]}
