@@ -6,6 +6,9 @@ import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';
 
+import TextInfo from './TextInfo';
+import TextLabel from './TextLabel';
+
 interface ITextAreaProps<T extends FieldValues> {
   errors: FieldErrors<typeof LABEL_MAP>;
   category: keyof typeof LABEL_MAP;
@@ -31,9 +34,7 @@ const TextArea = <T extends FieldValues>({
     <div>
       <fieldset className="fieldset gap-1 p-0">
         <legend className="fieldset-legend mb-1 flex w-full justify-between p-0">
-          <Text fontWeight="medium" fontSize={12} color="black03">
-            {LABEL_MAP[category]}
-          </Text>
+          <TextLabel>{LABEL_MAP[category]}</TextLabel>
 
           <Text fontWeight="regular" fontSize={12}>
             {currentLength} / {maxLength}
@@ -52,13 +53,7 @@ const TextArea = <T extends FieldValues>({
           defaultValue={defaultValue}
         />
 
-        {errors?.[category]?.message && (
-          <div className="validator-hint mt-0 whitespace-pre-line">
-            <Text color="red01" fontSize={14}>
-              {errors[category]?.message}
-            </Text>
-          </div>
-        )}
+        {errors?.[category]?.message && <TextInfo isError>{errors[category]?.message}</TextInfo>}
       </fieldset>
     </div>
   );

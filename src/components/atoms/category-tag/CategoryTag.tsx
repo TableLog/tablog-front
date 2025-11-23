@@ -6,6 +6,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { Text } from '@/components/atoms/text/Text';
 import { cn } from '@/utils/cn';
 
+import TextInfo from '../input/TextInfo';
+import TextLabel from '../input/TextLabel';
+
 type CategoryType = string;
 
 interface CategoryTagProps<T extends FieldValues> extends ComponentProps<'div'> {
@@ -42,9 +45,7 @@ const CategoryTag = <T extends FieldValues>({
 
   return (
     <div className={cn('flex flex-col gap-2', className)} {...props}>
-      <Text fontSize={14} fontWeight="semiBold" color="black03">
-        카테고리 (중복 선택 가능)
-      </Text>
+      <TextLabel>카테고리 (중복 선택 가능)</TextLabel>
       <div className="flex flex-wrap gap-1.5">
         {categories.map((category) => {
           const isIncludedCategory = selectedCategories.includes(category);
@@ -73,11 +74,7 @@ const CategoryTag = <T extends FieldValues>({
       <ErrorMessage
         errors={errors}
         name={name as string}
-        render={({ message }) => (
-          <div className="validator-hint mt-0 whitespace-pre-line text-xs font-normal leading-[1.5] text-red01">
-            {message}
-          </div>
-        )}
+        render={({ message }) => <TextInfo isError>{message}</TextInfo>}
       />
     </div>
   );

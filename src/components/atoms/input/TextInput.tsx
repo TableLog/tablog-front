@@ -19,6 +19,9 @@ import Button from '../button/Button';
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
+import TextInfo from './TextInfo';
+import TextLabel from './TextLabel';
+
 interface ITextInputProps<T extends FieldValues> {
   className?: string;
   category: keyof typeof LABEL_MAP;
@@ -76,9 +79,7 @@ const TextInput = <T extends FieldValues>({
   return (
     <fieldset className={cn('fieldset min-h-[76px] gap-1 p-0', className)}>
       <legend className="fieldset-legend mb-1 p-0">
-        <Text fontWeight="medium" fontSize={12} color="black03">
-          {LABEL_MAP[category]}
-        </Text>
+        <TextLabel>{LABEL_MAP[category]}</TextLabel>
       </legend>
 
       <div className="flex gap-1">
@@ -138,18 +139,10 @@ const TextInput = <T extends FieldValues>({
       <ErrorMessage
         errors={errors}
         name={name ?? (category as string)}
-        render={({ message }) => (
-          <div className="validator-hint mt-0 whitespace-pre-line text-xs font-normal leading-[1.5] text-red01">
-            {message}
-          </div>
-        )}
+        render={({ message }) => <TextInfo isError>{message}</TextInfo>}
       />
 
-      {successMessage && (
-        <div className="validator-hint mt-0 whitespace-pre-line">
-          <Text color="grey03">{successMessage}</Text>
-        </div>
-      )}
+      {successMessage && <TextInfo>{successMessage}</TextInfo>}
     </fieldset>
   );
 };
