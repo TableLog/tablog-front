@@ -8,6 +8,7 @@ import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
+import TextInfo from '@/components/atoms/input/TextInfo';
 import TextInput from '@/components/atoms/input/TextInput';
 import { cn } from '@/utils/cn';
 
@@ -81,14 +82,11 @@ const RecipeForm = () => {
                   <ErrorMessage
                     errors={errors}
                     name={`dtos.${idx}.files`}
-                    render={({ message }) => (
-                      <div className="validator-hint mt-0 whitespace-pre-line text-sm font-normal leading-[1.5] text-red01">
-                        {message}
-                      </div>
-                    )}
+                    render={({ message }) => <TextInfo isError>{message}</TextInfo>}
                   />
                 </div>
                 <TextInput
+                  className="mb-4"
                   category="stepTitle"
                   name={`dtos.${idx}.rpTitle`}
                   register={register}

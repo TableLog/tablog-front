@@ -64,6 +64,8 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
     },
   });
 
+  console.log(errors);
+
   useEffect(() => {
     if (recipe) {
       reset({
@@ -114,6 +116,7 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
           defaultImages={defaultImages}
         />
         <TextInput
+          className="mb-4"
           category="recipeName"
           name="recipeCreateRequestDto.title"
           register={register}
@@ -128,7 +131,11 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
         />
       </div>
 
-      <CategoryTag name="recipeCreateRequestDto.recipeCategoryList" control={control} />
+      <CategoryTag
+        name="recipeCreateRequestDto.recipeCategoryList"
+        control={control}
+        errors={errors}
+      />
 
       <Range type="price" name="recipeCreateRequestDto.price" control={control} />
 
