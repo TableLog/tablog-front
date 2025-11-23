@@ -135,7 +135,7 @@ const TextInput = <T extends FieldValues>({
 
       <ErrorMessage
         errors={errors}
-        name={name as string}
+        name={name ?? (category as string)}
         render={({ message }) => (
           <div className="validator-hint mt-0 whitespace-pre-line text-xs font-normal leading-[1.5] text-red01">
             {message}
