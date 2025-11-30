@@ -1,8 +1,8 @@
 import React from 'react';
-import Image from 'next/image';
 
 import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
+import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
 import { useGetCommentList } from '@/hooks/feed.hooks';
 import { ICommentResponse } from '@/types/api';
@@ -21,7 +21,6 @@ const FeedCommentList = ({
     fetchNextPage,
     isFetchingNextPage,
   } = useGetCommentList(Number(id));
-
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -29,13 +28,7 @@ const FeedCommentList = ({
           page.data.boardComments.map((comment: ICommentResponse) => (
             <div key={comment.createdAt} className="flex items-start justify-between gap-1.5">
               <div>
-                <Image
-                  src={comment.profileImgUrl}
-                  alt="profile"
-                  width={36}
-                  height={36}
-                  className="rounded-full"
-                />
+                <ProfileImage src={comment?.profileImgUrl || ''} size={36} />
               </div>
 
               <div className="flex flex-1 flex-col gap-0.5">
@@ -47,11 +40,13 @@ const FeedCommentList = ({
                   </Text>
                 </div>
 
-                <Text fontSize={14}>{comment.content}</Text>
+                <Text fontSize={14} className="max-w-full text-wrap break-all">
+                  {comment.content}
+                </Text>
 
                 <div className="flex items-center justify-between">
                   <Text fontSize={12} color="grey04">
-                    답글 3개
+                    답글 {comment?.comment_count}개
                   </Text>
 
                   <Text fontSize={12} color="grey04" onClick={() => setIsReply(true)}>

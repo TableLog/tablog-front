@@ -19,7 +19,7 @@ export type TUserData = {
   email: string;
   marketingOptIn: boolean;
   nickname: string;
-  pointBalance: boolean;
+  pointBalance: number;
   profileImgUrl: string;
   provider: string;
   oAuthAccounts: Array<{ provider: string; email: string }>;
@@ -116,6 +116,7 @@ export interface ICommentResponse {
   profileImgUrl: string;
   user: string;
   createdAt: string;
+  comment_count: number;
 }
 
 export interface IFollowerListResponse {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Text } from '@/components/atoms/text/Text';
@@ -10,7 +10,11 @@ import { cn } from '@/utils/cn';
 const StaticsSection = () => {
   const router = useRouter();
 
-  const { data: userData } = useGetUserInfo();
+  const { data: userData, refetch } = useGetUserInfo();
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const userStaticsList = useMemo(() => {
     return [

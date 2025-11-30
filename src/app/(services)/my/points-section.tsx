@@ -3,6 +3,7 @@
 import Button from '@/components/atoms/button/Button';
 import { Text } from '@/components/atoms/text/Text';
 import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { addComma } from '@/utils/functions';
 
 const PointsSection = () => {
   const { data: userData } = useGetUserInfo();
@@ -13,7 +14,7 @@ const PointsSection = () => {
         <Text fontSize={14}>포인트</Text>
 
         <Text fontSize={16} fontWeight="semiBold">
-          {userData?.pointBalance}
+          {addComma(userData?.pointBalance)}
         </Text>
       </div>
 

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { Text } from '@/components/atoms/text/Text';
 
 import LoginForm from './@form/login-form';
-import { SocialButtons } from './social/SocialButtons';
 
 const LoginPage = () => {
   return (
@@ -36,7 +35,7 @@ const LoginPage = () => {
           </Text>
         </div>
 
-        <SocialButtons />
+        {/* <SocialButtons login /> */}
       </div>
 
       <div className="text-center">

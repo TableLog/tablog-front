@@ -13,6 +13,7 @@ import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
+import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddLike, useRemoveLike } from '@/hooks/feed.hooks';
 import { ToggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
@@ -35,6 +36,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
       if (res.status === 200) {
         try {
           ToggleLikeSuccess(log, queryClient);
+          queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, Number(log.id)] });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
         }
@@ -47,6 +49,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
       if (res.status === 200) {
         try {
           ToggleLikeSuccess(log, queryClient);
+          queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, Number(log.id)] });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
         }
@@ -72,7 +75,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     <div className="mb-6">
       <div className="mb-1 flex justify-between">
         <div className="mb-1.5 flex gap-1.5" onClick={() => router.push(`/profile/${log.user_id}`)}>
-          <ProfileImage src={log?.profileImgUrl} size={42} />
+          <ProfileImage src={log?.profileImgUrl || ''} size={42} />
 
           <div className="flex flex-col justify-center">
             <Text fontSize={14}>{log.user}</Text>

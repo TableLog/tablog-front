@@ -108,7 +108,9 @@ export const convertDateFormat = (date: string | Date) => {
   return day.format('YYYY.MM.DD');
 };
 
-export const addComma = (number: number) => {
+export const addComma = (number: number | undefined) => {
+  if (number === undefined) return '0';
+
   if (typeof number === 'number') {
     return number.toLocaleString();
   }

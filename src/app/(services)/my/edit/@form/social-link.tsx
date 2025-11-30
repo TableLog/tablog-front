@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { SocialButtons } from '@/app/(auth)/login/social/SocialButtons';
 import { Text } from '@/components/atoms/text/Text';
 import { TUserData } from '@/types/api';
 
@@ -9,30 +8,30 @@ interface ISocialLinkProps {
   userData: TUserData;
 }
 const SocialLink = ({ userData }: ISocialLinkProps) => {
-  function setRemainProviderCase(
-    accounts: Array<{
-      provider: string;
-      email: string;
-    }>,
-  ) {
-    if (accounts) {
-      if (accounts.length === 0) {
-        // 아무것도 연동 안 되어 있을 경우
-        return '';
-      }
+  // function setRemainProviderCase(
+  //   accounts: Array<{
+  //     provider: string;
+  //     email: string;
+  //   }>,
+  // ) {
+  //   if (accounts) {
+  //     if (accounts.length === 0) {
+  //       // 아무것도 연동 안 되어 있을 경우
+  //       return '';
+  //     }
 
-      const hasKakao = accounts.some((acc) => acc.provider === 'kakao');
-      const hasGoogle = accounts.some((acc) => acc.provider === 'google');
+  //     const hasKakao = accounts.some((acc) => acc.provider === 'kakao');
+  //     const hasGoogle = accounts.some((acc) => acc.provider === 'google');
 
-      // 둘 다 연동 되어 있을 경우
-      if (hasKakao && hasGoogle) return 'all';
+  //     // 둘 다 연동 되어 있을 경우
+  //     if (hasKakao && hasGoogle) return 'all';
 
-      // 카카오만 연동되어 있을 경우
-      if (hasKakao) return 'google';
-      // 구글만 연동되어 있을 경우
-      if (hasGoogle) return 'kakao';
-    }
-  }
+  //     // 카카오만 연동되어 있을 경우
+  //     if (hasKakao) return 'google';
+  //     // 구글만 연동되어 있을 경우
+  //     if (hasGoogle) return 'kakao';
+  //   }
+  // }
 
   return (
     <section className="mt-12">
@@ -66,7 +65,7 @@ const SocialLink = ({ userData }: ISocialLinkProps) => {
         </div>
       )}
 
-      {setRemainProviderCase(userData?.oAuthAccounts) !== 'all' && (
+      {/* {setRemainProviderCase(userData?.oAuthAccounts) !== 'all' && (
         <div>
           <Text fontSize={12} fontWeight="medium" className="mb-4">
             계정 연동하기
@@ -74,7 +73,7 @@ const SocialLink = ({ userData }: ISocialLinkProps) => {
 
           <SocialButtons provider={setRemainProviderCase(userData?.oAuthAccounts)} link />
         </div>
-      )}
+      )} */}
     </section>
   );
 };

@@ -30,14 +30,14 @@ const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }
   const { mutate: unfollowUser } = useUnfollowUser(Number(id));
 
   const onClickFollowButton = useCallback(
-    (isFollowed: boolean) => {
+    (isFollowed: boolean, userId: number) => {
       if (isFollowed) {
-        unfollowUser(Number(id));
+        unfollowUser(userId);
       } else {
-        followUser(Number(id));
+        followUser(userId);
       }
     },
-    [followUser, id, unfollowUser],
+    [followUser, unfollowUser],
   );
 
   return (
@@ -61,7 +61,7 @@ const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }
                   <Button
                     size="small"
                     buttonColor={users?.isFollowed ? 'grey06' : 'primary'}
-                    onClick={() => onClickFollowButton(users?.isFollowed)}
+                    onClick={() => onClickFollowButton(users?.isFollowed, users?.userId)}
                   >
                     {users?.isFollowed ? '팔로우 취소' : '팔로우'}
                   </Button>

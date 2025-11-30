@@ -65,15 +65,18 @@ export function useFollowUser(id: number) {
   });
 }
 
-export function useUnfollowUser(id: number) {
+export function useUnfollowUser(userId: number | undefined) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => unfolloUser(id),
+    mutationFn: (userId: number) => unfolloUser(userId),
     onSuccess: (res) => {
       if (res.status === 201 || res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(id)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(id)] });
+        queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWING_COUNT_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWER_LIST_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWING_LIST_QUERY_KEY, Number(userId)] });
         queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
       }
     },
