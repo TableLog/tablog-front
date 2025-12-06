@@ -1,14 +1,13 @@
 'use client';
 
-import React from 'react';
 import dynamic from 'next/dynamic';
 
 import ChatInput from '@/components/molecules/chat/ChatInput';
 import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
-import { useGetLog } from '@/hooks/feed.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
+import { useGetLog } from '@/hooks/queries/feed.hooks';
 import { useFeedDetailActions } from '@/hooks/useFeedDetailActions';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zustand/userStore';
 
 import FeedCommentList from './feed-comment-list';
 

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImageInput from '@/components/molecules/profile-image-input/ProfileImageInput';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { TUserData } from '@/types/api';
 
 import UserInfoEditForm from './@form/edit-form';
@@ -23,7 +23,7 @@ const EditPage = () => {
   }, [userData]);
 
   return (
-    <div>
+    <div className="relative px-5 pb-4">
       <PageHeader title="계정 관리" back backUrl="/my" />
 
       <div className="mb-8 mt-4 flex items-center justify-center">

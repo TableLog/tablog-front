@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use } from 'react';
+import { use } from 'react';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 
@@ -12,7 +12,7 @@ const ProfilePage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div>
-      <div className="py-4">
+      <div className="pb-4">
         <div className="px-5">
           <PageHeader title="프로필 상세" back />
         </div>

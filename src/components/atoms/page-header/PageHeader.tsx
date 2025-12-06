@@ -18,7 +18,9 @@ const PageHeader = ({ className, backUrl, back, title, children }: IPageHeader) 
   const router = useRouter();
 
   return (
-    <div className={cn('sticky top-[16px] z-50 flex items-center justify-between pb-4', className)}>
+    <div
+      className={cn('sticky top-0 z-50 flex items-center justify-between bg-white py-4', className)}
+    >
       {back && (
         <div
           className="flex items-center"

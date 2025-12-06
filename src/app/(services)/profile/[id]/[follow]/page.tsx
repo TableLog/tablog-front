@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use, useCallback } from 'react';
+import { use, useCallback } from 'react';
 import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
@@ -12,8 +12,8 @@ import {
   useGetFollowerList,
   useGetFollowingList,
   useUnfollowUser,
-} from '@/hooks/users.hooks';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+} from '@/hooks/queries/users.hooks';
+import { useLoginStore } from '@/lib/zustand/userStore';
 import { IFollowerListResponse } from '@/types/api';
 
 const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }> }) => {
@@ -41,7 +41,7 @@ const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }
   );
 
   return (
-    <div className="px-5 py-4">
+    <div className="px-5 pb-4">
       <PageHeader title={`${isFollower ? '팔로워' : '팔로잉'}`} back />
 
       <div>

@@ -8,6 +8,9 @@ import { cn } from '@/utils/cn';
 
 import { Text } from '../text/Text';
 
+import TextInfo from './TextInfo';
+import TextLabel from './TextLabel';
+
 interface ISelectBoxProps<T extends FieldValues> {
   category: keyof typeof LABEL_MAP;
   name?: Path<T>;
@@ -52,9 +55,7 @@ const SelectBox = <T extends FieldValues>({
   return (
     <div className="dropdown w-full">
       <legend className="fieldset-legend mb-1 p-0">
-        <Text fontWeight="medium" fontSize={12} color="black03">
-          {LABEL_MAP[category]}
-        </Text>
+        <TextLabel>{LABEL_MAP[category]}</TextLabel>
       </legend>
 
       <label
@@ -98,11 +99,7 @@ const SelectBox = <T extends FieldValues>({
         })}
       </ul>
 
-      {error && (
-        <div className="validator-hint mt-0">
-          <Text color="red01">{error.message}</Text>
-        </div>
-      )}
+      {error && <TextInfo isError>{error.message}</TextInfo>}
     </div>
   );
 };

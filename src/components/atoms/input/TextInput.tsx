@@ -19,7 +19,11 @@ import Button from '../button/Button';
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
+import TextInfo from './TextInfo';
+import TextLabel from './TextLabel';
+
 interface ITextInputProps<T extends FieldValues> {
+  className?: string;
   category: keyof typeof LABEL_MAP;
   name?: Path<T>;
   errorMessage?: string;
@@ -39,6 +43,7 @@ interface ITextInputProps<T extends FieldValues> {
   successMessage?: string;
 }
 const TextInput = <T extends FieldValues>({
+  className,
   type = 'text',
   category,
   name,
@@ -72,11 +77,9 @@ const TextInput = <T extends FieldValues>({
   };
 
   return (
-    <fieldset className="fieldset min-h-[76px] gap-1 p-0">
+    <fieldset className={cn('fieldset min-h-[76px] gap-1 p-0', className)}>
       <legend className="fieldset-legend mb-1 p-0">
-        <Text fontWeight="medium" fontSize={12} color="black03">
-          {LABEL_MAP[category]}
-        </Text>
+        <TextLabel>{LABEL_MAP[category]}</TextLabel>
       </legend>
 
       <div className="flex gap-1">
@@ -136,20 +139,10 @@ const TextInput = <T extends FieldValues>({
       <ErrorMessage
         errors={errors}
         name={(name ?? category) as string}
-        render={({ message }) => {
-          return (
-            <div className="validator-hint mt-0 whitespace-pre-line text-xs font-normal leading-[1.5] text-red01">
-              {message}
-            </div>
-          );
-        }}
+        render={({ message }) => <TextInfo isError>{message}</TextInfo>}
       />
 
-      {successMessage && (
-        <div className="validator-hint mt-0 whitespace-pre-line">
-          <Text color="grey03">{successMessage}</Text>
-        </div>
-      )}
+      {successMessage && <TextInfo>{successMessage}</TextInfo>}
     </fieldset>
   );
 };

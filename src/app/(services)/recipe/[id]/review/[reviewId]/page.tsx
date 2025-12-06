@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use } from 'react';
+import { use } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -14,7 +14,7 @@ import {
   useDeleteRecipeReview,
   useGetRecipeDetail,
   useGetRecipeReviewDetail,
-} from '@/hooks/recipe.hooks';
+} from '@/hooks/queries/recipe.hooks';
 import { showToast } from '@/utils/functions';
 
 import RecipeItem from '../../../recipe-item';
@@ -58,7 +58,7 @@ const ReviewDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
   return (
-    <div className="relative px-5 py-4">
+    <div className="relative px-5 pb-4">
       <Popup
         id={DELETE_REVIEW_MODAL}
         title="리뷰 삭제"

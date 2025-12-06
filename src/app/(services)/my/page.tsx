@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
 import LoadingScreen from '@/components/atoms/loading/LoadingScreen';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+import { useLoginStore } from '@/lib/zustand/userStore';
 
 import PointsSection from './points-section';
 import ProfileSection from './profile-section';
@@ -46,7 +46,7 @@ const MyPage = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="flex h-[calc(100dvh-92px)] w-full items-center justify-center">
+      <div className="flex h-[calc(100dvh-60px)] w-full items-center justify-center">
         <div className="flex -translate-y-full flex-col items-center gap-6">
           <div>🙇 로그인 후 이용해주세요.</div>
           <div className="flex gap-3">
@@ -63,7 +63,7 @@ const MyPage = () => {
   }
 
   return (
-    <div>
+    <div className="relative px-5 py-4">
       <ProfileSection />
       <StaticsSection />
       <PointsSection />

@@ -8,7 +8,7 @@ import Tab from '@/components/atoms/tab/Tab';
 import Popup from '@/components/molecules/popup/Popup';
 import { NO_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_FILTER_OPTIONS } from '@/constants/options.constants';
-import { HandleOpenModal } from '@/utils/functions';
+import { handleOpenModal } from '@/utils/functions';
 
 import RecipeList from './recipe-list';
 
@@ -22,12 +22,12 @@ const RecipePage = () => {
   }
 
   function onMyRecipeEmpty() {
-    if (activeIndex === 1) HandleOpenModal(NO_RECIPE_MODAL);
+    if (activeIndex === 1) handleOpenModal(NO_RECIPE_MODAL);
   }
 
   return (
     <>
-      <div className="pb-18 relative px-5 pt-4">
+      <div className="pb-18 relative min-h-[calc(100dvh-60px)] px-5 pt-4">
         <Tab
           handleTabChange={(index) => {
             setActiveIndex(index);
@@ -49,11 +49,11 @@ const RecipePage = () => {
             <Checkbox label="유료 레시피만 보기" value={isOnlyPaid} onChange={togglePaidCheckbox} />
           </div>
 
-          <Tab.Panel index={0} className="mb-[72px] flex flex-col gap-4">
+          <Tab.Panel index={0} className="mb-[72px]">
             <RecipeList isOnlyPaid={isOnlyPaid} selectedSortOption={selectedSortOption} />
           </Tab.Panel>
 
-          <Tab.Panel index={1} className="mb-[72px] flex flex-col gap-4">
+          <Tab.Panel index={1} className="mb-[72px]">
             <RecipeList
               isOnlyPaid={isOnlyPaid}
               selectedSortOption={selectedSortOption}

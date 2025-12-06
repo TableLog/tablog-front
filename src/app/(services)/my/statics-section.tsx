@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Text } from '@/components/atoms/text/Text';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { cn } from '@/utils/cn';
 
 const StaticsSection = () => {

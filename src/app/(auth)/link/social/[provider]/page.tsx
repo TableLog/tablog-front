@@ -1,13 +1,13 @@
 'use client';
 
-import React, { Suspense, useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
-import { useSocialLink } from '@/hooks/auth.hooks';
+import { useSocialLink } from '@/hooks/queries/auth.hooks';
 import { showErrorToast } from '@/utils/functions';
 
 const SocialLinkContent = () => {

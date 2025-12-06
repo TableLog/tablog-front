@@ -5,17 +5,17 @@ import Link from 'next/link';
 import Button from '@/components/atoms/button/Button';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 
 const ProfileSection = () => {
   const { data: userData } = useGetUserInfo();
 
   return (
     <section className="mb-4 flex items-center justify-between">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <ProfileImage src={userData?.profileImgUrl} size={50} />
 
-        <Text fontSize={14}>{userData?.nickname}</Text>
+        <Text fontSize={16}>{userData?.nickname}</Text>
       </div>
 
       <Link href="/my/edit">

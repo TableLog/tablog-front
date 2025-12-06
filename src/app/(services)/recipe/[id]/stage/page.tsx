@@ -7,7 +7,7 @@ import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import Carousel from '@/components/organisms/carousel/Carousel';
-import { useGetRecipeProcessBySequence } from '@/hooks/recipe.hooks';
+import { useGetRecipeProcessBySequence } from '@/hooks/queries/recipe.hooks';
 
 const RecipeProcessContent = ({ params }: { params: Promise<{ id: string }> }) => {
   const recipeId = parseInt(use(params).id);
@@ -24,7 +24,7 @@ const RecipeProcessContent = ({ params }: { params: Promise<{ id: string }> }) =
   const currentProcess = recipeProcess.data.recipeProcesses;
 
   return (
-    <div className="flex h-[calc(100dvh-92px)] flex-col justify-between gap-8 px-5 py-4">
+    <div className="flex min-h-[calc(100dvh-60px)] flex-col justify-between gap-8 px-5 py-4">
       <div className="flex flex-grow flex-col overflow-auto">
         <div className="mb-3 font-semibold">
           {sequence + 1}단계. {currentProcess.rpTitle}

@@ -5,7 +5,7 @@ interface UseStompProps {
   brokerURL: string;
   publishDestination: string;
   subsribeDestination: string;
-  onMessageReceived: (message: string) => void;
+  onMessageReceived?: (message: string) => void;
 }
 
 function useStomp({
@@ -24,7 +24,7 @@ function useStomp({
         if (!clientRef.current) return;
         setIsConnected(true);
         clientRef.current.subscribe(subsribeDestination, (message) => {
-          onMessageReceived(message.body);
+          onMessageReceived?.(message.body);
         });
       },
     });
@@ -36,11 +36,10 @@ function useStomp({
       clientRef.current.deactivate();
       clientRef.current = null;
     };
-  }, [brokerURL, onMessageReceived, subsribeDestination]);
+  }, []);
 
-  const publishMessage = <T>(data: T) => {
+  const publishMessage = (data: unknown) => {
     if (!clientRef.current) return;
-
     clientRef.current.publish({
       destination: publishDestination,
       body: JSON.stringify(data),

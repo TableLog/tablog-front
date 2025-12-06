@@ -23,11 +23,12 @@ const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => 
           <BoxIcon name="dots-vertical-rounded" size={24} color={iconColor} />
         </button>
 
-        <ul tabIndex={0} className="menu dropdown-content z-[1] rounded-box bg-base-100 shadow-sm">
+        <ul tabIndex={0} className="menu dropdown-content z-10 rounded-xl bg-base-100 shadow-sm">
           {options.map((option) => {
             return (
               <li key={option.id}>
                 <button
+                  className="px-3 py-1.5"
                   onClick={(e) => {
                     buttonEvent?.(option.title, e);
                   }}

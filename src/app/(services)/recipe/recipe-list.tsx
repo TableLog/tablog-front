@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetSortedRecipe } from '@/hooks/recipe.hooks';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
+import { useGetSortedRecipe } from '@/hooks/queries/recipe.hooks';
 
 import RecipeItem from './recipe-item';
 
@@ -19,8 +18,6 @@ const RecipeList = ({
   isMine = false,
   onRecipeNotExist,
 }: RecipeListProps) => {
-  const { ref, inView } = useInView();
-
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetSortedRecipe(
     {
       isPaid: isOnlyPaid,
@@ -28,12 +25,6 @@ const RecipeList = ({
     },
     { sortOption: selectedSortOption.name, isMine },
   );
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   useEffect(() => {
     if (data && data.recipes.length === 0) onRecipeNotExist?.();
@@ -44,17 +35,14 @@ const RecipeList = ({
       {data?.recipes?.length === 0 ? (
         <div className="pb-8 text-center">레시피가 존재하지 않습니다</div>
       ) : (
-        <>
+        <InfiniteScroll
+          className="flex flex-col gap-4"
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+        >
           {data?.recipes?.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />)}
-
-          {isFetching && (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          )}
-
-          <div ref={ref} />
-        </>
+        </InfiniteScroll>
       )}
     </>
   );

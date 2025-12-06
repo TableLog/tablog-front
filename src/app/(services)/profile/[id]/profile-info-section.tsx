@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
@@ -12,8 +12,8 @@ import {
   useGetFollowingCount,
   useGetProfileInfo,
   useUnfollowUser,
-} from '@/hooks/users.hooks';
-import { useLoginStore } from '@/lib/zutstand/userStore';
+} from '@/hooks/queries/users.hooks';
+import { useLoginStore } from '@/lib/zustand/userStore';
 import { cn } from '@/utils/cn';
 
 interface IProfileInfoSectionProps {

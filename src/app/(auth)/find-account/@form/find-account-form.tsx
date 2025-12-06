@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/atoms/button/Button';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
-import { useFindAccount } from '@/hooks/auth.hooks';
+import { useFindAccount } from '@/hooks/queries/auth.hooks';
 import { zodFindAccount } from '@/lib/zod/zodValidation';
 import { TFindAccountFormValues } from '@/types/api';
 

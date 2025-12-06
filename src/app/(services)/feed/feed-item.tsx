@@ -8,17 +8,18 @@ import { useRouter } from 'next/navigation';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
-import FeedSlider from '@/components/atoms/slider/FeedSlider';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
+import Carousel from '@/components/organisms/carousel/Carousel';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
-import { useAddLike, useRemoveLike } from '@/hooks/feed.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
+import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
 import { ToggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
-import { convertDateFormat, HandleOpenModal } from '@/utils/functions';
+import { convertDateFormat, handleOpenModal } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
@@ -27,9 +28,12 @@ interface IFeedItemProps {
   contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
   isDetail?: boolean;
 }
+
 const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const { data: userInfo } = useGetUserInfo();
 
   const { mutate: addLike } = useAddLike({
     onSuccess: (res) => {
@@ -57,30 +61,34 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     },
   });
 
-  const deleteMyFeed = useCallback(
+  const handleOptionClick = useCallback(
     (type: string) => {
-      if (type === '삭제하기') {
-        HandleOpenModal(DELETE_FEED_MODAL);
-        setLogId(Number(log.id));
-      }
-
-      if (type === '수정하기') {
-        router.push(`/feed/edit-log/${log.id}`);
+      switch (type) {
+        case '삭제하기':
+          handleOpenModal(DELETE_FEED_MODAL);
+          setLogId(Number(log.id));
+          break;
+        case '수정하기':
+          router.push(`/feed/edit-log/${log.id}`);
+          break;
+        case '채팅하기':
+          router.push(`/chat/${log.user_id}--${userInfo?.id}`);
+          break;
       }
     },
-    [log.id, router, setLogId],
+    [log.id, log.user_id, router, setLogId, userInfo?.id],
   );
 
   return (
-    <div className="mb-6">
-      <div className="mb-1 flex justify-between">
-        <div className="mb-1.5 flex gap-1.5" onClick={() => router.push(`/profile/${log.user_id}`)}>
-          <ProfileImage src={log?.profileImgUrl || ''} size={42} />
+    <div>
+      <div className="mb-2.5 flex items-center justify-between">
+        <div className="flex gap-2" onClick={() => router.push(`/profile/${log.user_id}`)}>
+          <ProfileImage src={log?.profileImgUrl || ''} size={40} />
 
           <div className="flex flex-col justify-center">
             <Text fontSize={14}>{log.user}</Text>
 
-            <Text fontSize={14} color="grey04">
+            <Text fontSize={12} color="grey04">
               {convertDateFormat(log.createdAt)}
             </Text>
           </div>
@@ -88,11 +96,19 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
 
         <MoreOptions
           options={isMyPost ? FEED_MY_OPTIONS : FEED_OPTIONS}
-          buttonEvent={deleteMyFeed}
+          buttonEvent={handleOptionClick}
         />
       </div>
 
-      <FeedSlider imageList={log.image_urls} />
+      {log.image_urls && (
+        <Carousel
+          imageList={log.image_urls.map((image, idx) => ({
+            src: image,
+            alt: `${log.title}-이미지-${idx}`,
+          }))}
+          half
+        />
+      )}
 
       <ul className="mb-2 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">

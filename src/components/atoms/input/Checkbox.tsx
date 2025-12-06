@@ -8,13 +8,14 @@ import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
 interface ICheckboxPros {
+  className?: string;
   label: string | React.ReactNode;
   value: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Checkbox = ({ label, value, onChange }: ICheckboxPros) => {
+const Checkbox = ({ className, label, value, onChange }: ICheckboxPros) => {
   return (
-    <div className="flex">
+    <div className={cn('flex', className)}>
       <label className="fieldset-label inline-flex gap-1.5">
         <input
           checked={value}

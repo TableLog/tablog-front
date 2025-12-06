@@ -1,23 +1,21 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 
 import CategoryTab from '@/components/atoms/category-tab/CategoryTab';
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import RecipeCategory from '@/components/atoms/recipe-category/RecipeCategory';
 import Tab from '@/components/atoms/tab/Tab';
 import { Text } from '@/components/atoms/text/Text';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { CALORIE_OPTIONS, COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
-import { useGetRecipeByFilter } from '@/hooks/recipe.hooks';
-import { useFilterStore, useRecipeStore } from '@/lib/zutstand/recipeStore';
+import { useGetRecipeByFilter } from '@/hooks/queries/recipe.hooks';
+import { useFilterStore, useRecipeStore } from '@/lib/zustand/recipeStore';
 
 import RecipeItem from '../recipe/recipe-item';
 
 import FilterRecipesFood from './filter-recipes-food';
 
 const FilterRecipes = () => {
-  const { ref, inView } = useInView();
   const { setIsFilter } = useRecipeStore();
 
   const { filterCondition } = useFilterStore();
@@ -36,12 +34,6 @@ const FilterRecipes = () => {
       setIsFilter(true);
     }
   }, [filterCondition, setIsFilter]);
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <div>
@@ -72,27 +64,21 @@ const FilterRecipes = () => {
       </Tab>
 
       {filterCondition !== null && !filterCondition.foodId && (
-        <div>
+        <InfiniteScroll
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+        >
           {recipeList?.recipes?.length === 0 ? (
-            <Text fontSize={14} className="mt-9 text-center">
+            <Text fontSize={14} className="mt-4 text-center">
               레시피가 존재하지 않습니다
             </Text>
           ) : (
             <div className="mt-9 flex w-full flex-col gap-4 px-5">
-              {recipeList?.recipes.map((recipe) => {
-                return <RecipeItem recipe={recipe} key={recipe.id} />;
-              })}
+              {recipeList?.recipes.map((recipe) => <RecipeItem recipe={recipe} key={recipe.id} />)}
             </div>
           )}
-
-          {isFetching && (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          )}
-
-          <div ref={ref} />
-        </div>
+        </InfiniteScroll>
       )}
     </div>
   );

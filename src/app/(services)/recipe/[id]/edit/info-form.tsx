@@ -16,8 +16,8 @@ import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
-import { useGetRecipeDetail, useUpdateRecipe } from '@/hooks/recipe.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
+import { useGetRecipeDetail, useUpdateRecipe } from '@/hooks/queries/recipe.hooks';
 import { zodEditRecipeForm } from '@/lib/zod/zodValidation';
 import { EUserRole } from '@/types/enum';
 import { showToast } from '@/utils/functions';
@@ -63,6 +63,8 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
       },
     },
   });
+
+  console.log(errors);
 
   useEffect(() => {
     if (recipe) {
@@ -114,6 +116,7 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
           defaultImages={defaultImages}
         />
         <TextInput
+          className="mb-4"
           category="recipeName"
           name="recipeCreateRequestDto.title"
           register={register}
@@ -128,7 +131,11 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
         />
       </div>
 
-      <CategoryTag name="recipeCreateRequestDto.recipeCategoryList" control={control} />
+      <CategoryTag
+        name="recipeCreateRequestDto.recipeCategoryList"
+        control={control}
+        errors={errors}
+      />
 
       <Range type="price" name="recipeCreateRequestDto.price" control={control} />
 

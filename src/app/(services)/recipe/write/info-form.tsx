@@ -8,7 +8,7 @@ import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
-import { useGetUserInfo } from '@/hooks/auth.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { EUserRole } from '@/types/enum';
 
 const InfoForm = () => {
@@ -32,6 +32,7 @@ const InfoForm = () => {
           error={!!errors['recipeImage']}
         />
         <TextInput
+          className="mb-4"
           category="recipeName"
           name="recipeCreateRequestDto.title"
           register={register}

@@ -12,6 +12,8 @@ import { showToast } from '@/utils/functions';
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
+import TextInfo from './TextInfo';
+
 interface IRecipeImageInputProps<T extends FieldValues> extends ComponentProps<'input'> {
   className?: string;
   half?: boolean;
@@ -137,7 +139,7 @@ const RecipeImageInput = <T extends FieldValues>({
                       }}
                       multiple
                     />
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-gray-500">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-center text-sm text-grey07">
                       <BoxIcon name="image-add" size={32} color="grey01" />
 
                       <div className="flex flex-col">
@@ -171,13 +173,7 @@ const RecipeImageInput = <T extends FieldValues>({
         ))}
       </Swiper>
 
-      {error && (
-        <div className="validator-hint mt-1 whitespace-pre-line">
-          <Text color="red01" fontSize={14}>
-            이미지를 업로드해주세요.
-          </Text>
-        </div>
-      )}
+      {error && <TextInfo isError>이미지를 업로드해주세요.</TextInfo>}
 
       {/* 커스텀 페이지네이션 */}
       <div className="custom-pagination mt-2 flex justify-center gap-1.5"></div>

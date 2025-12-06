@@ -18,11 +18,12 @@ import { ERecipeDetailSection } from '@/constants/common.constants';
 import { DELETE_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_MY_OPTIONS, RECIPE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useDeleteRecipe } from '@/hooks/recipe.hooks';
-import { useReport } from '@/hooks/report.hooks';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
+import { useDeleteRecipe } from '@/hooks/queries/recipe.hooks';
+import { useReport } from '@/hooks/queries/report.hooks';
 import { zodReportForm } from '@/lib/zod/zodValidation';
 import { ERecipeOption, EReportType } from '@/types/enum';
-import { HandleOpenModal, showToast } from '@/utils/functions';
+import { handleOpenModal, showToast } from '@/utils/functions';
 
 interface RecipeHeaderProps {
   recipeId: number;
@@ -37,6 +38,7 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
   const pathname = usePathname();
   const params = new URLSearchParams(searchParams);
 
+  const { data: userInfo } = useGetUserInfo();
   const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
 
   type TReportFormValues = z.infer<typeof zodReportForm>;
@@ -80,7 +82,7 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
         router.push(`/profile/${authorId}`);
         break;
       case ERecipeOption.CHAT:
-        // ! 채팅하기
+        router.push(`/chat/${authorId}--${userInfo?.id}`);
         break;
       case ERecipeOption.REPORT:
         setBottomSheetOpen(true);
@@ -89,7 +91,7 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
         router.push(`/recipe/${recipeId}/edit`);
         break;
       case ERecipeOption.DELETE:
-        HandleOpenModal(DELETE_RECIPE_MODAL);
+        handleOpenModal(DELETE_RECIPE_MODAL);
         break;
     }
   }

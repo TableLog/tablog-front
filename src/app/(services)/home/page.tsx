@@ -1,8 +1,6 @@
 'use client';
 
-import React from 'react';
-
-import { useRecipeStore } from '@/lib/zutstand/recipeStore';
+import { useRecipeStore } from '@/lib/zustand/recipeStore';
 
 import FilterRecipes from './filter-recipes';
 import LatestRecipes from './latest-recipes';
@@ -12,7 +10,7 @@ const HomePage = () => {
   const { isFilter } = useRecipeStore();
 
   return (
-    <div className="pb-[80px]">
+    <div className="min-h-[calc(100dvh-60px)] pb-[72px]">
       <section className="py-4">
         <FilterRecipes />
       </section>

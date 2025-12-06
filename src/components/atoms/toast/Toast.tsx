@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
 import { CloseButtonProps, ToastContainer } from 'react-toastify';
 
 import { BoxIcon } from '../icon/BoxIcon';
 
 const CloseButton = ({ closeToast }: CloseButtonProps) => (
-  <div className="absolute right-2.5">
+  <div className="ml-2">
     <BoxIcon name="x" color="grey04" size={20} onClick={closeToast} />
   </div>
 );

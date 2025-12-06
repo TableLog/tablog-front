@@ -1,7 +1,5 @@
-import React from 'react';
-
 import { Text } from '@/components/atoms/text/Text';
-import { useLogout, useUnregister } from '@/hooks/auth.hooks';
+import { useLogout, useUnregister } from '@/hooks/queries/auth.hooks';
 
 const LogoutSignout = () => {
   const { mutate: logout } = useLogout();

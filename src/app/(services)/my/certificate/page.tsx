@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 
@@ -13,7 +13,7 @@ import {
   useGetLicenseList,
   useRequestExpertVerification,
   useUploadLicense,
-} from '@/hooks/my.hooks';
+} from '@/hooks/queries/my.hooks';
 import { convertDateFormat, showToast } from '@/utils/functions';
 
 const CertificatePage = () => {
@@ -106,7 +106,7 @@ const CertificatePage = () => {
   };
 
   return (
-    <div>
+    <div className="relative px-5 pb-4">
       <PageHeader title="전문가 인증하기" back />
 
       <BottomSheet

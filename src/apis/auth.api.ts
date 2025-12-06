@@ -17,113 +17,60 @@ import {
   TUserData,
 } from '@/types/api';
 import instance from '@/utils/axios';
-import { hanldeApiError } from '@/utils/functions';
 
-export const EmailLogin = async (data: TLoginFormValues) => {
-  try {
-    return await instance.post(LOGIN_URL, data);
-  } catch (error) {
-    throw error;
-  }
+export const loginWithEmail = async (data: TLoginFormValues) => {
+  return await instance.post(LOGIN_URL, data);
 };
 
-export const SocialLogin = async (provider: string | string[], code: string) => {
-  try {
-    return await instance.post(`${SOCIAL_LOGIN_URL}?provider=${provider}&code=${code}`, {});
-  } catch (error) {
-    throw error;
-  }
+export const loginWithSocialAccount = async (provider: string | string[], code: string) => {
+  return await instance.post(`${SOCIAL_LOGIN_URL}`, {
+    params: { provider, code },
+  });
 };
 
-export const FindAccount = async (data: TFindAccountFormValues) => {
-  try {
-    return await instance.post(`${FIND_ACCOUNT}`, data);
-  } catch (error) {
-    throw error;
-  }
+export const findAccount = async (data: TFindAccountFormValues) => {
+  return await instance.post(`${FIND_ACCOUNT}`, data);
 };
 
-export const ChangePassword = async (data: TChangePasswordFormData) => {
-  try {
-    return await instance.put(`${CHANGE_PASSWORD}`, data);
-  } catch (error) {
-    throw error;
-  }
+export const changePassword = async (data: TChangePasswordFormData) => {
+  return await instance.put(`${CHANGE_PASSWORD}`, data);
 };
 
-export const SocialLink = async (provider: string | string[], code: string) => {
-  try {
-    return await instance.post(`${SOCIAL_LINK_URL}?provider=${provider}&code=${code}`, {});
-  } catch (error) {
-    throw error;
-  }
+export const socialLink = async (provider: string | string[], code: string) => {
+  return await instance.post(`${SOCIAL_LINK_URL}`, {
+    params: { provider, code },
+  });
 };
 
-export const Logout = async () => {
-  try {
-    return await instance.post(LOGOUT_URL);
-  } catch (error) {
-    throw error;
-  }
+export const logout = async () => {
+  return await instance.post(LOGOUT_URL);
 };
 
-export const RegisterUser = async (formdata: FormData) => {
-  try {
-    return await instance.post(REGISTER_URL, formdata, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-  } catch (error) {
-    throw error;
-  }
+export const registerUser = async (formdata: FormData) => {
+  return await instance.post(REGISTER_URL, formdata);
 };
 
-export const CheckNickname = async (nickname: string) => {
-  try {
-    return await instance.post(NICKNAME_CHECK_URL, {
-      nickname: nickname,
-    });
-  } catch (error) {
-    throw error;
-  }
+export const checkNickname = async (nickname: string) => {
+  return await instance.post(NICKNAME_CHECK_URL, {
+    nickname,
+  });
 };
 
-export const CheckEmail = async (email: string) => {
-  try {
-    return await instance.post(EMAIL_CHECK_URL, {
-      email: email,
-    });
-  } catch (error) {
-    throw error;
-  }
+export const checkEmail = async (email: string) => {
+  return await instance.post(EMAIL_CHECK_URL, {
+    email,
+  });
 };
 
 // 회원 정보
-export const UserInfo = async () => {
-  try {
-    return await instance.get<TUserData>(USER_INFO_URL);
-  } catch (error) {
-    hanldeApiError(error);
-  }
+export const getUserInfo = async () => {
+  return await instance.get<TUserData>(USER_INFO_URL);
 };
 
-export const UserInfoUpdate = async (formData: FormData) => {
-  try {
-    return await instance.put(USER_INFO_URL, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-  } catch (error) {
-    throw error;
-  }
+export const updateUserInfo = async (formData: FormData) => {
+  return await instance.put(USER_INFO_URL, formData);
 };
 
-export const UnregisterUser = async () => {
-  try {
-    return await instance.delete(USER_INFO_URL);
-  } catch (error) {
-    throw error;
-  }
+export const deleteUser = async () => {
+  return await instance.delete(USER_INFO_URL);
 };

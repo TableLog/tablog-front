@@ -1,10 +1,8 @@
-import React from 'react';
-
 import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
-import { useGetCommentList } from '@/hooks/feed.hooks';
+import { useGetCommentList } from '@/hooks/queries/feed.hooks';
 import { ICommentResponse } from '@/types/api';
 import { convertDateFormat } from '@/utils/functions';
 

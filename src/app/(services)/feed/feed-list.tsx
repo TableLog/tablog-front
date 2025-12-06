@@ -1,14 +1,12 @@
 'use client';
-import React, { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 import dynamic from 'next/dynamic';
 
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { FEED_LIST_QUERY_KEY } from '@/constants/query-key.constants';
-import { useGetLogList } from '@/hooks/feed.hooks';
-import { useScrollPosition } from '@/hooks/function.hooks';
+import { useGetLogList } from '@/hooks/queries/feed.hooks';
 import { useFeedItemActions } from '@/hooks/useFeedItemActions';
+import useScrollPosition from '@/hooks/useScrollPosition';
 import { ILogResponse } from '@/types/api';
 
 const FeedItem = dynamic(() => import('./feed-item'), {
@@ -16,17 +14,9 @@ const FeedItem = dynamic(() => import('./feed-item'), {
 });
 
 const FeedList = () => {
-  const { ref, inView } = useInView();
   const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
 
   const { setLogId, contentRefs, handleDelete } = useFeedItemActions();
-
-  useEffect(() => {
-    // 무한 스크롤
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
 
   // 스크롤 위치 저장 (뒤로가기시 해당 위치로 이동)
   useScrollPosition({
@@ -38,7 +28,12 @@ const FeedList = () => {
     <div>
       <DeleteFeedModal onDelete={handleDelete} />
 
-      <div>
+      <InfiniteScroll
+        className="space-y-8"
+        hasNextPage={hasNextPage}
+        isFetching={isFetching}
+        fetchNextPage={fetchNextPage}
+      >
         {logList?.pages?.map((page) =>
           page.data.boards.map((log: ILogResponse) => {
             return (
@@ -52,15 +47,7 @@ const FeedList = () => {
             );
           }),
         )}
-      </div>
-
-      {isFetching && (
-        <div className="flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      )}
-
-      <div ref={ref as React.RefCallback<HTMLDivElement>} />
+      </InfiniteScroll>
     </div>
   );
 };

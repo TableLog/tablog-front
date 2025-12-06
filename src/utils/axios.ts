@@ -2,12 +2,11 @@
 import axios from 'axios';
 
 import { REFRESH_URL } from '@/constants/endpoint.constants';
-import { APIErrorResponse } from '@/types/api';
 
 import { getErrorCode } from './functions';
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL + '/api/v1',
   withCredentials: true,
 });
 
@@ -25,20 +24,30 @@ instance.interceptors.response.use(
 
         return instance.request(error.config);
       } catch (err) {
-        if (axios.isAxiosError<APIErrorResponse>(err) && err.response) {
-          const errorCode = getErrorCode(err);
+        const errorCode = getErrorCode(err);
 
-          if (errorCode === 'EJ401001' || errorCode === 'EJ400001' || errorCode === 'EJ401002') {
-            // refresh token 만료시 쿠키 삭제 후 로그인 페이지로 이동
-            await fetch('/api/logout', { method: 'POST' });
-
-            window.location.href = '/login';
-          }
+        // refresh token 만료시 쿠키 삭제 후 로그인 페이지로 이동
+        if (errorCode === 'EJ401001' || errorCode === 'EJ400001' || errorCode === 'EJ401002') {
+          await fetch('/api/logout', { method: 'POST' });
+          window.location.href = '/login';
         }
 
         return Promise.reject(err);
       }
     }
+
+    if (error.status === 403) {
+      console.error('토큰을 확인해주세요');
+    }
+
+    // const { code } = error.response.data.message;
+
+    // if (code) {
+    //   const errorMessage = ERROR_CODE_MESSAGE_MAP[code];
+    //   console.error(`공통 에러 메세지: ${errorMessage}`);
+    // } else {
+    //   console.error('알 수 없는 오류가 발생했습니다.');
+    // }
 
     return Promise.reject(error);
   },

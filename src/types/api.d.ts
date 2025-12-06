@@ -218,7 +218,7 @@ interface IRecipeFood {
 export interface IRecipeIngredientResponse
   extends Pick<IRecipe, 'title' | 'imageUrl'>,
     PaginationData {
-  recipeFoods: (IRecipeFood & { isChecked: boolean })[];
+  recipeFoods: (IRecipeFood & { isChecked: boolean; shoppingListId?: number })[];
 }
 
 export interface IRecipeProcessesResponse extends PaginationData {
@@ -241,7 +241,6 @@ export interface IRecipeProcessResponse {
 // food
 export interface ISearchFoodParams {
   search?: string;
-  keyword?: string;
   page: number;
 }
 

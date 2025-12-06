@@ -11,8 +11,8 @@ import Popup from '@/components/molecules/popup/Popup';
 import { ERecipeDetailSection } from '@/constants/common.constants';
 import { PAY_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
-import { useGetRecipeDetail, usePayRecipe } from '@/hooks/recipe.hooks';
-import { HandleOpenModal } from '@/utils/functions';
+import { useGetRecipeDetail, usePayRecipe } from '@/hooks/queries/recipe.hooks';
+import { handleOpenModal } from '@/utils/functions';
 
 import Description from './description';
 import Ingredient from './ingredient';
@@ -36,7 +36,7 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
   const canAccess = !recipe?.isWriter && recipe?.isPaid && !recipe?.hasPurchased;
 
   function openPaymentModal() {
-    HandleOpenModal(PAY_RECIPE_MODAL);
+    handleOpenModal(PAY_RECIPE_MODAL);
   }
 
   function moveToStagePage() {
@@ -53,7 +53,7 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
   }
 
   return (
-    <div className="relative h-[calc(100dvh-92px)] w-full">
+    <div className="relative h-[calc(100dvh-60px)] w-full">
       <RecipeHeader recipeId={recipeId} authorId={recipe?.writerId} isMyRecipe={recipe?.isWriter} />
 
       {recipe && (
@@ -64,7 +64,7 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
           className="object-cover object-center brightness-[0.6]"
         />
       )}
-      <div className="absolute bottom-8 flex w-full flex-col gap-8 px-5">
+      <div className="absolute bottom-8 flex w-full flex-col gap-4 px-5">
         {recipe && mode === ERecipeDetailSection.INGREDIENT ? (
           <Description recipe={recipe} />
         ) : (

@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import Tab from '@/components/atoms/tab/Tab';
-import { useGetPointHistory } from '@/hooks/my.hooks';
+import { useGetPointHistory } from '@/hooks/queries/my.hooks';
 
 import PointsHistoryList from './PointsHistoryList';
 
@@ -13,7 +13,7 @@ const PointHistoryPage = () => {
   const { data, isFetching, hasNextPage, fetchNextPage } = useGetPointHistory(type);
 
   return (
-    <div>
+    <div className="relative px-5 pb-4">
       <PageHeader title="포인트 이용내역" back />
 
       <div>

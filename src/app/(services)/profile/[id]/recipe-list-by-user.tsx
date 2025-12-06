@@ -1,36 +1,28 @@
-import React, { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import { useGetRecipeListByUserId } from '@/hooks/users.hooks';
+import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
+import { useGetRecipeListByUserId } from '@/hooks/queries/users.hooks';
 import { IRecipe } from '@/types/api';
 
 const RecipeListByUser = () => {
   const { id } = useParams();
-  const { ref, inView } = useInView();
   const {
     data: recipeList,
-    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetching,
   } = useGetRecipeListByUserId(Number(id));
 
-  useEffect(() => {
-    // 무한 스크롤
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, fetchNextPage]);
-
   return (
-    <div className="mt-4 text-center">
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : recipeList?.pages?.[0]?.data.contents.length === 0 ? (
+    <InfiniteScroll
+      className="mt-4 px-5 text-center"
+      hasNextPage={hasNextPage}
+      isFetching={isFetching}
+      fetchNextPage={fetchNextPage}
+    >
+      {recipeList?.pages?.[0]?.data.contents.length === 0 ? (
         <div>작성된 레시피가 없습니다.</div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
@@ -50,17 +42,9 @@ const RecipeListByUser = () => {
               </Link>
             ));
           })}
-
-          {isFetching && (
-            <div className="flex items-center justify-center">
-              <LoadingSpinner />
-            </div>
-          )}
-
-          <div ref={ref as React.RefCallback<HTMLDivElement>} />
         </div>
       )}
-    </div>
+    </InfiniteScroll>
   );
 };
 
