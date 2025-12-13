@@ -37,7 +37,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
 
   const { mutate: addLike } = useAddLike({
     onSuccess: (res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         try {
           ToggleLikeSuccess(log, queryClient);
           queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, Number(log.id)] });
@@ -152,7 +152,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         </li>
       </ul>
 
-      <div className="max-h-[360px] overflow-y-auto">
+      <div className="mb-8 max-h-[360px] overflow-y-auto">
         <div
           ref={(el) => {
             contentRefs.current[log.id] = el;

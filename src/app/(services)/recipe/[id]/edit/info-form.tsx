@@ -64,8 +64,6 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
     },
   });
 
-  console.log(errors);
-
   useEffect(() => {
     if (recipe) {
       reset({

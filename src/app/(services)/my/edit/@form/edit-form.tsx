@@ -18,7 +18,6 @@ import { TUserData, TUserInfoEditFormValues } from '@/types/api';
 import { getErrorCode, showToast } from '@/utils/functions';
 
 import LogoutSignout from './logout-signout';
-import SocialLink from './social-link';
 
 interface IUserInfoEditForm {
   imageFile: File | string | null;
@@ -36,6 +35,7 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
     watch,
     setError,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm<TUserInfoEditFormValues>({
     resolver: zodResolver(
@@ -45,15 +45,15 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
     ),
     mode: 'onChange',
     defaultValues: {
-      provider: 'local',
-      nickname: '',
-      userName: '',
-      birthday: '',
-      email: '',
+      provider: userData?.provider || 'local',
+      nickname: userData?.nickname || '',
+      userName: userData?.userName || '',
+      birthday: userData?.birthday || '',
+      email: userData?.email || '',
       password: '',
       confirmPassword: '',
       imgUrl: '',
-      marketingOptIn: false,
+      marketingOptIn: userData?.marketingOptIn || false,
       checkNickname: false,
       checkEmail: false,
     },
@@ -110,13 +110,22 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
 
   useEffect(() => {
     if (userData) {
-      setValue('nickname', userData.nickname);
-      setValue('userName', userData.userName);
-      setValue('birthday', userData.birthday);
-      setValue('email', userData.email);
-      setTermValue(userData?.marketingOptIn);
+      reset({
+        provider: userData.provider || 'local',
+        nickname: userData.nickname || '',
+        userName: userData.userName || '',
+        birthday: userData.birthday || '',
+        email: userData.email || '',
+        password: '',
+        confirmPassword: '',
+        imgUrl: '',
+        marketingOptIn: userData.marketingOptIn || false,
+        checkNickname: false,
+        checkEmail: false,
+      });
+      setTermValue(userData.marketingOptIn || false);
     }
-  }, [userData, setValue]);
+  }, [userData, reset]);
 
   return (
     <div>
@@ -188,7 +197,7 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
           <Text color="white01">수정하기</Text>
         </Button>
 
-        <SocialLink userData={userData} />
+        {/* <SocialLink userData={userData} /> */}
 
         <LogoutSignout />
       </form>

@@ -117,6 +117,7 @@ export interface ICommentResponse {
   user: string;
   createdAt: string;
   comment_count: number;
+  id: number;
 }
 
 export interface IFollowerListResponse {

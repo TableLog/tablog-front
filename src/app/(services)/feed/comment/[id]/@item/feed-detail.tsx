@@ -19,7 +19,8 @@ const FeedDetail = ({ id }: { id: number }) => {
   const { data: userData } = useGetUserInfo();
   const { data: logDetail } = useGetLog(Number(id));
 
-  const { setLogId, isReply, setIsReply, contentRefs, handleDelete } = useFeedDetailActions();
+  const { setLogId, isReply, setIsReply, contentRefs, handleDelete, commentId, setCommentId } =
+    useFeedDetailActions();
 
   const isMyPost = userData && userData?.nickname === logDetail?.user;
 
@@ -40,10 +41,12 @@ const FeedDetail = ({ id }: { id: number }) => {
               isDetail
             />
 
-            <FeedCommentList id={id} setIsReply={setIsReply} />
+            <FeedCommentList id={id} setIsReply={setIsReply} setCommentId={setCommentId} />
           </div>
 
-          {isLoggedIn && <ChatInput logId={id} isReply={isReply} setIsReply={setIsReply} />}
+          {isLoggedIn && (
+            <ChatInput logId={id} isReply={isReply} setIsReply={setIsReply} commentId={commentId} />
+          )}
         </div>
       </>
     )

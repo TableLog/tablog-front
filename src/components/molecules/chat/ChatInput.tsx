@@ -13,9 +13,10 @@ interface IChatInputProps {
   logId: number;
   isReply: boolean;
   setIsReply: (isReply: boolean) => void;
+  commentId: number;
 }
 
-const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
+const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) => {
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -102,7 +103,7 @@ const ChatInput = ({ logId, isReply, setIsReply }: IChatInputProps) => {
             if (chatValue.trim() === '') return;
 
             if (isReply) {
-              addCommentReply({ boardId: logId, commentId: 0, content: chatValue });
+              addCommentReply({ boardId: logId, commentId: commentId, content: chatValue });
             } else {
               addComment({ id: logId, content: chatValue });
             }

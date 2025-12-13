@@ -9,9 +9,11 @@ import { convertDateFormat } from '@/utils/functions';
 const FeedCommentList = ({
   id,
   setIsReply,
+  setCommentId,
 }: {
   id: number;
   setIsReply: (isReply: boolean) => void;
+  setCommentId: (commentId: number) => void;
 }) => {
   const {
     data: commentList,
@@ -19,6 +21,7 @@ const FeedCommentList = ({
     fetchNextPage,
     isFetchingNextPage,
   } = useGetCommentList(Number(id));
+
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -47,7 +50,14 @@ const FeedCommentList = ({
                     답글 {comment?.comment_count}개
                   </Text>
 
-                  <Text fontSize={12} color="grey04" onClick={() => setIsReply(true)}>
+                  <Text
+                    fontSize={12}
+                    color="grey04"
+                    onClick={() => {
+                      setIsReply(true);
+                      setCommentId(comment.id);
+                    }}
+                  >
                     답글 달기
                   </Text>
                 </div>

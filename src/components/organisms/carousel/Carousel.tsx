@@ -15,22 +15,25 @@ const Carousel = ({ className, imageList, half = false }: CarouselProps) => {
   const aspectClass = half ? 'aspect-[3/2]' : 'aspect-square';
 
   return (
-    <div className={cn(aspectClass, className)}>
+    <div className={cn(aspectClass, className, 'flex flex-col-reverse')}>
+      <div ref={paginationRef} className="custom-pagination mt-2 flex justify-center gap-1.5"></div>
+
       <Swiper
-        className={cn(aspectClass, 'overflow-hidden rounded-[10px] border')}
+        className={cn(aspectClass, 'w-full overflow-hidden rounded-[10px] border')}
         slidesPerView={1}
         modules={[Pagination]}
         pagination={{
           clickable: true,
-          el: paginationRef.current!,
+          el: paginationRef.current,
         }}
-        // onSwiper={(swiper) => {
-        //   if (swiper.params.pagination && typeof swiper.params.pagination !== 'boolean') {
-        //     swiper.params.pagination.el = paginationRef.current;
-        //     swiper.pagination.init();
-        //     swiper.pagination.update();
-        //   }
-        // }}
+        onSwiper={(swiper) => {
+          if (swiper.params.pagination && typeof swiper.params.pagination !== 'boolean') {
+            swiper.params.pagination.el = paginationRef.current;
+            swiper.pagination.init();
+            swiper.pagination.render();
+            swiper.pagination.update();
+          }
+        }}
       >
         {imageList.map((image) => (
           <SwiperSlide key={image.alt}>
@@ -48,8 +51,8 @@ const Carousel = ({ className, imageList, half = false }: CarouselProps) => {
           </SwiperSlide>
         ))}
       </Swiper>
+
       {/* 커스텀 페이지네이션 */}
-      <div ref={paginationRef} className="custom-pagination mt-2 flex justify-center gap-1.5"></div>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { showToast } from '@/utils/functions';
 
 export const useFeedDetailActions = () => {
   const [logId, setLogId] = useState(-1);
+  const [commentId, setCommentId] = useState(-1);
   const [expandedItems, setExpandedItems] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [isReply, setIsReply] = useState(false);
@@ -42,6 +43,8 @@ export const useFeedDetailActions = () => {
   return {
     logId,
     setLogId,
+    commentId,
+    setCommentId,
     expandedItems,
     showMoreButton,
     setShowMoreButton,

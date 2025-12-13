@@ -59,6 +59,11 @@ const LogForm = ({ id }: ILogFormProps) => {
         showToast({ message: '일기 작성 완료!', type: 'success' });
       }
     },
+    onError: (err) => {
+      if (err.status === 403) {
+        showToast({ message: '권한이 없습니다.', type: 'error' });
+      }
+    },
   });
 
   const { mutate: editLog } = useEditLog({
