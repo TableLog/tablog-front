@@ -14,7 +14,7 @@ const ReviewPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetReviews({
     recipeId,
-    pageNumber: 0,
+    page: 0,
   });
 
   const REVIEW_WRITE_PAGE_PATH = `/recipe/${recipeId}/review/write`;

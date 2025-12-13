@@ -13,7 +13,7 @@ const LikesList = ({ isOnlyPaid, selectedSortOption }: ILikesListProps) => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetMyLikesList(
     {
       isPaid: isOnlyPaid,
-      pageNumber: 0,
+      page: 0,
     },
     { sortOption: selectedSortOption.name },
   );

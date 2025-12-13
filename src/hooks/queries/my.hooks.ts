@@ -26,8 +26,8 @@ export const useGetMyLikesList = (params: IGetRecipeParams, option: IGetSortedRe
   return useInfiniteQuery({
     queryKey: MY_LIKE_LIST_OPTIONS_QUERY_KEY(params, option),
     queryFn: async ({ pageParam }) =>
-      await getMyLikeList({ ...params, pageNumber: pageParam }, sortOptions),
-    initialPageParam: params.pageNumber,
+      await getMyLikeList({ ...params, page: pageParam }, sortOptions),
+    initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
     select: (response) => ({ recipes: response.pages.flatMap((page) => page.data.contents) }),
@@ -40,8 +40,8 @@ export const useGetMyBookmarkList = (params: IGetRecipeParams, option: IGetSorte
   return useInfiniteQuery({
     queryKey: MY_BOOKMARK_LIST_OPTIONS_QUERY_KEY(params, option),
     queryFn: async ({ pageParam }) =>
-      await getMyBookmarkList({ ...params, pageNumber: pageParam }, sortOptions),
-    initialPageParam: params.pageNumber,
+      await getMyBookmarkList({ ...params, page: pageParam }, sortOptions),
+    initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
     select: (response) => ({ recipes: response.pages.flatMap((page) => page.data.contents) }),

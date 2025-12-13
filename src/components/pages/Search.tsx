@@ -29,7 +29,7 @@ export default function Search({ handleCloseSearch }: SearchProps) {
 
   const { data, hasNextPage, fetchNextPage, isFetching, isPending } = useGetRecipeSearch({
     keyword: debouncedKeyword,
-    pageNumber: 0,
+    page: 0,
   });
 
   useEffect(() => {

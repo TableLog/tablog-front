@@ -14,7 +14,7 @@ interface IngredientProps {
 const Ingredient = ({ recipeId }: IngredientProps) => {
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetRecipeIngredientList({
     recipeId,
-    pageNumber: 0,
+    page: 0,
   });
 
   const [selectedServingOption, setSelectedServingOption] = useState(SERVING_OPTIONS[0]);

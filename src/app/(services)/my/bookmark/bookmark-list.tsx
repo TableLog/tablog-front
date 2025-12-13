@@ -13,7 +13,7 @@ const BookmarkList = ({ isOnlyPaid, selectedSortOption }: IBookmarkListProps) =>
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetMyBookmarkList(
     {
       isPaid: isOnlyPaid,
-      pageNumber: 0,
+      page: 0,
     },
     { sortOption: selectedSortOption.name },
   );

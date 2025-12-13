@@ -21,7 +21,7 @@ const RecipeList = ({
   const { data, hasNextPage, fetchNextPage, isFetching } = useGetSortedRecipe(
     {
       isPaid: isOnlyPaid,
-      pageNumber: 0,
+      page: 0,
     },
     { sortOption: selectedSortOption.name, isMine },
   );

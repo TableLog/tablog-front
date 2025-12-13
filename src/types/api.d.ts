@@ -157,7 +157,7 @@ interface IRecipe {
 
 export interface IGetRecipeParams {
   isPaid: boolean;
-  pageNumber: number;
+  page: number;
 }
 
 export interface IGetSortedRecipeOption {
@@ -182,7 +182,7 @@ export interface IRecipeDetailParams {
 
 export interface IRecipeIngredientParams {
   recipeId: number;
-  pageNumber: number;
+  page: number;
 }
 
 export interface IRecipeProcessListParams {
@@ -304,7 +304,7 @@ export interface PayRecipeParams {
 // review
 export interface IGetRecipeReviewsParams {
   recipeId: number;
-  pageNumber: number;
+  page: number;
 }
 
 export interface IGetRecipeReviewsResponse extends PaginationData {
@@ -362,7 +362,7 @@ export interface IGetRecipeMemoParams {
 
 export interface IGetRecipeSearchParams {
   keyword: string;
-  pageNumber: number;
+  page: number;
 }
 
 export interface IMemoResponse {
