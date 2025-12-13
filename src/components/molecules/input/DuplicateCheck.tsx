@@ -123,7 +123,12 @@ export const CheckNicknameInput = <T extends FieldValues>({
   const handleCheckNickname = () => {
     const nickname = watch('nickname' as Path<T>) as string;
 
-    if (typeof nickname !== 'string' || nickname === '') {
+    if (
+      typeof nickname !== 'string' ||
+      nickname === '' ||
+      2 > nickname.length ||
+      nickname.length > 10
+    ) {
       setError('nickname' as Path<T>, { message: NICKNAME_REQUIRED });
       return;
     }

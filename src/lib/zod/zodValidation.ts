@@ -53,8 +53,12 @@ export const zodEmailRegister = z
       .max(10, NICKNAME_REQUIRED)
       .regex(NICKNAME_REGEX, { message: NICKNAME_REQUIRED }),
     email: z.string({ message: EMAIL_REQUIRED }),
-    password: z.string({ message: PASSWORD_REQUIRED }),
-    confirmPassword: z.string({ message: PASSWORD_CONFIRM_REQUIRED }),
+    password: z.string({ message: PASSWORD_REQUIRED }).regex(PASSWORD_REGEX, {
+      message: PASSWORD_FORMAT,
+    }),
+    confirmPassword: z.string({ message: PASSWORD_CONFIRM_REQUIRED }).regex(PASSWORD_REGEX, {
+      message: PASSWORD_FORMAT,
+    }),
     userName: z
       .string({ message: NAME_REQUIRED })
       .min(1, { message: NAME_REQUIRED })
