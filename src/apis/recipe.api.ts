@@ -120,16 +120,16 @@ export const getRecipeBookmark = async ({ recipeId }: IGetRecipeLikeParams) => {
 
 export const getRecipeByFilter = async ({
   condition,
-  pageNumber,
+  page,
 }: {
   condition: Partial<IRecipeFilterParams> | null;
-  pageNumber: number;
+  page: number;
 }) => {
   try {
     const params = new URLSearchParams();
 
     if (condition) {
-      params.append('pageNumber', String(pageNumber));
+      params.append('page', String(page));
 
       Object.entries(condition).forEach(([key, value]) => {
         if (Array.isArray(value)) {
@@ -146,17 +146,11 @@ export const getRecipeByFilter = async ({
   }
 };
 
-export const getRecipeByFood = async ({
-  keywords,
-  pageNumber,
-}: {
-  keywords: string[];
-  pageNumber: number;
-}) => {
+export const getRecipeByFood = async ({ keywords, page }: { keywords: string[]; page: number }) => {
   return await instance.get(`${RECIPE_URL}/filter/food`, {
     params: {
       keyword: keywords,
-      pageNumber,
+      page,
     },
     paramsSerializer: {
       serialize: (params) => {
@@ -168,7 +162,7 @@ export const getRecipeByFood = async ({
           });
         }
 
-        searchParams.append('pageNumber', params.pageNumber);
+        searchParams.append('page', params.page);
 
         return searchParams.toString();
       },
@@ -227,21 +221,15 @@ export const getRecipeMemo = async ({ recipeId }: IGetRecipeMemoParams) => {
 };
 
 // 식재료 검색
-export const getFoodSearch = async ({
-  keyword,
-  pageNumber,
-}: {
-  keyword: string;
-  pageNumber: number;
-}) => {
+export const getFoodSearch = async ({ keyword, page }: { keyword: string; page: number }) => {
   return await instance.get(`${RECIPE_URL}/filter/food`, {
-    params: { keyword, pageNumber },
+    params: { keyword, page },
   });
 };
 
 // 레시피 검색
-export const getRecipeSearch = async ({ keyword, pageNumber }: IGetRecipeSearchParams) => {
+export const getRecipeSearch = async ({ keyword, page }: IGetRecipeSearchParams) => {
   return await instance.get<IGetRecipeSearchResponse>(`${RECIPE_URL}/filter/search`, {
-    params: { keyword, pageNumber },
+    params: { keyword, page },
   });
 };

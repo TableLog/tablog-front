@@ -9,7 +9,7 @@ const PopularRecipes = () => {
   const { data: popularRecipeList, isLoading } = useGetSortedRecipe(
     {
       isPaid: false,
-      pageNumber: 0,
+      page: 0,
     },
     { sortOption: 'popular', isMine: false },
   );

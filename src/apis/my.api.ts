@@ -39,14 +39,14 @@ export const uploadLicense = async (data: FormData) => {
   return await instance.post(`${LICENSE_URL}`, data);
 };
 
-export const getMyRecipeReview = async (userId: number | undefined, pageNumber: number) => {
+export const getMyRecipeReview = async (userId: number | undefined, page: number) => {
   return await instance.get(`${USER_INFO_URL}/${userId}/recipe-reviews`, {
-    params: { pageNumber, includeReplies: true },
+    params: { page, includeReplies: true },
   });
 };
 
-export const getPointHistory = async (pageNumber: number, pointType: string) => {
+export const getPointHistory = async (page: number, pointType: string) => {
   return await instance.get(`${USER_INFO_URL}/me/point`, {
-    params: { pageNumber, pointType },
+    params: { page, pointType },
   });
 };
