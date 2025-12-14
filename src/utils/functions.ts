@@ -79,3 +79,33 @@ export const addComma = (number: number | undefined) => {
     return number.toLocaleString();
   }
 };
+
+interface ShareProps {
+  url: string;
+  shareText: string;
+  shareTitle: string;
+}
+export const handleShare = async ({ url, shareText, shareTitle }: ShareProps) => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url: url,
+      });
+    } catch (error) {
+      // 사용자가 공유를 취소한 경우 등
+      if ((error as Error).name !== 'AbortError') {
+        console.error('공유 실패:', error);
+      }
+    }
+  } else {
+    // Web Share API를 지원하지 않는 경우 클립보드에 복사
+    try {
+      await navigator.clipboard.writeText(url);
+      alert('링크가 클립보드에 복사되었습니다.');
+    } catch (error) {
+      console.error('클립보드 복사 실패:', error);
+    }
+  }
+};

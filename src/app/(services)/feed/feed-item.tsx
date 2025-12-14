@@ -19,7 +19,7 @@ import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
 import { ToggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { cn } from '@/utils/cn';
-import { convertDateFormat, handleOpenModal } from '@/utils/functions';
+import { convertDateFormat, handleOpenModal, handleShare } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
@@ -78,6 +78,15 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     },
     [log.id, log.user_id, router, setLogId, userInfo?.id],
   );
+
+  const handleShareFeed = useCallback(async () => {
+    const shareUrl = `${window.location.origin}/feed/comment/${log.id}`;
+    const shareTitle = log.title || '피드 공유';
+    const shareText =
+      log.content.length > 100 ? `${log.content.substring(0, 100)}...` : log.content;
+
+    handleShare({ url: shareUrl, shareTitle, shareText });
+  }, [log.id, log.title, log.content]);
 
   return (
     <div>
@@ -147,7 +156,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
           </li>
         )}
 
-        <li className="h-[25px]">
+        <li className="h-[25px]" onClick={handleShareFeed}>
           <BoxIcon name="share" size={24} flip="horizontal" />
         </li>
       </ul>
