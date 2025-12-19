@@ -72,5 +72,5 @@ export const updateUserInfo = async (formData: FormData) => {
 };
 
 export const deleteUser = async () => {
-  return await instance.delete(USER_INFO_URL);
+  return await instance.post(USER_INFO_URL);
 };

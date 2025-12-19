@@ -13,7 +13,7 @@ const FindAccountPage = () => {
 
   return (
     <div className="h-[calc(100svh-32px)] py-4">
-      <PageHeader back title="이메일/비밀번호 찾기" />
+      <PageHeader back title="이메일/패스워드 찾기" />
 
       <div className="flex h-full flex-col pt-8">
         {step === 0 && <FindAccountForm setStep={setStep} setAccountInfo={setAccountInfo} />}

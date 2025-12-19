@@ -7,7 +7,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import axios from 'axios';
 
 import { showToast } from '@/utils/functions';
@@ -37,7 +37,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={true} />
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
 
       {children}
     </QueryClientProvider>

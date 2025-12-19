@@ -20,7 +20,7 @@ import {
 import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
 import { useLoginStore } from '@/lib/zustand/userStore';
 import { IMutationOptions, TChangePasswordFormData, TFindAccountFormValues } from '@/types/api';
-import { showErrorToast } from '@/utils/functions';
+import { showErrorToast, showToast } from '@/utils/functions';
 
 // NOTE: 유저 정보 관련
 // 로그인: 이메일
@@ -53,7 +53,7 @@ export function useFindAccount(options?: IMutationOptions) {
   });
 }
 
-// 비밀번호 변경하기
+// 패스워드 변경하기
 export function useChangePassword(options?: IMutationOptions) {
   return useMutation({
     mutationFn: (data: TChangePasswordFormData) => changePassword(data),
@@ -159,6 +159,7 @@ export function useUnregister() {
         setIsLoggedIn(false);
 
         router.push('/login');
+        showToast({ message: '회원 탈퇴가 완료되었습니다.', type: 'success' });
 
         queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
       }

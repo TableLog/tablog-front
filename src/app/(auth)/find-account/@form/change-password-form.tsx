@@ -28,7 +28,7 @@ const ChangePasswordForm = ({ accountInfo }: IChangePasswordFormProps) => {
         showToast({
           message: (
             <div>
-              <p>비밀번호 변경이 완료되었습니다.</p>
+              <p>패스워드 변경이 완료되었습니다.</p>
 
               <p>로그인을 진행해주세요.</p>
             </div>
@@ -106,7 +106,7 @@ const ChangePasswordForm = ({ accountInfo }: IChangePasswordFormProps) => {
 
           <section>
             <Text fontWeight="semiBold" className="mb-13 text-center">
-              비밀번호 변경하기
+              패스워드 변경하기
             </Text>
 
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -127,7 +127,7 @@ const ChangePasswordForm = ({ accountInfo }: IChangePasswordFormProps) => {
               </div>
 
               <Button full type="submit">
-                <Text color="white01">비밀번호 변경하기</Text>
+                <Text color="white01">패스워드 변경하기</Text>
               </Button>
             </form>
           </section>

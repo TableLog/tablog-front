@@ -34,11 +34,11 @@ export const getLogCommentList = async (id: number, page: number) => {
 };
 
 export const addLogComment = async (id: number, content: string) => {
-  return await instance.post(`${BOARD_URL}/${id}/board_comment`, { content });
+  return await instance.post(`${BOARD_URL}/${id}/board_comments`, { content });
 };
 
 export const addLogCommentReply = async (boardId: number, commentId: number, content: string) => {
-  return await instance.post(`${BOARD_URL}/${boardId}/board_comment/${commentId}`, {
+  return await instance.post(`${BOARD_URL}/${boardId}/board_comments/${commentId}`, {
     content,
   });
 };

@@ -38,11 +38,11 @@ const Header = () => {
     setIsOpen(true);
   };
 
-  const onCheckNotification = () => {
-    setIsNotichecking(true);
-    setIsSearching(false);
-    setIsOpen(true);
-  };
+  // const onCheckNotification = () => {
+  //   setIsNotichecking(true);
+  //   setIsSearching(false);
+  //   setIsOpen(true);
+  // };
 
   const onToMain = () => {
     router.push('/home');
@@ -58,10 +58,11 @@ const Header = () => {
       <div className="flex gap-[10px]">
         {!isSearching && <BoxIcon name="search-alt" color="white01" size={24} onClick={onSearch} />}
 
-        {!isNotichecking && (
+        {/* {!isNotichecking && (
           <BoxIcon name="bell" color="white01" size={24} onClick={onCheckNotification} />
-        )}
+        )} */}
       </div>
+
       <BottomSheet
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

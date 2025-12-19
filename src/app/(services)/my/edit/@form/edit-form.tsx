@@ -75,7 +75,7 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
     onError: (err) => {
       const errorCode = getErrorCode(err);
 
-      // 현재 비밀번호로 변경 시도할 때
+      // 현재 패스워드로 변경 시도할 때
       if (errorCode === 'EU400005') {
         setError('password', { message: ERROR_CODE_MESSAGE_MAP[errorCode] });
       }

@@ -17,7 +17,7 @@ instance.interceptors.response.use(
     if (error.response?.status === 401) {
       try {
         await axios.post(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}${REFRESH_URL}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1${REFRESH_URL}`,
           {},
           { withCredentials: true },
         );

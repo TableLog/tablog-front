@@ -9,12 +9,12 @@ import Button from '@/components/atoms/button/Button';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
-import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { LOCAL_REMEMBER_EMAIL } from '@/constants/storage-key.constants';
 import { useEmailLogin } from '@/hooks/queries/auth.hooks';
 import { zodLogin } from '@/lib/zod/zodValidation';
 import { useUserStore } from '@/lib/zustand/userStore';
 import { TLoginFormValues } from '@/types/api';
+import { showErrorToast } from '@/utils/functions';
 
 const LoginForm = () => {
   const { foundEmail } = useUserStore();
@@ -26,7 +26,6 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
-    setError,
     watch,
     setValue,
     formState: { errors },
@@ -51,9 +50,7 @@ const LoginForm = () => {
       router.push('/home');
     },
     onError: (error) => {
-      const errorMessage = ERROR_CODE_MESSAGE_MAP[error?.response?.data?.message];
-
-      setError('email', { message: errorMessage });
+      showErrorToast(error);
     },
   });
 

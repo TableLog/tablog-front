@@ -18,7 +18,7 @@ const LoginPage = () => {
 
         <div className="flex items-center justify-between px-2">
           <Link href="/find-account">
-            <Text fontSize={14}>이메일/비밀번호 찾기</Text>
+            <Text fontSize={14}>이메일/패스워드 찾기</Text>
           </Link>
 
           <Link href="/register/local">
@@ -28,11 +28,11 @@ const LoginPage = () => {
       </div>
 
       <div className="mb-[64px]">
-        <div className="divider">
+        {/* <div className="divider">
           <Text fontSize={12} color="grey02">
             간편 로그인
           </Text>
-        </div>
+        </div> */}
 
         {/* <SocialButtons login /> */}
       </div>

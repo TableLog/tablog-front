@@ -294,7 +294,7 @@ export const zodFindAccount = z.object({
   ),
 });
 
-// NOTE: 비밀번호 변경하기
+// NOTE: 패스워드 변경하기
 export const zodChangePassword = z
   .object({
     password: z
