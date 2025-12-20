@@ -1,12 +1,12 @@
 'use client';
 
-import FilterRecipes from './filter-recipes';
+import HomeTabs from './home-tabs';
 
 const HomePage = () => {
   return (
     <div className="min-h-[calc(100dvh-60px)] pb-[72px]">
       <section className="py-4">
-        <FilterRecipes />
+        <HomeTabs />
       </section>
     </div>
   );
