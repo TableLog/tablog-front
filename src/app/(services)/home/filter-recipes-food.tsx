@@ -39,13 +39,25 @@ const FilterRecipesFood = () => {
             onClick={() => setSelectedFoods(selectedFoods.filter((k) => k !== keyword))}
           >
             <Text fontSize={14}>{keyword}</Text>
-            <BoxIcon name="x-circle" size={16} color="grey04" />
+            <button type="button">
+              <BoxIcon name="x-circle" size={16} color="grey04" />
+            </button>
           </div>
         ))}
       </InfiniteScroll>
 
       <div className="flex w-full flex-col gap-4 px-5">
-        {recipeList?.recipes.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />)}
+        {selectedFoods.length === 0 ? (
+          <Text fontSize={14} className="text-center">
+            재료를 선택해주세요
+          </Text>
+        ) : recipeList?.recipes.length === 0 ? (
+          <Text fontSize={14} className="text-center">
+            레시피가 존재하지 않습니다
+          </Text>
+        ) : (
+          recipeList?.recipes.map((recipe) => <RecipeItem key={recipe.id} recipe={recipe} />)
+        )}
       </div>
     </div>
   );

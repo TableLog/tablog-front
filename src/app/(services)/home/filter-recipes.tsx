@@ -14,6 +14,8 @@ import { useFilterStore, useRecipeStore } from '@/lib/zustand/recipeStore';
 import RecipeItem from '../recipe/recipe-item';
 
 import FilterRecipesFood from './filter-recipes-food';
+import LatestRecipes from './latest-recipes';
+import PopularRecipes from './popular-recipes';
 
 const FilterRecipes = () => {
   const { setIsFilter } = useRecipeStore();
@@ -28,11 +30,7 @@ const FilterRecipes = () => {
   } = useGetRecipeByFilter(filterCondition);
 
   useEffect(() => {
-    if (filterCondition === null) {
-      setIsFilter(false);
-    } else {
-      setIsFilter(true);
-    }
+    setIsFilter(filterCondition !== null);
   }, [filterCondition, setIsFilter]);
 
   return (
@@ -44,6 +42,13 @@ const FilterRecipes = () => {
 
         <Tab.Panel index={0}>
           <RecipeCategory />
+          <section>
+            <LatestRecipes />
+          </section>
+
+          <section>
+            <PopularRecipes />
+          </section>
         </Tab.Panel>
 
         <Tab.Panel index={1}>
