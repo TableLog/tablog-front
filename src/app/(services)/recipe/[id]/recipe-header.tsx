@@ -15,6 +15,7 @@ import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import Popup from '@/components/molecules/popup/Popup';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { ERecipeDetailSection } from '@/constants/common.constants';
+import { CHAT_ROOM_URL } from '@/constants/endpoint.constants';
 import { DELETE_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_MY_OPTIONS, RECIPE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
@@ -82,7 +83,8 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
         router.push(`/profile/${authorId}`);
         break;
       case ERecipeOption.CHAT:
-        router.push(`/chat/${authorId}--${userInfo?.id}`);
+        if (!userInfo) return;
+        router.push(CHAT_ROOM_URL({ senderId: userInfo.id, receiverId: authorId! }));
         break;
       case ERecipeOption.REPORT:
         setBottomSheetOpen(true);
