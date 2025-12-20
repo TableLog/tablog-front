@@ -40,7 +40,10 @@ function ChatPage() {
     isError: isGetChatRoomError,
   } = useQuery({
     ...getMyChatRoomsQueryOptions(),
-    select: (res) => res.data.find((room) => room.roomId === roomId),
+    select: (res) =>
+      res.data.find(
+        (room) => room.roomId === roomId || room.roomId === roomId.split('--').reverse().join('--'),
+      ),
   });
   const {
     data: savedMessages,
@@ -49,7 +52,7 @@ function ChatPage() {
   } = useGetChats(roomId);
 
   const { isConnected, publishMessage } = useStomp({
-    brokerURL: `ws://${process.env.NEXT_PUBLIC_SERVER_URL}/ws/websocket`,
+    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
     publishDestination: '/pub/chat/send',
     subsribeDestination: `/sub/chat/room/${roomId}`,
     onMessageReceived: () => {

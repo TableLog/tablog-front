@@ -11,6 +11,7 @@ import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
 import Carousel from '@/components/organisms/carousel/Carousel';
+import { CHAT_ROOM_URL } from '@/constants/endpoint.constants';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
@@ -72,11 +73,12 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
           router.push(`/feed/edit-log/${log.id}`);
           break;
         case '채팅하기':
-          router.push(`/chat/${log.user_id}--${userInfo?.id}`);
+          if (!userInfo) return;
+          router.push(CHAT_ROOM_URL({ senderId: userInfo?.id, receiverId: log.user_id }));
           break;
       }
     },
-    [log.id, log.user_id, router, setLogId, userInfo?.id],
+    [log.id, log.user_id, router, setLogId, userInfo],
   );
 
   const handleShareFeed = useCallback(async () => {
