@@ -43,3 +43,5 @@ export const EXPERT_URL = '/users/request/expert-verification';
 
 // chat
 export const CHAT_URL = '/chats';
+export const CHAT_ROOM_URL = ({ senderId, receiverId }: { senderId: number; receiverId: number }) =>
+  `/chat/${senderId}--${receiverId}`;

@@ -39,7 +39,7 @@ const FoodsSearch = ({ selectedFoods, setSelectedFoods }: IFoodsSearchProps) => 
   });
 
   return (
-    <form>
+    <form onSubmit={(e) => e.preventDefault()}>
       <AutoComplete
         list={foodList?.foods.map((food) => ({ id: food.id, title: food.foodName })) ?? []}
         category="ingredientName"

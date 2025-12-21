@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 
+import { showToast } from '@/utils/functions';
+
 interface UseStompProps {
   brokerURL: string;
   publishDestination: string;
@@ -26,6 +28,9 @@ function useStomp({
         clientRef.current.subscribe(subsribeDestination, (message) => {
           onMessageReceived?.(message.body);
         });
+      },
+      onWebSocketError: () => {
+        showToast({ message: '웹 소켓 연결 실패', type: 'error' });
       },
     });
 
