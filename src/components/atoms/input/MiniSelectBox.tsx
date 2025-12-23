@@ -43,7 +43,7 @@ const MiniSelectBox: React.FC<IMiniSelectProps> = ({ className, list, value, onC
       <div
         ref={measuredRef}
         className={cn(
-          'transition-all-3 absolute left-0 top-0 w-fit overflow-hidden rounded-[10px] border border-grey07 bg-white01 text-sm leading-none',
+          'transition-all-3 absolute left-0 top-0 z-10 w-fit overflow-hidden rounded-[10px] border border-grey07 bg-white01 text-sm leading-none',
           isOpen ? 'max-h-[160px]' : 'max-h-[34px]',
         )}
       >

@@ -3,12 +3,17 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   output: 'standalone',
   images: {
-    domains: [
-      'img.daisyui.com',
-      'k.kakaocdn.net',
-      'lh3.googleusercontent.com',
-      'onceclick.s3.ap-northeast-2.amazonaws.com',
-      'tablelog.s3.ap-northeast-2.amazonaws.com',
+    // domains: [
+    //   'img.daisyui.com',
+    //   'k.kakaocdn.net',
+    //   'lh3.googleusercontent.com',
+    //   'onceclick.s3.ap-northeast-2.amazonaws.com',
+    // ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'tablelog.s3.ap-northeast-2.amazonaws.com',
+      },
     ],
   },
   async rewrites() {
