@@ -348,7 +348,7 @@ export type IAddRecipeReviewReplyParams = Pick<IReview, 'recipeId' | 'content' |
 export interface IReportParams {
   reportedUserId: number; // 신고된 유저의 id 값
   reportContent: string; // 신고 내용
-  reportType: EReportType; // 신고 대상이 유저, 보드, 레시피인지 구분
+  reportTargetType: EReportType; // 신고 대상이 유저, 보드, 레시피인지 구분
   targetId: number; // 신고 대상의 고유 id 값 (신고 대상이 보드인 경우, 보드의 고유 id값)
 }
 

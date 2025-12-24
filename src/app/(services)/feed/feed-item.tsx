@@ -1,15 +1,21 @@
 'use client';
 
-import React, { SetStateAction, useCallback } from 'react';
+import React, { SetStateAction, useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 
+import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import TextArea from '@/components/atoms/input/TextArea';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
+import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import Carousel from '@/components/organisms/carousel/Carousel';
 import { CHAT_ROOM_URL } from '@/constants/endpoint.constants';
 import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
@@ -17,10 +23,13 @@ import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
+import { useReport } from '@/hooks/queries/report.hooks';
+import { zodReportForm } from '@/lib/zod/zodValidation';
 import { ToggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
+import { EReportType } from '@/types/enum';
 import { cn } from '@/utils/cn';
-import { convertDateFormat, handleOpenModal, handleShare } from '@/utils/functions';
+import { convertDateFormat, handleOpenModal, handleShare, showToast } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
@@ -30,9 +39,22 @@ interface IFeedItemProps {
   isDetail?: boolean;
 }
 
+type TReportFormValues = z.infer<typeof zodReportForm>;
+
 const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TReportFormValues>({
+    resolver: zodResolver(zodReportForm),
+    mode: 'onChange',
+  });
 
   const { data: userInfo } = useGetUserInfo();
 
@@ -62,6 +84,24 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     },
   });
 
+  const { mutate: reportFeed } = useReport({
+    onSuccess: () => {
+      showToast({ message: '피드 신고 완료!', type: 'success' });
+      setBottomSheetOpen(false);
+    },
+  });
+
+  function onSubmit(data: TReportFormValues) {
+    if (!log.user_id) return;
+
+    reportFeed({
+      reportedUserId: log.user_id,
+      reportTargetType: EReportType.BOARD,
+      targetId: log.id,
+      ...data,
+    });
+  }
+
   const handleOptionClick = useCallback(
     (type: string) => {
       switch (type) {
@@ -75,6 +115,9 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         case '채팅하기':
           if (!userInfo) return;
           router.push(CHAT_ROOM_URL({ senderId: userInfo?.id, receiverId: log.user_id }));
+          break;
+        case '신고하기':
+          setBottomSheetOpen(true);
           break;
       }
     },
@@ -109,6 +152,31 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
           options={isMyPost ? FEED_MY_OPTIONS : FEED_OPTIONS}
           buttonEvent={handleOptionClick}
         />
+
+        <BottomSheet
+          isOpen={isBottomSheetOpen}
+          onClose={() => setBottomSheetOpen(false)}
+          title="신고하기"
+          buttons={
+            <div className="grid grid-cols-2 gap-1.5">
+              <Button buttonColor="grey06" onClick={() => setBottomSheetOpen(false)}>
+                닫기
+              </Button>
+              <Button full type="submit" form="report-form">
+                제출
+              </Button>
+            </div>
+          }
+        >
+          <form onSubmit={handleSubmit(onSubmit)} className="px-5" id="report-form">
+            <TextArea
+              register={register}
+              category="reportContent"
+              errors={errors}
+              maxLength={300}
+            />
+          </form>
+        </BottomSheet>
       </div>
 
       {log.image_urls && (

@@ -71,7 +71,7 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
     if (!authorId) return;
     reportRecipe({
       reportedUserId: authorId,
-      reportType: EReportType.RECIPE,
+      reportTargetType: EReportType.RECIPE,
       targetId: recipeId,
       ...data,
     });
