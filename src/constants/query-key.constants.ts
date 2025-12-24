@@ -60,6 +60,7 @@ export const USER_INFO_QUERY_KEY = 'user-info';
 export const FEED_LIST_QUERY_KEY = 'feed-list';
 export const FEED_QUERY_KEY = 'feed';
 export const FEED_COMMENT_LIST_QUERY_KEY = 'feed-comment-list';
+export const FEED_COMMENT_REPLY_LIST_QUERY_KEY = 'feed-comment-reply-list';
 export const FOLLOWING_COUNT_QUERY_KEY = 'following-count';
 export const FOLLOWER_COUNT_QUERY_KEY = 'follower-count';
 export const PROFILE_INFO_QUERY_KEY = 'profile-info';

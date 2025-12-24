@@ -9,11 +9,13 @@ import {
   editLog,
   getLog,
   getLogCommentList,
+  getLogCommentReplyList,
   getLogList,
   removeLogLike,
 } from '@/apis/feed.api';
 import {
   FEED_COMMENT_LIST_QUERY_KEY,
+  FEED_COMMENT_REPLY_LIST_QUERY_KEY,
   FEED_LIST_QUERY_KEY,
   FEED_QUERY_KEY,
 } from '@/constants/query-key.constants';
@@ -112,5 +114,20 @@ export function useAddCommentReply(options?: IMutationOptions) {
     }) => addLogCommentReply(boardId, commentId, content),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
+  });
+}
+
+export function useGetCommentReplyList(boardId: number, commentId: number, enabled: boolean) {
+  return useInfiniteQuery({
+    queryKey: [FEED_COMMENT_REPLY_LIST_QUERY_KEY, boardId, commentId],
+    queryFn: async ({ pageParam = 0 }) =>
+      await getLogCommentReplyList(boardId, commentId, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _, pageParam) =>
+      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    enabled: enabled && !!boardId && !!commentId,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 }

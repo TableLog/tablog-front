@@ -5,7 +5,11 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { Text } from '@/components/atoms/text/Text';
-import { FEED_COMMENT_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
+import {
+  FEED_COMMENT_LIST_QUERY_KEY,
+  FEED_COMMENT_REPLY_LIST_QUERY_KEY,
+  FEED_QUERY_KEY,
+} from '@/constants/query-key.constants';
 import { useAddComment, useAddCommentReply } from '@/hooks/queries/feed.hooks';
 import { cn } from '@/utils/cn';
 
@@ -42,6 +46,9 @@ const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) =
         queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, logId] });
         queryClient.invalidateQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
         queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
+        queryClient.invalidateQueries({
+          queryKey: [FEED_COMMENT_REPLY_LIST_QUERY_KEY, logId, commentId],
+        });
 
         setChatValue('');
         setIsReply(false);
