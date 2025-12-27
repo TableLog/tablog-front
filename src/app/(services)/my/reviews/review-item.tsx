@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -34,7 +33,7 @@ const ReviewItem = ({ review, isDetail }: IReviewItemProps) => {
             alt={review.content}
             width={90}
             height={90}
-            className="aspect-square border border-grey08"
+            className="aspect-square border border-grey08 object-cover"
           />
         )}
 

@@ -40,14 +40,23 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
             fetchNextPage={fetchNextPage}
           >
             {data?.recipe.recipeFoods.map(
-              ({ id, foodName, amount, recipeFoodUnit, cal, isChecked, shoppingListId }) => (
+              ({
+                id,
+                foodId,
+                foodName,
+                amount,
+                recipeFoodUnit,
+                cal,
+                isChecked,
+                shoppingListId,
+              }) => (
                 <div key={id} className="flex justify-between">
                   <div>
                     {foodName} | {amount * servingNumber}
-                    {recipeFoodUnit} ({cal * servingNumber})kcal
+                    {recipeFoodUnit} · {cal * servingNumber}kcal
                   </div>
                   <ShoppingButton
-                    foodId={id}
+                    foodId={foodId}
                     amount={amount}
                     foodUnit={recipeFoodUnit}
                     isChecked={isChecked}

@@ -61,7 +61,12 @@ const Review = ({ review, isReply, isWriter }: ReviewProps) => {
       <div className={cn('flex gap-4', isReply && 'ml-auto w-[calc(100%-28px)]')}>
         <div className="relative h-[50px] w-[50px] overflow-hidden rounded-full">
           {review.profileImgUrl ? (
-            <Image src={review.profileImgUrl} alt={`${review.user} 프로필`} fill />
+            <Image
+              src={review.profileImgUrl}
+              alt={`${review.user} 프로필`}
+              fill
+              className="object-cover"
+            />
           ) : (
             <div className="h-full w-full bg-grey08"></div>
           )}
