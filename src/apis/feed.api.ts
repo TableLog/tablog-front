@@ -44,8 +44,7 @@ export const addLogCommentReply = async (boardId: number, commentId: number, con
 };
 
 export const getLogCommentReplyList = async (boardId: number, commentId: number, page: number) => {
-  return await instance.get(
-    `${BOARD_URL}/${boardId}/board_comments/${commentId}/replys`,
-    { params: { page } },
-  );
+  return await instance.get(`${BOARD_URL}/${boardId}/board_comments/${commentId}/replys`, {
+    params: { page },
+  });
 };
