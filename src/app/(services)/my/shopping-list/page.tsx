@@ -110,7 +110,7 @@ const ShoppingListPage = () => {
               <div key={item.id} className="mb-3 flex w-full items-center justify-between">
                 <Checkbox
                   label={
-                    <div className="relative flex w-full items-center gap-4">
+                    <div className="relative flex w-full items-center gap-1">
                       <div
                         className={cn(
                           isChecked[item.id] ? 'w-full' : 'w-0',
