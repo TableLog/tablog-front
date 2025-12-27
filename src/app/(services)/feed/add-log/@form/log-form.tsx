@@ -53,7 +53,7 @@ const LogForm = ({ id }: ILogFormProps) => {
 
   const { mutate: addLog } = useAddLog({
     onSuccess: (res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         router.push('/feed');
         queryClient.invalidateQueries({ queryKey: [FEED_LIST_QUERY_KEY] });
         showToast({ message: '일기 작성 완료!', type: 'success' });
