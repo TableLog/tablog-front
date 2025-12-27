@@ -43,6 +43,11 @@ const CertificatePage = () => {
 
   const [isOpen, setIsOpen] = useState<number>(0);
 
+  const isQualified =
+    licenseCount?.recipeCount >= 50 ||
+    licenseCount?.businessCount > 0 ||
+    licenseCount?.patentCount > 0;
+
   const certificateList = [
     {
       title: '총 레시피',
@@ -225,7 +230,12 @@ const CertificatePage = () => {
           <p>삭제하실 수 없습니다.</p>
         </div>
 
-        <Button buttonColor="primary" full onClick={() => requestExpertVerification()}>
+        <Button
+          buttonColor="primary"
+          disabled={!isQualified}
+          full
+          onClick={() => requestExpertVerification()}
+        >
           전문가 인증 요청
         </Button>
       </section>

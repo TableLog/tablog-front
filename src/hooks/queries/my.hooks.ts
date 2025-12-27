@@ -19,6 +19,7 @@ import {
   POINT_HISTORY_QUERY_KEY,
 } from '@/constants/query-key.constants';
 import { IGetRecipeParams, IGetSortedRecipeOption, IMutationOptions } from '@/types/api';
+import { showToast } from '@/utils/functions';
 
 export const useGetMyLikesList = (params: IGetRecipeParams, option: IGetSortedRecipeOption) => {
   const { ...sortOptions } = option;
@@ -51,6 +52,11 @@ export const useGetMyBookmarkList = (params: IGetRecipeParams, option: IGetSorte
 export const useRequestExpertVerification = () => {
   return useMutation({
     mutationFn: async () => await requestExpertVerification(),
+    onSuccess: (res) => {
+      if (res.status === 201) {
+        showToast({ message: '전문가 인증 요청이 접수되었습니다.', type: 'success' });
+      }
+    },
   });
 };
 
