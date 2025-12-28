@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { z } from 'zod';
 
@@ -11,7 +11,8 @@ import PageHeader from '@/components/atoms/page-header/PageHeader';
 import { Text } from '@/components/atoms/text/Text';
 import { CHATS_QUERY_KEY, MY_CHAT_ROOMS_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
-import { getMyChatRoomsQueryOptions, useGetChats } from '@/hooks/queries/chat.hooks';
+import { useGetChats } from '@/hooks/queries/chat.hooks';
+import { useGetProfileInfo } from '@/hooks/queries/users.hooks';
 import useStomp from '@/hooks/useStomp';
 import { zodChatForm } from '@/lib/zod/zodValidation';
 
@@ -35,16 +36,11 @@ function ChatPage() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { data: userInfo, isPending: isGetUserPending, isError: isGetUserError } = useGetUserInfo();
   const {
-    data: chatRoom,
-    isPending: isGetChatRoomPending,
-    isError: isGetChatRoomError,
-  } = useQuery({
-    ...getMyChatRoomsQueryOptions(),
-    select: (res) =>
-      res.data.find(
-        (room) => room.roomId === roomId || room.roomId === roomId.split('--').reverse().join('--'),
-      ),
-  });
+    data: profileInfo,
+    isPending: isGetProfileInfoPending,
+    isError: isGetProfileInfoError,
+  } = useGetProfileInfo(Number(roomId.split('--').find((id) => id !== userInfo?.id.toString()))); // ! 하드 코딩
+
   const {
     data: savedMessages,
     isPending: isGetChatsPending,
@@ -71,8 +67,9 @@ function ChatPage() {
     wrapperRef.current?.scrollIntoView({ block: 'end' });
   }, [savedMessages, messages]);
 
-  if (isGetUserPending || isGetChatsPending || isGetChatRoomPending) return <div>Loading...</div>;
-  if (isGetUserError || isGetChatsError || isGetChatRoomError) return <div>Error...</div>;
+  if (isGetUserPending || isGetChatsPending || isGetProfileInfoPending)
+    return <div>Loading...</div>;
+  if (isGetUserError || isGetChatsError || isGetProfileInfoError) return <div>Error...</div>;
 
   const totalMessages = [...savedMessages, ...messages];
 
@@ -92,7 +89,7 @@ function ChatPage() {
 
   return (
     <div ref={wrapperRef} className="relative px-5 pb-4">
-      <PageHeader title={`${chatRoom?.nickname}님과의 대화`} back />
+      <PageHeader title={`${profileInfo?.nickname}님과의 대화`} back />
       <div className="flex min-h-[calc(100dvh-132px)] flex-col items-center justify-center gap-5">
         <div className="flex w-full flex-grow flex-col gap-3 pb-[66px] pt-2">
           {totalMessages.length === 0 ? (
