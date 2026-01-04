@@ -116,7 +116,7 @@ const LogForm = ({ id }: ILogFormProps) => {
           error={imageRequired}
           defaultImages={logData?.image_urls}
         />
-        <TextArea category="content" register={register} errors={errors} maxLength={500} />
+        <TextArea category="content" register={register} errors={errors} maxLength={300} />
       </div>
 
       <div className="mt-24">

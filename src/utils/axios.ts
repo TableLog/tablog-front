@@ -25,6 +25,7 @@ instance.interceptors.response.use(
         return instance.request(error.config);
       } catch (err) {
         const errorCode = getErrorCode(err);
+        console.log(errorCode);
 
         // refresh token 만료시 쿠키 삭제 후 로그인 페이지로 이동
         if (errorCode === 'EJ401001' || errorCode === 'EJ400001' || errorCode === 'EJ401002') {

@@ -27,9 +27,9 @@ export const PLACEHOLDER_MAP = {
   password: '패스워드를 입력해주세요.',
   confirmPassword: '패스워드를 한 번 더 입력해주세요.',
   nickname: '닉네임을 입력해주세요. (최대 10글자)',
-  recipeName: '요리명을 입력해주세요.',
+  recipeName: '요리명을 입력해주세요. (최대 50글자)',
   stepTitle: '순서 제목을 입력해주세요. (최대 50글자)',
-  stepDescription: '요리 과정에 대한 설명을 입력해주세요 (최대 500글자)',
+  stepDescription: '요리 과정에 대한 설명을 입력해주세요 (최대 300글자)',
   amount: '용량을 입력해주세요.',
   reportContent: '신고 사유를 입력해주세요. (최대 300글자)',
   unit: '단위를 입력해주세요.',
@@ -40,5 +40,5 @@ export const PLACEHOLDER_MAP = {
   ingredientName: '재료 이름을 입력해주세요.',
   review: '리뷰를 입력해주세요. (최대 300글자)',
   reviewReply: '댓글에 답글을 남겨주세요. (최대 300글자)',
-  memo: '개인 메모를 남겨주세요. (최대 500글자)\n해당 메모는 다른 유저에게 노출되지 않습니다.',
+  memo: '개인 메모를 남겨주세요. (최대 300글자)\n해당 메모는 다른 유저에게 노출되지 않습니다.',
 } as const;

@@ -328,7 +328,7 @@ const zodRecipeInfoForm = z.object({
     .trim()
     .nonempty({ message: RECIPE_NAME_REQUIRED })
     .max(20, RECIPE_NAME_REQUIRED),
-  intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(200, RECIPE_DESCRIPTION_REQUIRED),
+  intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
   recipeCategoryList: z.array(z.string()).min(1, RECIPE_CATEGORY_REQUIRED),
   price: z.string(),
   cookingTime: z.string(),
@@ -339,8 +339,8 @@ const zodRecipeStepInfo = z.object({
   rpTitle: z
     .string({ message: STEP_TITLE_REQUIRED })
     .min(1, STEP_TITLE_REQUIRED)
-    .max(500, STEP_TITLE_REQUIRED),
-  description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(500, STEP_DESCRIPTION_REQUIRED),
+    .max(300, STEP_TITLE_REQUIRED),
+  description: z.string({ message: STEP_DESCRIPTION_REQUIRED }).max(300, STEP_DESCRIPTION_REQUIRED),
   files: z
     .array(typeof window !== 'undefined' ? z.instanceof(File) : z.any())
     .min(1, STEP_FILE_REQUIRED)
@@ -402,7 +402,7 @@ export const zodMemoForm = z.object({
   memo: z
     .string()
     .min(1, { message: REVIEW_MEMO_REQUIRED })
-    .max(500, { message: REVIEW_MEMO_REQUIRED }),
+    .max(300, { message: REVIEW_MEMO_REQUIRED }),
 });
 
 // NOTE: 장보기 목록

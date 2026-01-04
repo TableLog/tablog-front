@@ -98,7 +98,7 @@ const RecipeForm = () => {
                   name={`dtos.${idx}.description`}
                   register={register}
                   errors={errors}
-                  maxLength={500}
+                  maxLength={300}
                 />
               </div>
             </div>
