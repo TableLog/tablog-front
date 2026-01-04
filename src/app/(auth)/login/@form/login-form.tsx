@@ -12,12 +12,13 @@ import { Text } from '@/components/atoms/text/Text';
 import { LOCAL_REMEMBER_EMAIL } from '@/constants/storage-key.constants';
 import { useEmailLogin } from '@/hooks/queries/auth.hooks';
 import { zodLogin } from '@/lib/zod/zodValidation';
-import { useUserStore } from '@/lib/zustand/userStore';
+import { useLoginStore, useUserStore } from '@/lib/zustand/userStore';
 import { TLoginFormValues } from '@/types/api';
 import { showErrorToast } from '@/utils/functions';
 
 const LoginForm = () => {
   const { foundEmail } = useUserStore();
+  const { setIsLoggedIn } = useLoginStore();
 
   const router = useRouter();
 
@@ -47,6 +48,7 @@ const LoginForm = () => {
           localStorage.removeItem(LOCAL_REMEMBER_EMAIL);
         }
       }
+      setIsLoggedIn(true);
       router.push('/home');
     },
     onError: (error) => {
