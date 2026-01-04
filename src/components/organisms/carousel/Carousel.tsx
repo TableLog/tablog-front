@@ -45,13 +45,13 @@ const Carousel = ({ className, imageList, half = false }: CarouselProps) => {
                   alt={image.alt}
                   width={375}
                   height={375}
+                  unoptimized
                 />
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-
       {/* 커스텀 페이지네이션 */}
     </div>
   );
