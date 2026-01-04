@@ -323,8 +323,12 @@ export const zodAddLog = z.object({
 
 // NOTE: 레시피 등록
 const zodRecipeInfoForm = z.object({
-  title: z.string().trim().nonempty({ message: RECIPE_NAME_REQUIRED }),
-  intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(300, RECIPE_DESCRIPTION_REQUIRED),
+  title: z
+    .string()
+    .trim()
+    .nonempty({ message: RECIPE_NAME_REQUIRED })
+    .max(20, RECIPE_NAME_REQUIRED),
+  intro: z.string({ message: RECIPE_DESCRIPTION_REQUIRED }).max(200, RECIPE_DESCRIPTION_REQUIRED),
   recipeCategoryList: z.array(z.string()).min(1, RECIPE_CATEGORY_REQUIRED),
   price: z.string(),
   cookingTime: z.string(),

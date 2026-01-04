@@ -30,7 +30,7 @@ const StagesPage = ({ params }: { params: Promise<{ id: string }> }) => {
     <div className="flex min-h-[calc(100dvh-60px)] flex-col px-5 py-4">
       <div className="mb-2 font-semibold">레시피 순서</div>
       <InfiniteScroll
-        className="flex flex-grow flex-col gap-5 overflow-auto"
+        className="flex flex-grow flex-col gap-2.5 overflow-auto"
         hasNextPage={hasNextPage}
         isFetching={isFetching}
         fetchNextPage={fetchNextPage}
