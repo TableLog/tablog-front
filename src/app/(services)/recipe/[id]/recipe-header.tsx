@@ -101,7 +101,7 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
   return (
     <>
       <div className="sticky z-50 flex items-center justify-between px-5 py-4">
-        <button onClick={() => router.back()}>
+        <button onClick={() => router.push('/recipe')}>
           <BoxIcon name="arrow-back" size={24} color="white" />
         </button>
         <div className="absolute left-1/2 -translate-x-1/2 text-white01">
