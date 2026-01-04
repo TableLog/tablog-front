@@ -86,6 +86,7 @@ const PopularRecipeSlider = ({ list }: IPopularRecipeSliderProps) => {
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   priority
+                  unoptimized
                 />
               </div>
             </SwiperSlide>

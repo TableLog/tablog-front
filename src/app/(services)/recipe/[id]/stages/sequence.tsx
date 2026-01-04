@@ -18,6 +18,7 @@ const Sequence = ({ recipe }: SequenceProps) => {
           alt={`${recipe.rpTitle} 레시피`}
           fill
           className="object-cover"
+          unoptimized
         />
       </div>
       <div>

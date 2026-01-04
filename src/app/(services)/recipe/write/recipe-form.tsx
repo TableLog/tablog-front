@@ -60,6 +60,7 @@ const RecipeForm = () => {
                 >
                   <span className="w-[50px] font-medium text-grey01">단계 {idx + 1}</span>
                   <Image
+                    unoptimized
                     width={20}
                     height={20}
                     src="/icons/arrow.svg"

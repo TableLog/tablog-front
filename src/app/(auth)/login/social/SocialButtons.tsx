@@ -55,7 +55,7 @@ export const SocialButtons = ({ provider, link, login }: ISocialButtonsProps) =>
             href={button.href}
             passHref
           >
-            <Image src={button.icon} alt={button.name} width={20} height={20} />
+            <Image src={button.icon} alt={button.name} width={20} height={20} unoptimized />
           </Link>
         );
       })}

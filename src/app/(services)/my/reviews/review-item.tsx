@@ -34,6 +34,7 @@ const ReviewItem = ({ review, isDetail }: IReviewItemProps) => {
             width={90}
             height={90}
             className="aspect-square border border-grey08 object-cover"
+            unoptimized
           />
         )}
 
@@ -66,6 +67,7 @@ const ReviewItem = ({ review, isDetail }: IReviewItemProps) => {
             width={50}
             height={50}
             className="aspect-square max-h-[50px] max-w-[50px] rounded-full"
+            unoptimized
           />
 
           <div className="flex flex-col gap-1">

@@ -165,6 +165,7 @@ const RecipeImageInput = <T extends FieldValues>({
                     alt={`sample${image.id}`}
                     width={375}
                     height={375}
+                    unoptimized
                   />
                 </div>
               )}

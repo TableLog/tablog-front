@@ -17,6 +17,7 @@ const ProfileImage = ({ src, size }: IProfileImageProps) => {
         height={size}
         className="image-cover"
         priority
+        unoptimized
       />
     </figure>
   );

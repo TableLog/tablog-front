@@ -76,7 +76,13 @@ const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
         className="relative aspect-[16/12] w-full overflow-hidden rounded-[20px]"
         {...props}
       >
-        <Image src={recipe.imageUrl} alt={`${recipe.title} 이미지`} fill className="object-cover" />
+        <Image
+          src={recipe.imageUrl}
+          alt={`${recipe.title} 이미지`}
+          fill
+          className="object-cover"
+          unoptimized
+        />
 
         <div className="absolute right-4 top-5 flex flex-col items-center gap-1">
           {recipe.isWriter ? (

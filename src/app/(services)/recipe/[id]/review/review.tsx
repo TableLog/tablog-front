@@ -66,6 +66,7 @@ const Review = ({ review, isReply, isWriter }: ReviewProps) => {
               alt={`${review.user} 프로필`}
               fill
               className="object-cover"
+              unoptimized
             />
           ) : (
             <div className="h-full w-full bg-grey08"></div>

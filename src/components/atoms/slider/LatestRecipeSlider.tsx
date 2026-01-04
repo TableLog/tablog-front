@@ -38,6 +38,7 @@ const LatestRecipeSlider = ({ list }: ILatestRecipeSliderProps) => {
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 priority
+                unoptimized
               />
 
               <div className="absolute bottom-[10px] left-[10px] right-[10px] rounded-[10px] bg-white01/90 p-4">

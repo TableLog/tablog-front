@@ -62,6 +62,7 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
           alt={`${recipe.title} 레시피`}
           fill
           className="object-cover object-center brightness-[0.6]"
+          unoptimized
         />
       )}
       <div className="absolute bottom-8 flex w-full flex-col gap-4 px-5">

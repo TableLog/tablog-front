@@ -42,6 +42,7 @@ const FeedListByUser = () => {
                     height={120}
                     className="image-cover"
                     priority
+                    unoptimized
                   />
                 </figure>
               </Link>
