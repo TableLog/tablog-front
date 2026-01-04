@@ -28,7 +28,7 @@ export const EmailInput = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-[500px]">
-      <TextArea category="email" register={register} errors={errors} maxLength={500} />
+      <TextArea category="email" register={register} errors={errors} maxLength={300} />
 
       <button type="submit">Submit</button>
     </form>
