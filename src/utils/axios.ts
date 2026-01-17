@@ -28,11 +28,15 @@ instance.interceptors.response.use(
 
         // refresh token 만료시 쿠키 삭제 후 로그인 페이지로 이동
         if (errorCode === 'EJ401001' || errorCode === 'EJ400001' || errorCode === 'EJ401002') {
-          await fetch('/api/v1/logout', {
-            method: 'POST',
-            credentials: 'include',
-          });
-          window.location.href = '/login?tokenExpired=true';
+          try {
+            await fetch('/api/v1/logout', {
+              method: 'POST',
+              credentials: 'include',
+            });
+          } finally {
+            // 로그아웃 API 실패 시에도 로그인 페이지로 이동
+            window.location.href = '/login?tokenExpired=true';
+          }
         }
 
         return Promise.reject(err);

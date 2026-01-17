@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      // /api/v1/logout는 Next.js API Route에서 쿠키 삭제를 처리하므로 프록시 제외
+      { source: '/api/v1/logout', destination: '/api/v1/logout' },
       {
         // proxy
         source: '/api/v1/:path*',
