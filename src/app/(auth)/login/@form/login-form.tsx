@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
@@ -14,9 +14,12 @@ import { useEmailLogin } from '@/hooks/queries/auth.hooks';
 import { zodLogin } from '@/lib/zod/zodValidation';
 import { useLoginStore, useUserStore } from '@/lib/zustand/userStore';
 import { TLoginFormValues } from '@/types/api';
-import { showErrorToast } from '@/utils/functions';
+import { showErrorToast, showToast } from '@/utils/functions';
 
 const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const tokenExpired = searchParams.get('tokenExpired');
+
   const { foundEmail } = useUserStore();
   const { setIsLoggedIn } = useLoginStore();
 
@@ -72,6 +75,19 @@ const LoginForm = () => {
       setValue('email', foundEmail);
     }
   }, [setValue, foundEmail]);
+
+  useEffect(() => {
+    if (tokenExpired) {
+      showToast({
+        message: (
+          <div>
+            로그인 세션이 만료되었습니다. <br /> 다시 로그인해주세요.
+          </div>
+        ),
+        type: 'error',
+      });
+    }
+  }, [tokenExpired]);
 
   return (
     <div>
