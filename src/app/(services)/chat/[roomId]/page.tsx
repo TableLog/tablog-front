@@ -1,7 +1,8 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { messageCallbackType } from '@stomp/stompjs';
 import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { z } from 'zod';
@@ -47,15 +48,20 @@ function ChatPage() {
     isError: isGetChatsError,
   } = useGetChats(roomId);
 
-  const { isConnected, publish, subscribe } = useStomp({
-    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
-    onConnect: () => {
+  const onConnect = useCallback(
+    (subscribe: (destination: string, onMessageReceived: messageCallbackType) => void) => {
       subscribe(`/sub/chat/room/${roomId}`, () => {
         queryClient.invalidateQueries({ queryKey: [CHATS_QUERY_KEY, roomId] });
         queryClient.invalidateQueries({ queryKey: [MY_CHAT_ROOMS_QUERY_KEY] });
         setMessages([]);
       });
     },
+    [roomId, queryClient],
+  );
+
+  const { isConnected, publish } = useStomp({
+    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
+    onConnect,
   });
 
   const { register, handleSubmit, reset } = useForm<TFormValues>({

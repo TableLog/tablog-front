@@ -1,4 +1,6 @@
 'use client';
+import { useCallback } from 'react';
+import { messageCallbackType } from '@stomp/stompjs';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 
@@ -14,9 +16,8 @@ function ChatRoomList() {
   const { data: chatRooms, isPending, isError } = useQuery(getMyChatRoomsQueryOptions());
   const queryClient = useQueryClient();
 
-  const { isConnected, subscribe } = useStomp({
-    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
-    onConnect: () => {
+  const onConnect = useCallback(
+    (subscribe: (destination: string, onMessageReceived: messageCallbackType) => void) => {
       subscribe(`/sub/chat/rooms/${user?.id}`, (message) => {
         queryClient.setQueryData(getMyChatRoomsQueryOptions().queryKey, (oldData) => {
           if (!oldData) return oldData;
@@ -27,6 +28,12 @@ function ChatRoomList() {
         });
       });
     },
+    [user?.id, queryClient],
+  );
+
+  const { isConnected } = useStomp({
+    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
+    onConnect,
     enabled: !!user,
   });
 
@@ -45,7 +52,7 @@ function ChatRoomList() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex min-h-[calc(100dvh-132px)] flex-col">
       {!isConnected && <div className="text-center text-sm text-grey03">연결 중...</div>}
       {chatRooms.map((chatRoom) => (
         <ChatRoom key={chatRoom.roomId} chatRoom={chatRoom} />
