@@ -1,36 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
-import { Client } from '@stomp/stompjs';
+import { Client, messageCallbackType } from '@stomp/stompjs';
 
 import { showToast } from '@/utils/functions';
 
 interface UseStompProps {
   brokerURL: string;
-  publishDestination: string;
-  subsribeDestination: string;
-  onMessageReceived?: (message: string) => void;
+  onConnect: () => void;
+  enabled?: boolean;
 }
 
-function useStomp({
-  brokerURL,
-  publishDestination,
-  subsribeDestination,
-  onMessageReceived,
-}: UseStompProps) {
+function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
   const [isConnected, setIsConnected] = useState(false);
   const clientRef = useRef<Client>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+    if (clientRef.current) return;
+    if (isConnected) return;
+
     clientRef.current = new Client({
       brokerURL,
       onConnect: () => {
         if (!clientRef.current) return;
         setIsConnected(true);
-        clientRef.current.subscribe(subsribeDestination, (message) => {
-          onMessageReceived?.(message.body);
-        });
+        onConnect?.();
       },
       onWebSocketError: () => {
         showToast({ message: '웹 소켓 연결 실패', type: 'error' });
+        setIsConnected(false);
       },
     });
 
@@ -41,17 +38,22 @@ function useStomp({
       clientRef.current.deactivate();
       clientRef.current = null;
     };
-  }, []);
+  }, [brokerURL, isConnected, onConnect, enabled]);
 
-  const publishMessage = (data: unknown) => {
+  const subscribe = (destination: string, onMessageReceived: messageCallbackType) => {
+    if (!clientRef.current) return;
+    clientRef.current.subscribe(destination, onMessageReceived);
+  };
+
+  const publish = (destination: string, data: unknown) => {
     if (!clientRef.current) return;
     clientRef.current.publish({
-      destination: publishDestination,
+      destination,
       body: JSON.stringify(data),
     });
   };
 
-  return { isConnected, publishMessage };
+  return { isConnected, subscribe, publish };
 }
 
 export default useStomp;

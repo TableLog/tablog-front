@@ -47,14 +47,14 @@ function ChatPage() {
     isError: isGetChatsError,
   } = useGetChats(roomId);
 
-  const { isConnected, publishMessage } = useStomp({
+  const { isConnected, publish, subscribe } = useStomp({
     brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
-    publishDestination: '/pub/chat/send',
-    subsribeDestination: `/sub/chat/room/${roomId}`,
-    onMessageReceived: () => {
-      queryClient.invalidateQueries({ queryKey: [CHATS_QUERY_KEY, roomId] });
-      queryClient.invalidateQueries({ queryKey: [MY_CHAT_ROOMS_QUERY_KEY] });
-      setMessages([]);
+    onConnect: () => {
+      subscribe(`/sub/chat/room/${roomId}`, () => {
+        queryClient.invalidateQueries({ queryKey: [CHATS_QUERY_KEY, roomId] });
+        queryClient.invalidateQueries({ queryKey: [MY_CHAT_ROOMS_QUERY_KEY] });
+        setMessages([]);
+      });
     },
   });
 
@@ -79,7 +79,7 @@ function ChatPage() {
       message: data.message,
       sender: userInfo.nickname,
     };
-    publishMessage(message);
+    publish('/pub/chat/send', message);
     setMessages((prev) => [
       ...prev,
       { ...message, id: crypto.randomUUID(), createdAt: new Date().toISOString() },
