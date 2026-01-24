@@ -24,7 +24,7 @@ const RecipeCategory = () => {
       );
 
       if (categoryTitles?.length === 0) {
-        setFilterCondition(null);
+        setFilterCondition({ recipeCategory: undefined });
       } else {
         setFilterCondition({
           recipeCategory: categoryTitles,

@@ -24,7 +24,7 @@ const LatestRecipeSlider = ({ list }: ILatestRecipeSliderProps) => {
   return (
     <div>
       <Swiper className="w-full" slidesPerView={'auto'} spaceBetween={12}>
-        {list?.map((item, idx) => {
+        {list?.slice(0, 5).map((item, idx) => {
           return (
             <SwiperSlide
               key={item.id}
