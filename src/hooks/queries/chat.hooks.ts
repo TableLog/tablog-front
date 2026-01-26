@@ -10,10 +10,13 @@ export const getMyChatRoomsQueryOptions = () =>
     select: (response) => response.data,
   });
 
-export const useGetChats = (roomId: string) => {
-  return useQuery({
+export const getChatsQueryOptions = (roomId: string) =>
+  queryOptions({
     queryKey: [CHATS_QUERY_KEY, roomId],
     queryFn: () => getChatRoomMessages(roomId),
     select: (response) => response.data,
   });
+
+export const useGetChats = (roomId: string) => {
+  return useQuery(getChatsQueryOptions(roomId));
 };

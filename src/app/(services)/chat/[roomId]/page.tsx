@@ -1,18 +1,17 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { messageCallbackType } from '@stomp/stompjs';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { z } from 'zod';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import { Text } from '@/components/atoms/text/Text';
-import { CHATS_QUERY_KEY, MY_CHAT_ROOMS_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
-import { useGetChats } from '@/hooks/queries/chat.hooks';
+import { getChatsQueryOptions } from '@/hooks/queries/chat.hooks';
 import { useGetProfileInfo } from '@/hooks/queries/users.hooks';
 import useStomp from '@/hooks/useStomp';
 import { zodChatForm } from '@/lib/zod/zodValidation';
@@ -21,19 +20,9 @@ import ChatBubble from './chat-bubble';
 
 type TFormValues = z.infer<typeof zodChatForm>;
 
-interface MessageType {
-  id: string;
-  roomId: string;
-  message: string;
-  sender: string;
-  createdAt: string;
-  profileImgUrl?: string;
-}
-
 function ChatPage() {
   const queryClient = useQueryClient();
   const { roomId } = useParams<{ roomId: string }>();
-  const [messages, setMessages] = useState<MessageType[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { data: userInfo, isPending: isGetUserPending, isError: isGetUserError } = useGetUserInfo();
   const {
@@ -43,17 +32,23 @@ function ChatPage() {
   } = useGetProfileInfo(Number(roomId.split('--').find((id) => id !== userInfo?.id.toString()))); // ! 하드 코딩
 
   const {
-    data: savedMessages,
+    data: messages,
     isPending: isGetChatsPending,
     isError: isGetChatsError,
-  } = useGetChats(roomId);
+  } = useQuery(getChatsQueryOptions(roomId));
 
   const onConnect = useCallback(
     (subscribe: (destination: string, onMessageReceived: messageCallbackType) => void) => {
-      subscribe(`/sub/chat/room/${roomId}`, () => {
-        queryClient.invalidateQueries({ queryKey: [CHATS_QUERY_KEY, roomId] });
-        queryClient.invalidateQueries({ queryKey: [MY_CHAT_ROOMS_QUERY_KEY] });
-        setMessages([]);
+      subscribe(`/sub/chat/room/${roomId}`, (message) => {
+        queryClient.setQueryData(getChatsQueryOptions(roomId).queryKey, (oldData) => {
+          if (!oldData) return oldData;
+
+          console.log(oldData, JSON.parse(message.body));
+          return {
+            ...oldData,
+            data: [...oldData.data, { ...JSON.parse(message.body), id: crypto.randomUUID() }],
+          };
+        });
       });
     },
     [roomId, queryClient],
@@ -71,13 +66,11 @@ function ChatPage() {
 
   useEffect(() => {
     wrapperRef.current?.scrollIntoView({ block: 'end' });
-  }, [savedMessages, messages]);
+  }, [messages]);
 
   if (isGetUserPending || isGetChatsPending || isGetProfileInfoPending)
     return <div>Loading...</div>;
   if (isGetUserError || isGetChatsError || isGetProfileInfoError) return <div>Error...</div>;
-
-  const totalMessages = [...savedMessages, ...messages];
 
   const handleSubmitForm = (data: TFormValues) => {
     const message = {
@@ -86,10 +79,6 @@ function ChatPage() {
       sender: userInfo.nickname,
     };
     publish('/pub/chat/send', message);
-    setMessages((prev) => [
-      ...prev,
-      { ...message, id: crypto.randomUUID(), createdAt: new Date().toISOString() },
-    ]);
     reset();
   };
 
@@ -98,14 +87,14 @@ function ChatPage() {
       <PageHeader title={`${profileInfo?.nickname}님과의 대화`} back />
       <div className="flex min-h-[calc(100dvh-132px)] flex-col items-center justify-center gap-5">
         <div className="flex w-full flex-grow flex-col gap-3 pb-[66px] pt-2">
-          {totalMessages.length === 0 ? (
+          {messages.length === 0 ? (
             <div>
               <Text fontSize={14}>대화가 없습니다. 먼저 메시지를 보내보세요</Text>
             </div>
           ) : (
-            totalMessages.map(({ id, message, sender, createdAt, profileImgUrl }) => (
+            messages.map(({ id, message, sender, createdAt, profileImgUrl }) => (
               <ChatBubble
-                key={id}
+                key={`chat-${id}`}
                 sender={sender}
                 message={message}
                 createdAt={createdAt}
