@@ -42,7 +42,6 @@ const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) =
   const { mutate: addCommentReply } = useAddCommentReply({
     onSuccess: (res) => {
       if (res.status === 201) {
-        console.log('addCommentReply success');
         queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, logId] });
         queryClient.invalidateQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
         queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });

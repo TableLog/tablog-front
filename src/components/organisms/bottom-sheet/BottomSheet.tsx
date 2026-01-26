@@ -31,81 +31,68 @@ export default function BottomSheet({
   buttons,
   sheetClassName,
 }: BottomSheetProps) {
-  const [isClosing, setIsClosing] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden';
-    else document.body.style.overflow = 'auto';
+    setMounted(true);
+  }, []);
 
-    return () => {
-      setIsClosing(false);
-    };
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
   }, [isOpen]);
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) setIsClosing(true);
-  };
+  if (!mounted) return null;
 
-  return isOpen
-    ? createPortal(
-        <AnimatePresence>
-          <div
+  return createPortal(
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="bottom-sheet"
+          className={clsx(
+            'fixed z-[10000] flex items-end justify-center',
+            showBackdrop ? 'inset-0' : 'bottom-0 left-0 right-0 top-[60px]',
+          )}
+        >
+          {/* Backdrop */}
+          {showBackdrop && <Backdrop onClick={onClose} />}
+
+          {/* Bottom Sheet */}
+          <motion.div
             className={clsx(
-              'fixed z-[10000] flex items-end justify-center',
-              showBackdrop ? 'inset-0' : 'bottom-0 left-0 right-0 top-[60px]',
+              'pointer-events-auto relative flex h-fit max-h-[calc(100%-60px)] w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg duration-300',
+              showBackdrop ? 'min-h-1/2 max-h-[80%]' : 'min-h-full',
             )}
-            onClick={showBackdrop ? handleBackdropClick : undefined}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ duration: 0.1, ease: 'linear' }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y > 100) onClose();
+            }}
           >
-            {/* Backdrop */}
-            {showBackdrop && <Backdrop onClick={handleBackdropClick} />}
-
-            {/* Bottom Sheet */}
-            <motion.div
-              className={clsx(
-                'pointer-events-auto relative flex h-fit max-h-[calc(100%-60px)] w-full flex-col justify-between rounded-tl-[20px] rounded-tr-[20px] bg-white01 pb-6 shadow-lg duration-300',
-                showBackdrop ? 'min-h-1/2 h-full max-h-[80%]' : 'min-h-full',
+            <div>
+              {showHandlebar && (
+                <div className="flex justify-center pb-3 pt-4">
+                  <div className={clsx('h-1.5 w-[150px] rounded-full bg-grey07')} />
+                </div>
               )}
-              initial={{ y: '100%' }}
-              animate={{ y: isClosing ? '100%' : 0 }}
-              exit={{ y: '100%' }}
-              transition={
-                showHandlebar ? { type: 'spring', stiffness: 300, damping: 30 } : { duration: 0 }
-              }
-              drag="y"
-              dragConstraints={{ top: 0, bottom: 0 }}
-              // TODO: 내부의 컨텐츠에 스크롤할 일이 있으면 닫힘
-              // onDragEnd={(e, info) => {
-              //   if (info.point.y > 100) {
-              //     setIsClosing(true);
-              //   }
-              // }}
-              onAnimationComplete={() => {
-                if (isClosing) onClose();
-              }}
-            >
-              <div>
-                {showHandlebar && (
-                  <div className="flex justify-center pb-3 pt-4">
-                    <div className={clsx('h-1.5 w-[150px] rounded-full bg-grey07')} />
-                  </div>
-                )}
 
-                {title && (
-                  <Text fontSize={20} fontWeight="semiBold" className="text-center">
-                    {title}
-                  </Text>
-                )}
-              </div>
+              {title && (
+                <Text fontSize={20} fontWeight="semiBold" className="text-center">
+                  {title}
+                </Text>
+              )}
+            </div>
 
-              <div className={cn('flex-1 overflow-y-auto pb-5 pt-9', sheetClassName)}>
-                {children}
-              </div>
+            <div className={cn('overflow-y-auto pb-5 pt-9', sheetClassName)}>{children}</div>
 
-              {buttons && <div className="mt-5 px-5">{buttons}</div>}
-            </motion.div>
-          </div>
-        </AnimatePresence>,
-        document.body,
-      )
-    : null;
+            {buttons && <div className="mt-5 px-5">{buttons}</div>}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
+    document.body,
+  );
 }

@@ -68,7 +68,7 @@ const Header = () => {
         onClose={() => setIsOpen(false)}
         showBackdrop={false}
         showHandlebar={false}
-        sheetClassName="p-0"
+        sheetClassName="p-0 flex-1"
       >
         {getContent()}
       </BottomSheet>

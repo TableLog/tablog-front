@@ -72,9 +72,9 @@
     background-color: #e8e8e8;
   }
 
-  input:disabled,
-  .input:has(> input[disabled]),
-  .input:is(:disabled, [disabled]) {
+  input:disabled:not(.toggle),
+  .input:has(> input[disabled]:not(.toggle)),
+  .input:is(:disabled, [disabled]:not(.toggle)) {
     -webkit-box-shadow: 0 0 0 30px #f5f5f5 inset;
     background-color: #f5f5f5;
     border-color: #e8e8e8;

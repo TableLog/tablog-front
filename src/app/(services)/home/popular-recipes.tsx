@@ -19,7 +19,10 @@ const PopularRecipes = () => {
       <header className="mb-4 flex items-center justify-between px-5">
         <div className="font-semibold">인기 레시피</div>
 
-        <Link href="/recipe" className="border-b border-b-grey01 text-sm text-grey01">
+        <Link
+          href="/recipe?sortOption=popular"
+          className="border-b border-b-grey01 text-sm text-grey01"
+        >
           더보기
         </Link>
       </header>
