@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import RecipeItem from '@/app/(services)/recipe/recipe-item';
 import { useGetRecipeSearch } from '@/hooks/queries/recipe.hooks';
@@ -49,7 +50,7 @@ export default function Search({ handleCloseSearch }: SearchProps) {
     setRecentKeywords((prev) => {
       const updated = [
         ...prev.filter((keyword) => keyword.title !== newKeyword),
-        { id: crypto.randomUUID(), title: newKeyword },
+        { id: uuidv4(), title: newKeyword },
       ];
       if (updated.length > 5) updated.shift();
       localStorage.setItem(RECENT_KEYWORDS_KEY, JSON.stringify(updated));

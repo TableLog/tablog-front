@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { messageCallbackType } from '@stomp/stompjs';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
@@ -46,7 +47,7 @@ function ChatPage() {
           console.log(oldData, JSON.parse(message.body));
           return {
             ...oldData,
-            data: [...oldData.data, { ...JSON.parse(message.body), id: crypto.randomUUID() }],
+            data: [...oldData.data, { ...JSON.parse(message.body), id: uuidv4() }],
           };
         });
       });
