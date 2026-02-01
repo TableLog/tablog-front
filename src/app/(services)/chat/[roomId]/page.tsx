@@ -1,8 +1,7 @@
 'use client';
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { messageCallbackType } from '@stomp/stompjs';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
@@ -38,8 +37,9 @@ function ChatPage() {
     isError: isGetChatsError,
   } = useQuery(getChatsQueryOptions(roomId));
 
-  const onConnect = useCallback(
-    (subscribe: (destination: string, onMessageReceived: messageCallbackType) => void) => {
+  const { isConnected, publish } = useStomp({
+    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
+    onConnect: (subscribe) => {
       subscribe(`/sub/chat/room/${roomId}`, (message) => {
         queryClient.setQueryData(getChatsQueryOptions(roomId).queryKey, (oldData) => {
           if (!oldData) return oldData;
@@ -58,13 +58,7 @@ function ChatPage() {
         });
       });
     },
-    [roomId, queryClient, profileInfo],
-  );
-
-  const { isConnected, publish } = useStomp({
-    brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
-    onConnect,
-    enabled: !!roomId && !isGetProfileInfoPending && !isGetProfileInfoError,
+    enabled: !!roomId && !!profileInfo,
   });
 
   const { register, handleSubmit, reset } = useForm<TFormValues>({

@@ -14,6 +14,9 @@ interface UseStompProps {
 function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
   const [isConnected, setIsConnected] = useState(false);
   const clientRef = useRef<Client | null>(null);
+  const onConnectRef = useRef(onConnect);
+
+  onConnectRef.current = onConnect;
 
   const subscribe = useCallback((destination: string, onMessageReceived: messageCallbackType) => {
     if (!clientRef.current) return;
@@ -40,7 +43,7 @@ function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
       reconnectDelay: 5000,
       onConnect: () => {
         setIsConnected(true);
-        onConnect(subscribe);
+        onConnectRef.current(subscribe);
       },
       onWebSocketError: (error) => {
         console.log({ error });
@@ -68,7 +71,7 @@ function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
       setIsConnected(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brokerURL, enabled, onConnect, subscribe]);
+  }, [brokerURL, enabled, subscribe]);
 
   return { isConnected, subscribe, publish };
 }
