@@ -64,6 +64,7 @@ function ChatPage() {
   const { isConnected, publish } = useStomp({
     brokerURL: process.env.NEXT_PUBLIC_WS_URL!,
     onConnect,
+    enabled: !!roomId && !isGetProfileInfoPending && !isGetProfileInfoError,
   });
 
   const { register, handleSubmit, reset } = useForm<TFormValues>({
