@@ -12,8 +12,6 @@ import PopularRecipes from './popular-recipes';
 function HomeTabs() {
   const { filterCondition } = useFilterStore();
 
-  console.log(filterCondition);
-
   return (
     <div>
       <Tab>
@@ -23,8 +21,16 @@ function HomeTabs() {
 
         <Tab.Panel index={0}>
           <RecipeCategory />
-          <LatestRecipes />
-          <PopularRecipes />
+
+          {filterCondition?.recipeCategory ? (
+            <FilterRecipes type="recipeCategory" />
+          ) : (
+            <>
+              <LatestRecipes />
+
+              <PopularRecipes />
+            </>
+          )}
         </Tab.Panel>
 
         <Tab.Panel index={1}>

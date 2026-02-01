@@ -22,6 +22,7 @@ const CategoryTab = ({
   const handleClick = useCallback(
     (index: number, name: string) => {
       setSelected(index);
+
       setFilterCondition({ [type]: name });
     },
     [type, setFilterCondition],

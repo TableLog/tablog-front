@@ -92,7 +92,7 @@ const Checkboxes = ({ label, name, content, value, onChange }: ICheckboxesPros) 
           'transition-all-3 mt-1.5 overflow-y-auto overflow-x-hidden bg-grey08',
         )}
       >
-        <div className={cn(contentHiddenClass, 'pb-3 pl-5 pr-5 pt-3')}>
+        <div className={cn(contentHiddenClass, 'whitespace-pre-wrap pb-3 pl-5 pr-5 pt-3')}>
           <Text fontSize={12}>{content}</Text>
         </div>
       </div>

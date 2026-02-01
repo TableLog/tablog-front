@@ -7,7 +7,11 @@ import { useFilterStore } from '@/lib/zustand/recipeStore';
 
 import RecipeItem from '../recipe/recipe-item';
 
-const FilterRecipes = ({ type }: { type: 'cookingTime' | 'calorieRange' | 'recipePrice' }) => {
+const FilterRecipes = ({
+  type,
+}: {
+  type: 'cookingTime' | 'calorieRange' | 'recipePrice' | 'recipeCategory';
+}) => {
   const { filterCondition } = useFilterStore();
 
   const {
