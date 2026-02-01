@@ -63,7 +63,7 @@ const RecipeImageInput = <T extends FieldValues>({
     if (!e.target.files) return;
 
     const files = Array.from(e.target.files);
-
+    console.log(files, 'files');
     // 유효한 이미지 확장자 체크 (jpg, jpeg, png)
     const validImageExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
     for (const file of files) {
@@ -71,31 +71,47 @@ const RecipeImageInput = <T extends FieldValues>({
         showToast({ message: 'jpg, jpeg, png 파일만 업로드 가능합니다.', type: 'error' });
         return; // 유효하지 않은 파일이면 더 이상 진행하지 않음
       }
-
-      if (files.length > maxImage) {
-        showToast({
-          message: `이미지는 최대 ${maxImage}개까지 업로드하실 수 있습니다.`,
-          type: 'error',
-        });
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        if (reader.result) {
-          setImageList((prev) => [
-            ...prev,
-            {
-              id: `${reader.result}${Math.random()}`,
-              src: reader.result as string,
-              file,
-            },
-          ]);
-          onChange([...value, file]);
-        }
-      };
     }
+
+    // 현재 이미지 개수와 새로 추가할 파일 개수 확인
+    const currentImageCount = imageList.length;
+    if (currentImageCount + files.length > maxImage) {
+      showToast({
+        message: `이미지는 최대 ${maxImage}개까지 업로드하실 수 있습니다.`,
+        type: 'error',
+      });
+      return;
+    }
+
+    // 모든 파일의 FileReader가 완료될 때까지 기다린 후 한 번에 업데이트
+    const filePromises = files.map(
+      (file) =>
+        new Promise<{ id: string; src: string; file: File }>((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            if (reader.result) {
+              resolve({
+                id: `${reader.result}${Math.random()}`,
+                src: reader.result as string,
+                file,
+              });
+            }
+          };
+        }),
+    );
+
+    Promise.all(filePromises).then((newImages) => {
+      setImageList((prev) => [...prev, ...newImages]);
+      // 현재 value와 새 파일들을 합쳐서 업데이트
+      const currentFiles = Array.isArray(value)
+        ? value.filter((v: File | string) => v instanceof File)
+        : [];
+      const currentUrls = Array.isArray(value)
+        ? value.filter((v: File | string) => typeof v === 'string')
+        : [];
+      onChange([...currentUrls, ...currentFiles, ...files] as PathValue<T, Path<T>>);
+    });
   };
 
   const onClickRemoveImageFile = (id: string) => {

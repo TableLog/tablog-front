@@ -31,6 +31,7 @@ const LogForm = ({ id }: ILogFormProps) => {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
     reset,
   } = useForm<TAddLogFormData>({
@@ -41,6 +42,8 @@ const LogForm = ({ id }: ILogFormProps) => {
       images: [],
     },
   });
+  const images = watch('images');
+  console.log(images, 'images');
 
   useEffect(() => {
     if (logData) {
@@ -96,6 +99,7 @@ const LogForm = ({ id }: ILogFormProps) => {
       }),
     );
 
+    console.log(images, 'images');
     images
       .filter((image) => image instanceof File)
       .forEach((imageFile) => {
