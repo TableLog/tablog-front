@@ -35,11 +35,15 @@ function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
 
     const client = new Client({
       brokerURL,
+      heartbeatIncoming: 10000,
+      heartbeatOutgoing: 10000,
+      reconnectDelay: 5000,
       onConnect: () => {
         setIsConnected(true);
         onConnect(subscribe);
       },
-      onWebSocketError: () => {
+      onWebSocketError: (error) => {
+        console.log(error);
         showToast({ message: '웹 소켓 연결 실패', type: 'error' });
         setIsConnected(false);
         clientRef.current = null;
