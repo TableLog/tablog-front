@@ -45,14 +45,22 @@ function ChatPage() {
           if (!oldData) return oldData;
 
           console.log(oldData, JSON.parse(message.body));
+          console.log(profileInfo);
           return {
             ...oldData,
-            data: [...oldData.data, { ...JSON.parse(message.body), id: uuidv4() }],
+            data: [
+              ...oldData.data,
+              {
+                ...JSON.parse(message.body),
+                profileImgUrl: profileInfo.profileImgUrl,
+                id: uuidv4(),
+              },
+            ],
           };
         });
       });
     },
-    [roomId, queryClient],
+    [roomId, queryClient, profileInfo],
   );
 
   const { isConnected, publish } = useStomp({
