@@ -43,7 +43,7 @@ function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
         onConnect(subscribe);
       },
       onWebSocketError: (error) => {
-        console.log(error);
+        console.log({ error });
         showToast({ message: '웹 소켓 연결 실패', type: 'error' });
         setIsConnected(false);
         clientRef.current = null;
@@ -51,6 +51,9 @@ function useStomp({ brokerURL, onConnect, enabled = true }: UseStompProps) {
       onDisconnect: () => {
         setIsConnected(false);
         clientRef.current = null;
+      },
+      debug: (log) => {
+        console.log({ log });
       },
     });
 
