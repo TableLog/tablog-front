@@ -8,6 +8,7 @@ export const getMyChatRoomsQueryOptions = () =>
     queryKey: [MY_CHAT_ROOMS_QUERY_KEY],
     queryFn: () => getMyChatRooms(),
     select: (response) => response.data,
+    staleTime: 0,
   });
 
 export const getChatsQueryOptions = (roomId: string) =>

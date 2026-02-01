@@ -44,8 +44,6 @@ function ChatPage() {
         queryClient.setQueryData(getChatsQueryOptions(roomId).queryKey, (oldData) => {
           if (!oldData) return oldData;
 
-          console.log(oldData, JSON.parse(message.body));
-          console.log(profileInfo);
           return {
             ...oldData,
             data: [
