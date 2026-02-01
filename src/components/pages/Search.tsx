@@ -66,7 +66,7 @@ export default function Search({ handleCloseSearch }: SearchProps) {
   };
 
   return (
-    <Content className="relative">
+    <Content className="relative h-full">
       <div className="sticky top-4 z-10 flex gap-5 px-1">
         <SearchInput
           className="flex-1"
@@ -86,7 +86,7 @@ export default function Search({ handleCloseSearch }: SearchProps) {
         </button>
       </div>
       {keyword.length === 0 ? (
-        <div className="mt-8">
+        <div className="mt-8 flex-1">
           <div className="mb-3.5 flex items-center gap-2.5">
             <Text fontWeight="semiBold">최근 검색어</Text>
             <Text fontSize={14} color="grey03">

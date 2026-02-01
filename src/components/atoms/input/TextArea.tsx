@@ -26,7 +26,7 @@ const TextArea = <T extends FieldValues>({
   name,
   defaultValue,
 }: ITextAreaProps<T>) => {
-  const [currentLength, setCurrentLength] = useState(0);
+  const [currentLength, setCurrentLength] = useState(defaultValue ? defaultValue.length : 0);
 
   const borderClass = errors[category] ? 'border-red01' : 'border-grey07';
 

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
@@ -13,8 +14,13 @@ import { handleOpenModal } from '@/utils/functions';
 import RecipeList from './recipe-list';
 
 const RecipePage = () => {
+  const searchParams = useSearchParams();
+  const sortOption = searchParams.get('sortOption');
+
   const [isOnlyPaid, setOnlyPaid] = useState<boolean>(false); // 유료 레시피만 보기
-  const [selectedSortOption, setSelectedSortOption] = useState(RECIPE_FILTER_OPTIONS[0]);
+  const [selectedSortOption, setSelectedSortOption] = useState(
+    RECIPE_FILTER_OPTIONS.find((option) => option.name === sortOption) ?? RECIPE_FILTER_OPTIONS[0],
+  );
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   function togglePaidCheckbox() {
