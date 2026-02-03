@@ -16,6 +16,7 @@ export const getChatsQueryOptions = (roomId: string) =>
     queryKey: [CHATS_QUERY_KEY, roomId],
     queryFn: () => getChatRoomMessages(roomId),
     select: (response) => response.data,
+    staleTime: 0,
   });
 
 export const useGetChats = (roomId: string) => {
