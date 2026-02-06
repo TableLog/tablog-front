@@ -63,7 +63,6 @@ const RecipeImageInput = <T extends FieldValues>({
     if (!e.target.files) return;
 
     const files = Array.from(e.target.files);
-    console.log(files, 'files');
     // 유효한 이미지 확장자 체크 (jpg, jpeg, png)
     const validImageExtensions = ['image/jpeg', 'image/png', 'image/jpg'];
     for (const file of files) {

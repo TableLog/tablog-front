@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@boxicons/react':
+        specifier: ^1.0.2
+        version: 1.0.2(react@19.0.0)
       '@hookform/error-message':
         specifier: ^2.0.1
         version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react-hook-form@7.54.2(react@19.0.0))(react@19.0.0)
@@ -840,6 +843,11 @@ packages:
 
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+
+  '@boxicons/react@1.0.2':
+    resolution: {integrity: sha512-DDGEjwLaIKn6FEHBwYPqE/kFyrom7X0dIJ++6+wxlgi5jPfsrg26S0Tl1JXgDUBGpd2ay/c2aNFZmpFhucu+CQ==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   '@chromatic-com/storybook@3.2.6':
     resolution: {integrity: sha512-FDmn5Ry2DzQdik+eq2sp/kJMMT36Ewe7ONXUXM2Izd97c7r6R/QyGli8eyh/F0iyqVvbLveNYFyF0dBOJNwLqw==}
@@ -6334,6 +6342,10 @@ snapshots:
       '@babel/helper-validator-identifier': 7.25.9
 
   '@bcoe/v8-coverage@0.2.3': {}
+
+  '@boxicons/react@1.0.2(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
 
   '@chromatic-com/storybook@3.2.6(react@19.0.0)(storybook@8.5.3(prettier@3.5.3))':
     dependencies:

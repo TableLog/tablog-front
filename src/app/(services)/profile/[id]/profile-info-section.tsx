@@ -4,8 +4,11 @@ import { useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
+import { CHAT_ROOM_URL } from '@/constants/endpoint.constants';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import {
   useFollowUser,
   useGetFollowerCount,
@@ -25,6 +28,7 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
   const { data: profileInfo } = useGetProfileInfo(Number(id));
 
   const { isLoggedIn } = useLoginStore();
+  const { data: userInfo } = useGetUserInfo();
 
   const { data: followingCount } = useGetFollowingCount(id);
   const { data: followerCount } = useGetFollowerCount(id);
@@ -64,15 +68,30 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
           <Text fontSize={14}>{profileInfo?.nickname}</Text>
         </div>
 
-        {isLoggedIn && (
-          <Button
-            size="small"
-            buttonColor={profileInfo?.isFollowed ? 'grey06' : 'primary'}
-            onClick={onClickFollowButton}
-          >
-            {profileInfo?.isFollowed ? '팔로우 취소' : '팔로우'}
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {/* 채팅 아이콘 */}
+          {userInfo?.id !== Number(id) && (
+            <div
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-primary01 px-1"
+              onClick={() => {
+                if (!userInfo) return;
+                router.push(CHAT_ROOM_URL({ senderId: userInfo.id, receiverId: id }));
+              }}
+            >
+              <BoxIcon name="message-rounded" size={16} color="primary01" />
+            </div>
+          )}
+
+          {isLoggedIn && (
+            <Button
+              size="small"
+              buttonColor={profileInfo?.isFollowed ? 'grey06' : 'primary'}
+              onClick={onClickFollowButton}
+            >
+              {profileInfo?.isFollowed ? '팔로우 취소' : '팔로우'}
+            </Button>
+          )}
+        </div>
       </section>
 
       <section className="grid grid-cols-4">
