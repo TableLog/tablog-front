@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import RecipeBookmarkButton from '@/components/atoms/button/RecipeBookmarkButton';
 import RecipeLikeButton from '@/components/atoms/button/RecipeLikeButton';
@@ -15,12 +14,7 @@ interface DescriptionProps {
 }
 
 const Description = ({ recipe }: DescriptionProps) => {
-  const router = useRouter();
   if (!recipe) return null;
-
-  const goToProfilePage = () => {
-    router.push(`/profile/${recipe.writerId}`);
-  };
 
   return (
     <div className="flex flex-col items-center gap-4 rounded-[20px] bg-white01/20 px-4 py-6 text-white01 backdrop-blur-2xl">
@@ -36,12 +30,12 @@ const Description = ({ recipe }: DescriptionProps) => {
           </Link>
         </div>
         <span>|</span>
-        <div className="flex items-center gap-0.5" onClick={goToProfilePage}>
+        <Link href={`/profile/${recipe.writerId}`} className="flex items-center gap-0.5">
           <span className="underline">{recipe?.user}</span>
           {recipe.isExpertWriter && (
             <BoxIcon color="white01" name="badge-check" size={16} type="solid" />
           )}
-        </div>
+        </Link>
       </div>
       <p>{recipe?.intro}</p>
       <p className="text-sm">

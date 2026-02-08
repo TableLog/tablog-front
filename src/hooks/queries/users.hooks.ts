@@ -94,6 +94,7 @@ export function useGetFollowerList(id: number, isFollower: boolean) {
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (data) => data.pages.flatMap((page) => page.data.users),
   });
 }
 
@@ -105,6 +106,7 @@ export function useGetFollowingList(id: number, isFollower: boolean) {
     enabled: !isFollower,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
+    select: (data) => data.pages.flatMap((page) => page.data.users),
   });
 }
 

@@ -120,7 +120,7 @@ export interface ICommentResponse {
   id: number;
 }
 
-export interface IFollowerListResponse {
+export interface IFollowListResponse {
   isFollowed: boolean;
   nickname: string;
   profileImgUrl: string;

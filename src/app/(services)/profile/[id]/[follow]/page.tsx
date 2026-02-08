@@ -14,7 +14,6 @@ import {
   useUnfollowUser,
 } from '@/hooks/queries/users.hooks';
 import { useLoginStore } from '@/lib/zustand/userStore';
-import { IFollowerListResponse } from '@/types/api';
 
 const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }> }) => {
   const { id, follow } = use(params);
@@ -25,6 +24,7 @@ const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }
 
   const { data: followerList } = useGetFollowerList(Number(id), isFollower);
   const { data: followingList } = useGetFollowingList(Number(id), isFollower);
+  console.log(followerList, followingList);
 
   const { mutate: followUser } = useFollowUser(Number(id));
   const { mutate: unfollowUser } = useUnfollowUser(Number(id));
@@ -40,35 +40,40 @@ const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }
     [followUser, unfollowUser],
   );
 
+  const name = isFollower ? '팔로워' : '팔로잉';
   return (
     <div className="px-5 pb-4">
-      <PageHeader title={`${isFollower ? '팔로워' : '팔로잉'}`} back />
+      <PageHeader title={`${name}`} back />
 
       <div>
-        {(isFollower ? followerList : followingList)?.pages?.map((page) =>
-          page.data.users.map((users: IFollowerListResponse) => {
-            return (
-              <section key={users.userId} className="mb-2.5 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Link href={`/profile/${users.userId}`} className="cursor-pointer">
-                    <ProfileImage src={users?.profileImgUrl} size={50} />
-                  </Link>
+        {followerList?.length === 0 || followingList?.length === 0 ? (
+          <div className="mt-4 text-center">
+            <Text fontSize={14} color="grey02">
+              {name} 유저가 없습니다.
+            </Text>
+          </div>
+        ) : (
+          (isFollower ? followerList : followingList)?.map((users) => (
+            <section key={users.userId} className="mb-2.5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Link href={`/profile/${users.userId}`} className="cursor-pointer">
+                  <ProfileImage src={users?.profileImgUrl} size={50} />
+                </Link>
 
-                  <Text fontSize={14}>{users?.nickname}</Text>
-                </div>
+                <Text fontSize={14}>{users?.nickname}</Text>
+              </div>
 
-                {isLoggedIn && (
-                  <Button
-                    size="small"
-                    buttonColor={users?.isFollowed ? 'grey06' : 'primary'}
-                    onClick={() => onClickFollowButton(users?.isFollowed, users?.userId)}
-                  >
-                    {users?.isFollowed ? '팔로우 취소' : '팔로우'}
-                  </Button>
-                )}
-              </section>
-            );
-          }),
+              {isLoggedIn && (
+                <Button
+                  size="small"
+                  buttonColor={users?.isFollowed ? 'grey06' : 'primary'}
+                  onClick={() => onClickFollowButton(users?.isFollowed, users?.userId)}
+                >
+                  {users?.isFollowed ? '팔로우 취소' : '팔로우'}
+                </Button>
+              )}
+            </section>
+          ))
         )}
       </div>
     </div>
