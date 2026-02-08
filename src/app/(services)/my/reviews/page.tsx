@@ -1,6 +1,7 @@
 'use client';
 
 import PageHeader from '@/components/atoms/page-header/PageHeader';
+import { Text } from '@/components/atoms/text/Text';
 import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useGetMyRecipeReview } from '@/hooks/queries/my.hooks';
@@ -24,7 +25,9 @@ const ReviewsPage = () => {
       >
         {data?.reviews?.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center">
-            <div>작성된 리뷰가 없습니다.</div>
+            <Text fontSize={14} color="grey02">
+              작성된 리뷰가 없습니다.
+            </Text>
           </div>
         ) : (
           <div className="flex flex-col gap-4">

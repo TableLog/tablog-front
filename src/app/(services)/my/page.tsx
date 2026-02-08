@@ -4,16 +4,27 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import Button from '@/components/atoms/button/Button';
-import LoadingScreen from '@/components/atoms/loading/LoadingScreen';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { useLoginStore } from '@/lib/zustand/userStore';
 
 import PointsSection from './points-section';
 import ProfileSection from './profile-section';
 import StaticsSection from './statics-section';
 
+const MY_MENU_LIST = [
+  { id: 1, title: '찜한 목록', href: '/my/bookmark' },
+  { id: 2, title: '좋아요 목록', href: '/my/likes' },
+  { id: 3, title: '남긴 리뷰', href: '/my/reviews' },
+  { id: 4, title: '포인트 이용내역', href: '/my/point-history' },
+  { id: 5, title: '전문가 인증하기', href: '/my/certificate' },
+  // { id: 6, title: '환경 설정', href: '/my/settings' },
+  { id: 7, title: '채팅 목록', href: '/my/chats' },
+  { id: 8, title: '장보기 메모', href: '/my/shopping-list' },
+  // { id: 9, title: '관리자에게 문의하기', href: '/my/inquiry' },
+];
+
 const MyPage = () => {
   const { isLoggedIn } = useLoginStore();
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,22 +37,12 @@ const MyPage = () => {
     };
   }, []);
 
-  const MyMenuList = [
-    { id: 1, title: '찜한 목록', href: '/my/bookmark' },
-    { id: 2, title: '좋아요 목록', href: '/my/likes' },
-    { id: 3, title: '남긴 리뷰', href: '/my/reviews' },
-    { id: 4, title: '포인트 이용내역', href: '/my/point-history' },
-    { id: 5, title: '전문가 인증하기', href: '/my/certificate' },
-    // { id: 6, title: '환경 설정', href: '/my/settings' },
-    { id: 7, title: '채팅 목록', href: '/my/chats' },
-    { id: 8, title: '장보기 메모', href: '/my/shopping-list' },
-    // { id: 9, title: '관리자에게 문의하기', href: '/my/inquiry' },
-  ];
-
   if (isLoading) {
-    <div>
-      <LoadingScreen />
-    </div>;
+    return (
+      <div className="flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (!isLoggedIn) {
@@ -69,7 +70,7 @@ const MyPage = () => {
       <PointsSection />
 
       <section className="flex flex-col">
-        {MyMenuList.map((menu) => {
+        {MY_MENU_LIST.map((menu) => {
           return (
             <Link key={menu.id} href={menu.href} className="py-2">
               {menu.title}

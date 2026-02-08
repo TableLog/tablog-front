@@ -98,68 +98,68 @@ const ShoppingListPage = () => {
     <div className="relative px-5 pb-4">
       <PageHeader title="장보기 메모" back />
 
-      <InfiniteScroll
-        className="mt-4"
-        hasNextPage={hasNextPage}
-        isFetching={isFetching}
-        fetchNextPage={fetchNextPage}
-      >
-        {shoppingList?.pages?.map((page) =>
-          page?.data?.shoppingLists?.map((item: IShoppingList) => {
-            return (
-              <div key={item.id} className="mb-3 flex w-full items-center justify-between">
-                <Checkbox
-                  label={
-                    <div className="relative flex w-full items-center gap-1">
-                      <div
-                        className={cn(
-                          isChecked[item.id] ? 'w-full' : 'w-0',
-                          'absolute left-0 top-1/2 h-[1px] bg-black/50 transition-all duration-300',
-                        )}
-                      />
-
-                      <div>{item.foodName}</div>
-
-                      <div>
-                        {item.amount}
-                        {item.foodUnit}
+      <div className="relative flex min-h-[calc(100dvh-132px)] flex-col justify-between">
+        <InfiniteScroll
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+        >
+          {shoppingList?.pages?.map((page) =>
+            page?.data?.shoppingLists?.map((item: IShoppingList) => {
+              return (
+                <div key={item.id} className="mb-3 flex w-full items-center justify-between">
+                  <Checkbox
+                    className="gap-2"
+                    label={
+                      <div className="relative flex w-full items-center gap-1">
+                        <div
+                          className={cn(
+                            isChecked[item.id] ? 'w-full' : 'w-0',
+                            'absolute left-0 top-1/2 h-[1px] bg-black/50 transition-all duration-300',
+                          )}
+                        />
+                        <div>{item.foodName}</div>
+                        <div>
+                          {item.amount}
+                          {item.foodUnit}
+                        </div>
                       </div>
-                    </div>
-                  }
-                  value={isChecked[item.id]}
-                  onChange={() => handleCheckboxChange(item.id)}
-                />
-
-                <div
-                  className="h-[24px] cursor-pointer"
-                  onClick={() => handleRemoveShoppingList(item.id)}
-                >
-                  <BoxIcon name="x" size={24} color="grey04" />
+                    }
+                    value={isChecked[item.id]}
+                    onChange={() => handleCheckboxChange(item.id)}
+                  />
+                  <div
+                    className="h-[24px] cursor-pointer"
+                    onClick={() => handleRemoveShoppingList(item.id)}
+                  >
+                    <BoxIcon name="x" size={24} color="grey04" />
+                  </div>
                 </div>
-              </div>
-            );
-          }),
-        )}
-      </InfiniteScroll>
+              );
+            }),
+          )}
+        </InfiniteScroll>
 
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} id="shopping-list-form">
-          <div className="fixed bottom-5 left-4 right-4 mt-6">
+        <FormProvider {...methods}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            id="shopping-list-form"
+            className="sticky bottom-4 left-4 right-4 mt-6"
+          >
             <Button onClick={openBottomSheet} size="large" full type="button">
               재료 등록 +
             </Button>
-          </div>
-
-          <FoodsSearch
-            isOpen={isOpen}
-            closeBottomSheet={closeBottomSheet}
-            register={register}
-            control={control}
-            errors={errors}
-            searchRef={searchRef}
-          />
-        </form>
-      </FormProvider>
+            <FoodsSearch
+              isOpen={isOpen}
+              closeBottomSheet={closeBottomSheet}
+              register={register}
+              control={control}
+              errors={errors}
+              searchRef={searchRef}
+            />
+          </form>
+        </FormProvider>
+      </div>
     </div>
   );
 };

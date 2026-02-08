@@ -83,7 +83,7 @@ const ReviewDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
       </PageHeader>
 
       <div>
-        <section className="flex w-full flex-col gap-4 px-5">
+        <section className="flex w-full flex-col gap-4">
           {recipeInfo?.data && <RecipeItem recipe={recipeInfo.data} />}
         </section>
 

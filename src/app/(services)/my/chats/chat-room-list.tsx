@@ -4,7 +4,7 @@ import { messageCallbackType } from '@stomp/stompjs';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 
-import LoadingScreen from '@/components/atoms/loading/LoadingScreen';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { getMyChatRoomsQueryOptions } from '@/hooks/queries/chat.hooks';
 import useStomp from '@/hooks/useStomp';
@@ -37,7 +37,12 @@ function ChatRoomList() {
     enabled: !!user,
   });
 
-  if (isPending) return <LoadingScreen />;
+  if (isPending)
+    return (
+      <div className="flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   if (isError) return <div>채팅방 목록을 불러오는 중에 오류가 발생했습니다</div>;
 
   if (chatRooms?.length === 0) {

@@ -70,18 +70,16 @@ const IngredientForm = () => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <Button onClick={openBottomSheet} size="large" full>
-        재료 추가 +
-      </Button>
-
+    <div className="flex flex-col items-center gap-6 pt-6">
       {ingredientFields.length === 0 ? (
-        <div className="text-sm">요리에 필요한 재료를 입력해주세요.</div>
+        <Text fontSize={14} color="grey02">
+          요리에 필요한 재료를 입력해주세요.
+        </Text>
       ) : (
         <div className="flex w-full flex-col-reverse gap-6">
           {ingredientFields.map((ingredient, idx) => (
             <div key={ingredient.id} className="flex justify-between">
-              <Text>
+              <Text fontSize={14} color="grey01">
                 {foodMap.get(ingredient.foodId)} | {ingredient.amount}
                 {ingredient.recipeFoodUnit}
               </Text>
@@ -97,6 +95,12 @@ const IngredientForm = () => {
           ))}
         </div>
       )}
+
+      <button type="button" onClick={openBottomSheet}>
+        <Text fontSize={14} fontWeight="medium" color="primary01">
+          재료 추가 +
+        </Text>
+      </button>
 
       <BottomSheet
         isOpen={isOpen}

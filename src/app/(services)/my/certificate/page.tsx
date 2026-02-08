@@ -141,104 +141,101 @@ const CertificatePage = () => {
         </div>
       </BottomSheet>
 
-      <section className="flex flex-col gap-4 font-light">
-        <div className="flex flex-col gap-2">
-          <p>
-            🔎 등록된 레시피가 <b className="text-primary">50개 이상</b>이거나{' '}
-            <b className="text-primary">사업장 등록증</b> 또는{' '}
-            <b className="text-primary">레시피 특허증</b>을 등록하시면 전문가가 되어 레시피를 유료로
-            등록하실 수 있습니다.
-          </p>
-          <p>🔎 유료로 등록한 레시피의 재료 및 요리 과정은 유료 결제한 회원들에게만 노출됩니다.</p>
-          <p>🔎 유료 레시피의 경우 수정만 가능하고 삭제는 불가능합니다. </p>
-          <p>
-            🔎 삭제가 불가피한 경우에는 관리자에게 문의해주세요.
-            <Link href="/my/inquiry" className="ml-1 text-sm underline">
-              문의하기
-            </Link>
-          </p>
-        </div>
-
+      <div className="relative flex min-h-[calc(100dvh-132px)] flex-col justify-between gap-20">
         <div>
-          <p>전문가 인증을 요청해주시면 관리자가 확인 후 인증 상태를 업데이트해드립니다.</p>
-          <p>
-            영업일 기준 <b className="text-primary">3~5일</b> 소요됩니다.
-          </p>
-        </div>
-
-        <div>
-          ❗ 전문가 인증 후에 인증받은 레시피를 삭제하시거나 부정한 방법으로 서비스를 이용하실 경우
-          전문가 인증 취소 및 포인트 차감이 될 수 있는 점 유의해주시기 바랍니다.
-        </div>
-      </section>
-
-      <section className="my-4 flex justify-around gap-4 font-light">
-        {certificateList.map((item, idx) => (
-          <ul key={item.title} className="flex flex-col items-center gap-1">
-            <li>{item.title}</li>
-
-            <li className="mb-1 mt-2 underline">
-              {idx === 0 ? (
-                <Link href="/my/recipe/register">
-                  <button className="underline">{item.count}</button>
+          <section className="flex flex-col gap-4 font-light">
+            <div className="flex flex-col gap-2">
+              <p>
+                🔎 등록된 레시피가 <b className="text-primary">50개 이상</b>이거나{' '}
+                <b className="text-primary">사업장 등록증</b> 또는{' '}
+                <b className="text-primary">레시피 특허증</b>을 등록하시면 전문가가 되어 레시피를
+                유료로 등록하실 수 있습니다.
+              </p>
+              <p>
+                🔎 유료로 등록한 레시피의 재료 및 요리 과정은 유료 결제한 회원들에게만 노출됩니다.
+              </p>
+              <p>🔎 유료 레시피의 경우 수정만 가능하고 삭제는 불가능합니다. </p>
+              <p>
+                🔎 삭제가 불가피한 경우에는 관리자에게 문의해주세요.
+                <Link href="/my/inquiry" className="ml-1 text-sm underline">
+                  문의하기
                 </Link>
-              ) : (
-                <button
-                  className="underline"
-                  onClick={() => {
-                    if (!item.licenseType) return;
-
-                    setLicenseType(item.licenseType);
-                    setIsOpen(idx);
-                  }}
-                >
-                  {item.count}
-                </button>
-              )}
-            </li>
-
-            <li>
-              <Button buttonColor="grey04" size="mini">
-                <label htmlFor={`license-${idx}`}>
-                  <input
-                    id={`license-${idx}`}
-                    type="file"
-                    name={`license-${idx}`}
-                    className="hidden"
-                    multiple
-                    accept="image/*,.pdf,.doc,.docx"
-                    onChange={() => {
-                      const licenseType = certificateList[idx].licenseType;
-
-                      if (!licenseType) return;
-
-                      onChangeImageFile(idx, licenseType);
-                    }}
-                    ref={imgRefs[idx]}
-                  />
-                  등록
-                </label>
-              </Button>
-            </li>
-          </ul>
-        ))}
-      </section>
-
-      <section className="fixed bottom-5 left-4 right-4 mt-6">
-        <div className="mb-3 text-center text-sm text-red01">
-          <p>전문가 인증을 마친 레시피 및 등록증은</p>
-          <p>삭제하실 수 없습니다.</p>
+              </p>
+            </div>
+            <div>
+              <p>전문가 인증을 요청해주시면 관리자가 확인 후 인증 상태를 업데이트해드립니다.</p>
+              <p>
+                영업일 기준 <b className="text-primary">3~5일</b> 소요됩니다.
+              </p>
+            </div>
+            <div>
+              ❗ 전문가 인증 후에 인증받은 레시피를 삭제하시거나 부정한 방법으로 서비스를 이용하실
+              경우 전문가 인증 취소 및 포인트 차감이 될 수 있는 점 유의해주시기 바랍니다.
+            </div>
+          </section>
+          <section className="my-4 flex justify-around gap-4 font-light">
+            {certificateList.map((item, idx) => (
+              <ul key={item.title} className="flex flex-col items-center gap-1">
+                <li>{item.title}</li>
+                <li className="mb-1 mt-2 underline">
+                  {idx === 0 ? (
+                    <Link href="/my/recipe/register">
+                      <button className="underline">{item.count}</button>
+                    </Link>
+                  ) : (
+                    <button
+                      className="underline"
+                      onClick={() => {
+                        if (!item.licenseType) return;
+                        setLicenseType(item.licenseType);
+                        setIsOpen(idx);
+                      }}
+                    >
+                      {item.count}
+                    </button>
+                  )}
+                </li>
+                <li>
+                  <Button buttonColor="grey04" size="mini">
+                    <label htmlFor={`license-${idx}`}>
+                      <input
+                        id={`license-${idx}`}
+                        type="file"
+                        name={`license-${idx}`}
+                        className="hidden"
+                        multiple
+                        accept="image/*,.pdf,.doc,.docx"
+                        onChange={() => {
+                          const licenseType = certificateList[idx].licenseType;
+                          if (!licenseType) return;
+                          onChangeImageFile(idx, licenseType);
+                        }}
+                        ref={imgRefs[idx]}
+                      />
+                      등록
+                    </label>
+                  </Button>
+                </li>
+              </ul>
+            ))}
+          </section>
         </div>
 
-        <Button
-          buttonColor="primary"
-          disabled={!isQualified}
-          full
-          onClick={() => requestExpertVerification()}
-        >
-          전문가 인증 요청
-        </Button>
-      </section>
+        <section>
+          <div className="mb-3 text-center text-sm text-red01">
+            <p>전문가 인증을 마친 레시피 및 등록증은</p>
+            <p>삭제하실 수 없습니다.</p>
+          </div>
+          <Button
+            buttonColor="primary"
+            disabled={!isQualified}
+            full
+            onClick={() => requestExpertVerification()}
+          >
+            전문가 인증 요청
+          </Button>
+        </section>
+      </div>
     </div>
   );
 };

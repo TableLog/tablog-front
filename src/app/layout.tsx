@@ -68,7 +68,11 @@ export default function RootLayout({
         <Provider>
           <Toast />
 
-          <div>{children}</div>
+          <div className="min-h-[100dvh] w-full">
+            <div className="mx-auto h-full min-h-[100dvh] max-w-lg bg-white01 shadow-2xl">
+              {children}
+            </div>
+          </div>
         </Provider>
       </body>
     </html>

@@ -18,7 +18,7 @@ export default async function AfterLoginLayout({
   const isToken = !!accessToken;
 
   return (
-    <div>
+    <>
       <AuthInitializer isToken={isToken} />
 
       <Header />
@@ -28,6 +28,6 @@ export default async function AfterLoginLayout({
       </main>
 
       <Navigation />
-    </div>
+    </>
   );
 }

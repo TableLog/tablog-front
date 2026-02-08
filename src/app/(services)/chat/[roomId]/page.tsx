@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import { Text } from '@/components/atoms/text/Text';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
@@ -71,7 +72,11 @@ function ChatPage() {
   }, [messages]);
 
   if (isGetUserPending || isGetChatsPending || isGetProfileInfoPending)
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   if (isGetUserError || isGetChatsError || isGetProfileInfoError) return <div>Error...</div>;
 
   const handleSubmitForm = (data: TFormValues) => {
@@ -85,10 +90,10 @@ function ChatPage() {
   };
 
   return (
-    <div ref={wrapperRef} className="relative px-5 pb-4">
+    <div ref={wrapperRef} className="relative px-5">
       <PageHeader title={`${profileInfo?.nickname}님과의 대화`} back />
       <div className="flex min-h-[calc(100dvh-132px)] flex-col items-center justify-center gap-5">
-        <div className="flex w-full flex-grow flex-col gap-3 pb-[66px] pt-2">
+        <div className="relative flex h-full w-full flex-grow flex-col gap-3 pt-2">
           {messages.length === 0 ? (
             <div>
               <Text fontSize={14}>대화가 없습니다. 먼저 메시지를 보내보세요</Text>
@@ -109,7 +114,7 @@ function ChatPage() {
         </div>
         <form
           onSubmit={handleSubmit(handleSubmitForm)}
-          className="fixed bottom-0 left-0 w-full bg-white px-3 py-3"
+          className="sticky bottom-0 left-0 z-10 w-full bg-white pb-4"
         >
           <div className="relative">
             <input

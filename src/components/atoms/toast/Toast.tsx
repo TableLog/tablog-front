@@ -7,7 +7,7 @@ import { BoxIcon } from '../icon/BoxIcon';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CloseButton = ({ closeToast }: CloseButtonProps) => (
-  <div className="ml-2">
+  <div className="ml-auto">
     <BoxIcon name="x" color="grey04" size={20} onClick={closeToast} />
   </div>
 );
@@ -17,10 +17,10 @@ const Toast = () => {
     <ToastContainer
       style={{
         width: '100%',
-        maxWidth: 'calc(100svw - 40px)',
         left: '50%',
         transform: 'translateX(-50%)',
       }}
+      className="max-w-[calc(32rem-40px)]" // max-w-lg-40px
       autoClose={3000}
       toastClassName="custom-toast"
       closeButton={CloseButton}

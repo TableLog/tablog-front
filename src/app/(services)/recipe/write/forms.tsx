@@ -100,9 +100,9 @@ const Forms = () => {
   }
 
   return (
-    <div className="relative mb-4 px-5 py-4">
+    <div className="relative flex min-h-[calc(100dvh-60px)] flex-col justify-between gap-4 px-5 py-4">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id="recipe-write-form" onSubmit={handleSubmit(onSubmit)} className="h-full">
           <Tab.Buttons
             className="sticky top-4 mb-4"
             tabs={['레시피 정보', '재료 등록', '조리 방법']}
@@ -117,11 +117,11 @@ const Forms = () => {
           <Tab.Panel index={2}>
             <RecipeForm />
           </Tab.Panel>
-          <Button type="submit" className="fixed bottom-4 right-4 z-10">
-            레시피 등록
-          </Button>
         </form>
       </FormProvider>
+      <Button type="submit" className="sticky bottom-4 right-4 z-10" form="recipe-write-form">
+        레시피 등록
+      </Button>
     </div>
   );
 };

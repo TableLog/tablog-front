@@ -3,10 +3,10 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
+import Rating from '@/components/atoms/rating/Rating';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
+import { Text } from '@/components/atoms/text/Text';
 import { IReview } from '@/types/api';
-import { cn } from '@/utils/cn';
 import { convertDateFormat } from '@/utils/functions';
 
 interface IReviewItemProps {
@@ -26,58 +26,60 @@ const ReviewItem = ({ review, isDetail }: IReviewItemProps) => {
 
   return (
     <div key={review.id}>
-      <section className="flex gap-3" onClick={() => goToReviewDetail(review.recipeId, review.id)}>
+      <section className="flex gap-4" onClick={() => goToReviewDetail(review.recipeId, review.id)}>
         {!isDetail && (
           <Image
             src={review.recipeImageUrl}
             alt={review.content}
-            width={90}
-            height={90}
-            className="aspect-square border border-grey08 object-cover"
+            width={80}
+            height={80}
+            className="aspect-square rounded-md border border-grey08 object-cover"
             unoptimized
           />
         )}
 
-        <ul className="flex w-full flex-col gap-2">
-          <li>
-            <div className="line-clamp-1 text-sm font-medium">{review.recipeTitle}</div>
-          </li>
-
-          <li className="flex items-center justify-between font-light">
-            <div className="flex items-center gap-1 text-sm">
-              <BoxIcon name="star" type="solid" size={10} />
-
-              <span className="text-sm">{review.star}</span>
+        <div className="flex flex-1 flex-col gap-1.5">
+          <div className="flex flex-col">
+            <div className="flex gap-2">
+              <div className="flex items-center gap-2">
+                <Text fontSize={14} fontWeight="medium">
+                  {review.recipeTitle}
+                </Text>
+              </div>
             </div>
-
-            <div className="text-sm text-grey02">{convertDateFormat(review.modifiedAt)}</div>
-          </li>
-
-          <li>
-            <div className={cn(clampClass, 'text-sm font-light')}>{review.content}</div>
-          </li>
-        </ul>
+            <div className="mb-1 flex items-center gap-2">
+              <Rating rating={review.star} />
+              <Text fontSize={12} color="grey04">
+                {convertDateFormat(review.modifiedAt)}
+              </Text>
+            </div>
+            <Text fontSize={14} color="grey02" className={clampClass}>
+              {review.content}
+            </Text>
+          </div>
+        </div>
       </section>
 
       {replyData && (
-        <section className="mb-1 mt-4 flex gap-3">
+        <section className="mb-1 ml-3 mt-4 flex gap-3">
           <Image
             src={replyData.profileImgUrl}
             alt={replyData.user}
             width={50}
             height={50}
-            className="aspect-square max-h-[50px] max-w-[50px] rounded-full"
+            className="aspect-square max-h-[50px] max-w-[50px] rounded-full object-cover"
             unoptimized
           />
 
           <div className="flex flex-col gap-1">
-            <div className="flex items-end justify-between text-sm">
+            <div className="flex items-center gap-2">
               <div className="text-sm">{replyData.user}</div>
-
-              <div className="text-sm text-grey02">{convertDateFormat(replyData.modifiedAt)}</div>
+              <Text fontSize={12} color="grey04">
+                {convertDateFormat(replyData.modifiedAt)}
+              </Text>
             </div>
 
-            <div className="rounded-bl-xl rounded-br-xl rounded-tr-xl bg-grey08 p-2.5 text-sm">
+            <div className="rounded-bl-lg rounded-br-lg rounded-tr-lg bg-grey08 p-2.5 text-sm">
               <ClampedTexts>{replyData.content}</ClampedTexts>
             </div>
           </div>

@@ -49,7 +49,7 @@ export default function BottomSheet({
         <motion.div
           key="bottom-sheet"
           className={clsx(
-            'fixed z-[10000] flex items-end justify-center',
+            'fixed left-1/2 z-[10000] flex max-w-lg -translate-x-1/2 items-end justify-center',
             showBackdrop ? 'inset-0' : 'bottom-0 left-0 right-0 top-[60px]',
           )}
         >

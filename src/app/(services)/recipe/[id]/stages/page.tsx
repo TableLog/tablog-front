@@ -27,21 +27,23 @@ const StagesPage = ({ params }: { params: Promise<{ id: string }> }) => {
   }
 
   return (
-    <div className="flex min-h-[calc(100dvh-60px)] flex-col px-5 py-4">
-      <div className="mb-2 font-semibold">레시피 순서</div>
-      <InfiniteScroll
-        className="flex flex-grow flex-col gap-2.5 overflow-auto"
-        hasNextPage={hasNextPage}
-        isFetching={isFetching}
-        fetchNextPage={fetchNextPage}
-      >
-        {recipeProcesses?.data.map((recipeProcess) => (
-          <Sequence key={recipeProcess.id} recipe={recipeProcess} />
-        ))}
-      </InfiniteScroll>
+    <div className="relative flex min-h-[calc(100dvh-60px)] flex-col px-5 py-4">
+      <div className="flex-grow">
+        <div className="mb-2 font-semibold">레시피 순서</div>
+        <InfiniteScroll
+          className="flex flex-grow flex-col gap-2.5 overflow-auto"
+          hasNextPage={hasNextPage}
+          isFetching={isFetching}
+          fetchNextPage={fetchNextPage}
+        >
+          {recipeProcesses?.data.map((recipeProcess) => (
+            <Sequence key={recipeProcess.id} recipe={recipeProcess} />
+          ))}
+        </InfiniteScroll>
+      </div>
       <button
         type="button"
-        className="fixed bottom-4 left-5 flex h-10 w-10 items-center justify-center rounded-full border border-black01 bg-white01"
+        className="sticky bottom-4 left-5 flex h-10 w-10 items-center justify-center rounded-full border border-black01 bg-white01"
         onClick={handleBackButtonClick}
       >
         <BoxIcon name="x" type="solid" size={24} />
