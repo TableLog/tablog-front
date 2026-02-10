@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
-  folloUser,
+  followUser,
   getFeedListByUserId,
   getFollowerCount,
   getFollowerList,
@@ -10,7 +10,7 @@ import {
   getProfileInfo,
   getRecipeListByUserId,
   getUserList,
-  unfolloUser,
+  unfollowUser,
 } from '@/apis/users.api';
 import {
   FEED_LIST_BY_USER_ID_QUERY_KEY,
@@ -47,16 +47,18 @@ export const useGetProfileInfo = (id: number) => {
   });
 };
 
-export function useFollowUser(id: number) {
+export function useFollowUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => folloUser(id),
-    onSuccess: (res) => {
+    mutationFn: ({ userId }: { userId: number; followedBy: number }) => followUser(userId),
+    onSuccess: (res, { userId, followedBy }) => {
       if (res.status === 201 || res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(id)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(id)] });
         queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWER_LIST_QUERY_KEY, Number(userId)] });
+        queryClient.invalidateQueries({ queryKey: [FOLLOWING_LIST_QUERY_KEY, Number(followedBy)] });
       }
     },
     onError: (err) => {
@@ -65,19 +67,23 @@ export function useFollowUser(id: number) {
   });
 }
 
-export function useUnfollowUser(userId: number | undefined) {
+export function useUnfollowUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userId: number) => unfolloUser(userId),
-    onSuccess: (res) => {
+    mutationFn: ({ userId }: { userId: number; unfollowedBy: number }) => unfollowUser(userId),
+    onSuccess: (res, { userId, unfollowedBy }) => {
       if (res.status === 201 || res.status === 200) {
+        queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
         queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(userId)] });
         queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWING_COUNT_QUERY_KEY, Number(userId)] });
         queryClient.invalidateQueries({ queryKey: [FOLLOWER_LIST_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWING_LIST_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({
+          queryKey: [FOLLOWING_COUNT_QUERY_KEY, Number(unfollowedBy)],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [FOLLOWING_LIST_QUERY_KEY, Number(unfollowedBy)],
+        });
       }
     },
     onError: (err) => {

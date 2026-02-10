@@ -33,8 +33,8 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
   const { data: followingCount } = useGetFollowingCount(id);
   const { data: followerCount } = useGetFollowerCount(id);
 
-  const { mutate: followUser } = useFollowUser(id);
-  const { mutate: unfollowUser } = useUnfollowUser(id);
+  const { mutate: followUser } = useFollowUser();
+  const { mutate: unfollowUser } = useUnfollowUser();
 
   const userStaticsList = useMemo(() => {
     return [
@@ -52,12 +52,11 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
   ]);
 
   const onClickFollowButton = useCallback(() => {
-    if (profileInfo?.isFollowed) {
-      unfollowUser(id);
-    } else {
-      followUser(id);
-    }
-  }, [followUser, id, profileInfo?.isFollowed, unfollowUser]);
+    if (!userInfo?.id) return;
+
+    if (profileInfo?.isFollowed) unfollowUser({ userId: id, unfollowedBy: userInfo.id });
+    else followUser({ userId: id, followedBy: userInfo.id });
+  }, [userInfo?.id, followUser, id, profileInfo?.isFollowed, unfollowUser]);
 
   return (
     <div className="px-5">

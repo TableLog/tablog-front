@@ -7,6 +7,7 @@ import Button from '@/components/atoms/button/Button';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import {
   useFollowUser,
   useGetFollowerList,
@@ -22,25 +23,25 @@ const FollowPage = ({ params }: { params: Promise<{ id: string; follow: string }
 
   const { isLoggedIn } = useLoginStore();
 
+  const { data: userData } = useGetUserInfo();
   const { data: followerList } = useGetFollowerList(Number(id), isFollower);
   const { data: followingList } = useGetFollowingList(Number(id), isFollower);
-  console.log(followerList, followingList);
 
-  const { mutate: followUser } = useFollowUser(Number(id));
-  const { mutate: unfollowUser } = useUnfollowUser(Number(id));
+  const { mutate: followUser } = useFollowUser();
+  const { mutate: unfollowUser } = useUnfollowUser();
 
   const onClickFollowButton = useCallback(
     (isFollowed: boolean, userId: number) => {
-      if (isFollowed) {
-        unfollowUser(userId);
-      } else {
-        followUser(userId);
-      }
+      if (!userData?.id) return;
+
+      if (isFollowed) unfollowUser({ userId, unfollowedBy: userData.id });
+      else followUser({ userId, followedBy: userData.id });
     },
-    [followUser, unfollowUser],
+    [followUser, unfollowUser, userData?.id],
   );
 
   const name = isFollower ? '팔로워' : '팔로잉';
+
   return (
     <div className="px-5 pb-4">
       <PageHeader title={`${name}`} back />

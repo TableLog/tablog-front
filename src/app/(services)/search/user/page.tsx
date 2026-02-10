@@ -9,6 +9,7 @@ import PageHeader from '@/components/atoms/page-header/PageHeader';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
 import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
+import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useFollowUser, useGetUserList, useUnfollowUser } from '@/hooks/queries/users.hooks';
 import { useLoginStore } from '@/lib/zustand/userStore';
 import { IUser } from '@/types/api';
@@ -16,9 +17,9 @@ import { IUser } from '@/types/api';
 const SearchUserPage = () => {
   const [search, setSearch] = useState('');
   const [keyword, setKeyword] = useState('');
-  const [id, setId] = useState(0);
   const { isLoggedIn } = useLoginStore((state) => state);
 
+  const { data: userData } = useGetUserInfo();
   const {
     data: userList,
     isLoading,
@@ -27,18 +28,17 @@ const SearchUserPage = () => {
     isFetching,
   } = useGetUserList(keyword, isLoggedIn);
 
-  const { mutate: followUser } = useFollowUser(id);
-  const { mutate: unfollowUser } = useUnfollowUser(id);
+  const { mutate: followUser } = useFollowUser();
+  const { mutate: unfollowUser } = useUnfollowUser();
 
   const onClickFollowButton = useCallback(
     (isFollowed: boolean, userId: number) => {
-      if (isFollowed) {
-        unfollowUser(userId);
-      } else {
-        followUser(userId);
-      }
+      if (!userData?.id) return;
+
+      if (isFollowed) unfollowUser({ userId, unfollowedBy: userData.id });
+      else followUser({ userId, followedBy: userData.id });
     },
-    [followUser, unfollowUser],
+    [followUser, unfollowUser, userData?.id],
   );
 
   const onSearch = useCallback(() => {
@@ -90,7 +90,6 @@ const SearchUserPage = () => {
                         size="small"
                         buttonColor={user?.isFollowed ? 'grey06' : 'primary'}
                         onClick={() => {
-                          setId(user?.userId);
                           onClickFollowButton(user?.isFollowed, user?.userId);
                         }}
                       >

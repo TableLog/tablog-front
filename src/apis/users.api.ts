@@ -14,11 +14,11 @@ export const getProfileInfo = async (id: number) => {
   return await instance.get(`${USER_URL}/${id}`);
 };
 
-export const folloUser = async (id: number) => {
+export const followUser = async (id: number) => {
   return await instance.post(`${USER_URL}/${id}/follow`);
 };
 
-export const unfolloUser = async (id: number) => {
+export const unfollowUser = async (id: number) => {
   return await instance.delete(`${USER_URL}/${id}/follow`);
 };
 
