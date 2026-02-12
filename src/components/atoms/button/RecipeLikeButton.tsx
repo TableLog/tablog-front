@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
+import { MY_LIKE_LIST_QUERY_KEY, RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useAddLikeRecipe,
   useCancelLikeRecipe,
@@ -22,12 +22,14 @@ const RecipeLikeButton = ({ recipeId, likeCount }: RecipeLikeButtonProps) => {
   const { mutate: addLikeRecipe } = useAddLikeRecipe({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
+      queryClient.invalidateQueries({ queryKey: MY_LIKE_LIST_QUERY_KEY });
     },
   });
 
   const { mutate: cancelLikeRecipe } = useCancelLikeRecipe({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
+      queryClient.invalidateQueries({ queryKey: MY_LIKE_LIST_QUERY_KEY });
     },
   });
 
