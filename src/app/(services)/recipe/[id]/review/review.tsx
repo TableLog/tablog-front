@@ -12,7 +12,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import Rating from '@/components/atoms/rating/Rating';
 import { Text } from '@/components/atoms/text/Text';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
-import { RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddReviewReply } from '@/hooks/queries/recipe.hooks';
 import { zodReviewReplyForm } from '@/lib/zod/zodValidation';
 import { IReview } from '@/types/api';
@@ -34,7 +34,7 @@ const Review = ({ review, isReply, isWriter }: ReviewProps) => {
   const { mutate: addReviewReply } = useAddReviewReply({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: RECIPE_REVIEW_LIST_QUERY_KEY(review.recipeId),
+        queryKey: RECIPE_QUERY_KEY.REVIEW_LIST_BY_RECIPE_ID(review.recipeId),
       });
       router.push(`/recipe/${review.recipeId}/review`);
       setBottomSheetOpen(false);

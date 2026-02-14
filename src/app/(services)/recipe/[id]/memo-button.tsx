@@ -9,7 +9,7 @@ import Button from '@/components/atoms/button/Button';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import TextArea from '@/components/atoms/input/TextArea';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
-import { RECIPE_MEMO_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useAddRecipeMemo,
   useGetRecipeMemo,
@@ -27,14 +27,14 @@ const MemoButton = ({ recipeId }: MemoButtonProps) => {
   const { data: recipeMemo, isPending, isError, error } = useGetRecipeMemo({ recipeId });
   const { mutate: addMemo } = useAddRecipeMemo({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: RECIPE_MEMO_QUERY_KEY(recipeId) });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.MEMO(recipeId) });
       setBottomSheetOpen(false);
     },
     onError: () => showToast({ message: '레시피 메모 등록 중 오류가 발생했어요', type: 'error' }),
   });
   const { mutate: updateMemo } = useUpdateRecipeMemo({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: RECIPE_MEMO_QUERY_KEY(recipeId) });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.MEMO(recipeId) });
       setBottomSheetOpen(false);
     },
     onError: () => showToast({ message: '레시피 메모 수정 중 오류가 발생했어요', type: 'error' }),
