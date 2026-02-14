@@ -24,7 +24,7 @@ const FeedCommentList = ({
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useGetCommentList(Number(id));
+  } = useGetCommentList(id);
 
   return (
     <div>

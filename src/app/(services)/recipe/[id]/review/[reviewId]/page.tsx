@@ -9,7 +9,7 @@ import Button from '@/components/atoms/button/Button';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import Popup from '@/components/molecules/popup/Popup';
 import { DELETE_REVIEW_MODAL } from '@/constants/modal.constants';
-import { MY_RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useDeleteRecipeReview,
   useGetRecipeDetail,
@@ -42,7 +42,7 @@ const ReviewDetailPage = ({ params }: { params: Promise<{ id: string }> }) => {
         const modal = document.getElementById(DELETE_REVIEW_MODAL) as HTMLDialogElement;
         modal.close();
         showToast({ message: '리뷰를 삭제했습니다.', type: 'success' });
-        queryClient.invalidateQueries({ queryKey: [MY_RECIPE_REVIEW_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.REVIEW_LIST() });
         router.back();
       }
     },

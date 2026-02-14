@@ -10,7 +10,7 @@ import Button from '@/components/atoms/button/Button';
 import TextArea from '@/components/atoms/input/TextArea';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import StarRate from '@/components/molecules/star-rate/StarRate';
-import { RECIPE_REVIEW_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddReview } from '@/hooks/queries/recipe.hooks';
 import { zodReviewForm } from '@/lib/zod/zodValidation';
 import { showToast } from '@/utils/functions';
@@ -37,7 +37,7 @@ const RecipeReviewWritePage = ({ params }: { params: Promise<{ id: string }> }) 
   const { mutate: addReview } = useAddReview({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: RECIPE_REVIEW_LIST_QUERY_KEY(recipeId),
+        queryKey: RECIPE_QUERY_KEY.REVIEW_LIST_BY_RECIPE_ID(recipeId),
       });
       router.push(`/recipe/${recipeId}/review`);
       showToast({ message: '리뷰 등록에 성공했어요', type: 'success' });

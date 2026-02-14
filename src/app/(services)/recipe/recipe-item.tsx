@@ -12,7 +12,7 @@ import Popup from '@/components/molecules/popup/Popup';
 import RecipeInfo from '@/components/molecules/recipe-info/RecipeInfo';
 import { DELETE_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_MY_OPTIONS } from '@/constants/options.constants';
-import { RECIPE_DETAIL_QUERY_KEY, RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useAddBookmarkRecipe,
   useCancelBookmarkRecipe,
@@ -31,15 +31,15 @@ const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
 
   const { mutate: addBookmarkRecipe } = useAddBookmarkRecipe({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY, exact: false });
-      queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipe.id) });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.LIST(), exact: false });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.BOOKMARK(recipe.id) });
     },
   });
 
   const { mutate: cancelBookMarkRecipe } = useCancelBookmarkRecipe({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY, exact: false });
-      queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipe.id) });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.LIST(), exact: false });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.BOOKMARK(recipe.id) });
     },
   });
 
@@ -52,7 +52,7 @@ const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
   const { mutate: deleteRecipe } = useDeleteRecipe({
     onSuccess: () => {
       router.push('/recipe');
-      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.LIST() });
       showToast({ message: '레시피 삭제 완료!', type: 'success' });
     },
   });

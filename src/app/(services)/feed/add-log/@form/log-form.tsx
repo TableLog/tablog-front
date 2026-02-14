@@ -9,23 +9,23 @@ import { useRouter } from 'next/navigation';
 import Button from '@/components/atoms/button/Button';
 import RecipeImageInput from '@/components/atoms/input/RecipeImageInput';
 import TextArea from '@/components/atoms/input/TextArea';
-import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
+import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddLog, useEditLog, useGetLog } from '@/hooks/queries/feed.hooks';
 import { zodAddLog } from '@/lib/zod/zodValidation';
 import { TAddLogFormData } from '@/types/api';
 import { showToast } from '@/utils/functions';
 
 interface ILogFormProps {
-  id?: number;
+  logId?: number;
 }
 
-const LogForm = ({ id }: ILogFormProps) => {
+const LogForm = ({ logId }: ILogFormProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
   const [imageRequired, setImageRequired] = useState(false);
 
-  const { data: logData } = useGetLog(Number(id || -1));
+  const { data: logData } = useGetLog(logId ?? -1);
 
   const {
     register,
@@ -55,7 +55,7 @@ const LogForm = ({ id }: ILogFormProps) => {
     onSuccess: (res) => {
       if (res.status === 201) {
         router.push('/feed');
-        queryClient.invalidateQueries({ queryKey: [FEED_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.LIST() });
         showToast({ message: '일기 작성 완료!', type: 'success' });
       }
     },
@@ -70,8 +70,8 @@ const LogForm = ({ id }: ILogFormProps) => {
     onSuccess: (res) => {
       if (res.status === 200) {
         router.push('/feed');
-        queryClient.invalidateQueries({ queryKey: [FEED_LIST_QUERY_KEY] });
-        queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, id] });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.LIST() });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(logId ?? -1) });
         showToast({ message: '일기 수정 완료!', type: 'success' });
       }
     },
@@ -102,7 +102,7 @@ const LogForm = ({ id }: ILogFormProps) => {
         formData.append('multipartFiles', imageFile);
       });
 
-    if (id) editLog({ id, formData });
+    if (logId) editLog({ logId, formData });
     else addLog(formData);
   };
 
@@ -121,7 +121,7 @@ const LogForm = ({ id }: ILogFormProps) => {
 
       <div className="mt-24">
         <Button full type="submit">
-          {id ? '수정하기' : '작성하기'}
+          {logId ? '수정하기' : '작성하기'}
         </Button>
       </div>
     </form>

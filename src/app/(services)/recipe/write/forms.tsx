@@ -8,7 +8,7 @@ import Button from '@/components/atoms/button/Button';
 import Tab from '@/components/atoms/tab/Tab';
 import { useTabsContext } from '@/components/atoms/tab/Tab.context';
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
-import { RECIPE_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddRecipe } from '@/hooks/queries/recipe.hooks';
 import { zodAddRecipeForm } from '@/lib/zod/zodValidation';
 import { showToast } from '@/utils/functions';
@@ -26,7 +26,7 @@ const Forms = () => {
   const { mutate: addRecipe } = useAddRecipe({
     onSuccess: () => {
       router.push('/recipe');
-      queryClient.invalidateQueries({ queryKey: RECIPE_LIST_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.LIST() });
       showToast({ message: '레시피 등록 완료!', type: 'success' });
     },
   });

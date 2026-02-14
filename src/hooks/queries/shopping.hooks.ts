@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 
 import { addShoppingList, getShoppingList, removeShoppingList } from '@/apis/shopping.api';
-import { SHOPPING_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { AddShoppingListPayload, IMutationOptions, RemoveShoppingListParams } from '@/types/api';
 
 export function useAddShoppingList(options?: IMutationOptions) {
@@ -22,7 +22,7 @@ export function useRemoveShoppingList(options?: IMutationOptions) {
 
 export function useGetShoppingList() {
   return useInfiniteQuery({
-    queryKey: [SHOPPING_LIST_QUERY_KEY],
+    queryKey: USER_QUERY_KEY.SHOPPING_LIST(),
     queryFn: async ({ pageParam = 0 }) => await getShoppingList(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>

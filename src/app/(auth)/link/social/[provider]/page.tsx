@@ -6,7 +6,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import { Text } from '@/components/atoms/text/Text';
-import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
+import { USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { useSocialLink } from '@/hooks/queries/auth.hooks';
 import { showErrorToast } from '@/utils/functions';
 
@@ -22,7 +22,7 @@ const SocialLinkContent = () => {
   const { mutate: socialLink } = useSocialLink({
     onSuccess: (res) => {
       if (res.status === 200) {
-        queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
+        queryClient.removeQueries({ queryKey: USER_QUERY_KEY.INFO() });
 
         router.push(`/my/edit`);
       }

@@ -30,21 +30,7 @@ import {
   updateRecipe,
   updateRecipeMemo,
 } from '@/apis/recipe.api';
-import {
-  RECIPE_BOOKMARK_QUERY_KEY,
-  RECIPE_DETAIL_QUERY_KEY,
-  RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS,
-  RECIPE_LIKE_QUERY_KEY,
-  RECIPE_LIST_BY_FILTER_QUERY_KEY,
-  RECIPE_LIST_BY_FOOD_QUERY_KEY,
-  RECIPE_LIST_OPTIONS_QUERY_KEY,
-  RECIPE_MEMO_QUERY_KEY,
-  RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS,
-  RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS,
-  RECIPE_REVIEW_DETAIL_QUERY_KEY,
-  RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS,
-  RECIPE_SEARCH_QUERY_KEY_WITH_PARAMS,
-} from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   IAddBookmarkRecipeParams,
   IAddLikeRecipeParams,
@@ -101,7 +87,7 @@ export const useGetSortedRecipe = (
 ) => {
   const { isMine, ...sortOptions } = option;
   return useInfiniteQuery({
-    queryKey: RECIPE_LIST_OPTIONS_QUERY_KEY(params, option),
+    queryKey: RECIPE_QUERY_KEY.LIST_WITH_PARAMS(params, option),
     queryFn: async ({ pageParam }) =>
       isMine
         ? await getMySortedRecipeList({ ...params, page: pageParam }, sortOptions)
@@ -116,7 +102,7 @@ export const useGetSortedRecipe = (
 export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: { enabled: boolean }) => {
   const { recipeId } = params;
   return useQuery({
-    queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId),
+    queryKey: RECIPE_QUERY_KEY.DETAIL(recipeId),
     queryFn: () => getRecipeDetail(params),
     ...options,
     enabled: !!params.recipeId,
@@ -129,7 +115,7 @@ export const useGetRecipeIngredientList = (
   options?: { enabled: boolean },
 ) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_INGREDIENT_LIST_QUERY_KEY_WITH_PARAMS(params),
+    queryKey: RECIPE_QUERY_KEY.INGREDIENT_LIST_WITH_PARAMS(params),
     queryFn: () => getRecipeIngredientList(params),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -149,7 +135,7 @@ export const useGetRecipeIngredientList = (
 // 레시피 조리 과정
 export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_PROCESS_LIST_QUERY_KEY_WITH_PARAMS(params),
+    queryKey: RECIPE_QUERY_KEY.PROCESS_LIST_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessList(params),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -164,7 +150,7 @@ export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
 
 export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequenceParams) => {
   return useQuery({
-    queryKey: RECIPE_PROCESS_QUERY_KEY_WITH_PARAMS(params),
+    queryKey: RECIPE_QUERY_KEY.PROCESS_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessBySequence(params),
   });
 };
@@ -173,7 +159,7 @@ export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequencePa
 export function useGetRecipeLike(params: IGetRecipeLikeParams) {
   const { recipeId } = params;
   return useQuery({
-    queryKey: RECIPE_LIKE_QUERY_KEY(recipeId),
+    queryKey: RECIPE_QUERY_KEY.LIKE(recipeId),
     queryFn: () => getRecipeLike(params),
   });
 }
@@ -196,7 +182,7 @@ export function useCancelLikeRecipe(options?: IMutationOptions) {
 export function useGetRecipeBookmark(params: IGetRecipeLikeParams) {
   const { recipeId } = params;
   return useQuery({
-    queryKey: RECIPE_BOOKMARK_QUERY_KEY(recipeId),
+    queryKey: RECIPE_QUERY_KEY.BOOKMARK(recipeId),
     queryFn: () => getRecipeBookmark(params),
   });
 }
@@ -218,7 +204,7 @@ export function useCancelBookmarkRecipe(options?: IMutationOptions) {
 // 레시피 필터
 export const useGetRecipeByFilter = (filterCondition: Partial<IRecipeFilterParams> | null) => {
   return useInfiniteQuery({
-    queryKey: [RECIPE_LIST_BY_FILTER_QUERY_KEY, filterCondition],
+    queryKey: RECIPE_QUERY_KEY.LIST_BY_FILTER(filterCondition),
     queryFn: ({ pageParam = 0 }) =>
       getRecipeByFilter({ condition: filterCondition, page: pageParam }),
     initialPageParam: 0,
@@ -233,7 +219,7 @@ export const useGetRecipeByFilter = (filterCondition: Partial<IRecipeFilterParam
 
 export const useGetRecipeByFood = (keywords: string[]) => {
   return useInfiniteQuery({
-    queryKey: [RECIPE_LIST_BY_FOOD_QUERY_KEY, keywords],
+    queryKey: RECIPE_QUERY_KEY.LIST_BY_FOOD(keywords),
     queryFn: ({ pageParam = 0 }) => getRecipeByFood({ keywords, page: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -255,7 +241,7 @@ export function usePayRecipe(options?: IMutationOptions) {
 // 레시피 리뷰
 export const useGetReviews = (params: IGetRecipeReviewsParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_REVIEW_LIST_QUERY_KEY_WITH_PARAMS(params),
+    queryKey: RECIPE_QUERY_KEY.REVIEW_LIST_WITH_PARAMS(params),
     queryFn: ({ pageParam = 0 }) => getRecipeReviews({ ...params, page: pageParam }),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -283,7 +269,7 @@ export function useAddReviewReply(options?: IMutationOptions) {
 
 export function useGetRecipeReviewDetail(params: IGetRecipeReviewDetailParams) {
   return useQuery({
-    queryKey: RECIPE_REVIEW_DETAIL_QUERY_KEY(params),
+    queryKey: RECIPE_QUERY_KEY.REVIEW_DETAIL(params),
     queryFn: () => getRecipeReviewDetail(params),
     select: (data) => data.data,
   });
@@ -313,14 +299,14 @@ export function useUpdateRecipeMemo(options?: IMutationOptions) {
 
 export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams) {
   return useQuery({
-    queryKey: RECIPE_MEMO_QUERY_KEY(recipeId),
+    queryKey: RECIPE_QUERY_KEY.MEMO(recipeId),
     queryFn: () => getRecipeMemo({ recipeId }),
   });
 }
 
 export const useGetRecipeSearch = (params: IGetRecipeSearchParams) => {
   return useInfiniteQuery({
-    queryKey: RECIPE_SEARCH_QUERY_KEY_WITH_PARAMS(params),
+    queryKey: RECIPE_QUERY_KEY.SEARCH_WITH_PARAMS(params),
     queryFn: ({ pageParam = 0 }) => getRecipeSearch({ ...params, page: pageParam }),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>

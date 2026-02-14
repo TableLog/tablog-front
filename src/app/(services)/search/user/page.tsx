@@ -10,7 +10,7 @@ import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
 import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
-import { useFollowUser, useGetUserList, useUnfollowUser } from '@/hooks/queries/users.hooks';
+import { useFollowUser, useSearchUserList, useUnfollowUser } from '@/hooks/queries/users.hooks';
 import { useLoginStore } from '@/lib/zustand/userStore';
 import { IUser } from '@/types/api';
 
@@ -26,7 +26,7 @@ const SearchUserPage = () => {
     fetchNextPage,
     hasNextPage,
     isFetching,
-  } = useGetUserList(keyword, isLoggedIn);
+  } = useSearchUserList(keyword, isLoggedIn);
 
   const { mutate: followUser } = useFollowUser();
   const { mutate: unfollowUser } = useUnfollowUser();

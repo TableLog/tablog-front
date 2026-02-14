@@ -15,7 +15,7 @@ import TextArea from '@/components/atoms/input/TextArea';
 import TextInput from '@/components/atoms/input/TextInput';
 import Tooltip from '@/components/atoms/tooltip/Tooltip';
 import { COOK_TIME_OPTIONS, PRICE_OPTIONS } from '@/constants/options.constants';
-import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useGetRecipeDetail, useUpdateRecipe } from '@/hooks/queries/recipe.hooks';
 import { zodEditRecipeForm } from '@/lib/zod/zodValidation';
@@ -35,7 +35,8 @@ const InfoForm = ({ recipeId }: InfoFormProps) => {
   const { mutate: updateRecipe } = useUpdateRecipe({
     onSuccess: () => {
       router.push(`/recipe/${recipeId}`);
-      queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.LIST() });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.DETAIL(recipeId) });
       showToast({ message: '레시피 수정 완료!', type: 'success' });
     },
   });

@@ -25,7 +25,7 @@ interface IProfileInfoSectionProps {
 const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
   const router = useRouter();
 
-  const { data: profileInfo } = useGetProfileInfo(Number(id));
+  const { data: profileInfo } = useGetProfileInfo(id);
 
   const { isLoggedIn } = useLoginStore();
   const { data: userInfo } = useGetUserInfo();
@@ -69,7 +69,7 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
 
         <div className="flex items-center gap-2">
           {/* 채팅 아이콘 */}
-          {userInfo?.id !== Number(id) && (
+          {userInfo?.id !== id && (
             <div
               className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-primary01 px-1"
               onClick={() => {
