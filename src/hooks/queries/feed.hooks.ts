@@ -13,17 +13,12 @@ import {
   getLogList,
   removeLogLike,
 } from '@/apis/feed.api';
-import {
-  FEED_COMMENT_LIST_QUERY_KEY,
-  FEED_COMMENT_REPLY_LIST_QUERY_KEY,
-  FEED_LIST_QUERY_KEY,
-  FEED_QUERY_KEY,
-} from '@/constants/query-key.constants';
+import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { IMutationOptions } from '@/types/api';
 
 export function useGetLogList() {
   return useInfiniteQuery({
-    queryKey: [FEED_LIST_QUERY_KEY],
+    queryKey: FEED_QUERY_KEY.LIST(),
     queryFn: async ({ pageParam = 0 }) => await getLogList(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -41,17 +36,18 @@ export function useAddLog(options?: IMutationOptions) {
 
 export function useEditLog(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: ({ id, formData }: { id: number; formData: FormData }) => editLog(id, formData),
+    mutationFn: ({ logId, formData }: { logId: number; formData: FormData }) =>
+      editLog(logId, formData),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
 }
 
-export function useGetLog(id: number) {
+export function useGetLog(logId: number) {
   return useQuery({
-    queryKey: [FEED_QUERY_KEY, id],
-    queryFn: () => getLog(id),
-    enabled: !!id && id !== -1,
+    queryKey: FEED_QUERY_KEY.DETAIL(logId),
+    queryFn: () => getLog(logId),
+    enabled: !!logId && logId !== -1,
     select: (res) => res.data,
   });
 }
@@ -80,10 +76,10 @@ export function useRemoveLike(options?: IMutationOptions) {
   });
 }
 
-export function useGetCommentList(id: number) {
+export function useGetCommentList(logId: number) {
   return useInfiniteQuery({
-    queryKey: [FEED_COMMENT_LIST_QUERY_KEY, id],
-    queryFn: async ({ pageParam = 0 }) => await getLogCommentList(id, pageParam),
+    queryKey: FEED_QUERY_KEY.COMMENT_LIST(logId),
+    queryFn: async ({ pageParam = 0 }) => await getLogCommentList(logId, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -95,7 +91,8 @@ export function useGetCommentList(id: number) {
 
 export function useAddComment(options?: IMutationOptions) {
   return useMutation({
-    mutationFn: ({ id, content }: { id: number; content: string }) => addLogComment(id, content),
+    mutationFn: ({ logId, content }: { logId: number; content: string }) =>
+      addLogComment(logId, content),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
@@ -104,28 +101,27 @@ export function useAddComment(options?: IMutationOptions) {
 export function useAddCommentReply(options?: IMutationOptions) {
   return useMutation({
     mutationFn: ({
-      boardId,
+      logId,
       commentId,
       content,
     }: {
-      boardId: number;
+      logId: number;
       commentId: number;
       content: string;
-    }) => addLogCommentReply(boardId, commentId, content),
+    }) => addLogCommentReply(logId, commentId, content),
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });
 }
 
-export function useGetCommentReplyList(boardId: number, commentId: number, enabled: boolean) {
+export function useGetCommentReplyList(logId: number, commentId: number, enabled: boolean) {
   return useInfiniteQuery({
-    queryKey: [FEED_COMMENT_REPLY_LIST_QUERY_KEY, boardId, commentId],
-    queryFn: async ({ pageParam = 0 }) =>
-      await getLogCommentReplyList(boardId, commentId, pageParam),
+    queryKey: FEED_QUERY_KEY.COMMENT_REPLY_LIST(logId, commentId),
+    queryFn: async ({ pageParam = 0 }) => await getLogCommentReplyList(logId, commentId, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
-    enabled: enabled && !!boardId && !!commentId,
+    enabled: enabled && !!logId && !!commentId,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     staleTime: 0,

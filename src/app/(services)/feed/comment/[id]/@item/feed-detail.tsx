@@ -17,7 +17,7 @@ const FeedItem = dynamic(() => import('../../../feed-item'), {
 
 const FeedDetail = ({ id }: { id: number }) => {
   const { data: userData } = useGetUserInfo();
-  const { data: logDetail } = useGetLog(Number(id));
+  const { data: logDetail } = useGetLog(id);
 
   const { setLogId, isReply, setIsReply, contentRefs, handleDelete, commentId, setCommentId } =
     useFeedDetailActions();

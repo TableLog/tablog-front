@@ -11,7 +11,7 @@ import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
-import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
+import { USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { useUpdateUserInfo } from '@/hooks/queries/auth.hooks';
 import { zodEmailUserInfo, zodSocialUserInfo } from '@/lib/zod/zodValidation';
 import { TUserData, TUserInfoEditFormValues } from '@/types/api';
@@ -62,7 +62,7 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
   const { mutate: updateUserInfo } = useUpdateUserInfo({
     onSuccess: (res) => {
       if (res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: [USER_INFO_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.INFO() });
         setValue('password', '');
         setValue('confirmPassword', '');
 

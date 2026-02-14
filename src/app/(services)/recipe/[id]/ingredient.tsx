@@ -56,6 +56,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
                     {recipeFoodUnit} · {cal * servingNumber}kcal
                   </div>
                   <ShoppingButton
+                    recipeId={recipeId}
                     foodId={foodId}
                     amount={amount}
                     foodUnit={recipeFoodUnit}

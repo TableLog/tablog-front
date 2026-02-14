@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { FEED_LIST_QUERY_KEY, FEED_QUERY_KEY } from '@/constants/query-key.constants';
+import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { ILogResponse } from '@/types/api';
 
 interface IFeedListResponse {
@@ -18,7 +18,7 @@ export const ToggleLikeSuccess = (log: ILogResponse, queryClient: QueryClient) =
   const likeCountChange = newIsLike ? 1 : -1;
 
   // 피드 리스트 캐시 업데이트
-  queryClient.setQueryData<IFeedListResponse>([FEED_LIST_QUERY_KEY], (oldData) => {
+  queryClient.setQueryData<IFeedListResponse>(FEED_QUERY_KEY.LIST(), (oldData) => {
     if (!oldData) return oldData;
 
     return {
@@ -43,7 +43,7 @@ export const ToggleLikeSuccess = (log: ILogResponse, queryClient: QueryClient) =
 
   // 개별 게시글 캐시 업데이트
   queryClient.setQueryData(
-    [FEED_QUERY_KEY, Number(log.id)],
+    FEED_QUERY_KEY.DETAIL(log.id),
     (oldData: ILogResponse | { data: ILogResponse } | undefined) => {
       if (!oldData) return oldData;
 

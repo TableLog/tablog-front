@@ -22,7 +22,7 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`align-center border-t-1 fixed bottom-0 box-border flex h-[72px] max-h-[80px] w-full max-w-lg justify-between border-grey07 bg-white01 px-[20px]`}
+      className={`align-center border-t-1 fixed bottom-0 box-border flex h-[72px] w-full max-w-lg justify-between border-grey07 bg-white01 px-[20px]`}
       style={{ zIndex: Z_INDEX.NAVIGATION }}
     >
       {MENU_ARR.map((menu) => {

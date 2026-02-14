@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Button from '@/components/atoms/button/Button';
 import PageHeader from '@/components/atoms/page-header/PageHeader';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
-import { LICENSE_COUNT_QUERY_KEY } from '@/constants/query-key.constants';
+import { USER_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useGetLicenseCount,
   useGetLicenseList,
@@ -27,7 +27,7 @@ const CertificatePage = () => {
   const { mutate: uploadLicense } = useUploadLicense({
     onSuccess: (res) => {
       if (res.status === 201) {
-        queryClient.invalidateQueries({ queryKey: [LICENSE_COUNT_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.LICENSE_COUNT() });
         showToast({ message: '등록되었습니다.', type: 'success' });
       }
     },

@@ -63,7 +63,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
       if (res.status === 201) {
         try {
           ToggleLikeSuccess(log, queryClient);
-          queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, Number(log.id)] });
+          queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(log.id) });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
         }
@@ -76,7 +76,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
       if (res.status === 200) {
         try {
           ToggleLikeSuccess(log, queryClient);
-          queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, Number(log.id)] });
+          queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(log.id) });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
         }
@@ -107,7 +107,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
       switch (type) {
         case '삭제하기':
           handleOpenModal(DELETE_FEED_MODAL);
-          setLogId(Number(log.id));
+          setLogId(log.id);
           break;
         case '수정하기':
           router.push(`/feed/edit-log/${log.id}`);

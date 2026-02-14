@@ -12,7 +12,7 @@ import PageHeader from '@/components/atoms/page-header/PageHeader';
 import FoodsSearch from '@/components/molecules/foods-search/FoodsSearch';
 import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { UNIT_OPTIONS } from '@/constants/options.constants';
-import { SHOPPING_LIST_QUERY_KEY } from '@/constants/query-key.constants';
+import { USER_QUERY_KEY } from '@/constants/query-key.constants';
 import {
   useAddShoppingList,
   useGetShoppingList,
@@ -33,7 +33,7 @@ const ShoppingListPage = () => {
 
   const { mutate: removeShoppingList } = useRemoveShoppingList({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [SHOPPING_LIST_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.SHOPPING_LIST() });
     },
   });
 
@@ -58,8 +58,7 @@ const ShoppingListPage = () => {
   const { mutate: addShoppingList } = useAddShoppingList({
     onSuccess: (res) => {
       if (res.status === 201) {
-        queryClient.invalidateQueries({ queryKey: [SHOPPING_LIST_QUERY_KEY] });
-        queryClient.refetchQueries({ queryKey: [SHOPPING_LIST_QUERY_KEY] });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.SHOPPING_LIST() });
         closeBottomSheet();
         reset();
       }
@@ -88,10 +87,7 @@ const ShoppingListPage = () => {
   }
 
   const onSubmit = (data: z.infer<typeof zodShoppingListForm>) => {
-    addShoppingList({
-      ...data,
-      amount: Number(data.amount),
-    });
+    addShoppingList(data);
   };
 
   return (

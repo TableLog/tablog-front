@@ -5,11 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import { Text } from '@/components/atoms/text/Text';
-import {
-  FEED_COMMENT_LIST_QUERY_KEY,
-  FEED_COMMENT_REPLY_LIST_QUERY_KEY,
-  FEED_QUERY_KEY,
-} from '@/constants/query-key.constants';
+import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddComment, useAddCommentReply } from '@/hooks/queries/feed.hooks';
 import { cn } from '@/utils/cn';
 
@@ -30,9 +26,8 @@ const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) =
   const { mutate: addComment } = useAddComment({
     onSuccess: (res) => {
       if (res.status === 201) {
-        queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, logId] });
-        queryClient.invalidateQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
-        queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(logId) });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.COMMENT_LIST(logId) });
 
         setChatValue('');
       }
@@ -42,11 +37,10 @@ const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) =
   const { mutate: addCommentReply } = useAddCommentReply({
     onSuccess: (res) => {
       if (res.status === 201) {
-        queryClient.invalidateQueries({ queryKey: [FEED_QUERY_KEY, logId] });
-        queryClient.invalidateQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
-        queryClient.refetchQueries({ queryKey: [FEED_COMMENT_LIST_QUERY_KEY, logId] });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(logId) });
+        queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.COMMENT_LIST(logId) });
         queryClient.invalidateQueries({
-          queryKey: [FEED_COMMENT_REPLY_LIST_QUERY_KEY, logId, commentId],
+          queryKey: FEED_QUERY_KEY.COMMENT_REPLY_LIST(logId, commentId),
         });
 
         setChatValue('');
@@ -115,9 +109,9 @@ const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) =
             if (chatValue.trim() === '') return;
 
             if (isReply) {
-              addCommentReply({ boardId: logId, commentId: commentId, content: chatValue });
+              addCommentReply({ logId, commentId: commentId, content: chatValue });
             } else {
-              addComment({ id: logId, content: chatValue });
+              addComment({ logId, content: chatValue });
             }
           }}
         />

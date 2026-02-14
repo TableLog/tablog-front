@@ -12,38 +12,29 @@ import {
   getUserList,
   unfollowUser,
 } from '@/apis/users.api';
-import {
-  FEED_LIST_BY_USER_ID_QUERY_KEY,
-  FOLLOWER_COUNT_QUERY_KEY,
-  FOLLOWER_LIST_QUERY_KEY,
-  FOLLOWING_COUNT_QUERY_KEY,
-  FOLLOWING_LIST_QUERY_KEY,
-  PROFILE_INFO_QUERY_KEY,
-  RECIPE_LIST_BY_USER_ID_QUERY_KEY,
-  USER_LIST_QUERY_KEY,
-} from '@/constants/query-key.constants';
+import { FEED_QUERY_KEY, RECIPE_QUERY_KEY, USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { showErrorToast } from '@/utils/functions';
 
-export const useGetFollowingCount = (id: number) => {
+export const useGetFollowingCount = (userId: number) => {
   return useQuery({
-    queryKey: [FOLLOWING_COUNT_QUERY_KEY, id],
-    queryFn: () => getFollowingCount(id),
+    queryKey: USER_QUERY_KEY.FOLLOWING_COUNT(userId),
+    queryFn: () => getFollowingCount(userId),
   });
 };
 
-export const useGetFollowerCount = (id: number) => {
+export const useGetFollowerCount = (userId: number) => {
   return useQuery({
-    queryKey: [FOLLOWER_COUNT_QUERY_KEY, id],
-    queryFn: () => getFollowerCount(id),
+    queryKey: USER_QUERY_KEY.FOLLOWER_COUNT(userId),
+    queryFn: () => getFollowerCount(userId),
   });
 };
 
-export const useGetProfileInfo = (id: number) => {
+export const useGetProfileInfo = (userId: number) => {
   return useQuery({
-    queryKey: [PROFILE_INFO_QUERY_KEY, id],
-    queryFn: () => getProfileInfo(id),
+    queryKey: USER_QUERY_KEY.PROFILE_INFO(userId),
+    queryFn: () => getProfileInfo(userId),
     select: (data) => data.data,
-    enabled: !!id,
+    enabled: !!userId,
   });
 };
 
@@ -54,11 +45,10 @@ export function useFollowUser() {
     mutationFn: ({ userId }: { userId: number; followedBy: number }) => followUser(userId),
     onSuccess: (res, { userId, followedBy }) => {
       if (res.status === 201 || res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
-        queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWER_LIST_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWING_LIST_QUERY_KEY, Number(followedBy)] });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.LIST() });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.PROFILE_INFO(userId) });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.FOLLOWER(userId) });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.FOLLOWING(followedBy) });
       }
     },
     onError: (err) => {
@@ -74,16 +64,10 @@ export function useUnfollowUser() {
     mutationFn: ({ userId }: { userId: number; unfollowedBy: number }) => unfollowUser(userId),
     onSuccess: (res, { userId, unfollowedBy }) => {
       if (res.status === 201 || res.status === 200) {
-        queryClient.invalidateQueries({ queryKey: [USER_LIST_QUERY_KEY] });
-        queryClient.invalidateQueries({ queryKey: [PROFILE_INFO_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWER_COUNT_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({ queryKey: [FOLLOWER_LIST_QUERY_KEY, Number(userId)] });
-        queryClient.invalidateQueries({
-          queryKey: [FOLLOWING_COUNT_QUERY_KEY, Number(unfollowedBy)],
-        });
-        queryClient.invalidateQueries({
-          queryKey: [FOLLOWING_LIST_QUERY_KEY, Number(unfollowedBy)],
-        });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.LIST() });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.PROFILE_INFO(userId) });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.FOLLOWER(userId) });
+        queryClient.invalidateQueries({ queryKey: USER_QUERY_KEY.FOLLOWING(unfollowedBy) });
       }
     },
     onError: (err) => {
@@ -94,7 +78,7 @@ export function useUnfollowUser() {
 
 export function useGetFollowerList(id: number, isFollower: boolean) {
   return useInfiniteQuery({
-    queryKey: [FOLLOWER_LIST_QUERY_KEY, id],
+    queryKey: USER_QUERY_KEY.FOLLOWER_LIST(id),
     queryFn: async ({ pageParam = 0 }) => await getFollowerList(id, pageParam),
     enabled: isFollower,
     initialPageParam: 0,
@@ -106,7 +90,7 @@ export function useGetFollowerList(id: number, isFollower: boolean) {
 
 export function useGetFollowingList(id: number, isFollower: boolean) {
   return useInfiniteQuery({
-    queryKey: [FOLLOWING_LIST_QUERY_KEY, id],
+    queryKey: USER_QUERY_KEY.FOLLOWING_LIST(id),
     queryFn: async ({ pageParam = 0 }) => await getFollowingList(id, pageParam),
     initialPageParam: 0,
     enabled: !isFollower,
@@ -118,7 +102,7 @@ export function useGetFollowingList(id: number, isFollower: boolean) {
 
 export function useGetRecipeListByUserId(userId: number) {
   return useInfiniteQuery({
-    queryKey: [RECIPE_LIST_BY_USER_ID_QUERY_KEY, userId],
+    queryKey: RECIPE_QUERY_KEY.LIST_BY_USER_ID(userId),
     queryFn: async ({ pageParam = 0 }) => await getRecipeListByUserId(userId, pageParam),
     initialPageParam: 0,
     enabled: !!userId,
@@ -129,7 +113,7 @@ export function useGetRecipeListByUserId(userId: number) {
 
 export function useGetFeedListByUserId(userId: number) {
   return useInfiniteQuery({
-    queryKey: [FEED_LIST_BY_USER_ID_QUERY_KEY, userId],
+    queryKey: FEED_QUERY_KEY.LIST_BY_USER_ID(userId),
     queryFn: async ({ pageParam = 0 }) => await getFeedListByUserId(userId, pageParam),
     initialPageParam: 0,
     enabled: !!userId,
@@ -138,13 +122,13 @@ export function useGetFeedListByUserId(userId: number) {
   });
 }
 
-export function useGetUserList(nickname: string, isLoggedIn: boolean) {
+export function useSearchUserList(keyword: string, isLoggedIn: boolean) {
   return useInfiniteQuery({
-    queryKey: [USER_LIST_QUERY_KEY, nickname],
-    queryFn: async ({ pageParam = 0 }) => await getUserList(nickname, pageParam, isLoggedIn),
+    queryKey: USER_QUERY_KEY.SEARCH(keyword),
+    queryFn: async ({ pageParam = 0 }) => await getUserList(keyword, pageParam, isLoggedIn),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
-    enabled: !!nickname,
+    enabled: !!keyword,
   });
 }

@@ -10,14 +10,7 @@ import {
   requestExpertVerification,
   uploadLicense,
 } from '@/apis/my.api';
-import {
-  LICENSE_COUNT_QUERY_KEY,
-  LICENSE_LIST_QUERY_KEY,
-  MY_BOOKMARK_LIST_OPTIONS_QUERY_KEY,
-  MY_LIKE_LIST_OPTIONS_QUERY_KEY,
-  MY_RECIPE_REVIEW_LIST_QUERY_KEY,
-  POINT_HISTORY_QUERY_KEY,
-} from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY, USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { IGetRecipeParams, IGetSortedRecipeOption, IMutationOptions } from '@/types/api';
 import { showToast } from '@/utils/functions';
 
@@ -25,7 +18,7 @@ export const useGetMyLikesList = (params: IGetRecipeParams, option: IGetSortedRe
   const { ...sortOptions } = option;
 
   return useInfiniteQuery({
-    queryKey: MY_LIKE_LIST_OPTIONS_QUERY_KEY(params, option),
+    queryKey: RECIPE_QUERY_KEY.MY_LIKE_LIST_WITH_PARAMS(params, option),
     queryFn: async ({ pageParam }) =>
       await getMyLikeList({ ...params, page: pageParam }, sortOptions),
     initialPageParam: params.page,
@@ -39,7 +32,7 @@ export const useGetMyBookmarkList = (params: IGetRecipeParams, option: IGetSorte
   const { ...sortOptions } = option;
 
   return useInfiniteQuery({
-    queryKey: MY_BOOKMARK_LIST_OPTIONS_QUERY_KEY(params, option),
+    queryKey: RECIPE_QUERY_KEY.MY_BOOKMARK_LIST_WITH_PARAMS(params, option),
     queryFn: async ({ pageParam }) =>
       await getMyBookmarkList({ ...params, page: pageParam }, sortOptions),
     initialPageParam: params.page,
@@ -70,7 +63,7 @@ export const useUploadLicense = (options?: IMutationOptions) => {
 
 export const useGetLicenseList = (licenseType: string) => {
   return useInfiniteQuery({
-    queryKey: [LICENSE_LIST_QUERY_KEY, licenseType],
+    queryKey: USER_QUERY_KEY.LICENSE_LIST(licenseType),
     queryFn: async ({ pageParam }) => await getLicenseList(pageParam, licenseType),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -82,7 +75,7 @@ export const useGetLicenseList = (licenseType: string) => {
 
 export const useGetLicenseCount = () => {
   return useQuery({
-    queryKey: [LICENSE_COUNT_QUERY_KEY],
+    queryKey: USER_QUERY_KEY.LICENSE_COUNT(),
     queryFn: async () => await getLicenseCount(),
     select: (response) => response.data,
   });
@@ -90,7 +83,7 @@ export const useGetLicenseCount = () => {
 
 export const useGetMyRecipeReview = ({ userId }: { userId: number | undefined }) => {
   return useInfiniteQuery({
-    queryKey: [MY_RECIPE_REVIEW_LIST_QUERY_KEY],
+    queryKey: RECIPE_QUERY_KEY.MY_REVIEW_LIST(),
     queryFn: async ({ pageParam = 0 }) => await getMyRecipeReview(userId, pageParam),
 
     initialPageParam: 0,
@@ -103,7 +96,7 @@ export const useGetMyRecipeReview = ({ userId }: { userId: number | undefined })
 
 export const useGetPointHistory = (type: string) => {
   return useInfiniteQuery({
-    queryKey: [POINT_HISTORY_QUERY_KEY, type],
+    queryKey: USER_QUERY_KEY.POINT_HISTORY(type),
     queryFn: async ({ pageParam }) => await getPointHistory(pageParam, type),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>

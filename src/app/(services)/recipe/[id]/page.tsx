@@ -10,7 +10,7 @@ import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import Popup from '@/components/molecules/popup/Popup';
 import { ERecipeDetailSection } from '@/constants/common.constants';
 import { PAY_RECIPE_MODAL } from '@/constants/modal.constants';
-import { RECIPE_DETAIL_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetRecipeDetail, usePayRecipe } from '@/hooks/queries/recipe.hooks';
 import { handleOpenModal } from '@/utils/functions';
 
@@ -26,7 +26,7 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
   });
   const { mutate: payRecipe } = usePayRecipe({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: RECIPE_DETAIL_QUERY_KEY(recipeId) });
+      queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.DETAIL(recipeId) });
     },
   });
   const searchParams = useSearchParams();

@@ -1,11 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
-import { RECIPE_INGREDIENT_QUERY_KEY } from '@/constants/query-key.constants';
+import { RECIPE_QUERY_KEY, USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { useAddShoppingList, useRemoveShoppingList } from '@/hooks/queries/shopping.hooks';
 import { AddShoppingListPayload } from '@/types/api';
 
 interface ShoppingButtonProps {
+  recipeId: number;
   foodId: number;
   amount: number;
   foodUnit: string;
@@ -14,6 +15,7 @@ interface ShoppingButtonProps {
 }
 
 function ShoppingButton({
+  recipeId,
   foodId,
   amount,
   foodUnit,
@@ -25,14 +27,20 @@ function ShoppingButton({
   const { mutate: addShoppingList } = useAddShoppingList({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [RECIPE_INGREDIENT_QUERY_KEY],
+        queryKey: RECIPE_QUERY_KEY.INGREDIENT_LIST(recipeId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: USER_QUERY_KEY.SHOPPING_LIST(),
       });
     },
   });
   const { mutate: removeShoppingList } = useRemoveShoppingList({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [RECIPE_INGREDIENT_QUERY_KEY],
+        queryKey: RECIPE_QUERY_KEY.INGREDIENT_LIST(recipeId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: USER_QUERY_KEY.SHOPPING_LIST(),
       });
     },
   });

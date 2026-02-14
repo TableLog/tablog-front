@@ -17,7 +17,7 @@ import {
   socialLink,
   updateUserInfo,
 } from '@/apis/auth.api';
-import { USER_INFO_QUERY_KEY } from '@/constants/query-key.constants';
+import { USER_QUERY_KEY } from '@/constants/query-key.constants';
 import { useLoginStore } from '@/lib/zustand/userStore';
 import { IMutationOptions, TChangePasswordFormData, TFindAccountFormValues } from '@/types/api';
 import { showErrorToast, showToast } from '@/utils/functions';
@@ -87,10 +87,8 @@ export function useLogout() {
     onSuccess: (res) => {
       if (res.status === 200) {
         setIsLoggedIn(false);
-
+        queryClient.removeQueries({ queryKey: USER_QUERY_KEY.INFO() });
         router.push('/login');
-
-        queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
       }
     },
   });
@@ -128,7 +126,7 @@ export function useGetUserInfo() {
   const { isLoggedIn } = useLoginStore();
 
   return useQuery({
-    queryKey: [USER_INFO_QUERY_KEY],
+    queryKey: USER_QUERY_KEY.INFO(),
     queryFn: () => getUserInfo(),
     enabled: isLoggedIn,
     select: (res) => res.data,
@@ -161,7 +159,7 @@ export function useUnregister() {
         router.push('/login');
         showToast({ message: '회원 탈퇴가 완료되었습니다.', type: 'success' });
 
-        queryClient.removeQueries({ queryKey: [USER_INFO_QUERY_KEY] });
+        queryClient.removeQueries({ queryKey: USER_QUERY_KEY.INFO() });
       }
     },
   });
