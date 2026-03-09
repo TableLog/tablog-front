@@ -25,7 +25,7 @@ const IngredientForm = () => {
 
   const { data, hasNextPage, fetchNextPage, isFetching } = useSearchFood({
     search: keyword,
-    page: 0,
+    cursor: 0,
   });
 
   const foodList = data?.foods.map((food) => ({ id: food.id, title: food.foodName }));

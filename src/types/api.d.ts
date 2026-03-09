@@ -11,6 +11,10 @@ export interface PaginationData {
   hasNext: boolean;
 }
 
+export interface CursorPaginationData extends PaginationData {
+  nextCursor: number;
+}
+
 export type TUserData = {
   id: number;
   userName: string;
@@ -242,10 +246,10 @@ export interface IRecipeProcessResponse {
 // food
 export interface ISearchFoodParams {
   search?: string;
-  page: number;
+  cursor: number;
 }
 
-export interface ISearchFoodResponse extends PaginationData {
+export interface ISearchFoodResponse extends CursorPaginationData {
   foods: IFood[];
 }
 
