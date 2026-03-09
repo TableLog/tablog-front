@@ -35,7 +35,7 @@ const FoodsSearch = ({ selectedFoods, setSelectedFoods }: IFoodsSearchProps) => 
     isFetching,
   } = useSearchFood({
     search: keyword,
-    page: 0,
+    cursor: 0,
   });
 
   return (
