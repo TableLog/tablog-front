@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 
 import Toast from '@/components/atoms/toast/Toast';
@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   icons: {
     icon: '/icons/favicon.ico',
   },
+};
+
+export const viewport: Viewport = {
+  userScalable: false,
 };
 
 export default function RootLayout({
