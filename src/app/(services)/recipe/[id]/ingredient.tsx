@@ -34,7 +34,7 @@ const Ingredient = ({ recipeId }: IngredientProps) => {
             onChange={(newOption) => setSelectedServingOption(newOption)}
           />
           <InfiniteScroll
-            className="flex w-full flex-col gap-4"
+            className="flex max-h-56 w-full flex-col gap-4 overflow-y-auto pr-4"
             hasNextPage={hasNextPage}
             isFetching={isFetching}
             fetchNextPage={fetchNextPage}
