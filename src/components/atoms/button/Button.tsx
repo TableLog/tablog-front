@@ -17,7 +17,7 @@ const colorClasses = {
   white: 'bg-[var(--color-base-000)] text-black',
 };
 
-type ButtonProps = ComponentProps<'button'> | ComponentProps<typeof Link>;
+export type ButtonProps = (ComponentProps<'button'> | ComponentProps<typeof Link>) & IButtonProps;
 
 interface IButtonProps {
   onClick?: () => void;
@@ -29,6 +29,7 @@ interface IButtonProps {
   children: React.ReactNode;
   form?: string;
 }
+
 export default function Button({
   size = 'large',
   buttonColor = 'primary',
@@ -37,7 +38,7 @@ export default function Button({
   children,
   className,
   ...rest
-}: IButtonProps & ButtonProps) {
+}: ButtonProps) {
   const isFullWidth = full ? 'flex-grow w-full' : '';
   const disabledClass = rest.disabled ? 'bg-grey04 pointer-events-none' : '';
 

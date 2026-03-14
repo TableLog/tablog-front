@@ -1,8 +1,6 @@
-'use client';
-
 import Link from 'next/link';
 
-import Button from '@/components/atoms/button/Button';
+import LoginRequiredLink from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 
 import FeedList from './feed-list';
@@ -20,9 +18,9 @@ const FeedPage = () => {
           <span>유저 검색</span>
         </Link>
 
-        <Link href="/feed/add-log">
-          <Button size="medium">일기 작성</Button>
-        </Link>
+        <LoginRequiredLink size="medium" href="/feed/add-log">
+          일기 작성
+        </LoginRequiredLink>
       </div>
 
       <FeedList />
