@@ -40,7 +40,6 @@ const IngredientForm = () => {
     resolver: zodResolver(zodIngredientInfo),
     mode: 'onChange',
     defaultValues: {
-      amount: 0,
       recipeFoodUnit: UNIT_OPTIONS[0].name,
     },
   });
