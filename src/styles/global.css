@@ -26,7 +26,9 @@
   }
 
   body {
+    font-synthesis: none;
     max-width: 100svw;
+    letter-spacing: -1%;
   }
 
   button {
