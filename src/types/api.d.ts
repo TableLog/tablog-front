@@ -91,6 +91,10 @@ export interface IApiErrorResponse {
   message: string;
 }
 
+export interface IQueryOptions {
+  enabled?: boolean;
+}
+
 export interface IMutationOptions {
   onSuccess?: (res) => void;
   onError?: (res) => void;

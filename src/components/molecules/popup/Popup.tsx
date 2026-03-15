@@ -22,8 +22,8 @@ const Popup = ({
       <dialog id={id} className="modal">
         {/* max-w-lg-40px */}
         <div className="modal-box max-w-[calc(32rem-4rem)] rounded-[20px] pb-6 pt-8">
-          <h3 className="text-center text-xl font-medium">{title}</h3>
-          <div className="py-6 text-center text-sm">{children}</div>
+          <h3 className="text-center text-xl font-medium text-black01">{title}</h3>
+          <div className="py-6 text-center text-sm text-black01">{children}</div>
           <div className="modal-action mt-3 flex justify-center">
             <form method="dialog" className="flex justify-center gap-3">
               <Button buttonColor="grey06" size="medium" onClick={() => handleCloseModal(id)}>

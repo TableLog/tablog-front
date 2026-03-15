@@ -7,6 +7,9 @@ import {
   useCancelBookmarkRecipe,
   useGetRecipeBookmark,
 } from '@/hooks/queries/recipe.hooks';
+import { useLoginStore } from '@/lib/zustand/userStore';
+
+import LoginClickGuard from './LoginRequiredLink';
 
 interface RecipeBookmarkButtonProps {
   recipeId: number;
@@ -14,8 +17,9 @@ interface RecipeBookmarkButtonProps {
 
 const RecipeBookmarkButton = ({ recipeId }: RecipeBookmarkButtonProps) => {
   const queryClient = useQueryClient();
+  const { isLoggedIn } = useLoginStore();
 
-  const { data: response } = useGetRecipeBookmark({ recipeId });
+  const { data: response } = useGetRecipeBookmark({ recipeId }, { enabled: isLoggedIn });
 
   const { mutate: addBookmarkRecipe } = useAddBookmarkRecipe({
     onSuccess: () => {
@@ -31,7 +35,14 @@ const RecipeBookmarkButton = ({ recipeId }: RecipeBookmarkButtonProps) => {
     },
   });
 
-  if (!response) return;
+  if (!response)
+    return (
+      <LoginClickGuard>
+        <div className="flex items-center">
+          <Bookmark isMarked={false} />
+        </div>
+      </LoginClickGuard>
+    );
 
   const isMarked = response.data;
 
