@@ -10,13 +10,14 @@ import { useAddComment, useAddCommentReply } from '@/hooks/queries/feed.hooks';
 import { cn } from '@/utils/cn';
 
 interface IChatInputProps {
+  className?: string;
   logId: number;
   isReply: boolean;
   setIsReply: (isReply: boolean) => void;
   commentId: number;
 }
 
-const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) => {
+const ChatInput = ({ className = '', logId, isReply, setIsReply, commentId }: IChatInputProps) => {
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -78,7 +79,12 @@ const ChatInput = ({ logId, isReply, setIsReply, commentId }: IChatInputProps) =
 
   return (
     <div
-      className={cn(positionClass, paddingClass, 'left-0 z-50 w-full bg-white01 transition-all')}
+      className={cn(
+        positionClass,
+        paddingClass,
+        'left-0 z-50 w-full bg-white01 transition-all',
+        className,
+      )}
     >
       <div className="flex items-center gap-3">
         <div className="flex flex-1 justify-between rounded-full border border-grey07 px-4 py-2">
