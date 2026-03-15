@@ -51,11 +51,11 @@ const MyPage = () => {
         <div className="flex -translate-y-full flex-col items-center gap-6">
           <div>🙇 로그인 후 이용해주세요.</div>
           <div className="flex gap-3">
-            <Button buttonColor="grey04">
-              <Link href="/my/inquiry">관리자에게 문의하기</Link>
+            <Button buttonColor="grey04" href="/my/inquiry">
+              관리자에게 문의하기
             </Button>
-            <Button buttonColor="primary">
-              <Link href="/login">로그인</Link>
+            <Button buttonColor="primary" href="/login">
+              로그인
             </Button>
           </div>
         </div>
