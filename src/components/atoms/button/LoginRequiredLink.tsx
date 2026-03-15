@@ -9,7 +9,7 @@ import { handleOpenModal } from '@/utils/functions';
 
 import Button, { ButtonProps } from './Button';
 
-function LoginRequiredLink({ ...props }: ButtonProps) {
+function LoginRequiredLink({ children, ...props }: ButtonProps) {
   const router = useRouter();
   const { isLoggedIn } = useLoginStore();
 
@@ -41,7 +41,7 @@ function LoginRequiredLink({ ...props }: ButtonProps) {
         <p>로그인 후 이용해주세요.</p>
       </Popup>
       <Button onClick={handleButtonClick} {...props}>
-        일기 작성
+        {children}
       </Button>
     </>
   );
