@@ -11,11 +11,12 @@ export default function AuthInitializer({ isToken }: IAuthInitializerProps) {
   const { isLoggedIn, setIsLoggedIn } = useLoginStore();
 
   useEffect(() => {
+    console.log({ isToken });
     setIsLoggedIn(isToken);
   }, [isToken, setIsLoggedIn]);
 
   useEffect(() => {
-    console.trace({ isLoggedIn });
+    console.log({ isLoggedIn });
   }, [isLoggedIn]);
 
   return null;
