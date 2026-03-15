@@ -19,8 +19,7 @@ const FeedDetail = ({ id }: { id: number }) => {
   const { data: userData } = useGetUserInfo();
   const { data: logDetail } = useGetLog(id);
 
-  const { setLogId, isReply, setIsReply, contentRefs, handleDelete, commentId, setCommentId } =
-    useFeedDetailActions();
+  const { setLogId, contentRefs, handleDelete, commentId } = useFeedDetailActions();
 
   const isMyPost = userData && userData?.nickname === logDetail?.user;
 
@@ -39,17 +38,13 @@ const FeedDetail = ({ id }: { id: number }) => {
               isDetail
             />
 
-            <FeedCommentList id={id} setIsReply={setIsReply} setCommentId={setCommentId} />
+            <div className="mb-6 mt-5 h-px w-full bg-grey07" />
+
+            <FeedCommentList logId={id} />
           </div>
 
           <LoginClickGuard>
-            <ChatInput
-              className="pt-3"
-              logId={id}
-              isReply={isReply}
-              setIsReply={setIsReply}
-              commentId={commentId}
-            />
+            <ChatInput className="pt-3" logId={id} commentId={commentId} />
           </LoginClickGuard>
         </div>
       </>

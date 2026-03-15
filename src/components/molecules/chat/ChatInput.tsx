@@ -12,12 +12,20 @@ import { cn } from '@/utils/cn';
 interface IChatInputProps {
   className?: string;
   logId: number;
-  isReply: boolean;
-  setIsReply: (isReply: boolean) => void;
+  isReply?: boolean;
+  onCancelReply?: () => void;
+  onAddReplySuccess?: () => void;
   commentId: number;
 }
 
-const ChatInput = ({ className = '', logId, isReply, setIsReply, commentId }: IChatInputProps) => {
+const ChatInput = ({
+  className = '',
+  logId,
+  isReply = false,
+  onCancelReply,
+  onAddReplySuccess,
+  commentId,
+}: IChatInputProps) => {
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,7 +53,8 @@ const ChatInput = ({ className = '', logId, isReply, setIsReply, commentId }: IC
         });
 
         setChatValue('');
-        setIsReply(false);
+        onCancelReply?.();
+        onAddReplySuccess?.();
       }
     },
   });
@@ -91,7 +100,7 @@ const ChatInput = ({ className = '', logId, isReply, setIsReply, commentId }: IC
           <input
             ref={inputRef}
             type="text"
-            className="w-full"
+            className="w-full text-sm"
             placeholder={isReply ? '답글 입력...' : '댓글 입력...'}
             value={chatValue}
             onChange={(e) => {
@@ -100,17 +109,18 @@ const ChatInput = ({ className = '', logId, isReply, setIsReply, commentId }: IC
           />
 
           {isReply && (
-            <div className="flex items-center gap-1">
-              <Text fontSize={14} color="grey04" onClick={() => setIsReply(false)}>
+            <button type="button" className="flex items-center gap-1" onClick={onCancelReply}>
+              <Text fontSize={12} color="grey04" fontWeight="medium">
                 취소
               </Text>
-            </div>
+            </button>
           )}
         </div>
 
         <BoxIcon
           name="navigation"
           size={24}
+          color="grey03"
           onClick={() => {
             if (chatValue.trim() === '') return;
 

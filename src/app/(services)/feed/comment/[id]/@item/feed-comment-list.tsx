@@ -1,86 +1,102 @@
 import { useState } from 'react';
 
 import Button from '@/components/atoms/button/Button';
+import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import { Text } from '@/components/atoms/text/Text';
+import ChatInput from '@/components/molecules/chat/ChatInput';
 import { useGetCommentList, useGetCommentReplyList } from '@/hooks/queries/feed.hooks';
 import { ICommentResponse } from '@/types/api';
 import { convertDateFormat } from '@/utils/functions';
 
-const FeedCommentList = ({
-  id,
-  setIsReply,
-  setCommentId,
-}: {
-  id: number;
-  setIsReply: (isReply: boolean) => void;
-  setCommentId: (commentId: number) => void;
-}) => {
+interface IFeedCommentListProps {
+  logId: number;
+}
+
+const FeedCommentList = ({ logId }: IFeedCommentListProps) => {
   const [openedReplyCommentId, setOpenedReplyCommentId] = useState<number | null>(null);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
 
   const {
     data: commentList,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useGetCommentList(id);
+  } = useGetCommentList(logId);
 
   return (
     <div>
       <div className="flex flex-col gap-4">
         {commentList?.pages.map((page) =>
           page.data.boardComments.map((comment: ICommentResponse) => (
-            <div key={comment.createdAt} className="flex items-start justify-between gap-1.5">
+            <div key={comment.createdAt} className="flex items-start justify-between gap-2">
               <div>
-                <ProfileImage src={comment?.profileImgUrl || ''} size={36} />
+                <ProfileImage src={comment?.profileImgUrl || ''} size={32} />
               </div>
 
-              <div className="flex flex-1 flex-col gap-0.5">
-                <div className="flex items-center justify-between">
-                  <Text fontSize={14}>{comment.user}</Text>
-
-                  <Text fontSize={12} color="grey04">
-                    {convertDateFormat(comment.createdAt)}
+              <div className="flex flex-1 flex-col gap-1.5">
+                <div className="flex flex-col gap-0.5">
+                  <div className="flex items-center justify-between">
+                    <Text fontSize={12} fontWeight="medium">
+                      {comment.user}
+                    </Text>
+                    <Text fontSize={12} color="grey04">
+                      {convertDateFormat(comment.createdAt)}
+                    </Text>
+                  </div>
+                  <Text fontSize={14} className="max-w-full text-wrap break-all">
+                    {comment.content}
                   </Text>
                 </div>
 
-                <Text fontSize={14} className="max-w-full text-wrap break-all">
-                  {comment.content}
-                </Text>
-
                 <div>
-                  <div className="flex items-center justify-between">
-                    <Text
-                      fontSize={12}
-                      color="grey04"
+                  <div className="flex items-center gap-1.5">
+                    <button
                       onClick={() => {
-                        if (openedReplyCommentId === comment.id) {
-                          setOpenedReplyCommentId(null);
-                        } else {
-                          setOpenedReplyCommentId(comment.id);
+                        if (comment?.comment_count > 0) {
+                          setOpenedReplyCommentId(
+                            openedReplyCommentId === comment.id ? null : comment.id,
+                          );
                         }
                       }}
-                      className="cursor-pointer"
                     >
-                      답글 {comment?.comment_count}개
-                    </Text>
+                      <Text fontSize={12} color="grey04" fontWeight="medium">
+                        답글 {comment?.comment_count}개
+                      </Text>
+                    </button>
 
-                    <Text
-                      fontSize={12}
-                      color="grey04"
+                    <BoxIcon name="circle" type="solid" size={3} color="grey04" />
+
+                    <button
+                      type="button"
                       onClick={() => {
-                        setIsReply(true);
-                        setCommentId(comment.id);
+                        setSelectedCommentId(selectedCommentId === comment.id ? null : comment.id);
                       }}
-                      className="cursor-pointer"
                     >
-                      답글 달기
-                    </Text>
+                      <Text fontSize={12} color="grey04" fontWeight="medium">
+                        답글 달기
+                      </Text>
+                    </button>
                   </div>
 
+                  {selectedCommentId === comment.id && (
+                    <ChatInput
+                      className="pt-3"
+                      logId={logId}
+                      onCancelReply={() => {
+                        setSelectedCommentId(null);
+                      }}
+                      onAddReplySuccess={() => {
+                        setOpenedReplyCommentId(comment.id);
+                      }}
+                      commentId={comment.id}
+                      isReply
+                    />
+                  )}
+
                   {openedReplyCommentId === comment.id && (
-                    <ReplyList boardId={id} commentId={comment.id} />
+                    <ReplyList boardId={logId} commentId={comment.id} />
                   )}
                 </div>
               </div>
@@ -115,17 +131,19 @@ const ReplyList = ({ boardId, commentId }: { boardId: number; commentId: number 
   }
 
   return (
-    <section className="my-3 flex flex-col gap-3 border-l border-grey08 pl-4">
+    <section className="mt-3 flex flex-col gap-2">
       {replyList.pages.map((page) =>
         page.data.boardComments?.map((reply: ICommentResponse) => (
-          <div key={reply.createdAt} className="flex items-start justify-between gap-1.5">
+          <div key={reply.createdAt} className="flex items-start justify-between gap-2">
             <div>
-              <ProfileImage src={reply?.profileImgUrl || ''} size={32} />
+              <ProfileImage src={reply.profileImgUrl} size={32} />
             </div>
 
             <div className="flex flex-1 flex-col gap-0.5">
               <div className="flex items-center justify-between">
-                <Text fontSize={14}>{reply.user}</Text>
+                <Text fontSize={12} fontWeight="medium">
+                  {reply.user}
+                </Text>
 
                 <Text fontSize={12} color="grey04">
                   {convertDateFormat(reply.createdAt)}

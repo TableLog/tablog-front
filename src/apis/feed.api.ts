@@ -30,7 +30,9 @@ export const removeLogLike = async (id: number) => {
 };
 
 export const getLogCommentList = async (id: number, page: number) => {
-  return await instance.get(`${BOARD_URL}/${id}/board_comments`, { params: { page } });
+  return await instance.get(`${BOARD_URL}/${id}/board_comments`, {
+    params: { page },
+  });
 };
 
 export const addLogComment = async (id: number, content: string) => {

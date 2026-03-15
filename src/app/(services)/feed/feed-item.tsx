@@ -190,7 +190,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         />
       )}
 
-      <ul className="mb-2 mt-1 flex items-center gap-4">
+      <ul className="mb-3 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">
           <LoginClickGuard>
             {log.isLike ? (
@@ -234,7 +234,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         </li>
       </ul>
 
-      <div className="mb-8 max-h-[360px] overflow-y-auto">
+      <div className="max-h-[360px] overflow-y-auto">
         <div
           ref={(el) => {
             contentRefs.current[log.id] = el;
