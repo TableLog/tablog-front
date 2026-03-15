@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 import Button from '@/components/atoms/button/Button';
+import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import TextArea from '@/components/atoms/input/TextArea';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
@@ -191,25 +192,27 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
 
       <ul className="mb-2 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">
-          {log.isLike ? (
-            <BoxIcon
-              name="heart"
-              type="solid"
-              color="primary01"
-              size={24}
-              onClick={() => {
-                removeLike(log.id);
-              }}
-            />
-          ) : (
-            <BoxIcon
-              name="heart"
-              size={24}
-              onClick={() => {
-                addLike(log.id);
-              }}
-            />
-          )}
+          <LoginClickGuard>
+            {log.isLike ? (
+              <BoxIcon
+                name="heart"
+                type="solid"
+                color="primary01"
+                size={24}
+                onClick={() => {
+                  removeLike(log.id);
+                }}
+              />
+            ) : (
+              <BoxIcon
+                name="heart"
+                size={24}
+                onClick={() => {
+                  addLike(log.id);
+                }}
+              />
+            )}
+          </LoginClickGuard>
 
           <Text fontSize={14} className="min-w-[10px]">
             {log.like_count || 0}

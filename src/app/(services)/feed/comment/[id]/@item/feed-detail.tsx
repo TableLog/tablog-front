@@ -2,12 +2,12 @@
 
 import dynamic from 'next/dynamic';
 
+import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import ChatInput from '@/components/molecules/chat/ChatInput';
 import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useGetLog } from '@/hooks/queries/feed.hooks';
 import { useFeedDetailActions } from '@/hooks/useFeedDetailActions';
-import { useLoginStore } from '@/lib/zustand/userStore';
 
 import FeedCommentList from './feed-comment-list';
 
@@ -23,8 +23,6 @@ const FeedDetail = ({ id }: { id: number }) => {
     useFeedDetailActions();
 
   const isMyPost = userData && userData?.nickname === logDetail?.user;
-
-  const { isLoggedIn } = useLoginStore();
 
   return (
     logDetail && (
@@ -44,7 +42,7 @@ const FeedDetail = ({ id }: { id: number }) => {
             <FeedCommentList id={id} setIsReply={setIsReply} setCommentId={setCommentId} />
           </div>
 
-          {isLoggedIn && (
+          <LoginClickGuard>
             <ChatInput
               className="pt-3"
               logId={id}
@@ -52,7 +50,7 @@ const FeedDetail = ({ id }: { id: number }) => {
               setIsReply={setIsReply}
               commentId={commentId}
             />
-          )}
+          </LoginClickGuard>
         </div>
       </>
     )
