@@ -116,10 +116,13 @@ export const useGetRecipeIngredientList = (
 ) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.INGREDIENT_LIST_WITH_PARAMS(params),
-    queryFn: () => getRecipeIngredientList(params),
+    queryFn: ({ pageParam }) => {
+      return getRecipeIngredientList({ ...params, page: pageParam });
+    },
     initialPageParam: params.page,
-    getNextPageParam: (lastPage, _, pageParam) =>
-      lastPage.data.hasNext ? pageParam + 1 : undefined,
+    getNextPageParam: (lastPage, _, pageParam) => {
+      return lastPage.data.hasNext ? pageParam + 1 : undefined;
+    },
     select: (response) => ({
       recipe: {
         title: response.pages[0].data.title,
@@ -136,7 +139,7 @@ export const useGetRecipeIngredientList = (
 export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.PROCESS_LIST_WITH_PARAMS(params),
-    queryFn: () => getRecipeProcessList(params),
+    queryFn: ({ pageParam }) => getRecipeProcessList({ ...params, page: pageParam }),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -205,8 +208,7 @@ export function useCancelBookmarkRecipe(options?: IMutationOptions) {
 export const useGetRecipeByFilter = (filterCondition: Partial<IRecipeFilterParams> | null) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.LIST_BY_FILTER(filterCondition),
-    queryFn: ({ pageParam = 0 }) =>
-      getRecipeByFilter({ condition: filterCondition, page: pageParam }),
+    queryFn: ({ pageParam }) => getRecipeByFilter({ condition: filterCondition, page: pageParam }),
     initialPageParam: 0,
     enabled: !!filterCondition,
     getNextPageParam: (lastPage, _, pageParam) =>
@@ -220,7 +222,7 @@ export const useGetRecipeByFilter = (filterCondition: Partial<IRecipeFilterParam
 export const useGetRecipeByFood = (keywords: string[]) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.LIST_BY_FOOD(keywords),
-    queryFn: ({ pageParam = 0 }) => getRecipeByFood({ keywords, page: pageParam }),
+    queryFn: ({ pageParam }) => getRecipeByFood({ keywords, page: pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -242,7 +244,7 @@ export function usePayRecipe(options?: IMutationOptions) {
 export const useGetReviews = (params: IGetRecipeReviewsParams) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.REVIEW_LIST_WITH_PARAMS(params),
-    queryFn: ({ pageParam = 0 }) => getRecipeReviews({ ...params, page: pageParam }),
+    queryFn: ({ pageParam }) => getRecipeReviews({ ...params, page: pageParam }),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -307,7 +309,7 @@ export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams) {
 export const useGetRecipeSearch = (params: IGetRecipeSearchParams) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.SEARCH_WITH_PARAMS(params),
-    queryFn: ({ pageParam = 0 }) => getRecipeSearch({ ...params, page: pageParam }),
+    queryFn: ({ pageParam }) => getRecipeSearch({ ...params, page: pageParam }),
     initialPageParam: params.page,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,

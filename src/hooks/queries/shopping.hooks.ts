@@ -23,7 +23,7 @@ export function useRemoveShoppingList(options?: IMutationOptions) {
 export function useGetShoppingList() {
   return useInfiniteQuery({
     queryKey: USER_QUERY_KEY.SHOPPING_LIST(),
-    queryFn: async ({ pageParam = 0 }) => await getShoppingList(pageParam),
+    queryFn: async ({ pageParam }) => await getShoppingList(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
