@@ -51,7 +51,7 @@ const LogForm = ({ logId }: ILogFormProps) => {
     }
   }, [logData, reset]);
 
-  const { mutate: addLog } = useAddLog({
+  const { mutate: addLog, isPending: isAddingLog } = useAddLog({
     onSuccess: (res) => {
       if (res.status === 201) {
         router.push('/feed');
@@ -66,7 +66,7 @@ const LogForm = ({ logId }: ILogFormProps) => {
     },
   });
 
-  const { mutate: editLog } = useEditLog({
+  const { mutate: editLog, isPending: isEditingLog } = useEditLog({
     onSuccess: (res) => {
       if (res.status === 200) {
         router.push('/feed');
@@ -120,8 +120,14 @@ const LogForm = ({ logId }: ILogFormProps) => {
       </div>
 
       <div className="mt-24">
-        <Button full type="submit">
-          {logId ? '수정하기' : '작성하기'}
+        <Button full type="submit" disabled={isAddingLog || isEditingLog}>
+          {logId
+            ? isEditingLog
+              ? '수정중...'
+              : '수정하기'
+            : isAddingLog
+              ? '작성중...'
+              : '작성하기'}
         </Button>
       </div>
     </form>
