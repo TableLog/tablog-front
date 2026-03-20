@@ -97,7 +97,7 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
         profileImgUrl:
           typeof imageFile === 'string'
             ? imageFile
-            : ((imageFile as { imgUrl?: string }).imgUrl ?? ''),
+            : (imageFile as { imgUrl?: string })?.imgUrl || '',
         marketingOptIn: termValue,
       }),
     );
