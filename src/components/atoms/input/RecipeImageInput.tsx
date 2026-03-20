@@ -23,6 +23,7 @@ interface IRecipeImageInputProps<T extends FieldValues> extends ComponentProps<'
   name: Path<T>;
   control: Control<T>;
   defaultImages?: IImageList['src'][];
+  maxFileSize?: number;
 }
 
 interface IImageList {
@@ -41,6 +42,7 @@ const RecipeImageInput = <T extends FieldValues>({
   name,
   control,
   defaultImages,
+  maxFileSize = 50, // MB
   ...props
 }: IRecipeImageInputProps<T>) => {
   const [imageList, setImageList] = useState<IImageList[]>(
@@ -69,6 +71,11 @@ const RecipeImageInput = <T extends FieldValues>({
       if (!validImageExtensions.includes(file.type)) {
         showToast({ message: 'jpg, jpeg, png 파일만 업로드 가능합니다.', type: 'error' });
         return; // 유효하지 않은 파일이면 더 이상 진행하지 않음
+      }
+
+      if (maxFileSize && file.size > maxFileSize * 1024 * 1024) {
+        showToast({ message: `${maxFileSize}MB 이하의 파일만 업로드 가능합니다.`, type: 'error' });
+        return;
       }
     }
 

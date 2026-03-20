@@ -84,7 +84,7 @@ export const useGetLicenseCount = () => {
 export const useGetMyRecipeReview = ({ userId }: { userId: number | undefined }) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.MY_REVIEW_LIST(),
-    queryFn: async ({ pageParam = 0 }) => await getMyRecipeReview(userId, pageParam),
+    queryFn: async ({ pageParam }) => await getMyRecipeReview(userId, pageParam),
 
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>

@@ -31,7 +31,7 @@ const FeedDetail = ({ id }: { id: number }) => {
       <>
         <DeleteFeedModal onDelete={handleDelete} />
 
-        <div className="relative flex h-[calc(100svh-120px)] w-full flex-col">
+        <div className="relative flex h-[calc(100dvh-60px-56px-16px)] w-full flex-col">
           <div className="flex-1 overflow-y-auto pb-6">
             <FeedItem
               log={logDetail}
@@ -45,7 +45,13 @@ const FeedDetail = ({ id }: { id: number }) => {
           </div>
 
           {isLoggedIn && (
-            <ChatInput logId={id} isReply={isReply} setIsReply={setIsReply} commentId={commentId} />
+            <ChatInput
+              className="pt-3"
+              logId={id}
+              isReply={isReply}
+              setIsReply={setIsReply}
+              commentId={commentId}
+            />
           )}
         </div>
       </>

@@ -19,7 +19,7 @@ import { IMutationOptions } from '@/types/api';
 export function useGetLogList() {
   return useInfiniteQuery({
     queryKey: FEED_QUERY_KEY.LIST(),
-    queryFn: async ({ pageParam = 0 }) => await getLogList(pageParam),
+    queryFn: async ({ pageParam }) => await getLogList(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -79,7 +79,7 @@ export function useRemoveLike(options?: IMutationOptions) {
 export function useGetCommentList(logId: number) {
   return useInfiniteQuery({
     queryKey: FEED_QUERY_KEY.COMMENT_LIST(logId),
-    queryFn: async ({ pageParam = 0 }) => await getLogCommentList(logId, pageParam),
+    queryFn: async ({ pageParam }) => await getLogCommentList(logId, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,
@@ -117,7 +117,7 @@ export function useAddCommentReply(options?: IMutationOptions) {
 export function useGetCommentReplyList(logId: number, commentId: number, enabled: boolean) {
   return useInfiniteQuery({
     queryKey: FEED_QUERY_KEY.COMMENT_REPLY_LIST(logId, commentId),
-    queryFn: async ({ pageParam = 0 }) => await getLogCommentReplyList(logId, commentId, pageParam),
+    queryFn: async ({ pageParam }) => await getLogCommentReplyList(logId, commentId, pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage, _, pageParam) =>
       lastPage.data.hasNext ? pageParam + 1 : undefined,

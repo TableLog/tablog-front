@@ -8,11 +8,16 @@ interface IAuthInitializerProps {
   isToken: boolean;
 }
 export default function AuthInitializer({ isToken }: IAuthInitializerProps) {
-  const { setIsLoggedIn } = useLoginStore();
+  const { isLoggedIn, setIsLoggedIn } = useLoginStore();
 
   useEffect(() => {
+    console.log({ isToken });
     setIsLoggedIn(isToken);
   }, [isToken, setIsLoggedIn]);
+
+  useEffect(() => {
+    console.log({ isLoggedIn });
+  }, [isLoggedIn]);
 
   return null;
 }
