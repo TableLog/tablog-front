@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Button from '@/components/atoms/button/Button';
-import { Checkbox } from '@/components/atoms/input/Checkbox';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
@@ -184,13 +183,13 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
             </>
           )}
 
-          <Checkbox
+          {/* <Checkbox
             label="마케팅 수신 동의 (선택)"
             value={termValue}
             onChange={(e) => {
               setTermValue(e.target.checked);
             }}
-          />
+          /> */}
         </div>
 
         <Button full type="submit">

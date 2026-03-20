@@ -146,7 +146,8 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
           ...data,
           imgUrl: imageFile === null && socialUserData?.imgUrl ? socialUserData?.imgUrl : '',
           provider: registerMethod,
-          marketingOptIn: termValues?.marketing,
+          // marketingOptIn: termValues?.marketing,
+          marketingOptIn: false,
         }),
       );
     } else {
@@ -155,7 +156,8 @@ const RegisterForm = ({ registerMethod, imageFile, setImageSrc }: IRegisterForm)
         JSON.stringify({
           ...data,
           provider: registerMethod,
-          marketingOptIn: termValues?.marketing,
+          // marketingOptIn: termValues?.marketing,
+          marketingOptIn: false,
         }),
       );
     }
