@@ -9,9 +9,11 @@ import Button from '@/components/atoms/button/Button';
 import TextInput from '@/components/atoms/input/TextInput';
 import { Text } from '@/components/atoms/text/Text';
 import { CheckEmailInput, CheckNicknameInput } from '@/components/molecules/input/DuplicateCheck';
+import Popup from '@/components/molecules/popup/Popup';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
+import { UNREGISTER_MODAL } from '@/constants/modal.constants';
 import { USER_QUERY_KEY } from '@/constants/query-key.constants';
-import { useUpdateUserInfo } from '@/hooks/queries/auth.hooks';
+import { useUnregister, useUpdateUserInfo } from '@/hooks/queries/auth.hooks';
 import { zodEmailUserInfo, zodSocialUserInfo } from '@/lib/zod/zodValidation';
 import { TUserData, TUserInfoEditFormValues } from '@/types/api';
 import { getErrorCode, showToast } from '@/utils/functions';
@@ -24,6 +26,8 @@ interface IUserInfoEditForm {
 }
 const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
   const [termValue, setTermValue] = useState<boolean>(false);
+
+  const { mutate: unregister } = useUnregister();
 
   const queryClient = useQueryClient();
 
@@ -91,8 +95,8 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
         email: data.email,
         password: data.password,
         profileImgUrl:
-          !imageFile || imageFile instanceof File
-            ? ''
+          typeof imageFile === 'string'
+            ? imageFile
             : ((imageFile as { imgUrl?: string }).imgUrl ?? ''),
         marketingOptIn: termValue,
       }),
@@ -128,6 +132,24 @@ const UserInfoEditForm = ({ imageFile, userData }: IUserInfoEditForm) => {
 
   return (
     <div>
+      <Popup
+        id={UNREGISTER_MODAL}
+        title="회원 탈퇴"
+        activeButtonComponent={
+          <Button buttonColor="primary" size="medium" onClick={() => unregister()}>
+            회원 탈퇴
+          </Button>
+        }
+      >
+        <>
+          <p>
+            회원 탈퇴 시 같은 정보로 30일간 재가입할 수 없습니다. 이후 모든 데이터는 삭제됩니다.
+          </p>
+
+          <p>탈퇴하시겠습니까?</p>
+        </>
+      </Popup>
+
       <form onSubmit={handleSubmit(onSubmit)} id="register-form">
         <div className="mb-[56px] flex flex-col gap-2">
           <CheckNicknameInput
