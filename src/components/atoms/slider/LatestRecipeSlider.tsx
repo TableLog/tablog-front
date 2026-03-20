@@ -45,7 +45,9 @@ const LatestRecipeSlider = ({ list }: ILatestRecipeSliderProps) => {
                 <p className="line-clamp-2 min-h-[56px] text-lg font-medium">{item.title}</p>
 
                 <div className="mt-1 flex items-center gap-1.5 text-sm">
-                  {EPrice[item.price]}원 | {ECookTime[item.cookingTime]} | {item.totalCal}kcal
+                  {EPrice[item.price]}원 | {ECookTime[item.cookingTime]}
+                  {/* 칼로리 */}
+                  {/* | {item.totalCal}kcal */}
                 </div>
 
                 <div className="mt-1 flex items-center gap-1 text-xs">

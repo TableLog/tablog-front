@@ -18,7 +18,6 @@ const RecipeInfo = ({
   recipeName,
   price,
   time,
-  calorie,
   star,
   comments,
   author,
@@ -36,7 +35,9 @@ const RecipeInfo = ({
         <p className="h-[52px] font-semibold">{recipeName}</p>
         <div className="flex flex-col gap-2">
           <p>
-            {price}원 | {time} | {calorie}kcal
+            {price}원 | {time}
+            {/* 칼로리 */}
+            {/* | {calorie}kcal */}
           </p>
           <p className="text-xs">
             <BoxIcon color="primary01" name="bx bxs-star" size={14} /> {star.toFixed(1)}({comments})

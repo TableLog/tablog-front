@@ -39,7 +39,9 @@ const Description = ({ recipe }: DescriptionProps) => {
       </div>
       <p>{recipe?.intro}</p>
       <p className="text-sm">
-        {EPrice[recipe.price]}원 | {ECookTime[recipe.cookingTime]} | {recipe.totalCal}kcal
+        {EPrice[recipe.price]}원 | {ECookTime[recipe.cookingTime]}
+        {/* 칼로리 */}
+        {/* | {recipe.totalCal}kcal */}
       </p>
       <div className="flex flex-wrap gap-1.5">
         {recipe.recipeCategoryList.map((category, idx) => (

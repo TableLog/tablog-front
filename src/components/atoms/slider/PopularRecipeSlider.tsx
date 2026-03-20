@@ -62,7 +62,9 @@ const PopularRecipeSlider = ({ list }: IPopularRecipeSliderProps) => {
 
                   <div>
                     <div className="flex items-center gap-1.5">
-                      {EPrice[item.price]}원 | {ECookTime[item.cookingTime]} | {item.totalCal}kcal
+                      {EPrice[item.price]}원 | {ECookTime[item.cookingTime]}
+                      {/* 칼로리 */}
+                      {/* | {item.totalCal}kcal */}
                     </div>
 
                     <div className="mt-5 flex items-center justify-between text-sm">
