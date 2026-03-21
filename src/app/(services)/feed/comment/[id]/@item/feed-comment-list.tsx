@@ -13,9 +13,10 @@ import { convertDateFormat } from '@/utils/functions';
 
 interface IFeedCommentListProps {
   logId: number;
+  commentCount: number;
 }
 
-const FeedCommentList = ({ logId }: IFeedCommentListProps) => {
+const FeedCommentList = ({ logId, commentCount }: IFeedCommentListProps) => {
   const [openedReplyCommentId, setOpenedReplyCommentId] = useState<number | null>(null);
   const [selectedCommentId, setSelectedCommentId] = useState<number | null>(null);
 
@@ -28,6 +29,11 @@ const FeedCommentList = ({ logId }: IFeedCommentListProps) => {
 
   return (
     <div>
+      <div className="mb-5">
+        <Text fontSize={16} fontWeight="medium" className="mb-4">
+          댓글 {commentCount}개
+        </Text>
+      </div>
       <InfiniteScroll
         className="flex flex-col gap-4"
         hasNextPage={hasNextPage}

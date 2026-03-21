@@ -26,7 +26,7 @@ import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
 import { useReport } from '@/hooks/queries/report.hooks';
 import { zodReportForm } from '@/lib/zod/zodValidation';
-import { ToggleLikeSuccess } from '@/services/feed.services';
+import { toggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { EReportType } from '@/types/enum';
 import { cn } from '@/utils/cn';
@@ -63,7 +63,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     onSuccess: (res) => {
       if (res.status === 201) {
         try {
-          ToggleLikeSuccess(log, queryClient);
+          toggleLikeSuccess(log, queryClient);
           queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(log.id) });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
@@ -76,7 +76,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     onSuccess: (res) => {
       if (res.status === 200) {
         try {
-          ToggleLikeSuccess(log, queryClient);
+          toggleLikeSuccess(log, queryClient);
           queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(log.id) });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
@@ -190,7 +190,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         />
       )}
 
-      <ul className="mb-3 mt-1 flex items-center gap-4">
+      <ul className="mb-3.5 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">
           <LoginClickGuard>
             {log.isLike ? (

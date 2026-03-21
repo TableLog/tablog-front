@@ -1,5 +1,6 @@
 'use client';
-import { MouseEvent, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import type React from 'react';
 
 import Popup from '@/components/molecules/popup/Popup';
 import { LOGIN_REQUIRED_MODAL } from '@/constants/modal.constants';
@@ -15,7 +16,7 @@ import Button from './Button';
 function LoginClickGuard({ children }: PropsWithChildren) {
   const { isLoggedIn } = useLoginStore();
 
-  function handleClickCapture(e: MouseEvent<HTMLElement>) {
+  function handleClickCapture(e: React.MouseEvent<HTMLSpanElement>) {
     if (!isLoggedIn) {
       e.preventDefault();
       e.stopPropagation();
@@ -36,9 +37,8 @@ function LoginClickGuard({ children }: PropsWithChildren) {
       >
         <p>로그인 후 이용해주세요.</p>
       </Popup>
-      <span onClickCapture={handleClickCapture} style={{ display: 'contents' }}>
-        {children}
-      </span>
+
+      <span onClickCapture={handleClickCapture}>{children}</span>
     </>
   );
 }

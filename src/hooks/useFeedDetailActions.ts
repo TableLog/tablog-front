@@ -12,7 +12,6 @@ export const useFeedDetailActions = () => {
   const [commentId, setCommentId] = useState(-1);
   const [expandedItems, setExpandedItems] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
-  const [isReply, setIsReply] = useState(false);
 
   const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const queryClient = useQueryClient();
@@ -48,8 +47,6 @@ export const useFeedDetailActions = () => {
     expandedItems,
     showMoreButton,
     setShowMoreButton,
-    isReply,
-    setIsReply,
     contentRefs,
     toggleExpand,
     handleDelete,

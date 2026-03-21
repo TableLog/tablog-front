@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic';
 
-import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import ChatInput from '@/components/molecules/chat/ChatInput';
 import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
@@ -38,14 +37,12 @@ const FeedDetail = ({ id }: { id: number }) => {
               isDetail
             />
 
-            <div className="mb-6 mt-5 h-px w-full bg-grey07" />
+            <div className="mb-6 mt-10 h-px w-full bg-grey07" />
 
-            <FeedCommentList logId={id} />
+            <FeedCommentList logId={id} commentCount={logDetail.comment_count} />
           </div>
 
-          <LoginClickGuard>
-            <ChatInput className="pt-3" logId={id} commentId={commentId} />
-          </LoginClickGuard>
+          <ChatInput className="pt-3" logId={id} commentId={commentId} />
         </div>
       </>
     )

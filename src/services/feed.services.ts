@@ -10,7 +10,7 @@ interface IFeedListResponse {
     };
   }>;
 }
-export const ToggleLikeSuccess = (log: ILogResponse, queryClient: QueryClient) => {
+export const toggleLikeSuccess = (log: ILogResponse, queryClient: QueryClient) => {
   if (!queryClient) return;
 
   // 현재 좋아요 상태를 반전

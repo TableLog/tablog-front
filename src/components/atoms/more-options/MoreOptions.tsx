@@ -1,10 +1,18 @@
 import { MouseEvent } from 'react';
 
+import LoginClickGuard from '../button/LoginRequiredLink';
 import { BoxIcon } from '../icon/BoxIcon';
 import { Text } from '../text/Text';
 
+export interface IMoreOptionsOption {
+  id: number;
+  title: string;
+  alert?: boolean;
+  isLoginRequired?: boolean;
+}
+
 interface IMoreOptionsProps {
-  options: Array<{ id: number; title: string; alert?: boolean }>;
+  options: Array<IMoreOptionsOption>;
   buttonEvent: (type: string, e: MouseEvent<HTMLButtonElement>) => void;
   iconColor?: string;
 }
@@ -25,8 +33,9 @@ const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => 
 
         <ul tabIndex={0} className="menu dropdown-content z-10 rounded-xl bg-base-100 shadow-sm">
           {options.map((option) => {
+            const WrapperComponent = option.isLoginRequired ? LoginClickGuard : 'div';
             return (
-              <li key={option.id}>
+              <WrapperComponent key={option.id}>
                 <button
                   className="px-3 py-1.5"
                   onClick={(e) => {
@@ -40,7 +49,7 @@ const MoreOptions = ({ options, buttonEvent, iconColor }: IMoreOptionsProps) => 
                     {option.title}
                   </Text>
                 </button>
-              </li>
+              </WrapperComponent>
             );
           })}
         </ul>
