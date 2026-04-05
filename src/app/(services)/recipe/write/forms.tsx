@@ -23,7 +23,7 @@ const Forms = () => {
   const queryClient = useQueryClient();
   const { setActiveIndex } = useTabsContext();
 
-  const { mutate: addRecipe } = useAddRecipe({
+  const { mutate: addRecipe, isPending: isAddingRecipe } = useAddRecipe({
     onSuccess: () => {
       router.push('/recipe');
       queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.LIST() });
@@ -119,8 +119,13 @@ const Forms = () => {
           </Tab.Panel>
         </form>
       </FormProvider>
-      <Button type="submit" className="sticky bottom-4 right-4 z-10" form="recipe-write-form">
-        레시피 등록
+      <Button
+        type="submit"
+        className="sticky bottom-4 right-4 z-10"
+        form="recipe-write-form"
+        disabled={isAddingRecipe}
+      >
+        {isAddingRecipe ? '레시피 등록 중...' : '레시피 등록'}
       </Button>
     </div>
   );
