@@ -1,4 +1,6 @@
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import type { AxiosResponse } from 'axios';
 
 // 레시피 구매
 import {
@@ -55,6 +57,7 @@ import {
   IRecipeIngredientParams,
   IRecipeProcessBySequenceParams,
   IRecipeProcessListParams,
+  IRecipeProcessResponse,
   IUpdateRecipeParams,
   PayRecipeParams,
 } from '@/types/api';
@@ -152,10 +155,17 @@ export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   });
 };
 
-export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequenceParams) => {
-  return useQuery({
+export const useGetRecipeProcessBySequence = <TData = AxiosResponse<IRecipeProcessResponse>>(
+  params: IRecipeProcessBySequenceParams,
+  options?: Omit<
+    UseQueryOptions<AxiosResponse<IRecipeProcessResponse>, Error, TData>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  return useQuery<AxiosResponse<IRecipeProcessResponse>, Error, TData>({
     queryKey: RECIPE_QUERY_KEY.PROCESS_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessBySequence(params),
+    ...options,
   });
 };
 
