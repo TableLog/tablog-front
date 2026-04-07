@@ -42,7 +42,7 @@ const LoginForm = () => {
     },
   });
 
-  const { mutate: emailLogin } = useEmailLogin({
+  const { mutate: emailLogin, isPending } = useEmailLogin({
     onSuccess: async () => {
       if (typeof window !== 'undefined') {
         if (rememberEmail) {
@@ -106,8 +106,8 @@ const LoginForm = () => {
           />
         </div>
 
-        <Button full type="submit">
-          <Text color="white01">로그인</Text>
+        <Button full type="submit" disabled={isPending}>
+          <Text color="white01">{isPending ? '로그인 중...' : '로그인'}</Text>
         </Button>
       </form>
     </div>
