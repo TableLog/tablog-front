@@ -7,7 +7,6 @@ import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useGetLog } from '@/hooks/queries/feed.hooks';
 import { useFeedDetailActions } from '@/hooks/useFeedDetailActions';
-import { useLoginStore } from '@/lib/zustand/userStore';
 
 import FeedCommentList from './feed-comment-list';
 
@@ -19,12 +18,9 @@ const FeedDetail = ({ id }: { id: number }) => {
   const { data: userData } = useGetUserInfo();
   const { data: logDetail } = useGetLog(id);
 
-  const { setLogId, isReply, setIsReply, contentRefs, handleDelete, commentId, setCommentId } =
-    useFeedDetailActions();
+  const { setLogId, contentRefs, handleDelete, commentId } = useFeedDetailActions();
 
   const isMyPost = userData && userData?.nickname === logDetail?.user;
-
-  const { isLoggedIn } = useLoginStore();
 
   return (
     logDetail && (
@@ -41,18 +37,12 @@ const FeedDetail = ({ id }: { id: number }) => {
               isDetail
             />
 
-            <FeedCommentList id={id} setIsReply={setIsReply} setCommentId={setCommentId} />
+            <div className="mb-6 mt-10 h-px w-full bg-grey07" />
+
+            <FeedCommentList logId={id} commentCount={logDetail.comment_count} />
           </div>
 
-          {isLoggedIn && (
-            <ChatInput
-              className="pt-3"
-              logId={id}
-              isReply={isReply}
-              setIsReply={setIsReply}
-              commentId={commentId}
-            />
-          )}
+          <ChatInput className="pt-3" logId={id} commentId={commentId} />
         </div>
       </>
     )

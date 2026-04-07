@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 import Button from '@/components/atoms/button/Button';
+import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import TextArea from '@/components/atoms/input/TextArea';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
@@ -25,7 +26,7 @@ import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
 import { useReport } from '@/hooks/queries/report.hooks';
 import { zodReportForm } from '@/lib/zod/zodValidation';
-import { ToggleLikeSuccess } from '@/services/feed.services';
+import { toggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { EReportType } from '@/types/enum';
 import { cn } from '@/utils/cn';
@@ -62,7 +63,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     onSuccess: (res) => {
       if (res.status === 201) {
         try {
-          ToggleLikeSuccess(log, queryClient);
+          toggleLikeSuccess(log, queryClient);
           queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(log.id) });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
@@ -75,7 +76,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     onSuccess: (res) => {
       if (res.status === 200) {
         try {
-          ToggleLikeSuccess(log, queryClient);
+          toggleLikeSuccess(log, queryClient);
           queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.DETAIL(log.id) });
         } catch (error) {
           console.error('ToggleLikeSuccess error:', error);
@@ -189,27 +190,29 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         />
       )}
 
-      <ul className="mb-2 mt-1 flex items-center gap-4">
+      <ul className="mb-3.5 mt-1 flex items-center gap-4">
         <li className="flex items-center gap-0.5">
-          {log.isLike ? (
-            <BoxIcon
-              name="heart"
-              type="solid"
-              color="primary01"
-              size={24}
-              onClick={() => {
-                removeLike(log.id);
-              }}
-            />
-          ) : (
-            <BoxIcon
-              name="heart"
-              size={24}
-              onClick={() => {
-                addLike(log.id);
-              }}
-            />
-          )}
+          <LoginClickGuard>
+            {log.isLike ? (
+              <BoxIcon
+                name="heart"
+                type="solid"
+                color="primary01"
+                size={24}
+                onClick={() => {
+                  removeLike(log.id);
+                }}
+              />
+            ) : (
+              <BoxIcon
+                name="heart"
+                size={24}
+                onClick={() => {
+                  addLike(log.id);
+                }}
+              />
+            )}
+          </LoginClickGuard>
 
           <Text fontSize={14} className="min-w-[10px]">
             {log.like_count || 0}
@@ -231,7 +234,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
         </li>
       </ul>
 
-      <div className="mb-8 max-h-[360px] overflow-y-auto">
+      <div className="max-h-[360px] overflow-y-auto">
         <div
           ref={(el) => {
             contentRefs.current[log.id] = el;

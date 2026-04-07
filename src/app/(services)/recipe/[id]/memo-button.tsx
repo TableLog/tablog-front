@@ -6,6 +6,7 @@ import { isAxiosError } from 'axios';
 import { z } from 'zod';
 
 import Button from '@/components/atoms/button/Button';
+import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import TextArea from '@/components/atoms/input/TextArea';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
@@ -16,6 +17,7 @@ import {
   useUpdateRecipeMemo,
 } from '@/hooks/queries/recipe.hooks';
 import { zodMemoForm } from '@/lib/zod/zodValidation';
+import { useLoginStore } from '@/lib/zustand/userStore';
 import { showToast } from '@/utils/functions';
 
 interface MemoButtonProps {
@@ -23,8 +25,16 @@ interface MemoButtonProps {
 }
 const MemoButton = ({ recipeId }: MemoButtonProps) => {
   const queryClient = useQueryClient();
+  const { isLoggedIn } = useLoginStore();
+
   const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
-  const { data: recipeMemo, isPending, isError, error } = useGetRecipeMemo({ recipeId });
+  const {
+    data: recipeMemo,
+    isPending,
+    isError,
+    error,
+  } = useGetRecipeMemo({ recipeId }, { enabled: isLoggedIn });
+
   const { mutate: addMemo } = useAddRecipeMemo({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: RECIPE_QUERY_KEY.MEMO(recipeId) });
@@ -55,7 +65,14 @@ const MemoButton = ({ recipeId }: MemoButtonProps) => {
 
   const isMemoEmpty = isAxiosError(error) && error.status === 404;
 
-  if (isPending || (isError && !isMemoEmpty)) return <></>;
+  if (isPending || (isError && !isMemoEmpty))
+    return (
+      <LoginClickGuard>
+        <div className="flex items-center">
+          <BoxIcon name="note" size={24} type="regular" />
+        </div>
+      </LoginClickGuard>
+    );
 
   function handleButtonClick() {
     setBottomSheetOpen(true);

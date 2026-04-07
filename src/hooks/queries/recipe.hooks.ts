@@ -1,4 +1,6 @@
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import type { AxiosResponse } from 'axios';
 
 // 레시피 구매
 import {
@@ -49,11 +51,13 @@ import {
   IGetSortedRecipeOption,
   IMutateRecipeMemoParams,
   IMutationOptions,
+  IQueryOptions,
   IRecipeDetailParams,
   IRecipeFilterParams,
   IRecipeIngredientParams,
   IRecipeProcessBySequenceParams,
   IRecipeProcessListParams,
+  IRecipeProcessResponse,
   IUpdateRecipeParams,
   PayRecipeParams,
 } from '@/types/api';
@@ -99,7 +103,7 @@ export const useGetSortedRecipe = (
   });
 };
 
-export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: { enabled: boolean }) => {
+export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: IQueryOptions) => {
   const { recipeId } = params;
   return useQuery({
     queryKey: RECIPE_QUERY_KEY.DETAIL(recipeId),
@@ -112,7 +116,7 @@ export const useGetRecipeDetail = (params: IRecipeDetailParams, options?: { enab
 // 레시피 재료
 export const useGetRecipeIngredientList = (
   params: IRecipeIngredientParams,
-  options?: { enabled: boolean },
+  options?: IQueryOptions,
 ) => {
   return useInfiniteQuery({
     queryKey: RECIPE_QUERY_KEY.INGREDIENT_LIST_WITH_PARAMS(params),
@@ -151,19 +155,27 @@ export const useGetRecipeProcesses = (params: IRecipeProcessListParams) => {
   });
 };
 
-export const useGetRecipeProcessBySequence = (params: IRecipeProcessBySequenceParams) => {
-  return useQuery({
+export const useGetRecipeProcessBySequence = <TData = AxiosResponse<IRecipeProcessResponse>>(
+  params: IRecipeProcessBySequenceParams,
+  options?: Omit<
+    UseQueryOptions<AxiosResponse<IRecipeProcessResponse>, Error, TData>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  return useQuery<AxiosResponse<IRecipeProcessResponse>, Error, TData>({
     queryKey: RECIPE_QUERY_KEY.PROCESS_WITH_PARAMS(params),
     queryFn: () => getRecipeProcessBySequence(params),
+    ...options,
   });
 };
 
 // 레시피 좋아요
-export function useGetRecipeLike(params: IGetRecipeLikeParams) {
+export function useGetRecipeLike(params: IGetRecipeLikeParams, options?: IQueryOptions) {
   const { recipeId } = params;
   return useQuery({
     queryKey: RECIPE_QUERY_KEY.LIKE(recipeId),
     queryFn: () => getRecipeLike(params),
+    ...options,
   });
 }
 
@@ -182,11 +194,12 @@ export function useCancelLikeRecipe(options?: IMutationOptions) {
 }
 
 // 레시피 북마크
-export function useGetRecipeBookmark(params: IGetRecipeLikeParams) {
+export function useGetRecipeBookmark(params: IGetRecipeLikeParams, options?: IQueryOptions) {
   const { recipeId } = params;
   return useQuery({
     queryKey: RECIPE_QUERY_KEY.BOOKMARK(recipeId),
     queryFn: () => getRecipeBookmark(params),
+    ...options,
   });
 }
 
@@ -299,10 +312,11 @@ export function useUpdateRecipeMemo(options?: IMutationOptions) {
   });
 }
 
-export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams) {
+export function useGetRecipeMemo({ recipeId }: IGetRecipeMemoParams, options?: IQueryOptions) {
   return useQuery({
     queryKey: RECIPE_QUERY_KEY.MEMO(recipeId),
     queryFn: () => getRecipeMemo({ recipeId }),
+    ...options,
   });
 }
 

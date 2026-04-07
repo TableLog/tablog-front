@@ -1,29 +1,26 @@
 'use client';
-import { MouseEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import type { PropsWithChildren } from 'react';
+import type React from 'react';
 
 import Popup from '@/components/molecules/popup/Popup';
 import { LOGIN_REQUIRED_MODAL } from '@/constants/modal.constants';
 import { useLoginStore } from '@/lib/zustand/userStore';
 import { handleOpenModal } from '@/utils/functions';
 
-import Button, { ButtonProps } from './Button';
+import Button from './Button';
 
-function LoginRequiredLink({ children, ...props }: ButtonProps) {
-  const router = useRouter();
+/**
+ * 로그인 된 유저만 클릭 가능한 버튼을 만듭니다.
+ * 로그인이 된 상태가 아닐 때 클릭 이벤트를 가로채서 로그인 필요 모달을 띄웁니다.
+ */
+function LoginClickGuard({ children }: PropsWithChildren) {
   const { isLoggedIn } = useLoginStore();
 
-  function handleButtonClick(e?: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) {
+  function handleClickCapture(e: React.MouseEvent<HTMLSpanElement>) {
     if (!isLoggedIn) {
-      e?.preventDefault();
+      e.preventDefault();
+      e.stopPropagation();
       handleOpenModal(LOGIN_REQUIRED_MODAL);
-      return;
-    }
-
-    if ('href' in props) {
-      router.push(props.href.toString());
-    } else {
-      props.onClick?.();
     }
   }
 
@@ -31,7 +28,7 @@ function LoginRequiredLink({ children, ...props }: ButtonProps) {
     <>
       <Popup
         id={LOGIN_REQUIRED_MODAL}
-        title="로그인이 필요합니다."
+        title="로그인이 필요한 기능입니다."
         activeButtonComponent={
           <Button href="/login" buttonColor="primary" size="medium">
             로그인
@@ -40,11 +37,10 @@ function LoginRequiredLink({ children, ...props }: ButtonProps) {
       >
         <p>로그인 후 이용해주세요.</p>
       </Popup>
-      <Button onClick={handleButtonClick} {...props}>
-        {children}
-      </Button>
+
+      <span onClickCapture={handleClickCapture}>{children}</span>
     </>
   );
 }
 
-export default LoginRequiredLink;
+export default LoginClickGuard;

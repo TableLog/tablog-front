@@ -1,3 +1,4 @@
+import { IMoreOptionsOption } from '@/components/atoms/more-options/MoreOptions';
 import { ECookTime, EPrice, ERecipeOption } from '@/types/enum';
 
 export const UNIT_OPTIONS = [
@@ -184,23 +185,23 @@ export const TERMS_OPTIONS = [
   // },
 ];
 
-export const RECIPE_OPTIONS = [
+export const RECIPE_OPTIONS: IMoreOptionsOption[] = [
   { id: 1, title: ERecipeOption.PROFILE },
-  { id: 2, title: ERecipeOption.CHAT },
-  { id: 3, title: ERecipeOption.REPORT, alert: true },
+  { id: 2, title: ERecipeOption.CHAT, isLoginRequired: true },
+  { id: 3, title: ERecipeOption.REPORT, alert: true, isLoginRequired: true },
 ];
 
-export const RECIPE_MY_OPTIONS = [
+export const RECIPE_MY_OPTIONS: IMoreOptionsOption[] = [
   { id: 1, title: ERecipeOption.EDIT },
   { id: 2, title: ERecipeOption.DELETE, alert: true },
 ];
 
-export const FEED_MY_OPTIONS = [
+export const FEED_MY_OPTIONS: IMoreOptionsOption[] = [
   { id: 1, title: '수정하기' },
   { id: 2, title: '삭제하기', alert: true },
 ];
 
-export const FEED_OPTIONS = [
-  { id: 1, title: '채팅하기' },
-  { id: 2, title: '신고하기', alert: true },
+export const FEED_OPTIONS: IMoreOptionsOption[] = [
+  { id: 1, title: '채팅하기', isLoginRequired: true },
+  { id: 2, title: '신고하기', alert: true, isLoginRequired: true },
 ];

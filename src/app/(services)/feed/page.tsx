@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
-import LoginRequiredLink from '@/components/atoms/button/LoginRequiredLink';
+import Button from '@/components/atoms/button/Button';
+import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 
 import FeedList from './feed-list';
@@ -18,9 +19,11 @@ const FeedPage = () => {
           <span>유저 검색</span>
         </Link>
 
-        <LoginRequiredLink size="medium" href="/feed/add-log">
-          일기 작성
-        </LoginRequiredLink>
+        <LoginClickGuard>
+          <Button size="medium" href="/feed/add-log">
+            일기 작성
+          </Button>
+        </LoginClickGuard>
       </div>
 
       <FeedList />

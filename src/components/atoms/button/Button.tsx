@@ -17,7 +17,7 @@ const colorClasses = {
   white: 'bg-[var(--color-base-000)] text-black',
 };
 
-export type ButtonProps = (ComponentProps<'button'> | ComponentProps<typeof Link>) & IButtonProps;
+type ButtonProps = (ComponentProps<'button'> | ComponentProps<typeof Link>) & IButtonProps;
 
 interface IButtonProps {
   onClick?: () => void;

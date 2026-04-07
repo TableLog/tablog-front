@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
@@ -69,16 +70,13 @@ const ProfileInfoSection = ({ id }: IProfileInfoSectionProps) => {
 
         <div className="flex items-center gap-2">
           {/* 채팅 아이콘 */}
-          {userInfo?.id !== id && (
-            <div
+          {isLoggedIn && userInfo && userInfo?.id !== id && (
+            <Link
+              href={CHAT_ROOM_URL({ senderId: userInfo.id, receiverId: id })}
               className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-primary01 px-1"
-              onClick={() => {
-                if (!userInfo) return;
-                router.push(CHAT_ROOM_URL({ senderId: userInfo.id, receiverId: id }));
-              }}
             >
               <BoxIcon name="message-rounded" size={16} color="primary01" />
-            </div>
+            </Link>
           )}
 
           {isLoggedIn && (

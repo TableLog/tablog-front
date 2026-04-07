@@ -6,8 +6,11 @@ import {
   useCancelLikeRecipe,
   useGetRecipeLike,
 } from '@/hooks/queries/recipe.hooks';
+import { useLoginStore } from '@/lib/zustand/userStore';
 
 import { BoxIcon } from '../icon/BoxIcon';
+
+import LoginClickGuard from './LoginRequiredLink';
 
 interface RecipeLikeButtonProps {
   recipeId: number;
@@ -16,8 +19,9 @@ interface RecipeLikeButtonProps {
 
 const RecipeLikeButton = ({ recipeId, likeCount }: RecipeLikeButtonProps) => {
   const queryClient = useQueryClient();
+  const { isLoggedIn } = useLoginStore();
 
-  const { data: response } = useGetRecipeLike({ recipeId });
+  const { data: response } = useGetRecipeLike({ recipeId }, { enabled: isLoggedIn });
 
   const { mutate: addLikeRecipe } = useAddLikeRecipe({
     onSuccess: () => {
@@ -33,7 +37,15 @@ const RecipeLikeButton = ({ recipeId, likeCount }: RecipeLikeButtonProps) => {
     },
   });
 
-  if (!response) return;
+  if (!response)
+    return (
+      <LoginClickGuard>
+        <div className="flex items-center gap-1 text-sm">
+          <BoxIcon color="white01" type="regular" name="heart" size={24} />
+          {likeCount && <span>{likeCount}</span>}
+        </div>
+      </LoginClickGuard>
+    );
 
   const like = response.data;
 

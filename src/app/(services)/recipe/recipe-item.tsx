@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
+import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import Bookmark from '@/components/molecules/bookmark/Bookmark';
@@ -92,13 +93,15 @@ const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
               iconColor="white"
             />
           ) : (
-            <button
-              type="button"
-              className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
-              onClick={handleBookmarkButtonClick}
-            >
-              <Bookmark isMarked={recipe.isSaved} size={20} />
-            </button>
+            <LoginClickGuard>
+              <button
+                type="button"
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
+                onClick={handleBookmarkButtonClick}
+              >
+                <Bookmark isMarked={recipe.isSaved} size={20} />
+              </button>
+            </LoginClickGuard>
           )}
           {recipe.isPaid && (
             <BoxIcon name="dollar-circle" size={30} color="yellow01" type="solid" />
