@@ -9,9 +9,8 @@ import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import Bookmark from '@/components/molecules/bookmark/Bookmark';
-import Popup from '@/components/molecules/popup/Popup';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import RecipeInfo from '@/components/molecules/recipe-info/RecipeInfo';
-import { DELETE_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_MY_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import {
@@ -21,7 +20,7 @@ import {
 } from '@/hooks/queries/recipe.hooks';
 import { IRecipe } from '@/types/api';
 import { ECookTime, EPrice, ERecipeOption } from '@/types/enum';
-import { handleOpenModal, showToast } from '@/utils/functions';
+import { showToast } from '@/utils/functions';
 
 interface RecipeListProps extends ComponentProps<'a'> {
   recipe: IRecipe;
@@ -29,6 +28,7 @@ interface RecipeListProps extends ComponentProps<'a'> {
 const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { openModal } = usePopupContext();
 
   const { mutate: addBookmarkRecipe } = useAddBookmarkRecipe({
     onSuccess: () => {
@@ -64,80 +64,74 @@ const RecipeItem = ({ recipe, ...props }: RecipeListProps) => {
         router.push(`/recipe/${recipe.id}/edit`);
         break;
       case ERecipeOption.DELETE:
-        handleOpenModal(DELETE_RECIPE_MODAL);
-        break;
+        openModal({
+          title: '레시피를 삭제하시겠습니까?',
+          closeButtonName: '취소',
+          activeButtonComponent: ({ closeModal }) => (
+            <Button
+              buttonColor="primary"
+              size="medium"
+              onClick={() => {
+                deleteRecipe({ recipeId: recipe.id });
+                closeModal();
+              }}
+            >
+              삭제
+            </Button>
+          ),
+          children: <p>레시피를 삭제하시면 되돌리실 수 없습니다.</p>,
+        });
     }
   }
 
   return (
-    <>
-      <Link
-        key={recipe.id}
-        href={`/recipe/${recipe.id}`}
-        className="relative aspect-[16/12] w-full overflow-hidden rounded-[20px]"
-        {...props}
-      >
-        <Image
-          src={recipe.imageUrl}
-          alt={`${recipe.title} 이미지`}
-          fill
-          className="object-cover"
-          unoptimized
-        />
+    <Link
+      key={recipe.id}
+      href={`/recipe/${recipe.id}`}
+      className="relative aspect-[16/12] w-full overflow-hidden rounded-[20px]"
+      {...props}
+    >
+      <Image
+        src={recipe.imageUrl}
+        alt={`${recipe.title} 이미지`}
+        fill
+        className="object-cover"
+        unoptimized
+      />
 
-        <div className="absolute right-4 top-5 flex flex-col items-center gap-1">
-          {recipe.isWriter ? (
-            <MoreOptions
-              options={RECIPE_MY_OPTIONS}
-              buttonEvent={handleOptionClick}
-              iconColor="white"
-            />
-          ) : (
-            <LoginClickGuard>
-              <button
-                type="button"
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
-                onClick={handleBookmarkButtonClick}
-              >
-                <Bookmark isMarked={recipe.isSaved} size={20} />
-              </button>
-            </LoginClickGuard>
-          )}
-          {recipe.isPaid && (
-            <BoxIcon name="dollar-circle" size={30} color="yellow01" type="solid" />
-          )}
-        </div>
-
-        <div className="absolute bottom-0 w-full">
-          <RecipeInfo
-            recipeName={recipe.title}
-            price={EPrice[recipe.price]}
-            time={ECookTime[recipe.cookingTime]}
-            calorie={recipe.totalCal}
-            star={recipe.star}
-            comments={recipe.starCount}
-            author={recipe.user}
+      <div className="absolute right-4 top-5 flex flex-col items-center gap-1">
+        {recipe.isWriter ? (
+          <MoreOptions
+            options={RECIPE_MY_OPTIONS}
+            buttonEvent={handleOptionClick}
+            iconColor="white"
           />
-        </div>
-      </Link>
+        ) : (
+          <LoginClickGuard>
+            <button
+              type="button"
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white01/20"
+              onClick={handleBookmarkButtonClick}
+            >
+              <Bookmark isMarked={recipe.isSaved} size={20} />
+            </button>
+          </LoginClickGuard>
+        )}
+        {recipe.isPaid && <BoxIcon name="dollar-circle" size={30} color="yellow01" type="solid" />}
+      </div>
 
-      <Popup
-        id={DELETE_RECIPE_MODAL}
-        title="레시피를 삭제하시겠습니까?"
-        closeButtonName="취소"
-        activeButtonComponent={
-          <Button
-            buttonColor="primary"
-            size="medium"
-            onClick={() => deleteRecipe({ recipeId: recipe.id })}
-          >
-            삭제
-          </Button>
-        }
-      >
-        <p>레시피를 삭제하시면 되돌리실 수 없습니다.</p>
-      </Popup>
-    </>
+      <div className="absolute bottom-0 w-full">
+        <RecipeInfo
+          recipeName={recipe.title}
+          price={EPrice[recipe.price]}
+          time={ECookTime[recipe.cookingTime]}
+          calorie={recipe.totalCal}
+          star={recipe.star}
+          comments={recipe.starCount}
+          author={recipe.user}
+        />
+      </div>
+    </Link>
   );
 };
 

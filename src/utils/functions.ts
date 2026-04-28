@@ -5,20 +5,6 @@ import dayjs from 'dayjs';
 import { ERROR_CODE_MESSAGE_MAP } from '@/constants/error-message.constants';
 import { APIErrorResponse } from '@/types/api';
 
-export function handleOpenModal(modalId: string) {
-  const modal = document.getElementById(modalId) as HTMLDialogElement | null;
-
-  if (modal) {
-    modal.showModal();
-  }
-}
-
-export function handleCloseModal(modalId: string) {
-  const modal = document.getElementById(modalId) as HTMLDialogElement | null;
-
-  if (modal) modal.close();
-}
-
 // NOTE: 생년월일 포맷 자동으로 조정 ("YYYY-MM-DD")
 export function changeInputBirthFormat(e: React.ChangeEvent<HTMLInputElement>) {
   e.target.value = e.target.value

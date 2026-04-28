@@ -121,7 +121,7 @@ const Forms = () => {
       </FormProvider>
       <Button
         type="submit"
-        className="sticky bottom-4 right-4 z-10"
+        className="sticky bottom-4 right-4 z-50"
         form="recipe-write-form"
         disabled={isAddingRecipe}
       >

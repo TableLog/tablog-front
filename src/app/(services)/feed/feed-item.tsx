@@ -1,6 +1,6 @@
 'use client';
 
-import React, { SetStateAction, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
@@ -16,35 +16,36 @@ import MoreOptions from '@/components/atoms/more-options/MoreOptions';
 import ProfileImage from '@/components/atoms/profile-image/ProfileImage';
 import ClampedTexts from '@/components/atoms/text/ClampedTexts';
 import { Text } from '@/components/atoms/text/Text';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import Carousel from '@/components/organisms/carousel/Carousel';
 import { CHAT_ROOM_URL } from '@/constants/endpoint.constants';
-import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
 import { FEED_MY_OPTIONS, FEED_OPTIONS } from '@/constants/options.constants';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
 import { useAddLike, useRemoveLike } from '@/hooks/queries/feed.hooks';
 import { useReport } from '@/hooks/queries/report.hooks';
+import { useFeedItemActions } from '@/hooks/useFeedItemActions';
 import { zodReportForm } from '@/lib/zod/zodValidation';
 import { toggleLikeSuccess } from '@/services/feed.services';
 import { ILogResponse } from '@/types/api';
 import { EReportType } from '@/types/enum';
 import { cn } from '@/utils/cn';
-import { convertDateFormat, handleOpenModal, handleShare, showToast } from '@/utils/functions';
+import { convertDateFormat, handleShare, showToast } from '@/utils/functions';
 
 interface IFeedItemProps {
   log: ILogResponse;
   isMyPost: boolean;
-  setLogId: React.Dispatch<SetStateAction<number>>;
   contentRefs: React.RefObject<Record<number, HTMLDivElement | null>>;
   isDetail?: boolean;
 }
 
 type TReportFormValues = z.infer<typeof zodReportForm>;
 
-const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemProps) => {
+const FeedItem = ({ log, isMyPost, contentRefs, isDetail }: IFeedItemProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { openModal } = usePopupContext();
 
   const [isBottomSheetOpen, setBottomSheetOpen] = useState<boolean>(false);
 
@@ -103,12 +104,33 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
     });
   }
 
+  const { handleDelete } = useFeedItemActions();
+
   const handleOptionClick = useCallback(
     (type: string) => {
       switch (type) {
         case '삭제하기':
-          handleOpenModal(DELETE_FEED_MODAL);
-          setLogId(log.id);
+          openModal({
+            title: '일기 삭제',
+            activeButtonComponent: ({ closeModal }) => (
+              <Button
+                buttonColor="primary"
+                size="medium"
+                onClick={() => {
+                  handleDelete(log.id);
+                  closeModal();
+                }}
+              >
+                삭제
+              </Button>
+            ),
+            children: (
+              <>
+                <p>일기를 삭제하시겠습니까?</p>
+                <p>삭제하신 후 되돌리실 수 없습니다.</p>
+              </>
+            ),
+          });
           break;
         case '수정하기':
           router.push(`/feed/edit-log/${log.id}`);
@@ -122,7 +144,7 @@ const FeedItem = ({ log, isMyPost, contentRefs, setLogId, isDetail }: IFeedItemP
           break;
       }
     },
-    [log.id, log.user_id, router, setLogId, userInfo],
+    [handleDelete, log.id, log.user_id, openModal, router, userInfo],
   );
 
   const handleShareFeed = useCallback(async () => {

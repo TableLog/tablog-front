@@ -1,7 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
 
-import DeleteFeedModal from '@/components/molecules/feed/DeleteFeedModal';
 import InfiniteScroll from '@/components/organisms/infinite-scroll/InfiniteScroll';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetLogList } from '@/hooks/queries/feed.hooks';
@@ -16,7 +15,7 @@ const FeedItem = dynamic(() => import('./feed-item'), {
 const FeedList = () => {
   const { data: logList, hasNextPage, fetchNextPage, isFetching } = useGetLogList();
 
-  const { setLogId, contentRefs, handleDelete } = useFeedItemActions();
+  const { contentRefs } = useFeedItemActions();
 
   // 스크롤 위치 저장 (뒤로가기시 해당 위치로 이동)
   useScrollPosition({
@@ -26,8 +25,6 @@ const FeedList = () => {
 
   return (
     <div>
-      <DeleteFeedModal onDelete={handleDelete} />
-
       <InfiniteScroll
         className="space-y-8"
         hasNextPage={hasNextPage}
@@ -35,17 +32,9 @@ const FeedList = () => {
         fetchNextPage={fetchNextPage}
       >
         {logList?.pages?.map((page) =>
-          page.data.boards.map((log: ILogResponse) => {
-            return (
-              <FeedItem
-                key={log.id}
-                log={log}
-                setLogId={setLogId}
-                isMyPost={log.isMe}
-                contentRefs={contentRefs}
-              />
-            );
-          }),
+          page.data.boards.map((log: ILogResponse) => (
+            <FeedItem key={log.id} log={log} isMyPost={log.isMe} contentRefs={contentRefs} />
+          )),
         )}
       </InfiniteScroll>
     </div>

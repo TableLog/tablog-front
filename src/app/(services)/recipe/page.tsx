@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
@@ -7,14 +7,13 @@ import LoginClickGuard from '@/components/atoms/button/LoginRequiredLink';
 import { Checkbox } from '@/components/atoms/input/Checkbox';
 import MiniSelectBox from '@/components/atoms/input/MiniSelectBox';
 import Tab from '@/components/atoms/tab/Tab';
-import Popup from '@/components/molecules/popup/Popup';
-import { NO_RECIPE_MODAL } from '@/constants/modal.constants';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import { RECIPE_FILTER_OPTIONS } from '@/constants/options.constants';
-import { handleOpenModal } from '@/utils/functions';
 
 import RecipeList from './recipe-list';
 
 const RecipePage = () => {
+  const { openModal } = usePopupContext();
   const searchParams = useSearchParams();
   const sortOption = searchParams.get('sortOption');
 
@@ -28,9 +27,29 @@ const RecipePage = () => {
     setOnlyPaid((prev) => !prev);
   }
 
-  function onMyRecipeEmpty() {
-    if (activeIndex === 1) handleOpenModal(NO_RECIPE_MODAL);
-  }
+  const onMyRecipeEmpty = useCallback(() => {
+    if (activeIndex === 1) {
+      openModal({
+        title: '등록하신 레시피가 없습니다.',
+        activeButtonComponent: ({ closeModal }) => (
+          <Button
+            href="/recipe/write"
+            buttonColor="primary"
+            size="medium"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            레시피 등록
+          </Button>
+        ),
+        onClose: () => {
+          setActiveIndex(0);
+        },
+        children: <p>나만의 레시피를 다른 사람들과 공유해볼까요?</p>,
+      });
+    }
+  }, [activeIndex, openModal]);
 
   return (
     <>
@@ -72,20 +91,6 @@ const RecipePage = () => {
           </Tab.Panel>
         </Tab>
       </div>
-
-      <Popup
-        id={NO_RECIPE_MODAL}
-        title="등록하신 레시피가 없습니다."
-        activeButtonComponent={
-          <Button href="/recipe/write" buttonColor="primary" size="medium">
-            레시피 등록
-          </Button>
-        }
-      >
-        <>
-          <p>나만의 레시피를 다른 사람들과 공유해볼까요?</p>
-        </>
-      </Popup>
     </>
   );
 };

@@ -10,6 +10,7 @@ import {
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import axios from 'axios';
 
+import { PopupProvider } from '@/components/molecules/popup/PopupProvider';
 import { showToast } from '@/utils/functions';
 
 const getErrorMessage = (status?: number) => {
@@ -49,9 +50,11 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <PopupProvider>
+        {/* <ReactQueryDevtools initialIsOpen={true} /> */}
 
-      {children}
+        {children}
+      </PopupProvider>
     </QueryClientProvider>
   );
 };

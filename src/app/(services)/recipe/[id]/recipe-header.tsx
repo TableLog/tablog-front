@@ -12,11 +12,10 @@ import ToggleModeButton from '@/components/atoms/button/ToggleModeButton';
 import { BoxIcon } from '@/components/atoms/icon/BoxIcon';
 import TextArea from '@/components/atoms/input/TextArea';
 import MoreOptions from '@/components/atoms/more-options/MoreOptions';
-import Popup from '@/components/molecules/popup/Popup';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import BottomSheet from '@/components/organisms/bottom-sheet/BottomSheet';
 import { ERecipeDetailSection } from '@/constants/common.constants';
 import { CHAT_ROOM_URL } from '@/constants/endpoint.constants';
-import { DELETE_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_MY_OPTIONS, RECIPE_OPTIONS } from '@/constants/options.constants';
 import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetUserInfo } from '@/hooks/queries/auth.hooks';
@@ -24,7 +23,7 @@ import { useDeleteRecipe } from '@/hooks/queries/recipe.hooks';
 import { useReport } from '@/hooks/queries/report.hooks';
 import { zodReportForm } from '@/lib/zod/zodValidation';
 import { ERecipeOption, EReportType } from '@/types/enum';
-import { handleOpenModal, showToast } from '@/utils/functions';
+import { showToast } from '@/utils/functions';
 
 interface RecipeHeaderProps {
   recipeId: number;
@@ -37,6 +36,7 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const { openModal } = usePopupContext();
   const params = new URLSearchParams(searchParams);
 
   const { data: userInfo } = useGetUserInfo();
@@ -93,72 +93,68 @@ const RecipeHeaderContent = ({ recipeId, authorId, isMyRecipe = false }: RecipeH
         router.push(`/recipe/${recipeId}/edit`);
         break;
       case ERecipeOption.DELETE:
-        handleOpenModal(DELETE_RECIPE_MODAL);
+        openModal({
+          title: '레시피를 삭제하시겠습니까?',
+          closeButtonName: '취소',
+          activeButtonComponent: ({ closeModal }) => (
+            <Button
+              buttonColor="primary"
+              size="medium"
+              onClick={() => {
+                deleteRecipe({ recipeId });
+                closeModal();
+              }}
+            >
+              삭제
+            </Button>
+          ),
+          children: <p>레시피를 삭제하시면 되돌리실 수 없습니다.</p>,
+        });
         break;
     }
   }
 
   return (
-    <>
-      <div className="sticky z-50 flex items-center justify-between px-5 py-4">
-        <button onClick={() => router.push('/recipe')}>
-          <BoxIcon name="arrow-back" size={24} color="white" />
-        </button>
-        <div className="absolute left-1/2 -translate-x-1/2 text-white01">
-          <ToggleModeButton
-            options={[ERecipeDetailSection.INGREDIENT, ERecipeDetailSection.DESCRIPTION]}
-            onChange={(newOption: string) => {
-              params.set('mode', newOption);
-              router.replace(`${pathname}?${params.toString()}`);
-            }}
-          />
-        </div>
-
-        <MoreOptions
-          options={isMyRecipe ? RECIPE_MY_OPTIONS : RECIPE_OPTIONS}
-          buttonEvent={handleOptionClick}
-          iconColor="white"
+    <div className="sticky z-50 flex items-center justify-between px-5 py-4">
+      <button onClick={() => router.push('/recipe')}>
+        <BoxIcon name="arrow-back" size={24} color="white" />
+      </button>
+      <div className="absolute left-1/2 -translate-x-1/2 text-white01">
+        <ToggleModeButton
+          options={[ERecipeDetailSection.INGREDIENT, ERecipeDetailSection.DESCRIPTION]}
+          onChange={(newOption: string) => {
+            params.set('mode', newOption);
+            router.replace(`${pathname}?${params.toString()}`);
+          }}
         />
-
-        <BottomSheet
-          isOpen={isBottomSheetOpen}
-          onClose={() => setBottomSheetOpen(false)}
-          title="신고하기"
-          buttons={
-            <div className="grid grid-cols-2 gap-1.5">
-              <Button buttonColor="grey06" onClick={() => setBottomSheetOpen(false)}>
-                닫기
-              </Button>
-              <Button full type="submit" form="report-form">
-                제출
-              </Button>
-            </div>
-          }
-        >
-          <form onSubmit={handleSubmit(onSubmit)} className="px-5" id="report-form">
-            <TextArea
-              register={register}
-              category="reportContent"
-              errors={errors}
-              maxLength={300}
-            />
-          </form>
-        </BottomSheet>
       </div>
 
-      <Popup
-        id={DELETE_RECIPE_MODAL}
-        title="레시피를 삭제하시겠습니까?"
-        closeButtonName="취소"
-        activeButtonComponent={
-          <Button buttonColor="primary" size="medium" onClick={() => deleteRecipe({ recipeId })}>
-            삭제
-          </Button>
+      <MoreOptions
+        options={isMyRecipe ? RECIPE_MY_OPTIONS : RECIPE_OPTIONS}
+        buttonEvent={handleOptionClick}
+        iconColor="white"
+      />
+
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        onClose={() => setBottomSheetOpen(false)}
+        title="신고하기"
+        buttons={
+          <div className="grid grid-cols-2 gap-1.5">
+            <Button buttonColor="grey06" onClick={() => setBottomSheetOpen(false)}>
+              닫기
+            </Button>
+            <Button full type="submit" form="report-form">
+              제출
+            </Button>
+          </div>
         }
       >
-        <p>레시피를 삭제하시면 되돌리실 수 없습니다.</p>
-      </Popup>
-    </>
+        <form onSubmit={handleSubmit(onSubmit)} className="px-5" id="report-form">
+          <TextArea register={register} category="reportContent" errors={errors} maxLength={300} />
+        </form>
+      </BottomSheet>
+    </div>
   );
 };
 

@@ -2,10 +2,8 @@
 import type { PropsWithChildren } from 'react';
 import type React from 'react';
 
-import Popup from '@/components/molecules/popup/Popup';
-import { LOGIN_REQUIRED_MODAL } from '@/constants/modal.constants';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import { useLoginStore } from '@/lib/zustand/userStore';
-import { handleOpenModal } from '@/utils/functions';
 
 import Button from './Button';
 
@@ -15,32 +13,32 @@ import Button from './Button';
  */
 function LoginClickGuard({ children }: PropsWithChildren) {
   const { isLoggedIn } = useLoginStore();
+  const { openModal } = usePopupContext();
 
   function handleClickCapture(e: React.MouseEvent<HTMLSpanElement>) {
     if (!isLoggedIn) {
       e.preventDefault();
       e.stopPropagation();
-      handleOpenModal(LOGIN_REQUIRED_MODAL);
+      openModal({
+        title: '로그인이 필요한 기능입니다.',
+        activeButtonComponent: ({ closeModal }) => (
+          <Button
+            href="/login"
+            buttonColor="primary"
+            size="medium"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            로그인
+          </Button>
+        ),
+        children: <p>로그인 후 이용해주세요.</p>,
+      });
     }
   }
 
-  return (
-    <>
-      <Popup
-        id={LOGIN_REQUIRED_MODAL}
-        title="로그인이 필요한 기능입니다."
-        activeButtonComponent={
-          <Button href="/login" buttonColor="primary" size="medium">
-            로그인
-          </Button>
-        }
-      >
-        <p>로그인 후 이용해주세요.</p>
-      </Popup>
-
-      <span onClickCapture={handleClickCapture}>{children}</span>
-    </>
-  );
+  return <span onClickCapture={handleClickCapture}>{children}</span>;
 }
 
 export default LoginClickGuard;

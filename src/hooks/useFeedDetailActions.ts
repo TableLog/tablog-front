@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useDeleteLog } from '@/hooks/queries/feed.hooks';
 import { showToast } from '@/utils/functions';
@@ -16,12 +16,12 @@ export const useFeedDetailActions = () => {
   const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { closeModal } = usePopupContext();
 
   const { mutate: deleteLog } = useDeleteLog({
     onSuccess: (res) => {
       if (res.status === 200) {
-        const modal = document.getElementById(DELETE_FEED_MODAL) as HTMLDialogElement;
-        modal.close();
+        closeModal();
         showToast({ message: '일기를 삭제했습니다.', type: 'success' });
         queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.LIST() });
         router.push('/feed');

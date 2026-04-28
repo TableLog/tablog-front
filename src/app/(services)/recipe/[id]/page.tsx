@@ -7,12 +7,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import Button from '@/components/atoms/button/Button';
 import LoadingSpinner from '@/components/atoms/loading/LoadingSpinner';
-import Popup from '@/components/molecules/popup/Popup';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import { ERecipeDetailSection } from '@/constants/common.constants';
-import { PAY_RECIPE_MODAL } from '@/constants/modal.constants';
 import { RECIPE_QUERY_KEY } from '@/constants/query-key.constants';
 import { useGetRecipeDetail, usePayRecipe } from '@/hooks/queries/recipe.hooks';
-import { handleOpenModal } from '@/utils/functions';
 
 import Description from './description';
 import Ingredient from './ingredient';
@@ -31,12 +29,29 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
   });
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { openModal } = usePopupContext();
   const mode = searchParams.get('mode') ?? ERecipeDetailSection.INGREDIENT;
   const recipe = recipeInfo?.data;
   const canAccess = !recipe?.isWriter && recipe?.isPaid && !recipe?.hasPurchased;
 
   function openPaymentModal() {
-    handleOpenModal(PAY_RECIPE_MODAL);
+    openModal({
+      title: '해당 레시피는 유료레시피입니다.',
+      closeButtonName: '취소',
+      activeButtonComponent: ({ closeModal }) => (
+        <Button
+          buttonColor="primary"
+          size="medium"
+          onClick={() => {
+            confirmRecipePayment();
+            closeModal();
+          }}
+        >
+          확인
+        </Button>
+      ),
+      children: <p>포인트 200p를 차감하여 레시피를 열람하시겠습니까?.</p>,
+    });
   }
 
   function moveToStagePage() {
@@ -75,18 +90,6 @@ const RecipeDetailContent = ({ params }: { params: Promise<{ id: string }> }) =>
           요리 시작
         </Button>
       </div>
-      <Popup
-        id={PAY_RECIPE_MODAL}
-        title="해당 레시피는 유료레시피입니다."
-        closeButtonName="취소"
-        activeButtonComponent={
-          <Button buttonColor="primary" size="medium" onClick={confirmRecipePayment}>
-            확인
-          </Button>
-        }
-      >
-        <p>포인트 200p를 차감하여 레시피를 열람하시겠습니까?.</p>
-      </Popup>
     </div>
   );
 };

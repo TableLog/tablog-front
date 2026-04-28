@@ -1,10 +1,13 @@
+import Button from '@/components/atoms/button/Button';
 import { Text } from '@/components/atoms/text/Text';
-import { UNREGISTER_MODAL } from '@/constants/modal.constants';
-import { useLogout } from '@/hooks/queries/auth.hooks';
-import { handleOpenModal } from '@/utils/functions';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
+import { useLogout, useUnregister } from '@/hooks/queries/auth.hooks';
 
 const LogoutSignout = () => {
   const { mutate: logout } = useLogout();
+  const { openModal } = usePopupContext();
+
+  const { mutate: unregister } = useUnregister();
 
   const buttonList = [
     { id: 1, title: '로그아웃', onClick: () => logout() },
@@ -12,7 +15,30 @@ const LogoutSignout = () => {
       id: 2,
       title: '회원 탈퇴',
       onClick: () => {
-        handleOpenModal(UNREGISTER_MODAL);
+        openModal({
+          title: '회원 탈퇴',
+          activeButtonComponent: ({ closeModal }) => (
+            <Button
+              buttonColor="primary"
+              size="medium"
+              onClick={() => {
+                unregister();
+                closeModal();
+              }}
+            >
+              회원 탈퇴
+            </Button>
+          ),
+          children: (
+            <>
+              <p>
+                회원 탈퇴 시 같은 정보로 30일간 재가입할 수 없습니다. 이후 모든 데이터는 삭제됩니다.
+              </p>
+
+              <p>탈퇴하시겠습니까?</p>
+            </>
+          ),
+        });
       },
     },
   ];

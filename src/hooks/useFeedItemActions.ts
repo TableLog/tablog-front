@@ -1,7 +1,7 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { DELETE_FEED_MODAL } from '@/constants/modal.constants';
+import { usePopupContext } from '@/components/molecules/popup/PopupProvider';
 import { FEED_QUERY_KEY } from '@/constants/query-key.constants';
 import { useDeleteLog } from '@/hooks/queries/feed.hooks';
 import { showToast } from '@/utils/functions';
@@ -11,16 +11,14 @@ interface UseFeedItemActionsOptions {
 }
 
 export const useFeedItemActions = (options?: UseFeedItemActionsOptions) => {
-  const [logId, setLogId] = useState(-1);
-
   const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const queryClient = useQueryClient();
+  const { closeModal } = usePopupContext();
 
   const { mutate: deleteLog } = useDeleteLog({
     onSuccess: (res) => {
       if (res.status === 200) {
-        const modal = document.getElementById(DELETE_FEED_MODAL) as HTMLDialogElement;
-        modal.close();
+        closeModal();
         showToast({ message: '일기를 삭제했습니다.', type: 'success' });
         queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY.LIST() });
         options?.onDeleteSuccess?.();
@@ -28,15 +26,16 @@ export const useFeedItemActions = (options?: UseFeedItemActionsOptions) => {
     },
   });
 
-  const handleDelete = useCallback(() => {
-    if (logId) {
-      deleteLog(logId);
-    }
-  }, [logId, deleteLog]);
+  const handleDelete = useCallback(
+    (logId: number) => {
+      if (logId) {
+        deleteLog(logId);
+      }
+    },
+    [deleteLog],
+  );
 
   return {
-    logId,
-    setLogId,
     contentRefs,
     handleDelete,
   };
